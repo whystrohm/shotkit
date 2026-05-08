@@ -1,6 +1,8 @@
 # shotkit
 
-**The pre-production system we use to ship 800+ videos a month. Open-sourced.**
+![shotkit](docs/images/social-preview.png)
+
+**The pre-production system we use to ship hundreds of videos a month. Open-sourced.**
 
 Four Claude Skills that turn a creative brief into a production-grade storyboard with model-specific image prompts, on-screen text specs, an HTML preview, and a versioned audit trail. Built by [WhyStrohm](https://whystrohm.com). Apache 2.0.
 
@@ -10,6 +12,8 @@ cd shotkit && ./install.sh
 ```
 
 That installs all four skills into `~/.claude/skills/`. Restart your Claude Code session and they're live.
+
+![shotkit demo](docs/images/demo.gif)
 
 ---
 

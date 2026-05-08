@@ -1,0 +1,23 @@
+{
+  "name": "shotkit-remotion",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Remotion composition for the shotkit demo GIF",
+  "license": "Apache-2.0",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "./render.sh",
+    "build": "remotion render ShotkitDemo ../docs/images/demo.gif --codec=gif --width=1280 --height=720"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.459",
+    "@remotion/google-fonts": "4.0.459",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.459"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "typescript": "5.6.3"
+  }
+}

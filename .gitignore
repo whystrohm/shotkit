@@ -34,3 +34,10 @@ evals/iteration-*/
 # Generated example outputs (kept by hand, not by run)
 output/
 generated/
+
+# Remotion (composition source ships, build artifacts do not)
+remotion/node_modules/
+remotion/.cache/
+remotion/dist/
+remotion/out/
+remotion/public/
