@@ -206,7 +206,7 @@ Apache 2.0. See [LICENSE](LICENSE).
 
 ## Who built this
 
-[Yuri Strohm](https://whystrohm.com). Motion Design and Narrative Visualization Specialist at RTX BBN Technologies, founder of WhyStrohm. A decade of defense-adjacent design work informs how I build content systems: deterministic, auditable, no surprises.
+[Yuri Strohm](https://whystrohm.com). Motion Design and Narrative Visualization Specialist, founder of WhyStrohm. A decade of defense-adjacent design work informs how I build content systems: deterministic, auditable, no surprises.
 
 If you want the version where this is wired into a Remotion pipeline with automated publishing: [whystrohm.com](https://whystrohm.com).
 

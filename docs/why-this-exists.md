@@ -26,7 +26,7 @@ This is how serious teams have always worked. We're just bringing AI generation 
 
 ## The defense influence
 
-The author spent a decade building motion design and proposal graphics for DARPA, IARPA, AFRL, USTRANSCOM, DHS, and MDA. Defense work has different reflexes than agency work:
+The author spent a decade in defense systems engineering, building motion design and proposal graphics for federal programs. Defense work has different reflexes than agency work:
 
 **Auditability**, every artifact has a chain back to the source decision. You can answer "why does it look this way?" by reading the file, not asking a person.
 

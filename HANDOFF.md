@@ -15,7 +15,7 @@ The four skills:
 
 ## Who you're working for
 
-Yuri Strohm (goes by Yurr). Motion Design and Narrative Visualization Specialist at RTX BBN Technologies. Founder of WhyStrohm. Defense-grade systems thinker. Communicates casually, builds rigorously. Boston area, MassArt background.
+Yuri Strohm (goes by Yurr). Motion Design and Narrative Visualization Specialist with a decade in defense systems engineering. Founder of WhyStrohm. Defense-grade systems thinker. Communicates casually, builds rigorously. Boston area, MassArt background.
 
 His voice rules apply to everything in this repo:
 
