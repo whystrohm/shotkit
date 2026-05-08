@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://whystrohm.com/schemas/shotkit/shots.schema.json",
+  "title": "Shots",
+  "description": "Structured shot list for a storyboard. Versioned, audit-friendly, generator-agnostic.",
+  "type": "object",
+  "required": ["version", "project", "brand_lock_ref", "series_lock", "shots"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "project": {
+      "type": "object",
+      "required": ["title", "duration_s", "aspect"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "duration_s": { "type": "number", "exclusiveMinimum": 0 },
+        "aspect": {
+          "type": "string",
+          "enum": ["16:9", "9:16", "1:1", "4:5", "21:9"]
+        },
+        "framework": {
+          "type": "string",
+          "description": "Beat framework name. e.g. 'pain-reframe-promise', 'hero-trilogy', 'founder-explainer', 'content-spiral', 'educational-demo', 'custom'"
+        }
+      }
+    },
+    "brand_lock_ref": {
+      "type": "string",
+      "description": "Relative path to brand-lock.snapshot.md within the output directory."
+    },
+    "series_lock": {
+      "type": "object",
+      "required": ["character", "environment", "lighting", "color_grade"],
+      "additionalProperties": false,
+      "properties": {
+        "character": { "type": "string", "minLength": 1 },
+        "environment": { "type": "string", "minLength": 1 },
+        "lighting": { "type": "string", "minLength": 1 },
+        "color_grade": { "type": "string", "minLength": 1 }
+      }
+    },
+    "shots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "beat", "start", "end",
+          "framing", "angle", "motion",
+          "subject", "rationale"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^shot_[0-9]{2,3}$"
+          },
+          "beat": { "type": "string", "minLength": 1 },
+          "start": { "type": "number", "minimum": 0 },
+          "end": { "type": "number", "exclusiveMinimum": 0 },
+          "framing": {
+            "type": "string",
+            "enum": ["ECU", "CU", "MCU", "MS", "MLS", "WS", "EWS"]
+          },
+          "angle": {
+            "type": "string",
+            "enum": ["eye-level", "high", "low", "overhead", "dutch"]
+          },
+          "motion": {
+            "type": "string",
+            "enum": [
+              "static", "push", "pull",
+              "pan-left", "pan-right",
+              "tilt-up", "tilt-down",
+              "handheld", "orbit", "whip", "rack"
+            ]
+          },
+          "depth_of_field": {
+            "type": "string",
+            "enum": ["shallow", "deep", "rack"]
+          },
+          "subject": { "type": "string", "minLength": 1 },
+          "environment_ref": {
+            "type": "string",
+            "description": "Default 'series_lock.environment'. Override only with reason."
+          },
+          "lighting_ref": {
+            "type": "string",
+            "description": "Default 'series_lock.lighting'. Override only with reason."
+          },
+          "on_screen_text": {
+            "oneOf": [
+              { "type": "null" },
+              { "type": "string", "pattern": "^text_[0-9]{2,3}$" }
+            ]
+          },
+          "vo": {
+            "oneOf": [
+              { "type": "null" },
+              { "type": "string", "minLength": 1 }
+            ]
+          },
+          "rationale": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+# Storyboard: WhyStrohm, The Content Infrastructure Pitch
+# Generator: nano-banana (Gemini 2.5 Flash Image)
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Generated: 2026-05-07
+
+# shot_04, reframe, 11.0-16.0s, MCU eye-level push
+# Text-to-image prompt:
+# params: aspectRatio=9:16, numberOfImages=1
+Medium close-up of a founder, mid-thirties, salt-and-pepper hair, navy crewneck, looking directly at camera with expression shifting from tired to clear, a small almost-smile beginning. Camera dollying slowly forward. Minimalist home office, white walls, oak desk, single houseplant. Soft natural side-light from large window camera-left, warm afternoon golden hour. Shot on 50mm prime, f/2.0, shallow depth of field. Warm filmic color grade with muted teal shadows, slight grain. Calm, considered, operator mood.
+
+# shot_04, variant template (run after text-to-image to get variants):
+# Reference: [the generated image from above]
+# Prompt: Modify the image to vary the founder's expression. Preserve the character's face, salt-and-pepper hair, navy crewneck, the home office environment, the camera-left lighting, the 50mm shallow depth-of-field framing, and the warm filmic grade. Change only the expression: produce one variant with the smile fully formed, one with a more neutral pre-smile state, one with eyes slightly closed mid-blink for a candid feel.

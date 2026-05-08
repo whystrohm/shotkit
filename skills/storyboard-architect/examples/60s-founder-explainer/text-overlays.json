@@ -1,0 +1,65 @@
+{
+  "version": "1.0",
+  "overlays": [
+    {
+      "id": "text_01",
+      "shot_id": "shot_01",
+      "content": "Most founders treat content like a hobby.",
+      "font": "Inter Black 900",
+      "size": "headline",
+      "weight": "black",
+      "color": "#2A2A32",
+      "position": "lower-third",
+      "enter": { "at": 0.4, "animation": "hard-cut" },
+      "exit": { "at": 1.9, "animation": "hard-cut" }
+    },
+    {
+      "id": "text_02",
+      "shot_id": "shot_03",
+      "content": "It's missing infrastructure.",
+      "font": "Inter Black 900",
+      "size": "headline",
+      "weight": "black",
+      "color": "#D94F3A",
+      "position": "lower-third",
+      "enter": { "at": 9.0, "animation": "type-on" },
+      "exit": { "at": 13.8, "animation": "fade-out" }
+    },
+    {
+      "id": "text_03",
+      "shot_id": "shot_05",
+      "content": "Extract. Lock. Compound.",
+      "font": "Inter Black 900",
+      "size": "headline",
+      "weight": "black",
+      "color": "#2A2A32",
+      "position": "upper-third",
+      "enter": { "at": 24.4, "animation": "slide-up" },
+      "exit": { "at": 31.8, "animation": "fade-out" }
+    },
+    {
+      "id": "text_04",
+      "shot_id": "shot_06",
+      "content": "11 brands · 800+ videos · 48hr cycles · 1 operator",
+      "font": "Inter Medium 500",
+      "size": "body",
+      "weight": "medium",
+      "color": "#2A2A32",
+      "position": "upper-third",
+      "enter": { "at": 32.5, "animation": "fade-in" },
+      "exit": { "at": 41.8, "animation": "fade-out" }
+    },
+    {
+      "id": "text_05",
+      "shot_id": "shot_08",
+      "content": "whystrohm.com/scan",
+      "font": "Inter Black 900",
+      "size": "headline",
+      "weight": "black",
+      "color": "#D94F3A",
+      "position": "lower-third",
+      "enter": { "at": 52.5, "animation": "type-on" },
+      "exit": { "at": 59.8, "animation": "hard-cut" }
+    }
+  ]
+}

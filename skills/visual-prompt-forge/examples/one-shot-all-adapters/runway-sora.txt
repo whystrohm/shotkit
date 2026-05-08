@@ -1,0 +1,10 @@
+# Storyboard: WhyStrohm, The Content Infrastructure Pitch
+# Generator: runway-sora (motion-aware video)
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Generated: 2026-05-07
+
+# shot_04, reframe, 11.0-16.0s, MCU eye-level push (5s clip)
+# Runway: duration=5s, aspect_ratio=9:16, motion_strength=4, seed=2840193
+# Sora: duration=5s, aspect_ratio=9:16, resolution=1080p
+Camera dollies slowly forward into the scene at a steady pace over the 5-second duration. A founder in his mid-thirties with salt-and-pepper hair, wearing a navy crewneck, looks directly into the camera. Over the course of the shot, his expression shifts subtly from tired to clear, with a small almost-smile beginning to form at the corners of his mouth. Minimalist home office, white walls, oak desk, single houseplant in the soft-focus background. Soft natural side-light from a large window camera-left, warm afternoon golden hour. Shot on a 50mm equivalent, shallow depth of field with the background softly out of focus. Warm filmic color grade with muted teal shadows and slight grain. Calm, considered, operator mood.

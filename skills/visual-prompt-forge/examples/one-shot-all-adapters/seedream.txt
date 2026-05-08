@@ -1,0 +1,9 @@
+# Storyboard: WhyStrohm, The Content Infrastructure Pitch
+# Generator: seedream (4.5)
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Generated: 2026-05-07
+
+# shot_04, reframe, 11.0-16.0s, MCU eye-level push
+# params: aspect_ratio=9:16, seed=2840193, guidance_scale=4.5, steps=28
+Medium close-up of founder mid-thirties, salt-and-pepper hair, navy crewneck, looking at camera, expression shifting from tired to clear, small almost-smile beginning, minimalist home office, white walls, oak desk, single houseplant, soft natural side-light from large window camera-left, warm afternoon golden hour, warm filmic color grade, muted teal shadows, slight grain, calm operator mood, photorealistic

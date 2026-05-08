@@ -1,0 +1,8 @@
+# Storyboard: WhyStrohm, The Content Infrastructure Pitch
+# Generator: midjourney (v7)
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Generated: 2026-05-07
+
+# shot_04, reframe, 11.0-16.0s, MCU eye-level push
+medium close-up of founder mid-thirties, salt-and-pepper hair, navy crewneck, looking at camera, expression shifting from tired to clear, small almost-smile, dolly in pushing forward, minimalist home office, white walls, oak desk, single houseplant, soft natural side-light large window camera-left, warm afternoon golden hour, warm filmic color grade, muted teal shadows, slight grain, cinematic photography, calm considered operator mood --ar 9:16 --style raw --s 50

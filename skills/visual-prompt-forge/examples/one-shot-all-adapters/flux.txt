@@ -1,0 +1,9 @@
+# Storyboard: WhyStrohm, The Content Infrastructure Pitch
+# Generator: flux (Flux 2 Pro)
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Generated: 2026-05-07
+
+# shot_04, reframe, 11.0-16.0s, MCU eye-level push
+# params: aspect_ratio=9:16, output_format=png, prompt_upsampling=false, seed=2840193
+Medium close-up of a founder in his mid-thirties with salt-and-pepper hair, wearing a navy crewneck, looking directly at the camera. His expression is shifting from tired to clear, a small almost-smile beginning to form. The camera is dollying slowly forward into the scene. The setting is a minimalist home office: white walls, an oak desk, a single houseplant in the background, no decorative clutter. Soft natural side-light from a large window camera-left, warm afternoon golden hour temperature. Shot on a 50mm prime at f/2.0, shallow depth of field. Warm filmic color grade with muted teal shadows and slight grain. Calm, considered, operator mood, confident without volume. Photorealistic, natural skin texture, no AI rendering artifacts.

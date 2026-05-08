@@ -1,0 +1,30 @@
+name: validate-skills
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema
+
+      - name: Validate every SKILL.md has correct frontmatter
+        run: python tools/validate_skills.py
+
+      - name: Validate JSON schemas
+        run: python tools/validate_schemas.py
+
+      - name: Validate brand-pack template parses
+        run: python tools/validate_brand_lock.py brand-packs/_template.md

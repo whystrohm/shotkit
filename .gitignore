@@ -1,0 +1,36 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*~
+
+# Python tooling output
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Node (in case any future tooling shows up)
+node_modules/
+
+# Skill packaging output
+*.skill
+dist/
+build/
+
+# Test workspaces (skill-creator pattern)
+*-workspace/
+evals/iteration-*/
+
+# Local environment
+.env
+.env.local
+
+# Generated example outputs (kept by hand, not by run)
+output/
+generated/
