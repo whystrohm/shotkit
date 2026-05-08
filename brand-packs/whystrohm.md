@@ -85,7 +85,7 @@ For kinetic typography content (the Content Spiral pattern): pacing accelerates 
 - Site: https://whystrohm.com
 - Brand voice extractor: https://github.com/whystrohm/media-tsunami
 - Past hero films: see `/results` page
-- Content Spiral pattern: documented in WhyStrohm Remotion production bible v3 (internal)
+- Content Spiral pattern: documented in WhyStrohm production bible v3 (internal)
 
 ---
 

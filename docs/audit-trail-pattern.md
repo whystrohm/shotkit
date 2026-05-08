@@ -42,7 +42,7 @@ Reading this answers "what does the pipeline need to act on." It's the source of
 - `visual-prompt-forge` consumes it to produce per-generator prompts
 - `storyboard-html-preview` consumes it to render the preview
 - `visual-asset-critic` consumes the relevant shot to critique a generated image
-- A custom Remotion bridge can consume it to render the final video
+- A custom video-pipeline bridge can consume it to render the final video
 
 When the JSON is the source of truth, regenerating any artifact is one command. When the source of truth is "the AI's response," nothing is reproducible.
 

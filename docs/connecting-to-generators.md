@@ -119,7 +119,7 @@ The skill pack writes per-shot VO content into `shots.json`'s `vo` field. It doe
 - **Murf, Resemble, Cartesia**, alternative AI VO providers, same pattern
 - **Human voice talent**, hand them `storyboard.md` (or a derived script doc), receive clean recordings keyed by shot_id
 
-Music and sound design are out of scope for this pack. Most teams handle these in their editorial tool (After Effects, Premiere, Resolve, CapCut) or in a Remotion composition (see [`remotion-bridge.md`](./remotion-bridge.md)).
+Music and sound design are out of scope for this pack. Most teams handle these in their editorial tool (After Effects, Premiere, Resolve, CapCut) or in a programmatic video composition (see [`connecting-to-video-pipelines.md`](./connecting-to-video-pipelines.md)).
 
 ## How to wire up final assembly
 
@@ -127,7 +127,7 @@ Three common paths:
 
 **1. Manual editorial.** Drop generated images, VO files, and text overlays into After Effects, Premiere, or Resolve. Cut to the timing in `storyboard.md`. Slow but flexible.
 
-**2. Remotion programmatic.** Build a React composition that reads `shots.json`, renders each shot from generated images, animates text overlays from `text-overlays.json`, and outputs MP4. See [`remotion-bridge.md`](./remotion-bridge.md). Fast, version-controlled, scales to many brands. This is what WhyStrohm runs commercially.
+**2. Programmatic video framework.** Build a composition (Remotion, Motion Canvas, or similar React-based renderer) that reads `shots.json`, renders each shot from generated images, animates text overlays from `text-overlays.json`, and outputs MP4. See [`connecting-to-video-pipelines.md`](./connecting-to-video-pipelines.md). Fast, version-controlled, scales to many brands. This is what WhyStrohm runs commercially.
 
 **3. CapCut, Descript, hybrid.** For social-first content where speed matters more than precision. Hand off `storyboard.md` to an editor working in a fast tool.
 
@@ -137,7 +137,7 @@ Three reasons this isn't just clever positioning:
 
 **Methodology genuinely is reusable across teams.** A serious operator running their own brands benefits from the brand-lock, audit trail, and shot-grammar discipline regardless of which pipeline they wire up. Open-sourcing the methodology grows the category.
 
-**Pipelines genuinely are operational work.** Wiring fal.ai, ElevenLabs, Remotion, and automated publishing into a 48-hour content cycle across multiple active brands is not "code I can publish." It's a continuously-operated system with infrastructure, monitoring, brand-specific configs, and a person on call. That's a service.
+**Pipelines genuinely are operational work.** Wiring image generators, voice tools, a programmatic video framework, and automated publishing into a fast content cycle across multiple active brands is not "code I can publish." It's a continuously-operated system with infrastructure, monitoring, brand-specific configs, and a person on call. That's a service.
 
 **The two layers serve different audiences.** The methodology serves operators who want to learn or run their own systems. The pipeline serves brands who want the output without operating it themselves. Both are real markets. They don't overlap.
 
@@ -151,7 +151,7 @@ Signs that managed infrastructure starts to make sense:
 - Your output cadence is slower than 48 hours and you want it faster
 - You're spending more time on pipeline maintenance than creative work
 - Generator API breaking changes cost you a day each time
-- You're rebuilding the same Remotion components for every new client
+- You're rebuilding the same render-pipeline components for every new client
 
 These aren't hypothetical. They're the daily friction of self-running content infrastructure at scale. Most teams hit them around the third active brand.
 

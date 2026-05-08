@@ -54,7 +54,7 @@ The gap isn't a better dashboard. The gap is the whole *file-native, generator-a
 
 - **Not a video renderer.** The pack stops at prompts and specs. Image generation is the user's choice (Midjourney, Flux, etc.). Video assembly is the user's choice (After Effects, Remotion, CapCut, Premiere).
 - **Not a SaaS replacement for collaborative review.** If your team needs synchronous editing of a panel grid in a browser, Boords is good. This is for teams that prioritize file portability over interface polish.
-- **Not Remotion.** WhyStrohm's commercial pipeline uses Remotion to render the final video from the same `shots.json`. The bridge is documented. The implementation is internal, you can build your own from the pointer doc.
+- **Not a specific render pipeline.** WhyStrohm's commercial pipeline renders the final video from the same `shots.json` using a programmatic React-based video framework. The bridge is documented framework-neutrally. The implementation is internal, you can build your own from the pointer doc.
 
 ## Who should use this
 

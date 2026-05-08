@@ -70,7 +70,7 @@ The grade is what makes generated images sit next to brand photography. Without 
 
 How motion behaves. Camera moves, cut style, text animation, transition vocabulary, pacing rules.
 
-This field flows into the shot-grammar reference (it constrains what `motion` values are allowed per shot) and the Remotion bridge (it parameterizes spring physics, transition lengths, easing curves). Without it, every shot defaults to the global average. With it, shots earn their motion choice.
+This field flows into the shot-grammar reference (it constrains what `motion` values are allowed per shot) and the video-pipeline bridge (it parameterizes spring physics, transition lengths, easing curves). Without it, every shot defaults to the global average. With it, shots earn their motion choice.
 
 ### Voice rules
 

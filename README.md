@@ -145,11 +145,11 @@ See [`brand-packs/README.md`](brand-packs/README.md) for the full pattern.
 shotkit produces **specs and prompts**, not rendered images or videos. The boundary is deliberate:
 
 - **In scope.** The methodology, the structure, the prompts, the audit trail.
-- **Out of scope.** API integrations to fal.ai or ElevenLabs, the Remotion render pipeline, automated publishing, the 48-hour content cycle.
+- **Out of scope.** API integrations to image generators or voice tools, the video render pipeline, automated publishing.
 
-If you want the version where this is wired into a Remotion pipeline with automated publishing across multiple brands: [whystrohm.com](https://whystrohm.com). The methodology is open. The operator is paid.
+If you want the version where this is wired into a video render pipeline with automated publishing across multiple brands: [whystrohm.com](https://whystrohm.com). The methodology is open. The operator is paid.
 
-See [`docs/connecting-to-generators.md`](docs/connecting-to-generators.md) for how teams typically wire it up themselves, and [`docs/remotion-bridge.md`](docs/remotion-bridge.md) for how `shots.json` maps to Remotion props.
+See [`docs/connecting-to-generators.md`](docs/connecting-to-generators.md) for how teams typically wire it up themselves, and [`docs/connecting-to-video-pipelines.md`](docs/connecting-to-video-pipelines.md) for how `shots.json` maps to programmatic video frameworks.
 
 ---
 
@@ -208,7 +208,7 @@ Apache 2.0. See [LICENSE](LICENSE).
 
 [Yuri Strohm](https://whystrohm.com). Motion Design and Narrative Visualization Specialist, founder of WhyStrohm. A decade of defense-adjacent design work informs how I build content systems: deterministic, auditable, no surprises.
 
-If you want the version where this is wired into a Remotion pipeline with automated publishing: [whystrohm.com](https://whystrohm.com).
+If you want the version where this is wired into a programmatic video pipeline with automated publishing: [whystrohm.com](https://whystrohm.com).
 
 - GitHub: [@whystrohm](https://github.com/whystrohm)
 - Web: [whystrohm.com](https://whystrohm.com)
