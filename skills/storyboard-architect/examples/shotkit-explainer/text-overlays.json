@@ -1,0 +1,89 @@
+{
+  "version": "1.0",
+  "overlays": [
+    {
+      "id": "text_01",
+      "shot_id": "shot_01",
+      "content": "You don't have a content problem.\nYou have a pre-production problem.",
+      "font": "Inter Black 900",
+      "size": "display",
+      "weight": "black",
+      "color": "#2A2A32",
+      "position": "center",
+      "enter": { "at": 6.0, "animation": "fade-in" },
+      "exit": { "at": 11.5, "animation": "fade-out" }
+    },
+    {
+      "id": "text_02",
+      "shot_id": "shot_02",
+      "content": "Five layers. Locked top to bottom.",
+      "font": "Inter Black 900",
+      "size": "display",
+      "weight": "black",
+      "color": "#2A2A32",
+      "position": "upper-third",
+      "enter": { "at": 12.5, "animation": "type-on" },
+      "exit": { "at": 29.5, "animation": "fade-out" }
+    },
+    {
+      "id": "text_03",
+      "shot_id": "shot_03",
+      "content": "Brief in. Storyboard out. Audit trail included.",
+      "font": "Inter Medium 500",
+      "size": "body",
+      "weight": "medium",
+      "color": "#2A2A32",
+      "position": "upper-third",
+      "enter": { "at": 30.5, "animation": "fade-in" },
+      "exit": { "at": 49.5, "animation": "fade-out" }
+    },
+    {
+      "id": "text_04",
+      "shot_id": "shot_04",
+      "content": "Files. Not panels. Not a SaaS dashboard.",
+      "font": "Inter Black 900",
+      "size": "display",
+      "weight": "black",
+      "color": "#2A2A32",
+      "position": "lower-third",
+      "enter": { "at": 51.0, "animation": "type-on" },
+      "exit": { "at": 64.5, "animation": "fade-out" }
+    },
+    {
+      "id": "text_05",
+      "shot_id": "shot_05",
+      "content": "One shot. Seven generators. One spec.",
+      "font": "Inter Black 900",
+      "size": "display",
+      "weight": "black",
+      "color": "#2A2A32",
+      "position": "upper-third",
+      "enter": { "at": 65.5, "animation": "fade-in" },
+      "exit": { "at": 79.5, "animation": "fade-out" }
+    },
+    {
+      "id": "text_06",
+      "shot_id": "shot_06",
+      "content": "git clone github.com/whystrohm/shotkit\ncd shotkit && ./install.sh",
+      "font": "JetBrains Mono Regular",
+      "size": "body",
+      "weight": "regular",
+      "color": "#2A2A32",
+      "position": "center",
+      "enter": { "at": 80.5, "animation": "type-on" },
+      "exit": { "at": 90.0, "animation": "hard-cut" }
+    },
+    {
+      "id": "text_07",
+      "shot_id": "shot_06",
+      "content": "Pre-production for founder-led video at scale.",
+      "font": "Inter Medium 500",
+      "size": "caption",
+      "weight": "medium",
+      "color": "#6B6B73",
+      "position": "lower-third",
+      "enter": { "at": 86.0, "animation": "fade-in" },
+      "exit": { "at": 90.0, "animation": "hard-cut" }
+    }
+  ]
+}
