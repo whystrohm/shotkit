@@ -173,8 +173,25 @@ For wiring it up yourself, see [`docs/connecting-to-generators.md`](docs/connect
 
 ## Companion tools
 
-- **[media-tsunami](https://github.com/whystrohm/media-tsunami).** Brand voice extractor. Generates a `brand-pack.md` from a brand's existing assets so you don't write the brand-lock from scratch.
-- **[whystrohm.com](https://whystrohm.com).** Managed content infrastructure. The operated version of the full pipeline.
+shotkit is part of a broader WhyStrohm open-source ecosystem of brand-infrastructure tools:
+
+- [media-tsunami](https://github.com/whystrohm/media-tsunami)
+  brand voice extraction. Generates the brand-pack files
+  shotkit consumes.
+- [whystrohm-audit](https://github.com/whystrohm/whystrohm-audit)
+  content audit against a 5-layer framework.
+- [whystrohm-voice-extract](https://github.com/whystrohm/whystrohm-voice-extract)
+  structured voice profile from any URL.
+- [whystrohm-voice-scorer](https://github.com/whystrohm/whystrohm-voice-scorer)
+  voice drift between site and social content.
+- [digital-twin](https://github.com/whystrohm/digital-twin-of-yourself)
+  personal voice as system prompt.
+- [ritual](https://github.com/whystrohm/ritual)
+  Claude Code routine orchestration.
+
+The voice tools and shotkit compose. Brand voice extracted via media-tsunami feeds shotkit's brand-pack files for end-to-end brand consistency.
+
+For the operated version of the full pipeline, see [whystrohm.com](https://whystrohm.com).
 
 ---
 
