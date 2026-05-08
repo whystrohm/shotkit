@@ -15,6 +15,8 @@ That installs all four skills into `~/.claude/skills/`. Restart your Claude Code
 
 ![shotkit demo](docs/images/demo.gif)
 
+**Watch shotkit explain itself.** The 90-second explainer was made *by* shotkit. The storyboard, shots.json, brand-lock snapshot, per-generator prompts, and rendered preview live at [`skills/storyboard-architect/examples/shotkit-explainer/`](skills/storyboard-architect/examples/shotkit-explainer/). Full breakdown at [whystrohm.com/blog/you-dont-have-a-content-problem](https://whystrohm.com/blog/you-dont-have-a-content-problem).
+
 ---
 
 ## What it does

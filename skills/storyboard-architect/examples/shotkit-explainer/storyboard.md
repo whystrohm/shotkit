@@ -63,5 +63,5 @@
 - Brief, this document, scoped from the shotkit blog launch sequence.
 - Brand-lock snapshotted from `brand-packs/whystrohm.md` on 2026-05-08.
 - Shot list designed to compose with the existing ShotkitDemo composition (same chrome, complementary content, longer arc).
-- Render lives at `whystrohm.com/public/media/shotkit-explainer/shotkit-explainer.mp4` (landscape) and `.vertical.mp4` (9:16).
-- This same artifact set will appear on the shotkit blog post as the "we used the tool we are showing you" reveal.
+- Render shipped at [whystrohm.com/blog/you-dont-have-a-content-problem](https://whystrohm.com/blog/you-dont-have-a-content-problem) as the "we used shotkit to make this video" dogfood reveal.
+- Landscape MP4 served from the blog: `/media/shotkit-explainer/shotkit-explainer.mp4`.
