@@ -69,7 +69,7 @@ This is the only layer the skill *applies*. Layers 1-4 are inputs.
 - One shot's framing is wrong → edit just that shot's `framing` field. Other shots untouched.
 - Switch from Midjourney to Flux → swap adapter. Same shot data, different output file. Brand-lock and series-lock untouched.
 
-This is the architectural property that makes the pack maintainable at scale. WhyStrohm runs 11 brands and hundreds of generated videos through this pattern. Without layer separation, that throughput is impossible.
+This is the architectural property that makes the pack maintainable at scale. WhyStrohm runs hundreds of generated videos through this pattern. Without layer separation, that throughput is impossible.
 
 ## Why text never goes in the image prompt
 

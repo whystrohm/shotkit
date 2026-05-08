@@ -72,9 +72,9 @@ Five micro-beats:
 
 ### shot_06 · 32.0–42.0s · MCU · static
 
-**Beat:** proof · **VO:** "11 brands. Hundreds of videos rendered from code. 48-hour content cycles. One operator."
+**Beat:** proof · **VO:** "Hundreds of videos rendered from code. 48-hour content cycles. One operator."
 **Subject:** founder, calm steady delivery, eye contact, hands folded.
-**On-screen text:** "11 brands · hundreds of videos · 48hr cycles · 1 operator" (upper-third, fade)
+**On-screen text:** "hundreds of videos · 48hr cycles · 1 operator" (upper-third, fade)
 **Rationale:** Proof beat, concrete numbers. Stat callout lets viewer absorb visually while VO confirms.
 
 ### shot_07 · 42.0–50.0s · MS · pull

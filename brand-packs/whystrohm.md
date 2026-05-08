@@ -75,7 +75,7 @@ For kinetic typography content (the Content Spiral pattern): pacing accelerates 
 - no hype words ("game-changing", "revolutionary", "comprehensive", "next-level", "leverage")
 - no clichéd business metaphors ("move the needle", "drink the kool-aid", "low-hanging fruit")
 - no qualifiers in declarative copy ("perhaps", "maybe", "kind of")
-- prefer specific numbers over vague claims ("48 hours" not "fast", "11 brands" not "many clients")
+- prefer specific numbers over vague claims ("48 hours" not "fast", "30 minutes a week" not "a little time")
 - prefer present-tense over future-tense
 - prefer "operator" over "creator", "infrastructure" over "agency", "system" over "service"
 - coral period (`.`) on signature lines is a typography choice, not punctuation, apply at end of hero phrases only

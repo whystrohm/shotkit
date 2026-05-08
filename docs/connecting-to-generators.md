@@ -137,7 +137,7 @@ Three reasons this isn't just clever positioning:
 
 **Methodology genuinely is reusable across teams.** A serious operator running their own brands benefits from the brand-lock, audit trail, and shot-grammar discipline regardless of which pipeline they wire up. Open-sourcing the methodology grows the category.
 
-**Pipelines genuinely are operational work.** Wiring fal.ai, ElevenLabs, Remotion, and automated publishing into a 48-hour content cycle for 11 brands is not "code I can publish." It's a continuously-operated system with infrastructure, monitoring, brand-specific configs, and a person on call. That's a service.
+**Pipelines genuinely are operational work.** Wiring fal.ai, ElevenLabs, Remotion, and automated publishing into a 48-hour content cycle across multiple active brands is not "code I can publish." It's a continuously-operated system with infrastructure, monitoring, brand-specific configs, and a person on call. That's a service.
 
 **The two layers serve different audiences.** The methodology serves operators who want to learn or run their own systems. The pipeline serves brands who want the output without operating it themselves. Both are real markets. They don't overlap.
 
