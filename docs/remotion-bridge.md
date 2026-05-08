@@ -103,7 +103,7 @@ Three reasons:
 
 **2. The methodology is what matters.** The architectural decisions, separating brand-lock from series-lock from shot-spec from text-layer, survive any implementation. The implementation is plumbing.
 
-**3. Operating it well is part of the value WhyStrohm delivers.** The infrastructure that runs 800+ rendered videos per month against the methodology is the product offering. Open-sourcing it would commoditize the operator role without commensurate value to the open-source community.
+**3. Operating it well is part of the value WhyStrohm delivers.** The infrastructure that runs hundreds of rendered videos per month against the methodology is the product offering. Open-sourcing it would commoditize the operator role without commensurate value to the open-source community.
 
 If you build a bridge yourself, the methodology in this repo is enough. If you want the operated version, [whystrohm.com](https://whystrohm.com).
 

@@ -67,7 +67,7 @@ That's not how serious teams work. Serious teams want:
 - **Model agnosticism**. Prompts adapt to whichever image generator you're using this month.
 - **No vendor lock-in**. Markdown, JSON, HTML. Open formats only.
 
-shotkit is what we use internally at WhyStrohm to ship 800+ videos from code. We're publishing the methodology because the methodology isn't the moat. The operator is.
+shotkit is what we use internally at WhyStrohm to ship hundreds of videos from code. We're publishing the methodology because the methodology isn't the moat. The operator is.
 
 Read more in [`docs/why-this-exists.md`](docs/why-this-exists.md).
 

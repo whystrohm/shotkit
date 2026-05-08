@@ -23,7 +23,7 @@ His voice rules apply to everything in this repo:
 - No emojis in copy or scripts.
 - No bullet points in flowing prose.
 - No hype words (revolutionary, game-changing, comprehensive, leverage, synergy, etc.).
-- Specific numbers ("800 videos") not vague claims ("many videos").
+- Specific numbers ("48 hours") not vague claims ("fast", "many videos").
 - Operator language, not creator language. "Infrastructure" not "agency". "System" not "service".
 
 If you find yourself wanting to write something the WhyStrohm brand-pack would reject, rewrite it.
@@ -200,7 +200,7 @@ open /tmp/test-60.html
 When pushing to `github.com/whystrohm/shotkit`:
 
 - Settings: enable Issues
-- Settings: set repository description to "The pre-production system we use to ship 800+ videos a month. Open-sourced."
+- Settings: set repository description to "The pre-production system we use to ship hundreds of videos a month. Open-sourced."
 - Add topics: `claude`, `claude-skills`, `storyboard`, `pre-production`, `video-production`, `ai-workflow`, `creative-tools`
 - Set main as default branch
 - Verify the GitHub Actions workflow runs green on first push (pyyaml and jsonschema install, then three validators run)
@@ -209,7 +209,7 @@ When pushing to `github.com/whystrohm/shotkit`:
 
 Yurr will write this in his voice. The angle to support:
 
-- "I built shotkit, the storyboard skill pack we use internally to ship 800+ videos a month. Open-sourcing it."
+- "I built shotkit, the storyboard skill pack we use internally to ship hundreds of videos a month. Open-sourcing it."
 - Subreddits: r/ClaudeAI primary. Possibly r/Anthropic, r/MachineLearning (selectively), r/programming if the methodology framing lands.
 - Don't post in r/Entrepreneur. The pack is technical; that audience isn't.
 - The honest boundary statement ("free methodology, paid pipeline") is a feature. Don't bury it.
