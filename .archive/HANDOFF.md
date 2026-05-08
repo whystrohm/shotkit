@@ -101,7 +101,7 @@ EXIST:
 - `docs/why-this-exists.md`. The manifesto.
 - `docs/the-five-layer-prompt.md`. Methodology in 600 words.
 - `docs/audit-trail-pattern.md`. Defense-grade angle.
-- `docs/remotion-bridge.md`. How `shots.json` maps to Remotion components (pointer doc, no implementation).
+- `docs/connecting-to-video-pipelines.md`. How `shots.json` maps to a programmatic video framework (pointer doc, no implementation).
 - `docs/connecting-to-generators.md`. Where shotkit stops, where the pipeline starts.
 
 MISSING (need to be regenerated, see "Remaining Work" below):
@@ -223,7 +223,7 @@ Linkable artifacts when posting:
 
 ### Why this isn't bigger
 
-The original plan flirted with adding ElevenLabs API integration, fal.ai integration, a brand-lock extractor, PDF/PPTX exporters, asset folder support, and duration rescale. All cut from v0.1.0 deliberately. They're listed as v0.2.0 roadmap in README.md. Don't add them now; ship the lead magnet first, gather feedback, then expand.
+The original plan flirted with adding voice generation API integration, image generation API integration, a brand-lock extractor, PDF/PPTX exporters, asset folder support, and duration rescale. All cut from v0.1.0 deliberately. They're listed as v0.2.0 roadmap in README.md. Don't add them now; ship the lead magnet first, gather feedback, then expand.
 
 ### Why "shotkit" as the name
 
@@ -264,7 +264,7 @@ shotkit/
 ├── docs/
 │   ├── audit-trail-pattern.md
 │   ├── connecting-to-generators.md
-│   ├── remotion-bridge.md
+│   ├── connecting-to-video-pipelines.md
 │   ├── the-five-layer-prompt.md
 │   └── why-this-exists.md
 │   [MISSING: brand-lock-anatomy.md, claude-code-workflow.md, claude-ai-workflow.md]

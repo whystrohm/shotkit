@@ -153,6 +153,31 @@ See [`docs/connecting-to-generators.md`](docs/connecting-to-generators.md) for h
 
 ---
 
+## What comes after shotkit
+
+shotkit is one stage in a longer content infrastructure pipeline:
+
+1. **Brief** captured from the founder
+2. **shotkit** turns the brief into structured pre-production files
+3. **Image generators** consume the per-generator prompt files
+4. **`visual-asset-critic`** reviews each generated frame against its shot spec
+5. Approved frames feed into a **programmatic video framework**
+6. The framework renders the final video
+7. **Publishing tools** post per-platform copy from `text-overlays.json`
+
+shotkit owns step 2. Steps 3 through 7 are file boundaries, not API integrations. Each downstream tool reads files. Nothing is coupled beyond the schema.
+
+For wiring it up yourself, see [`docs/connecting-to-generators.md`](docs/connecting-to-generators.md) and [`docs/connecting-to-video-pipelines.md`](docs/connecting-to-video-pipelines.md). For the operated version, [whystrohm.com](https://whystrohm.com).
+
+---
+
+## Companion tools
+
+- **[media-tsunami](https://github.com/whystrohm/media-tsunami).** Brand voice extractor. Generates a `brand-pack.md` from a brand's existing assets so you don't write the brand-lock from scratch.
+- **[whystrohm.com](https://whystrohm.com).** Managed content infrastructure. The operated version of the full pipeline.
+
+---
+
 ## Compatibility
 
 - **Claude.ai** (web, mobile, desktop). All four skills via `.skill` zip uploads. See [`docs/claude-ai-workflow.md`](docs/claude-ai-workflow.md).
