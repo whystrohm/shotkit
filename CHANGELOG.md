@@ -31,7 +31,7 @@ Initial public release.
 - `docs/why-this-exists.md`. The manifesto.
 - `docs/the-five-layer-prompt.md`. The methodology.
 - `docs/audit-trail-pattern.md`. Why brand-lock snapshots matter.
-- `docs/remotion-bridge.md`. How `shots.json` maps to Remotion components.
+- `docs/connecting-to-video-pipelines.md`. How `shots.json` maps to a programmatic video framework.
 - `docs/connecting-to-generators.md`. Where shotkit stops, where the pipeline starts.
 
 ### Worked examples
