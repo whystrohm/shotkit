@@ -96,6 +96,22 @@ A complete worked example lives at [`skills/storyboard-architect/examples/30s-pa
 
 ---
 
+## Round-trip workflow
+
+The complete loop, idea to revised image:
+
+1. **Brief** describes the video.
+2. **`storyboard-architect`** produces `storyboard.md`, `shots.json`, `text-overlays.json`, `brand-lock.snapshot.md`.
+3. **`visual-prompt-forge`** writes a prompt file per generator under `output/prompts/`.
+4. **`tools/copy-prompt.py`** pipes one shot's prompt to the clipboard. Paste into the generator UI.
+5. **The generator** returns an image.
+6. **`visual-asset-critic`** scores the image against the shot spec and brand-lock. Returns ACCEPT, REVISE, or REJECT with revision notes.
+7. Revise the prompt or the shot and re-run.
+
+Files at every step. Reproducible end-to-end.
+
+---
+
 ## The methodology
 
 Four ideas. None negotiable.

@@ -53,6 +53,22 @@ Useful when you want to render a preview without running the skill, e.g. in CI, 
 
 The output is identical to what the skill produces. Same template, same CSS, same JavaScript.
 
+## `copy-prompt.py`
+
+Pipe a single shot's prompt from a generated prompts file straight to the system clipboard. Lets the user paste into a generator UI without hunting for the right block in the .txt file.
+
+```bash
+python tools/copy-prompt.py output/prompts/midjourney.txt
+python tools/copy-prompt.py output/prompts/midjourney.txt --shot shot_03
+python tools/copy-prompt.py output/prompts/midjourney.txt --list
+```
+
+No flags: lists shots and prompts for a numeric selection.
+`--shot shot_NN`: copies that shot's prompt directly.
+`--list`: prints the shot index and exits without copying.
+
+Pure standard library. Uses `pbcopy` on macOS, `xclip` or `xsel` on Linux, `clip` on Windows. The header comment line is stripped, only the prompt body lands in the clipboard.
+
 ## Adding new tools
 
 If you add a new tool here:

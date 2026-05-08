@@ -114,6 +114,14 @@ Tell the user where the files are. Offer the next step:
 
 > "Want me to QA the generated images against the storyboard? Use `visual-asset-critic` once you have the renders."
 
+For paste-into-generator workflows, the user can pipe individual shots to the clipboard with the bundled helper:
+
+```bash
+python tools/copy-prompt.py output/prompts/midjourney.txt
+```
+
+This is optional. The `.txt` files are also directly readable, and the user can copy any block by hand. The helper exists for the case where the operator is bouncing between the terminal and a generator UI repeatedly.
+
 ## Hard rules
 
 These are non-negotiable. Violating them produces broken output even if the prompt looks fine.
