@@ -1,6 +1,6 @@
 ---
 name: visual-asset-critic
-description: Critique a generated image against its source storyboard shot and prompt, producing concrete revision notes. Use this whenever the user has generated an image and wants feedback before committing, typical phrasings include "does this match the brief", "review this render", "is this on-brand", "what should I change", or simply uploading an image alongside a shot ID. This is the QA loop for AI-generated visuals. It works whether or not the image came from a storyboard-architect run; if a shot reference is missing, ask for the intent. Pairs with storyboard-architect (upstream) and visual-prompt-forge (sibling).
+description: Critique a generated image against its source storyboard shot and prompt, producing revision notes. Use when the user has generated an image and wants feedback before committing. Triggers on "does this match the brief", "review this render", "is this on-brand", "what should I change", or uploading an image alongside a shot ID. The QA loop for AI visuals. Works even without a storyboard-architect run. Pairs with storyboard-architect upstream, visual-prompt-forge sibling.
 ---
 
 # Visual Asset Critic

@@ -1,6 +1,6 @@
 ---
 name: visual-prompt-forge
-description: Generate model-specific image prompts from a structured shots.json file. Produces copy-paste-ready prompts for Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream, and Runway/Sora, each adapted to the prompting style that generator actually rewards. Use this whenever the user asks for image prompts, mentions Midjourney/Flux/Ideogram/Sora/Nano Banana, wants AI-generated frames for a storyboard, or hands over shots.json and asks "now what." Also use when the user asks for prompts adapted across multiple generators. This is the prompt half of the storyboard pipeline, it composes with storyboard-architect upstream and visual-asset-critic downstream.
+description: Generate model-specific image prompts from shots.json. Outputs copy-paste-ready prompts for Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream, and Runway/Sora. Use when the user asks for image prompts, mentions any of those generators, wants AI-generated frames for a storyboard, or hands over shots.json. The prompt half of the pipeline. Composes with storyboard-architect upstream, visual-asset-critic downstream.
 ---
 
 # Visual Prompt Forge

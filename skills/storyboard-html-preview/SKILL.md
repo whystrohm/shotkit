@@ -1,6 +1,6 @@
 ---
 name: storyboard-html-preview
-description: Render a structured storyboard (storyboard.md + shots.json + text-overlays.json + brand-lock.snapshot.md) into a single-file HTML preview that's shareable, printable, and works offline. Use this when the user wants to share a storyboard with stakeholders, export for review, hand off to an editor, or print a hard copy. Triggers on phrases like "preview the storyboard", "share this", "export to HTML", "make it shareable", "print version", or simply after a storyboard-architect run when the user asks "what's the next step." Produces one self-contained .html file with no build step, no server, no external dependencies.
+description: Render a structured storyboard (storyboard.md, shots.json, text-overlays.json, brand-lock.snapshot.md) into a single-file HTML preview that is shareable, printable, and offline. Use when the user wants to share a storyboard, export for review, hand off to an editor, or print a hard copy. Triggers on "preview the storyboard", "share this", "export to HTML", "print version", or after a storyboard-architect run. Produces one self-contained .html file with no build or server.
 ---
 
 # Storyboard HTML Preview

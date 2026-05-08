@@ -1,6 +1,6 @@
 ---
 name: storyboard-architect
-description: Turn a creative brief into a production-grade storyboard with structured shots, on-screen text, timing, and per-shot rationale. Use this whenever the user describes a video brief, mentions a storyboard, asks to plan a video, references shot lists or beats, wants to script a social video, or hands over a creative concept that needs to be broken into scenes, even if they don't explicitly say "storyboard." This produces files (storyboard.md, shots.json, text-overlays.json, brand-lock.snapshot.md), not panels in a UI. Pairs with visual-prompt-forge for image prompts, visual-asset-critic for QA, storyboard-html-preview for shareable output.
+description: Turn a creative brief into a production-grade storyboard with shot specs, timing, on-screen text, and per-shot rationale. Use when the user describes a video brief, plans a video, references shots or beats, scripts a social video, or hands over a creative concept to break into scenes. Produces storyboard.md, shots.json, text-overlays.json, and brand-lock.snapshot.md. Pairs with visual-prompt-forge, visual-asset-critic, storyboard-html-preview.
 ---
 
 # Storyboard Architect
