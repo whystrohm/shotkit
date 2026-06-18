@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "shot_id": "shot_01",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "image_ref": "output/generated/shot_01.png",
+  "verdict": "ACCEPT",
+  "confidence": "HIGH",
+  "working": [
+    "Framing matches the shot spec: MCU, eye level, subject anchored frame-left with negative space right.",
+    "Character matches the series_lock anchor verbatim: salt-and-pepper hair, navy crewneck.",
+    "Palette and color grade sit inside the brand-lock; nothing from the never-list appears.",
+    "Hands, eyes, and skin texture are clean; no AI artifacts."
+  ],
+  "issues": [
+    {
+      "layer": "Technical",
+      "severity": "minor",
+      "note": "Color grade reads a touch cool versus the warm-afternoon spec.",
+      "fix_type": "post-level",
+      "fix": "Push warmth +5 in the grade. No re-generation needed."
+    }
+  ]
+}

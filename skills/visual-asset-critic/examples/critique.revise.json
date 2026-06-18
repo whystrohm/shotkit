@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "shot_id": "shot_03",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "image_ref": "output/generated/shot_03.png",
+  "verdict": "REVISE",
+  "confidence": "HIGH",
+  "working": [
+    "Composition reserves the right two-thirds of the frame for the text overlay, matching the shot_03 rationale.",
+    "Lighting direction matches series_lock: window-left, warm afternoon.",
+    "Mood reads as calm and considered, on-brand."
+  ],
+  "issues": [
+    {
+      "layer": "Series Lock",
+      "severity": "major",
+      "note": "Character has brown hair; series_lock specifies salt-and-pepper. Verbatim-anchor failure with a clear fix, so this caps the verdict at REVISE rather than forcing REJECT.",
+      "fix_type": "prompt-level",
+      "fix": "Add 'salt-and-pepper hair' to the character anchor in the prompt; it is currently missing. Re-roll."
+    },
+    {
+      "layer": "Technical",
+      "severity": "major",
+      "note": "Left hand on the laptop has six fingers (known Flux failure mode).",
+      "fix_type": "re-roll",
+      "fix": "Re-roll 2-3 times with the same prompt and pick a clean sample."
+    },
+    {
+      "layer": "Shot Spec",
+      "severity": "minor",
+      "note": "Generated as MS but the spec called for MCU; subject is slightly small in frame.",
+      "fix_type": "prompt-level",
+      "fix": "Change 'medium shot' to 'medium close-up' in the prompt. Re-roll."
+    }
+  ]
+}

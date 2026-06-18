@@ -21,7 +21,9 @@ Trigger when the user:
 
 ## What you produce
 
-A structured critique with these sections:
+**Two artifacts from every review, always both:** a human-readable markdown critique (the primary surface) and a machine-readable `output/critique.json` (so a pipeline can gate on the verdict instead of parsing prose). The JSON is detailed in Step 6; it never replaces the markdown.
+
+The markdown critique uses these sections:
 
 ```
 ## Verdict
@@ -113,6 +115,39 @@ Be honest about uncertainty:
 | MEDIUM | Some references missing but core intent is clear |
 | LOW | Only the image, intent is inferred; verdict is your best guess |
 
+### Step 6. Emit structured output (critique.json)
+
+After writing the markdown critique, **also** write `output/critique.json` conforming to `templates/critique.schema.json`. Same review, two surfaces. The markdown is for the human; the JSON is so an automated QA loop (e.g. `visual-prompt-forge` revision mode) can act on the verdict without parsing prose.
+
+**Map the markdown to the schema, section for section:**
+
+| Markdown | JSON field |
+|---|---|
+| `## Verdict` | `verdict` (`ACCEPT` / `REVISE` / `REJECT`) |
+| `## What's working` bullets | `working[]` (one string each) |
+| `## What's not working` + `## Revision plan` | `issues[]`, merge them: each issue carries its layer/note from "what's not working" and its `fix_type`/`fix` from the matching revision-plan line |
+| `## Confidence` | `confidence` (`HIGH` / `MEDIUM` / `LOW`) |
+
+Also set `shot_id` (or `null` if no storyboard), `image_ref`, and `brand_lock_ref` when known.
+
+**Severity, assign one per issue.** This is the field the gate runs on, so map it from the layer rubric deterministically:
+
+| Severity | Means | Maps from |
+|---|---|---|
+| `minor` | soft-fail, fixable in post | a soft-fail on any layer; `fix_type: post-level` |
+| `major` | hard-fail **with** a clear fix path | a hard-fail that a prompt change or re-roll fixes |
+| `blocking` | hard-fail on a critical layer (Brand Lock / Series Lock) with **no** clear fix, or a defect that makes the asset unusable | an unrecoverable hard-fail |
+
+**Gating rule, the verdict is derived from severities, not chosen freely.** This guarantees the markdown verdict and the JSON verdict always agree:
+
+- Any `blocking` issue ⇒ verdict is `REJECT`.
+- Any `major` issue (and no blocking) ⇒ verdict is `REVISE` (escalate to `REJECT` at your discretion if there are three or more).
+- Only `minor` issues, or none ⇒ verdict is `ACCEPT` (with post notes).
+
+Pick the markdown `## Verdict` by this same rule. A critique that says `ACCEPT` while carrying a `major` or `blocking` issue is a bug, `tools/validate_critique.py` will reject it.
+
+`output/critique.json` is validated by `tools/validate_critique.py` (schema + this gating rule). Worked examples live in `examples/critique.accept.json` and `examples/critique.revise.json`.
+
 ## Hard rules
 
 ### Rule 1. No vibes-based critique
@@ -166,6 +201,6 @@ Generation is one stage in a pipeline. If the image is 80% right and the gap is 
 
 After delivering the critique, if the verdict is REVISE or REJECT, offer:
 
-> "Want me to draft the revised prompt? I'll pull from `shots.json` and apply the fixes."
+> "Want me to draft the revised prompt? Hand `shots.json` and this `critique.json` to `visual-prompt-forge` in revision mode and it will re-emit prompts for just the failed shots."
 
-Don't auto-revise. The user picks.
+Don't auto-revise. The user picks. The `critique.json` you just wrote is exactly what closes that loop.

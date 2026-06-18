@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://whystrohm.com/schemas/shotkit/critique.schema.json",
+  "title": "Critique",
+  "description": "Machine-readable verdict for a generated image reviewed against its shot spec and brand-lock. The structured sibling of the markdown critique. Lets the QA loop gate an automated pipeline instead of relying on prose.",
+  "type": "object",
+  "required": ["version", "verdict", "confidence", "issues"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "shot_id": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^shot_[0-9]{2,3}$" }
+      ],
+      "description": "Shot this image was generated for. Null when critiquing a standalone image with no storyboard."
+    },
+    "brand_lock_ref": {
+      "type": "string",
+      "description": "Relative path to the brand-lock.snapshot.md the image was judged against, if any."
+    },
+    "image_ref": {
+      "type": "string",
+      "description": "Relative path to the image that was critiqued."
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["ACCEPT", "REVISE", "REJECT"]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["HIGH", "MEDIUM", "LOW"]
+    },
+    "working": {
+      "type": "array",
+      "description": "Concrete positives. Observations, not flattery.",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["layer", "severity", "note", "fix_type", "fix"],
+        "additionalProperties": false,
+        "properties": {
+          "layer": {
+            "type": "string",
+            "enum": ["Brand Lock", "Series Lock", "Shot Spec", "Composition", "Technical", "Continuity"]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["minor", "major", "blocking"],
+            "description": "blocking on any issue forces REJECT. A major issue forces at most REVISE."
+          },
+          "note": { "type": "string", "minLength": 1 },
+          "fix_type": {
+            "type": "string",
+            "enum": ["prompt-level", "post-level", "re-roll"]
+          },
+          "fix": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}
