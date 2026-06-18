@@ -33,7 +33,11 @@ More example brand packs will land in v0.2.0. PRs welcome.
 
 ## Generating a brand pack from existing assets
 
-If you have an existing brand with website, social, and past creative, you can generate a brand pack programmatically with [media-tsunami](https://github.com/whystrohm/media-tsunami). WhyStrohm's open-source brand voice extractor. It scrapes your URLs, extracts voice and visual patterns, and produces a `brand-lock.md` file in this exact format.
+Don't hand-author from scratch if the brand already exists. The **`brand-lock-extractor`** skill (ships in this repo at `skills/brand-lock-extractor/`) takes a website URL, a brand book PDF, screenshots, or a written description and produces a `brand-lock.md` in this exact format, with a confidence and source noted for every value:
+
+> "Extract a brand-lock from acme.com" or "build a brand pack from this brand book PDF."
+
+For bulk or programmatic extraction across many URLs, [media-tsunami](https://github.com/whystrohm/media-tsunami) (WhyStrohm's open-source brand voice extractor) scrapes URLs and produces a `brand-lock.md` in the same format.
 
 ## Versioning
 

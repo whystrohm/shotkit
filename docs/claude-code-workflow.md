@@ -4,7 +4,7 @@ Claude Code is the primary install target for shotkit. The skills auto-discover,
 
 ## Installing
 
-The repo ships an `install.sh` script that copies all four skills into a Claude Code skills directory.
+The repo ships an `install.sh` script that copies all five skills into a Claude Code skills directory.
 
 ```bash
 git clone https://github.com/whystrohm/shotkit.git
@@ -13,20 +13,21 @@ cd shotkit
 ./install.sh --project   # project scope: ./.claude/skills/
 ```
 
-After install, restart your Claude Code session. The four skills appear in the available-skills list and trigger on natural-language prompts.
+After install, restart your Claude Code session. The five skills appear in the available-skills list and trigger on natural-language prompts.
 
 To verify install:
 
 ```bash
-ls ~/.claude/skills/ | grep -E "storyboard|visual"
+ls ~/.claude/skills/ | grep -E "storyboard|visual|brand-lock"
 # expected:
+#   brand-lock-extractor
 #   storyboard-architect
 #   storyboard-html-preview
 #   visual-asset-critic
 #   visual-prompt-forge
 ```
 
-If those four directories are present, you are wired.
+If those five directories are present, you are wired.
 
 ## User scope vs project scope
 
@@ -46,6 +47,7 @@ Claude Code reads `~/.claude/skills/` and `./.claude/skills/` at session start. 
 
 When you describe a task in a prompt, Claude matches against the descriptions of available skills and triggers the most relevant one. The shotkit descriptions are tuned for natural-language patterns operators actually use:
 
+- "Extract a brand-lock from acme.com" triggers `brand-lock-extractor`
 - "Storyboard a 30-second explainer for X" triggers `storyboard-architect`
 - "Generate prompts for these shots" triggers `visual-prompt-forge`
 - "Critique this generated image" triggers `visual-asset-critic`
@@ -81,7 +83,7 @@ If the run takes more than one round-trip, the brief was ambiguous. The follow-u
 
 ## Composing with other Claude Code skills
 
-shotkit is designed to compose. The four skills cooperate by file format, not by import. They also compose with other community skills:
+shotkit is designed to compose. The five skills cooperate by file format, not by import. They also compose with other community skills:
 
 - **Brand-voice extractors** (e.g. media-tsunami) feed into `brand-packs/`
 - **Frontmatter-aware editors** can hand-edit `shots.json` between runs

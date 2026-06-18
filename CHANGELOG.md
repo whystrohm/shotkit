@@ -8,6 +8,7 @@ The QA loop closes: the critic now emits a machine-readable verdict, the prompt-
 
 ### Added
 
+- **`brand-lock-extractor` skill (fifth skill).** Point it at a website URL, brand book PDF, screenshots, or a written description and it produces a validate-ready `brand-lock.md` in the nine-section format, with a confidence and source flagged for every value. Kills the blank-template cold-start. Ships with an extraction rubric and a worked example (input assets plus the extracted brand-lock with audit trail).
 - **Structured critique output.** `visual-asset-critic` now writes `output/critique.json` alongside the markdown critique, conforming to `skills/visual-asset-critic/templates/critique.schema.json`. A pipeline can gate on the verdict instead of parsing prose.
 - **`tools/validate_critique.py`.** Validates a `critique.json` against the schema **and** enforces the gating invariant JSON Schema cannot express: any `blocking` issue forces `REJECT`, any `major` issue forbids `ACCEPT`. `--selftest` proves the gate fires (and runs in CI).
 - **Generator capability matrix.** `skills/visual-prompt-forge/adapters/_capabilities.json` is the single source of truth for per-generator limits (`max_prompt_words`, `supports_text_render`, `supports_motion`, `aspect_param`, ...), with a companion `capabilities.schema.json`.

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# shotkit. Install all four skills into ~/.claude/skills/
+# shotkit. Install all five skills into ~/.claude/skills/
 #
 # Usage:
 #   ./install.sh                # install to ~/.claude/skills/ (user scope)
 #   ./install.sh --project      # install to ./.claude/skills/ (project scope)
 #   ./install.sh --dry-run      # show what would happen, change nothing
 #   ./install.sh --force        # overwrite existing skills without prompting
-#   ./install.sh --uninstall    # remove the four shotkit skills
+#   ./install.sh --uninstall    # remove the five shotkit skills
 #   ./install.sh --help         # show this help
 
 set -euo pipefail
@@ -36,6 +36,7 @@ for arg in "$@"; do
 done
 
 SKILLS=(
+  "brand-lock-extractor"
   "storyboard-architect"
   "visual-prompt-forge"
   "visual-asset-critic"

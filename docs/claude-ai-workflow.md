@@ -6,7 +6,7 @@ shotkit also runs in Claude.ai (web, desktop, mobile). The methodology is identi
 
 Claude.ai accepts skills as `.skill` zip uploads through the Settings panel.
 
-To install all four shotkit skills:
+To install all five shotkit skills:
 
 1. Clone or download the shotkit repo
 2. Zip each skill directory individually:
@@ -17,8 +17,8 @@ To install all four shotkit skills:
    ```
 
 3. In Claude.ai, open Settings, navigate to Skills, click Install
-4. Upload each `.skill` file (four total)
-5. Confirm all four show as Active in the skill list
+4. Upload each `.skill` file (five total)
+5. Confirm all five show as Active in the skill list
 
 Restart the Claude.ai session and the skills are live.
 

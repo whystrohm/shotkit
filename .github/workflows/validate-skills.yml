@@ -26,8 +26,8 @@ jobs:
       - name: Validate JSON schemas
         run: python tools/validate_schemas.py
 
-      - name: Validate brand-pack template parses
-        run: python tools/validate_brand_lock.py brand-packs/_template.md
+      - name: Validate brand-pack template and extracted example
+        run: python tools/validate_brand_lock.py brand-packs/_template.md skills/brand-lock-extractor/examples/brand-lock.md
 
       - name: Validate generator capability matrix
         run: python tools/validate_capabilities.py

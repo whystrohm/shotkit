@@ -4,14 +4,14 @@
 
 **The pre-production system we use to ship hundreds of videos a month. Open-sourced.**
 
-Four Claude Skills that turn a creative brief into a production-grade storyboard with model-specific image prompts, on-screen text specs, an HTML preview, and a versioned audit trail. Built by [WhyStrohm](https://whystrohm.com). Apache 2.0.
+Five Claude Skills that turn a creative brief into a production-grade storyboard with model-specific image prompts, on-screen text specs, an HTML preview, and a versioned audit trail, plus a brand-lock extractor that onboards a brand from its existing assets. Built by [WhyStrohm](https://whystrohm.com). Apache 2.0.
 
 ```bash
 git clone https://github.com/whystrohm/shotkit.git
 cd shotkit && ./install.sh
 ```
 
-That installs all four skills into `~/.claude/skills/`. Restart your Claude Code session and they're live.
+That installs all five skills into `~/.claude/skills/`. Restart your Claude Code session and they're live.
 
 ![shotkit demo](docs/images/demo.gif)
 
@@ -47,10 +47,11 @@ Files. Not panels. Not a SaaS dashboard. Files an editor, agency, or developer c
 
 ---
 
-## The four skills
+## The five skills
 
 | Skill | What it does |
 |---|---|
+| `brand-lock-extractor` | Brand assets (URL / PDF / screenshots) → validate-ready `brand-lock.md` |
 | `storyboard-architect` | Brief → structured storyboard (`storyboard.md` + `shots.json`) |
 | `visual-prompt-forge` | Shot data → model-specific prompts for 10 generators (6 stills, 4 motion) |
 | `visual-asset-critic` | Generated image + intent → markdown critique + machine-readable `critique.json` |
@@ -202,9 +203,9 @@ For the operated version of the full pipeline, see [whystrohm.com](https://whyst
 
 ## Compatibility
 
-- **Claude.ai** (web, mobile, desktop). All four skills via `.skill` zip uploads. See [`docs/claude-ai-workflow.md`](docs/claude-ai-workflow.md).
+- **Claude.ai** (web, mobile, desktop). All five skills via `.skill` zip uploads. See [`docs/claude-ai-workflow.md`](docs/claude-ai-workflow.md).
 - **Claude Code** (CLI). Primary target. Drop the repo and run `./install.sh`. See [`docs/claude-code-workflow.md`](docs/claude-code-workflow.md).
-- **Claude API**. All four skills via Skills API.
+- **Claude API**. All five skills via Skills API.
 - **Other agents** that support the SKILL.md open standard (Codex, Cursor, Gemini CLI, Antigravity, Windsurf) should work, not officially tested.
 
 Tested against Claude Opus 4.7 and Claude Sonnet 4.6.
