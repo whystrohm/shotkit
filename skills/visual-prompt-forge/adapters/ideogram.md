@@ -1,5 +1,7 @@
 # Adapter: Ideogram (v3)
 
+> Capability data (length limits, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. If a number here and in `_capabilities.json` disagree, the JSON wins.
+
 Ideogram is the only generator that reliably renders text inside images. Use it for cases where text-as-image is the deliverable, posters, branded social tiles, signage, packaging mockups. For everything else, default to Flux or Midjourney and composite text separately.
 
 This adapter has **two modes**: composited (default) and text-in-image (override).

@@ -19,7 +19,7 @@ We're using "production-grade" deliberately. It means:
 - **Files, not panels.** The storyboard is a directory of structured Markdown and JSON. An editor, motion designer, or developer can act on it without asking the AI a follow-up question.
 - **Versioned brand state.** Every storyboard run snapshots the brand parameters it was built against. If the brand evolves later, you can still see exactly what version any given piece of content targeted.
 - **Per-shot rationale.** Every shot has a one-sentence explanation. Why this beat. Why this duration. Why this framing. Decisions are logged so they can be challenged.
-- **Model-agnostic.** Same shot data renders to Midjourney, Flux, Ideogram, GPT Image, Sora, different syntax, identical intent. No vendor lock-in.
+- **Model-agnostic.** Same shot data renders to Midjourney, Flux, Ideogram, GPT Image, Kling, different syntax, identical intent. No vendor lock-in. (When Sora was discontinued, swapping the motion lane cost one capability-matrix edit and four adapter files.)
 - **Composable.** The storyboard skill stops at the spec. The prompt skill stops at the prompt. The critique skill stops at the critique. Each does one job. They compose because they agree on file formats, not because they import each other.
 
 This is how serious teams have always worked. We're just bringing AI generation into the same discipline.

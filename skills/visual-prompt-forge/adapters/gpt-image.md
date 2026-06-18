@@ -1,5 +1,7 @@
 # Adapter: GPT Image (1.5 / 2)
 
+> Capability data (length limits, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. If a number here and in `_capabilities.json` disagree, the JSON wins.
+
 GPT Image rewards paragraph-form prompts with explicit spatial reasoning and complex composition descriptions. It interprets relational language ("to the left of", "behind", "in the foreground") more accurately than any other generator. Choose GPT Image when the brief requires precise scene composition, multiple objects, or accurate text rendering.
 
 ## Syntax pattern

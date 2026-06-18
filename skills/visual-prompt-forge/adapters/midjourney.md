@@ -1,5 +1,7 @@
 # Adapter: Midjourney (v7)
 
+> Capability data (length limits, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. If a number here and in `_capabilities.json` disagree, the JSON wins.
+
 Midjourney rewards short, high-signal prompts with strong adjective stacking and cinematic vocabulary. Long descriptive paragraphs underperform, the model interprets them as competing weights and produces muddled output.
 
 ## Syntax pattern

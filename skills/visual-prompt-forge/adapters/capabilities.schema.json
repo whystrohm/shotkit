@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://whystrohm.com/schemas/shotkit/capabilities.schema.json",
+  "title": "Generator Capabilities",
+  "description": "Capability matrix for visual-prompt-forge adapters. The single source of truth for per-generator limits (prompt length, text/motion support, aspect param). Adapter .md files describe how to prompt; this file owns the numbers.",
+  "type": "object",
+  "required": ["version", "matrix_last_reviewed", "generators"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema_note": { "type": "string" },
+    "version": { "type": "string" },
+    "matrix_last_reviewed": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "ISO date the whole matrix was last reviewed."
+    },
+    "generators": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "display_name", "model_version", "last_verified",
+          "prompt_style", "max_prompt_words",
+          "supports_text_render", "supports_motion",
+          "supports_character_ref", "supports_style_ref", "supports_negative_prompt",
+          "aspect_param", "api_access"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$",
+            "description": "Must match an adapter .md filename (without extension)."
+          },
+          "display_name": { "type": "string", "minLength": 1 },
+          "model_version": { "type": "string", "minLength": 1 },
+          "last_verified": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "prompt_style": {
+            "type": "string",
+            "enum": ["keyword", "natural", "paragraph"]
+          },
+          "max_prompt_words": { "type": "integer", "exclusiveMinimum": 0 },
+          "supports_text_render": { "type": "boolean" },
+          "supports_motion": { "type": "boolean" },
+          "supports_character_ref": { "type": "boolean" },
+          "supports_style_ref": { "type": "boolean" },
+          "supports_negative_prompt": { "type": "boolean" },
+          "aspect_param": { "type": "string", "minLength": 1 },
+          "api_access": {
+            "type": "string",
+            "enum": ["full", "limited", "none"]
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}

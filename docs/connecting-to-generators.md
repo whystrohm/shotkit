@@ -19,7 +19,10 @@ This is deliberate. This doc explains why, and how to wire up the generator side
                                           prompts/gpt-image.txt
                                           prompts/nano-banana.txt
                                           prompts/seedream.txt
-                                          prompts/runway-sora.txt
+                                          prompts/kling.txt
+                                          prompts/veo.txt
+                                          prompts/seedance.txt
+                                          prompts/hailuo.txt
 
       ◀────── this is where the skill pack stops ──────▶
 
@@ -33,7 +36,7 @@ Everything to the left of that line is the methodology. Everything to the right 
 
 ## Why this boundary
 
-**Methodology is stable. Pipelines are not.** Generators churn monthly. Flux 2 Pro replaced Flux 1.1 Pro in months. Seedream 4.5 dropped right after 4.0. Nano Banana joined the Gemini family. Sora keeps adjusting its tier structure. If the pack hard-coded any specific API integration, half of it would be broken every quarter.
+**Methodology is stable. Pipelines are not.** Generators churn monthly. Flux 2 Pro replaced Flux 1.1 Pro in months. Seedream 4.5 dropped right after 4.0. Nano Banana joined the Gemini family. Sora was discontinued outright and Kling, Veo, and Seedance took the motion lane. If the pack hard-coded any specific API integration, half of it would be broken every quarter. (When the Sora adapter died, swapping in the new motion lineup was a single capability-matrix edit and four adapter files, exactly the point.)
 
 **The methodology survives generator change.** A prompt file produced for Flux today is still a usable prompt for whatever replaces Flux. The shot structure in `shots.json` is generator-agnostic. The brand-lock is generator-agnostic. Only the adapter layer touches generator-specific syntax, and adapters are the easiest layer to update.
 
@@ -102,14 +105,16 @@ The `prompts/seedream.txt` file feeds into:
 
 Use for high-volume series work where cost matters more than peak quality.
 
-### Runway / Sora (video)
+### Motion video (Kling, Veo, Seedance, Hailuo)
 
-The `prompts/runway-sora.txt` file is split into per-shot blocks for both:
+The motion adapters each write their own per-shot prompt file. All run on fal.ai:
 
-- **Runway Gen-4**, image-to-video and text-to-video, faster, good for B-roll
-- **Sora** (OpenAI), cinematic, longer durations on higher tiers
+- **Kling 3.0** (`prompts/kling.txt`), the default. Best camera-motion realism per dollar, strong image-to-video.
+- **Veo 3** (`prompts/veo.txt`), dialogue and lipsync with synchronised native audio.
+- **Seedance 2.0** (`prompts/seedance.txt`), multi-shot sequences in one generation.
+- **Hailuo 02 Pro** (`prompts/hailuo.txt`), cheap, fast iteration to find the shot before a final-tier re-roll.
 
-For storyboard-to-video pipelines.
+For storyboard-to-video pipelines. Generated clips are raw material: assemble to timing, composite text overlays, grade, and add audio in post.
 
 ## How to wire up VO and audio
 

@@ -41,7 +41,7 @@ Default to eye-level. Use the others deliberately, not for variety.
 | `orbit` | Camera circles subject | Hero shots, product reveal |
 | `whip` | Fast pan as transition | Beat-cuts in fast-paced content |
 
-For AI-generated still frames, motion is mostly intent for the editor. For Runway/Sora prompts, motion translates directly.
+For AI-generated still frames, motion is mostly intent for the editor. For motion-video prompts (Kling, Veo, Seedance, Hailuo), motion translates directly.
 
 ## Depth of field
 

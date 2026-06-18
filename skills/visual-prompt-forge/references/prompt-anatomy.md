@@ -76,7 +76,7 @@ This is the only layer the skill *applies* (vs. reads). Layers 1–4 are inputs;
 
 The adapter handles:
 
-- Word order (Midjourney leads with subject; Runway leads with camera motion)
+- Word order (Midjourney leads with subject; motion adapters like Kling lead with camera motion)
 - Length conventions (Seedream short, GPT Image long)
 - Parameter syntax (`--ar 9:16` vs `aspect_ratio: "9:16"`)
 - Idiosyncratic strengths (Ideogram for text, Flux for photoreal, etc.)

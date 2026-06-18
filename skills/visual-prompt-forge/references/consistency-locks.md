@@ -49,7 +49,7 @@ In `shots.json`, you can document the seed at the project level:
 
 The adapter reads this and applies to every prompt.
 
-**Caveat:** Midjourney and Sora handle seeds differently (or not at all). Document seed-locking as best-effort, not guaranteed.
+**Caveat:** Midjourney and some motion models (Veo, Seedance) handle seeds differently, or not at all. Document seed-locking as best-effort, not guaranteed.
 
 ## Lock 5. Reference images (`--cref`, omni-reference, image-to-image)
 

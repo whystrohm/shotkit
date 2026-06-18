@@ -1,6 +1,6 @@
 # One Shot, All Adapters
 
-This example takes a single shot from the WhyStrohm 30-second pitch and renders it through every generator adapter in the pack. Use it as a calibration reference: same intent, same data, seven different prompt syntaxes.
+This example takes a single shot from the WhyStrohm 30-second pitch and renders it through the generator adapters in the pack. Use it as a calibration reference: same intent, same data, different prompt syntaxes. Six stills adapters are shown, plus the default motion adapter (Kling) standing in for the motion video lane.
 
 ## The source shot
 
@@ -44,7 +44,9 @@ Each `.txt` file in this directory is the prompt for one adapter:
 - `gpt-image.txt`. GPT Image 1.5
 - `nano-banana.txt`. Gemini 2.5 Flash Image
 - `seedream.txt`. Seedream 4.5
-- `runway-sora.txt`. Runway Gen-4 / Sora
+- `kling.txt`. Kling 3.0 (motion video, the default motion adapter)
+
+The other three motion adapters (`veo` for dialogue/lipsync, `seedance` for multi-shot sequences, `hailuo` for budget iteration) follow the same five-layer anatomy as Kling and are chosen by need; see their files in `adapters/`. This single silent push shot doesn't exercise dialogue or a sequence, so Kling is the representative motion example here.
 
 Note the differences:
 
@@ -52,7 +54,7 @@ Note the differences:
 - **Flux** is natural-language paragraphs with no flags, parameters live in the API call
 - **GPT Image** uses paragraph breaks and explicit spatial language
 - **Seedream** is the shortest, comma stack like Midjourney but no flags
-- **Runway/Sora** leads with camera motion (the others let it be implicit)
+- **Kling** (and every motion adapter) leads with camera motion (the stills adapters let it be implicit)
 
 Same intent. Different syntax. Same brand-lock and series-lock anchors flowing through all of them.
 
