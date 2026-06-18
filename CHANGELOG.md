@@ -2,6 +2,33 @@
 
 All notable changes to shotkit are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+The QA loop closes: the critic now emits a machine-readable verdict, the prompt-forge can act on it, and the capability matrix is guarded so it can't silently rot.
+
+### Added
+
+- **Structured critique output.** `visual-asset-critic` now writes `output/critique.json` alongside the markdown critique, conforming to `skills/visual-asset-critic/templates/critique.schema.json`. A pipeline can gate on the verdict instead of parsing prose.
+- **`tools/validate_critique.py`.** Validates a `critique.json` against the schema **and** enforces the gating invariant JSON Schema cannot express: any `blocking` issue forces `REJECT`, any `major` issue forbids `ACCEPT`. `--selftest` proves the gate fires (and runs in CI).
+- **Generator capability matrix.** `skills/visual-prompt-forge/adapters/_capabilities.json` is the single source of truth for per-generator limits (`max_prompt_words`, `supports_text_render`, `supports_motion`, `aspect_param`, ...), with a companion `capabilities.schema.json`.
+- **`tools/validate_capabilities.py`.** Schema-validates the matrix, enforces adapter-to-capability parity (every generator id has an adapter file and vice versa), and warns when an entry is past its freshness window.
+- **Revision mode in `visual-prompt-forge`.** Consumes a `critique.json` and re-emits prompts for only the non-ACCEPT shots, branching on each issue's `fix_type` (prompt-level / re-roll / post-level). This is what closes the QA loop, and it stays file-native, no generator API calls.
+- **Motion video lineup (fal.ai):** `kling` (default), `veo` (dialogue/lipsync + native audio), `seedance` (multi-shot sequences), `hailuo` (budget iteration) adapters, each with a capability entry.
+- **Worked critique fixtures:** `skills/visual-asset-critic/examples/critique.accept.json` and `critique.revise.json`, exercised by CI.
+- **shots schema v1.1:** optional `shot.assets` (source/generated frames) and a top-level `meta` passthrough. Backward compatible, every valid v1.0 file is a valid v1.1 file (verified against all bundled examples).
+- **New doc** [`docs/the-qa-loop.md`](docs/the-qa-loop.md), the closed review loop end to end: critic verdict to revision to re-critique.
+
+### Changed
+
+- `shots.schema.json` bumped to v1.1 (additive, backward compatible).
+- Adapter `.md` files now defer to `_capabilities.json` for numeric limits, the JSON owns the numbers, the prose owns the how-to-prompt guidance. Conflicts resolve to the JSON.
+- `install.sh` hardened: array-based execution instead of `eval`, errors to stderr, added `--help`.
+- CI runs the two new validators, including the critique-gate selftest.
+
+### Removed
+
+- **`runway-sora` adapter and its capability entry.** Sora was discontinued; the motion lane moved to the fal.ai models the kit actually uses (Kling / Veo / Seedance / Hailuo). Swapping it was one capability-matrix edit and four adapter files, the model-agnostic design working as intended.
+
 ## [0.1.0], 2026-05-08
 
 Initial public release.

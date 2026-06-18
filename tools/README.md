@@ -39,6 +39,27 @@ python tools/validate_brand_lock.py brand-packs/_template.md brand-packs/whystro
 
 Run before committing new brand-pack examples.
 
+## `validate_capabilities.py`
+
+Checks the generator capability matrix (`skills/visual-prompt-forge/adapters/_capabilities.json`): validates it against `capabilities.schema.json`, enforces parity (every capability id has an adapter `.md` and every adapter has a capability entry), and warns when an entry is past its freshness window.
+
+```bash
+python tools/validate_capabilities.py
+```
+
+Run by CI on every PR.
+
+## `validate_critique.py`
+
+Validates a `critique.json` against `critique.schema.json` **and** the gating invariant JSON Schema can't express: a `blocking` issue forces `REJECT`, a `major` issue forbids `ACCEPT`.
+
+```bash
+python tools/validate_critique.py output/critique.json
+python tools/validate_critique.py --selftest   # prove the gate fires
+```
+
+Run by CI on every PR (selftest, then the bundled example fixtures).
+
 ## `shots-to-html.py`
 
 Standalone CLI version of the `storyboard-html-preview` skill. Renders an `output/` folder into a single `preview.html`.

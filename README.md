@@ -36,7 +36,10 @@ output/
 │   ├── gpt-image.txt
 │   ├── nano-banana.txt
 │   ├── seedream.txt
-│   └── runway-sora.txt
+│   ├── kling.txt              # Motion video (default)
+│   ├── veo.txt                # Motion: dialogue/lipsync + native audio
+│   ├── seedance.txt           # Motion: multi-shot sequences
+│   └── hailuo.txt             # Motion: budget iteration
 └── preview.html               # Single file. Shareable. Printable. Brand-aware.
 ```
 
@@ -49,11 +52,11 @@ Files. Not panels. Not a SaaS dashboard. Files an editor, agency, or developer c
 | Skill | What it does |
 |---|---|
 | `storyboard-architect` | Brief → structured storyboard (`storyboard.md` + `shots.json`) |
-| `visual-prompt-forge` | Shot data → model-specific prompts for 7 generators |
-| `visual-asset-critic` | Generated image + intent → structured critique |
+| `visual-prompt-forge` | Shot data → model-specific prompts for 10 generators (6 stills, 4 motion) |
+| `visual-asset-critic` | Generated image + intent → markdown critique + machine-readable `critique.json` |
 | `storyboard-html-preview` | Storyboard files → single-file shareable HTML |
 
-They work alone. They work better together. They work in **Claude Code**, **Claude.ai**, and the **Claude API**.
+They work alone. They work better together, the critic writes a machine-readable verdict the prompt-forge can act on, so generate → critique → revise → re-critique runs as a closed loop. See [`docs/the-qa-loop.md`](docs/the-qa-loop.md). They work in **Claude Code**, **Claude.ai**, and the **Claude API**.
 
 ---
 
@@ -80,7 +83,7 @@ Read more in [`docs/why-this-exists.md`](docs/why-this-exists.md).
 The category isn't empty. It's full of tools that solve the wrong half.
 
 - **Brand-lock snapshots.** Every storyboard freezes brand state at run time. Six months later, you can still answer "what brand version was this approved against." None of the SaaS tools do this.
-- **Seven generators, one spec.** The same shot data adapts to Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream, and Runway/Sora. Every other storyboard skill on GitHub locks to one generator family.
+- **Ten generators, one spec.** The same shot data adapts to six stills generators (Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream) and four motion-video models (Kling, Veo, Seedance, Hailuo). Every other storyboard skill on GitHub locks to one generator family.
 - **Files, not panels.** The output is structured Markdown and JSON an editor, motion designer, or developer can act on. No dashboard, no export step, no platform.
 - **Methodology over pipeline.** The pack stops at prompts and specs. Generator APIs churn monthly, the methodology stays stable. The pipeline lives where it belongs, in the operator's tooling.
 
@@ -210,11 +213,11 @@ Tested against Claude Opus 4.7 and Claude Sonnet 4.6.
 
 ## Roadmap
 
-v0.1.0 ships the four core skills, the brand-pack pattern, and the methodology docs. Known v0.2.0 work:
+v0.2.0 (unreleased) closes the QA loop: structured `critique.json` output, a guarded capability matrix, prompt-forge revision mode, and the fal.ai motion lineup (Kling / Veo / Seedance / Hailuo). See the [changelog](CHANGELOG.md). Still on the roadmap:
 
 - **`brand-lock-extractor`**. Upload a brand book (PDF, screenshots, URL), get a `brand-lock.md` back. The cold-start killer.
 - **PDF + PPTX exporters**. Siblings to `storyboard-html-preview` for client review and agency handoff.
-- **User-supplied asset folder**. Slot in your own images per shot instead of placeholders or AI-generated frames.
+- **User-supplied asset folder**. The `shot.assets` field landed in shots schema v1.1; wiring the HTML preview and critic to consume it is the remaining work.
 - **Duration rescale workflow**. Change a project from :30 to :60 and have the timing redistribute correctly across the beat framework.
 
 If any of these are blocking for you, open an issue. Real use cases jump the queue.
@@ -236,9 +239,11 @@ pip install pyyaml jsonschema
 python tools/validate_skills.py
 python tools/validate_schemas.py
 python tools/validate_brand_lock.py brand-packs/_template.md
+python tools/validate_capabilities.py
+python tools/validate_critique.py --selftest
 ```
 
-CI runs all three on every PR.
+CI runs all of these on every PR.
 
 ---
 

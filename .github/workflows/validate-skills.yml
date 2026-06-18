@@ -28,3 +28,13 @@ jobs:
 
       - name: Validate brand-pack template parses
         run: python tools/validate_brand_lock.py brand-packs/_template.md
+
+      - name: Validate generator capability matrix
+        run: python tools/validate_capabilities.py
+
+      - name: Validate critique gate (selftest, then example fixtures)
+        run: |
+          python tools/validate_critique.py --selftest
+          python tools/validate_critique.py \
+            skills/visual-asset-critic/examples/critique.accept.json \
+            skills/visual-asset-critic/examples/critique.revise.json

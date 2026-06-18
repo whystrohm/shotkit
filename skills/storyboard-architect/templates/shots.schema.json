@@ -9,7 +9,13 @@
   "properties": {
     "version": {
       "type": "string",
-      "const": "1.0"
+      "enum": ["1.0", "1.1"],
+      "description": "1.1 adds optional shot.assets and top-level meta. Backward compatible: every valid 1.0 file is a valid 1.1 file."
+    },
+    "meta": {
+      "type": "object",
+      "description": "Forward-compat passthrough for tooling that needs to annotate a storyboard without a schema bump. Ignored by core skills.",
+      "additionalProperties": true
     },
     "project": {
       "type": "object",
@@ -104,7 +110,32 @@
               { "type": "string", "minLength": 1 }
             ]
           },
-          "rationale": { "type": "string", "minLength": 1 }
+          "rationale": { "type": "string", "minLength": 1 },
+          "assets": {
+            "type": "object",
+            "description": "Optional. Frames associated with this shot. Lets visual-asset-critic and the HTML preview find images without a schema bump. Added in 1.1.",
+            "additionalProperties": false,
+            "properties": {
+              "source": {
+                "type": "array",
+                "description": "User-supplied images for this shot (skip generation).",
+                "items": { "type": "string" }
+              },
+              "generated": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["path"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "path": { "type": "string" },
+                    "generator": { "type": "string" },
+                    "accepted": { "type": "boolean" }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
