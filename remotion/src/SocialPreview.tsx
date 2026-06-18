@@ -26,7 +26,7 @@ const STAGES = [
   { n: '04', name: 'PREVIEW', file: 'preview.html', icon: 'doc' as const },
 ];
 
-const ROW_Y = 232;
+const ROW_Y = 190;
 const CARD_W = 210;
 const GAP = 86;
 const FIRST_X = 92;
@@ -53,7 +53,12 @@ export const SocialPreview: React.FC = () => {
       ))}
 
       {/* The closed QA loop: CRITIQUE -> FORGE (revise the failed shots) */}
-      <ReviseLoop fromX={cardCenter(2)} toX={cardCenter(1)} topY={ICON_TOP + ICON_SIZE + 14} />
+      <ReviseLoop
+        fromX={cardCenter(2)}
+        toX={cardCenter(1)}
+        yStart={ICON_TOP + ICON_SIZE + 56}
+        yBus={ICON_TOP + ICON_SIZE + 82}
+      />
 
       {/* Stage cards */}
       {STAGES.map((s, i) => (
@@ -199,21 +204,43 @@ const Connector: React.FC<{ x1: number; x2: number; y: number }> = ({ x1, x2, y 
 };
 
 // The v0.2.0 closed loop: critique.json feeds prompt-forge revision mode.
-const ReviseLoop: React.FC<{ fromX: number; toX: number; topY: number }> = ({ fromX, toX, topY }) => {
-  const dip = topY + 40;
+// Routed as a clean right-angle feedback wire below the filenames: drop from
+// CRITIQUE, run left along a bus, rise into FORGE.
+const ReviseLoop: React.FC<{ fromX: number; toX: number; yStart: number; yBus: number }> = ({
+  fromX,
+  toX,
+  yStart,
+  yBus,
+}) => {
+  const r = 9; // corner radius
+  const d =
+    `M ${fromX} ${yStart} ` +
+    `L ${fromX} ${yBus - r} Q ${fromX} ${yBus} ${fromX - r} ${yBus} ` +
+    `L ${toX + r} ${yBus} Q ${toX} ${yBus} ${toX} ${yBus - r} ` +
+    `L ${toX} ${yStart}`;
   return (
     <svg style={{ position: 'absolute', left: 0, top: 0 }} width={1280} height={720}>
       <path
-        d={`M${fromX} ${topY} C ${fromX} ${dip}, ${toX} ${dip}, ${toX} ${topY + 6}`}
+        d={d}
         stroke={COLORS.coral}
         strokeWidth={1.8}
         fill="none"
         strokeDasharray="5 5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
-      <path d={`M${toX - 5} ${topY + 14}L${toX} ${topY + 5}L${toX + 5} ${topY + 14}`} stroke={COLORS.coral} strokeWidth={1.8} fill="none" />
+      {/* arrowhead pointing up into FORGE */}
+      <path
+        d={`M ${toX - 5} ${yStart + 10} L ${toX} ${yStart} L ${toX + 5} ${yStart + 10}`}
+        stroke={COLORS.coral}
+        strokeWidth={1.8}
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
       <text
         x={(fromX + toX) / 2}
-        y={dip + 4}
+        y={yBus + 20}
         fill={COLORS.coral}
         fontFamily={monoFamily}
         fontSize={13}
@@ -232,7 +259,7 @@ const BrandLockBar: React.FC = () => (
       position: 'absolute',
       left: 92,
       right: 92,
-      top: 468,
+      top: 478,
       border: `1px solid ${COLORS.ink}`,
       borderRadius: 8,
       height: 52,
