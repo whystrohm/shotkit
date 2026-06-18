@@ -25,6 +25,7 @@ The QA loop closes: the critic now emits a machine-readable verdict, the prompt-
 - Adapter `.md` files now defer to `_capabilities.json` for numeric limits, the JSON owns the numbers, the prose owns the how-to-prompt guidance. Conflicts resolve to the JSON.
 - `install.sh` hardened: array-based execution instead of `eval`, errors to stderr, added `--help`.
 - CI runs the two new validators, including the critique-gate selftest.
+- Regenerated `docs/images/social-preview.png` from a new versioned `SocialPreview` Remotion composition (it was a sourceless baked PNG). The card now reads v0.2.0 and reflects what shipped: `critique.json`, the revise loop (CRITIQUE to FORGE), and brand-lock-extractor feeding the brand-lock bar. The demo.gif and explainer videos are unchanged.
 
 ### Removed
 
