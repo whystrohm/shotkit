@@ -3,17 +3,21 @@ import { AbsoluteFill } from 'remotion';
 import { loadFont as loadInter } from '@remotion/google-fonts/Inter';
 import { loadFont as loadJetBrainsMono } from '@remotion/google-fonts/JetBrainsMono';
 
-import { COLORS } from './tokens';
-
 // Static social-preview / README hero card. One frame, re-renderable.
-// Render: npx remotion still SocialPreview ../docs/images/social-preview.png --frame=0
+// Render: npx remotion still SocialPreview ../docs/images/social-preview.png --frame=0 --scale=1.306
 //
-// This is the source of record for docs/images/social-preview.png. It was a baked
-// PNG with no source until v0.2.0; now it is a composition so it stays in sync.
+// Bold blueprint look: white ground, near-black ink, vermilion key nodes.
+// Source of record for docs/images/social-preview.png.
 
-const { fontFamily: interFamily } = loadInter('normal', { weights: ['500', '900'] });
-loadInter('italic', { weights: ['500'] });
-const { fontFamily: monoFamily } = loadJetBrainsMono('normal', { weights: ['400', '700'] });
+const { fontFamily: inter } = loadInter('normal', { weights: ['500', '700', '900'] });
+const { fontFamily: mono } = loadJetBrainsMono('normal', { weights: ['400', '700'] });
+
+const C = {
+  bg: '#FFFFFF',
+  ink: '#111114',
+  orange: '#FB5B28',
+  muted: '#8C8C92',
+};
 
 const VERSION = 'v0.2.0';
 const DATE = '2026-06-18';
@@ -26,193 +30,164 @@ const STAGES = [
   { n: '04', name: 'PREVIEW', file: 'preview.html', icon: 'doc' as const },
 ];
 
-const ROW_Y = 190;
-const CARD_W = 210;
-const GAP = 86;
-const FIRST_X = 92;
-const cardX = (i: number) => FIRST_X + i * (CARD_W + GAP);
-const cardCenter = (i: number) => cardX(i) + CARD_W / 2;
-const ICON_TOP = ROW_Y + 64;
-const ICON_SIZE = 84;
-const ICON_CENTER_Y = ICON_TOP + ICON_SIZE / 2;
+const CENTERS = [196, 497, 798, 1099];
+const ICON = 116;
+const ICON_TOP = 238;
+const ICON_MID_Y = ICON_TOP + ICON / 2;
 
 export const SocialPreview: React.FC = () => {
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: COLORS.cream,
-        fontFamily: interFamily,
-        color: COLORS.ink,
-      }}
-    >
+    <AbsoluteFill style={{ backgroundColor: C.bg, fontFamily: inter, color: C.ink }}>
+      <Bracket />
       <Header />
 
-      {/* Connector arrows between stages */}
       {[0, 1, 2].map((i) => (
-        <Connector key={i} x1={cardX(i) + CARD_W} x2={cardX(i + 1)} y={ICON_CENTER_Y} />
+        <Arrow key={i} x1={CENTERS[i] + ICON / 2} x2={CENTERS[i + 1] - ICON / 2} y={ICON_MID_Y} />
       ))}
 
-      {/* The closed QA loop: CRITIQUE -> FORGE (revise the failed shots) */}
-      <ReviseLoop
-        fromX={cardCenter(2)}
-        toX={cardCenter(1)}
-        yStart={ICON_TOP + ICON_SIZE + 56}
-        yBus={ICON_TOP + ICON_SIZE + 82}
-      />
+      <ReviseLoop fromX={CENTERS[2]} toX={CENTERS[1]} yStart={ICON_TOP + ICON + 44} yBus={ICON_TOP + ICON + 68} />
 
-      {/* Stage cards */}
       {STAGES.map((s, i) => (
-        <StageCard key={s.n} stage={s} x={cardX(i)} />
+        <StageCard key={s.n} stage={s} cx={CENTERS[i]} />
       ))}
 
-      {/* Brand-lock foundation bar */}
       <BrandLockBar />
-
       <Footer />
     </AbsoluteFill>
   );
 };
 
+const Bracket: React.FC = () => (
+  <svg width={48} height={48} viewBox="0 0 48 48" fill="none" style={{ position: 'absolute', top: 28, left: 38 }}>
+    <path d="M3 16V3H16" stroke={C.ink} strokeWidth={3} strokeLinecap="square" />
+  </svg>
+);
+
 const Header: React.FC = () => (
-  <div style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 120 }}>
-    <div style={{ position: 'absolute', left: 48, top: 34 }}>
-      <svg width={44} height={44} viewBox="0 0 44 44" fill="none" style={{ position: 'absolute', top: -2, left: 0 }}>
-        <path d="M2 14V2H14" stroke={COLORS.ink} strokeWidth={2} strokeLinecap="square" />
-      </svg>
-      <div style={{ fontWeight: 900, fontSize: 50, letterSpacing: '-0.02em', marginLeft: 58, marginTop: -6 }}>
-        shotkit
+  <>
+    <div style={{ position: 'absolute', left: 84, top: 30 }}>
+      <div style={{ fontWeight: 900, fontSize: 84, letterSpacing: '-0.03em', lineHeight: 1 }}>shotkit</div>
+      <div style={{ fontFamily: mono, fontWeight: 700, fontSize: 20, color: C.muted, marginTop: 14, letterSpacing: '0.01em' }}>
+        by WhyStrohm&nbsp;/&nbsp;{VERSION}
       </div>
-      <div
-        style={{
-          fontWeight: 500,
-          fontSize: 15,
-          color: COLORS.muted,
-          marginLeft: 58,
-          marginTop: 4,
-          letterSpacing: '0.02em',
-        }}
-      >
-        by WhyStrohm&nbsp;&nbsp;/&nbsp;&nbsp;{VERSION}
-      </div>
+    </div>
+    <Pill style={{ position: 'absolute', right: 48, top: 46 }}>
+      <span style={{ fontFamily: mono, fontWeight: 700, fontSize: 20, letterSpacing: '0.04em' }}>
+        STORYBOARD PIPELINE / {VERSION}
+      </span>
+    </Pill>
+  </>
+);
+
+const Pill: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
+  <div
+    style={{
+      border: `2.5px solid ${C.ink}`,
+      borderRadius: 16,
+      padding: '11px 20px',
+      display: 'inline-flex',
+      alignItems: 'center',
+      ...style,
+    }}
+  >
+    {children}
+  </div>
+);
+
+const StageCard: React.FC<{ stage: (typeof STAGES)[number]; cx: number }> = ({ stage, cx }) => (
+  <>
+    <div style={{ position: 'absolute', left: cx - ICON / 2, top: 184, display: 'flex', alignItems: 'baseline', gap: 13 }}>
+      <span style={{ fontWeight: 900, fontSize: 42, letterSpacing: '-0.02em' }}>{stage.n}</span>
+      <span style={{ fontWeight: 900, fontSize: 23, letterSpacing: '0.04em' }}>{stage.name}</span>
     </div>
     <div
       style={{
         position: 'absolute',
-        right: 48,
-        top: 42,
-        border: `1px solid ${COLORS.ink}`,
-        borderRadius: 8,
-        padding: '9px 16px',
-        fontFamily: monoFamily,
-        fontSize: 13,
-        letterSpacing: '0.06em',
-      }}
-    >
-      STORYBOARD PIPELINE / v.2.0
-    </div>
-  </div>
-);
-
-const StageCard: React.FC<{ stage: (typeof STAGES)[number]; x: number }> = ({ stage, x }) => (
-  <div style={{ position: 'absolute', left: x, top: ROW_Y, width: CARD_W }}>
-    <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
-      <span style={{ fontFamily: monoFamily, fontSize: 26, fontWeight: 700 }}>{stage.n}</span>
-      <span style={{ fontFamily: monoFamily, fontSize: 17, letterSpacing: '0.08em' }}>{stage.name}</span>
-    </div>
-    <div
-      style={{
-        marginTop: 26,
-        width: ICON_SIZE,
-        height: ICON_SIZE,
-        marginLeft: (CARD_W - ICON_SIZE) / 2,
-        border: `1.5px solid ${COLORS.ink}`,
-        borderRadius: 10,
+        left: cx - ICON / 2,
+        top: ICON_TOP,
+        width: ICON,
+        height: ICON,
+        border: `3px solid ${C.ink}`,
+        borderRadius: 22,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: COLORS.cream,
+        backgroundColor: C.bg,
       }}
     >
       <StageIcon kind={stage.icon} />
     </div>
     <div
       style={{
-        marginTop: 18,
+        position: 'absolute',
+        left: cx - 130,
+        top: ICON_TOP + ICON + 16,
+        width: 260,
         textAlign: 'center',
-        fontFamily: monoFamily,
-        fontSize: 15,
-        color: COLORS.ink,
+        fontFamily: mono,
+        fontWeight: 700,
+        fontSize: 23,
       }}
     >
       {stage.file}
     </div>
-  </div>
+  </>
 );
 
 const StageIcon: React.FC<{ kind: 'grid' | 'lines' | 'crop' | 'doc' }> = ({ kind }) => {
-  const s = COLORS.ink;
+  const k = C.ink;
   if (kind === 'grid') {
     return (
-      <svg width={44} height={44} viewBox="0 0 44 44" fill="none">
-        {[2, 16, 30].map((y) =>
-          [2, 16, 30].map((x) => (
-            <rect key={`${x}-${y}`} x={x} y={y} width={12} height={12} stroke={s} strokeWidth={1.6} />
-          )),
+      <svg width={60} height={60} viewBox="0 0 64 64" fill="none">
+        {[4, 25, 46].map((y) =>
+          [4, 25, 46].map((x) => <rect key={`${x}-${y}`} x={x} y={y} width={14} height={14} rx={2} fill={k} />),
         )}
       </svg>
     );
   }
   if (kind === 'lines') {
     return (
-      <svg width={46} height={40} viewBox="0 0 46 40" fill="none">
-        {[4, 14, 24, 34].map((y, i) => (
-          <line key={y} x1={2} y1={y} x2={i === 3 ? 30 : 44} y2={y} stroke={s} strokeWidth={2} strokeLinecap="square" />
+      <svg width={62} height={52} viewBox="0 0 66 56" fill="none">
+        {[6, 22, 38, 50].map((y, i) => (
+          <line key={y} x1={4} y1={y} x2={i === 3 ? 44 : 62} y2={y} stroke={k} strokeWidth={i === 0 ? 5 : 4} strokeLinecap="round" />
         ))}
       </svg>
     );
   }
   if (kind === 'crop') {
     return (
-      <svg width={44} height={44} viewBox="0 0 44 44" fill="none">
-        <path d="M2 12V2H12" stroke={s} strokeWidth={1.8} />
-        <path d="M32 2H42V12" stroke={s} strokeWidth={1.8} />
-        <path d="M42 32V42H32" stroke={s} strokeWidth={1.8} />
-        <path d="M12 42H2V32" stroke={s} strokeWidth={1.8} />
-        <circle cx={22} cy={22} r={4} stroke={s} strokeWidth={1.8} />
+      <svg width={60} height={60} viewBox="0 0 64 64" fill="none">
+        <path d="M4 18V4H18" stroke={k} strokeWidth={3.4} strokeLinecap="round" />
+        <path d="M46 4H60V18" stroke={k} strokeWidth={3.4} strokeLinecap="round" />
+        <path d="M60 46V60H46" stroke={k} strokeWidth={3.4} strokeLinecap="round" />
+        <path d="M18 60H4V46" stroke={k} strokeWidth={3.4} strokeLinecap="round" />
+        <circle cx={32} cy={32} r={5} stroke={k} strokeWidth={3.2} />
       </svg>
     );
   }
   return (
-    <svg width={38} height={46} viewBox="0 0 38 46" fill="none">
-      <path d="M3 2H24L35 13V44H3V2Z" stroke={s} strokeWidth={1.8} strokeLinejoin="round" />
-      <path d="M24 2V13H35" stroke={s} strokeWidth={1.8} strokeLinejoin="round" />
-      <line x1={10} y1={24} x2={28} y2={24} stroke={s} strokeWidth={1.6} />
-      <line x1={10} y1={32} x2={28} y2={32} stroke={s} strokeWidth={1.6} />
+    <svg width={52} height={62} viewBox="0 0 56 66" fill="none">
+      <path d="M4 3H35L52 20V63H4V3Z" stroke={k} strokeWidth={3.2} strokeLinejoin="round" />
+      <path d="M35 3V20H52" stroke={k} strokeWidth={3.2} strokeLinejoin="round" />
+      <line x1={14} y1={36} x2={42} y2={36} stroke={k} strokeWidth={3} strokeLinecap="round" />
+      <line x1={14} y1={47} x2={42} y2={47} stroke={k} strokeWidth={3} strokeLinecap="round" />
     </svg>
   );
 };
 
-const Connector: React.FC<{ x1: number; x2: number; y: number }> = ({ x1, x2, y }) => {
+const Arrow: React.FC<{ x1: number; x2: number; y: number }> = ({ x1, x2, y }) => {
   const mid = (x1 + x2) / 2;
   return (
     <svg style={{ position: 'absolute', left: 0, top: 0 }} width={1280} height={720}>
-      <line x1={x1 + 8} y1={y} x2={x2 - 8} y2={y} stroke={COLORS.ink} strokeWidth={1.6} />
-      <path d={`M${x2 - 16} ${y - 5}L${x2 - 8} ${y}L${x2 - 16} ${y + 5}`} stroke={COLORS.ink} strokeWidth={1.6} fill="none" />
-      <circle cx={mid} cy={y} r={4.5} fill={COLORS.coral} />
+      <line x1={x1} y1={y} x2={x2 - 14} y2={y} stroke={C.ink} strokeWidth={5} strokeLinecap="round" />
+      <path d={`M${x2 - 16} ${y - 10} L${x2} ${y} L${x2 - 16} ${y + 10} Z`} fill={C.ink} />
+      <circle cx={mid} cy={y} r={8} fill={C.orange} />
     </svg>
   );
 };
 
-// The v0.2.0 closed loop: critique.json feeds prompt-forge revision mode.
-// Routed as a clean right-angle feedback wire below the filenames: drop from
-// CRITIQUE, run left along a bus, rise into FORGE.
-const ReviseLoop: React.FC<{ fromX: number; toX: number; yStart: number; yBus: number }> = ({
-  fromX,
-  toX,
-  yStart,
-  yBus,
-}) => {
-  const r = 9; // corner radius
+const ReviseLoop: React.FC<{ fromX: number; toX: number; yStart: number; yBus: number }> = ({ fromX, toX, yStart, yBus }) => {
+  const r = 12;
   const d =
     `M ${fromX} ${yStart} ` +
     `L ${fromX} ${yBus - r} Q ${fromX} ${yBus} ${fromX - r} ${yBus} ` +
@@ -220,34 +195,17 @@ const ReviseLoop: React.FC<{ fromX: number; toX: number; yStart: number; yBus: n
     `L ${toX} ${yStart}`;
   return (
     <svg style={{ position: 'absolute', left: 0, top: 0 }} width={1280} height={720}>
+      <path d={d} stroke={C.orange} strokeWidth={3} fill="none" strokeDasharray="3 9" strokeLinecap="round" strokeLinejoin="round" />
       <path
-        d={d}
-        stroke={COLORS.coral}
-        strokeWidth={1.8}
-        fill="none"
-        strokeDasharray="5 5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      {/* arrowhead pointing up into FORGE */}
-      <path
-        d={`M ${toX - 5} ${yStart + 10} L ${toX} ${yStart} L ${toX + 5} ${yStart + 10}`}
-        stroke={COLORS.coral}
-        strokeWidth={1.8}
+        d={`M ${toX - 8} ${yStart + 13} L ${toX} ${yStart} L ${toX + 8} ${yStart + 13}`}
+        stroke={C.orange}
+        strokeWidth={3}
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <text
-        x={(fromX + toX) / 2}
-        y={yBus + 20}
-        fill={COLORS.coral}
-        fontFamily={monoFamily}
-        fontSize={13}
-        letterSpacing="0.06em"
-        textAnchor="middle"
-      >
-        revise loop
+      <text x={(fromX + toX) / 2} y={yBus + 30} fill={C.orange} fontFamily={inter} fontWeight={900} fontSize={20} letterSpacing="0.04em" textAnchor="middle">
+        REVISE LOOP
       </text>
     </svg>
   );
@@ -257,124 +215,85 @@ const BrandLockBar: React.FC = () => (
   <div
     style={{
       position: 'absolute',
-      left: 92,
-      right: 92,
+      left: 64,
+      right: 64,
       top: 478,
-      border: `1px solid ${COLORS.ink}`,
-      borderRadius: 8,
-      height: 52,
+      border: `3px solid ${C.ink}`,
+      borderRadius: 22,
+      height: 62,
       display: 'flex',
       alignItems: 'center',
-      paddingLeft: 22,
-      paddingRight: 22,
-      fontFamily: monoFamily,
-      fontSize: 15,
+      paddingLeft: 26,
+      paddingRight: 26,
     }}
   >
-    <span style={{ fontWeight: 700, letterSpacing: '0.08em' }}>BRAND-LOCK</span>
-    <span style={{ marginLeft: 24, color: COLORS.ink }}>brand-lock.snapshot.md</span>
-    <span style={{ marginLeft: 18, color: COLORS.muted }}>·</span>
-    <span style={{ marginLeft: 18, color: COLORS.ink }}>audit trail</span>
-    <span style={{ marginLeft: 'auto', color: COLORS.muted, fontSize: 13 }}>
+    <LockIcon />
+    <span style={{ fontWeight: 900, fontSize: 22, letterSpacing: '0.04em', marginLeft: 16 }}>BRAND-LOCK</span>
+    <span style={{ fontFamily: mono, fontWeight: 700, fontSize: 21, marginLeft: 30 }}>brand-lock.snapshot.md</span>
+    <span style={{ color: C.orange, fontWeight: 900, fontSize: 22, marginLeft: 20 }}>&bull;</span>
+    <span style={{ fontFamily: mono, fontWeight: 700, fontSize: 21, marginLeft: 20 }}>audit trail</span>
+    <span style={{ marginLeft: 'auto', fontFamily: mono, fontWeight: 700, fontSize: 18, color: C.muted }}>
       &larr; brand-lock-extractor
     </span>
   </div>
 );
 
+const LockIcon: React.FC = () => (
+  <svg width={26} height={30} viewBox="0 0 26 30" fill="none">
+    <rect x={2} y={12} width={22} height={16} rx={3} fill={C.ink} />
+    <path d="M7 12V8A6 6 0 0 1 19 8V12" stroke={C.ink} strokeWidth={3} fill="none" />
+  </svg>
+);
+
 const Footer: React.FC = () => (
-  <div style={{ position: 'absolute', top: 562, left: 0, width: 1280, height: 158 }}>
-    <div
-      style={{
-        position: 'absolute',
-        left: 48,
-        top: 14,
-        fontFamily: monoFamily,
-        fontSize: 11,
-        letterSpacing: '0.06em',
-      }}
-    >
-      <LegendRow label="DATA FLOW" symbol={<ArrowSymbol />} />
-      <div style={{ height: 6 }} />
-      <LegendRow label="KEY NODE" symbol={<DotSymbol />} />
+  <>
+    <div style={{ position: 'absolute', left: 64, top: 576 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+        <svg width={40} height={16} viewBox="0 0 40 16" fill="none">
+          <line x1={2} y1={8} x2={28} y2={8} stroke={C.ink} strokeWidth={4} strokeLinecap="round" />
+          <path d="M26 2 L36 8 L26 14 Z" fill={C.ink} />
+        </svg>
+        <span style={{ fontWeight: 900, fontSize: 18, letterSpacing: '0.03em' }}>DATA FLOW</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 18, marginTop: 16 }}>
+        <span style={{ width: 40, display: 'flex', justifyContent: 'center' }}>
+          <span style={{ width: 18, height: 18, borderRadius: 9, backgroundColor: C.orange, display: 'block' }} />
+        </span>
+        <span style={{ fontWeight: 900, fontSize: 18, letterSpacing: '0.03em' }}>KEY NODE</span>
+      </div>
     </div>
 
     <div
       style={{
         position: 'absolute',
         left: 470,
-        top: 16,
-        border: `1px solid ${COLORS.ink}`,
-        borderRadius: 6,
-        padding: '8px 14px',
-        fontFamily: monoFamily,
-        fontSize: 11,
-        letterSpacing: '0.06em',
-        lineHeight: 1.6,
+        top: 566,
+        border: `2.5px solid ${C.ink}`,
+        borderRadius: 16,
+        padding: '13px 22px',
+        fontFamily: mono,
+        fontWeight: 700,
+        fontSize: 16,
+        lineHeight: 1.55,
+        minWidth: 320,
       }}
     >
-      <div style={{ fontWeight: 700 }}>SPECIFICATIONS</div>
+      <div>SPECIFICATIONS</div>
       <div>STORYBOARD PIPELINE ARCHITECTURE</div>
       <div>SCALE 1:1</div>
     </div>
 
-    <div
-      style={{
-        position: 'absolute',
-        right: 48,
-        top: 16,
-        border: `1px solid ${COLORS.ink}`,
-        borderRadius: 6,
-        padding: '8px 14px',
-        fontFamily: monoFamily,
-        fontSize: 11,
-        letterSpacing: '0.06em',
-        lineHeight: 1.7,
-        minWidth: 230,
-      }}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
-        <span style={{ color: COLORS.muted }}>DATE</span>
-        <span>{DATE}</span>
+    <Pill style={{ position: 'absolute', right: 48, top: 570, borderRadius: 16, padding: '13px 22px', minWidth: 250 }}>
+      <div style={{ width: '100%', fontFamily: mono, fontWeight: 700, fontSize: 16, lineHeight: 1.7 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 22 }}>
+          <span style={{ color: C.muted }}>DATE</span>
+          <span>{DATE}</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 22 }}>
+          <span style={{ color: C.muted }}>DOC ID</span>
+          <span>{DOC_ID}</span>
+        </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
-        <span style={{ color: COLORS.muted }}>DOC ID</span>
-        <span>{DOC_ID}</span>
-      </div>
-    </div>
-
-    <div
-      style={{
-        position: 'absolute',
-        bottom: 18,
-        left: 0,
-        width: 1280,
-        textAlign: 'center',
-        fontStyle: 'italic',
-        fontWeight: 500,
-        fontSize: 15,
-        color: COLORS.muted,
-      }}
-    >
-      the pre-production system we use to ship hundreds of videos a month / open-sourced
-    </div>
-  </div>
-);
-
-const LegendRow: React.FC<{ label: string; symbol: React.ReactNode }> = ({ label, symbol }) => (
-  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-    <span style={{ minWidth: 80 }}>{label}</span>
-    {symbol}
-  </div>
-);
-
-const ArrowSymbol: React.FC = () => (
-  <svg width={28} height={10} viewBox="0 0 28 10" fill="none">
-    <path d="M0 5H24M20 1L24 5L20 9" stroke={COLORS.ink} strokeWidth={1.4} fill="none" strokeLinecap="square" />
-  </svg>
-);
-
-const DotSymbol: React.FC = () => (
-  <svg width={28} height={10} viewBox="0 0 28 10" fill="none">
-    <circle cx={14} cy={5} r={3.5} fill={COLORS.coral} />
-  </svg>
+    </Pill>
+  </>
 );
