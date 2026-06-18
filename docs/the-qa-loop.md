@@ -35,7 +35,7 @@ The loop runs until every shot is `ACCEPT`, or until you decide a shot is good e
 
 ## What makes it close
 
-Two things the v0.2.0 batch added:
+Two things the v2.0.0 batch added:
 
 1. **A machine-readable verdict.** `visual-asset-critic` writes `output/critique.json` next to the markdown critique. Same review, two surfaces. The markdown is for the human; the JSON is for the loop.
 2. **A prompt-forge that can read it.** `visual-prompt-forge` revision mode takes `shots.json` + one or more `critique.json` files and re-emits prompts for only the shots that failed.

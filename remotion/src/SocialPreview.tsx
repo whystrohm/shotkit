@@ -19,7 +19,7 @@ const C = {
   muted: '#8C8C92',
 };
 
-const VERSION = 'v0.2.0';
+const VERSION = 'v2.0.0';
 const DATE = '2026-06-18';
 const DOC_ID = 'WS-SK-CARD-001';
 

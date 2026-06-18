@@ -2,7 +2,7 @@
 
 All notable changes to shotkit are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
-## [Unreleased]
+## [2.0.0] - Unreleased
 
 The QA loop closes: the critic now emits a machine-readable verdict, the prompt-forge can act on it, and the capability matrix is guarded so it can't silently rot.
 
@@ -25,7 +25,7 @@ The QA loop closes: the critic now emits a machine-readable verdict, the prompt-
 - Adapter `.md` files now defer to `_capabilities.json` for numeric limits, the JSON owns the numbers, the prose owns the how-to-prompt guidance. Conflicts resolve to the JSON.
 - `install.sh` hardened: array-based execution instead of `eval`, errors to stderr, added `--help`.
 - CI runs the two new validators, including the critique-gate selftest.
-- Regenerated `docs/images/social-preview.png` from a new versioned `SocialPreview` Remotion composition (it was a sourceless baked PNG). The card now reads v0.2.0 and reflects what shipped: `critique.json`, the revise loop (CRITIQUE to FORGE), and brand-lock-extractor feeding the brand-lock bar. The demo.gif and explainer videos are unchanged.
+- Regenerated `docs/images/social-preview.png` from a new versioned `SocialPreview` Remotion composition (it was a sourceless baked PNG). The card now reads v2.0.0 and reflects what shipped: `critique.json`, the revise loop (CRITIQUE to FORGE), and brand-lock-extractor feeding the brand-lock bar. The demo.gif and explainer videos are unchanged.
 
 ### Removed
 
@@ -80,7 +80,7 @@ Initial public release.
 - Works in Claude.ai, Claude Code, Claude API
 - Compatible with the SKILL.md open standard (Codex, Cursor, Gemini CLI, Antigravity, Windsurf, not officially tested)
 
-### Known v0.2.0 work
+### Known v2.0.0 work
 
 - `brand-lock-extractor` skill (PDF/image/URL into brand-lock.md)
 - PDF and PPTX exporters

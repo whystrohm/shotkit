@@ -162,7 +162,7 @@ For day-to-day work, natural-language prompts are sufficient.
 
 ## Updating shotkit
 
-When v0.2.0 ships, update the install:
+When v2.0.0 ships, update the install:
 
 ```bash
 cd shotkit

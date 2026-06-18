@@ -214,7 +214,7 @@ Tested against Claude Opus 4.7 and Claude Sonnet 4.6.
 
 ## Roadmap
 
-v0.2.0 (unreleased) closes the QA loop: structured `critique.json` output, a guarded capability matrix, prompt-forge revision mode, and the fal.ai motion lineup (Kling / Veo / Seedance / Hailuo). See the [changelog](CHANGELOG.md). Still on the roadmap:
+v2.0.0 (unreleased) closes the QA loop: structured `critique.json` output, a guarded capability matrix, prompt-forge revision mode, and the fal.ai motion lineup (Kling / Veo / Seedance / Hailuo). See the [changelog](CHANGELOG.md). Still on the roadmap:
 
 - **`brand-lock-extractor`**. Upload a brand book (PDF, screenshots, URL), get a `brand-lock.md` back. The cold-start killer.
 - **PDF + PPTX exporters**. Siblings to `storyboard-html-preview` for client review and agency handoff.

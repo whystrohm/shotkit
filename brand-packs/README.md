@@ -29,7 +29,7 @@ The pack ships with two reference brand packs:
 - **`whystrohm.md`** (flagship). The actual brand pack WhyStrohm uses on its own content. Real palette, real voice rules, real "never" list. Use this as the reference for the level of specificity production work requires.
 - **`examples/saas-clean.md`**. B2B SaaS, restrained, professional. Light backgrounds, single accent. Inter type stack. A neutral counterpoint to the WhyStrohm flagship.
 
-More example brand packs will land in v0.2.0. PRs welcome.
+More example brand packs will land in v2.0.0. PRs welcome.
 
 ## Generating a brand pack from existing assets
 
