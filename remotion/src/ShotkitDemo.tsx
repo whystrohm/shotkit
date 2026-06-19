@@ -38,7 +38,7 @@ const FILE_TREE_ROWS: TreeRow[] = [
   { at: 120, text: '│   ├── gpt-image.txt' },
   { at: 123, text: '│   ├── nano-banana.txt' },
   { at: 126, text: '│   ├── seedream.txt' },
-  { at: 129, text: '│   └── runway-sora.txt' },
+  { at: 129, text: '│   └── kling.txt' },
   { at: 135, text: '└── preview.html', coralDot: true },
 ];
 
@@ -390,7 +390,7 @@ const Header: React.FC = () => (
           letterSpacing: '0.02em',
         }}
       >
-        by WhyStrohm  /  v0.1.0
+        by WhyStrohm  /  v2.0.0
       </div>
     </div>
     <div
@@ -407,7 +407,7 @@ const Header: React.FC = () => (
         letterSpacing: '0.06em',
       }}
     >
-      STORYBOARD PIPELINE / v.1.0
+      STORYBOARD PIPELINE / v2.0.0
     </div>
   </div>
 );
@@ -495,7 +495,7 @@ const Footer: React.FC = () => (
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
         <span style={{ color: COLORS.muted }}>DATE</span>
-        <span>2026-05-08</span>
+        <span>2026-06-18</span>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
         <span style={{ color: COLORS.muted }}>DOC ID</span>
