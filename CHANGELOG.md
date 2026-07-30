@@ -2,7 +2,7 @@
 
 All notable changes to shotkit are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
-## [3.0.0] - Unreleased
+## [3.0.0] - 2026-07-30
 
 An audit trail you can check rather than one you have to trust.
 
