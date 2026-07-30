@@ -50,6 +50,7 @@ except ImportError:
 from _shotkit import (
     IMAGE_EXTS,
     REPO_ROOT,
+    critique_paths,
     load_json,
     round_dirs,
     run_id_timestamp,
@@ -71,6 +72,9 @@ class Report:
         self.warnings: list[str] = []
         self.shots: dict[str, dict] = {}
         self.rounds_seen: list[int] = []
+        # (path, recorded, actual) -> the labels that referenced it. One edited file is
+        # one problem, even when twenty critiques all hash it.
+        self.hash_failures: dict[tuple[str, str, str], list[str]] = {}
 
     def as_dict(self) -> dict:
         return {
@@ -94,19 +98,53 @@ def _check_hash(
         report.errors.append(f"{label}: '{rel}' is referenced but missing on disk")
         return
     actual = sha256_file(path)
-    if actual != expected:
-        report.errors.append(
-            f"{label}: '{rel}' has changed since it was recorded "
-            f"(recorded {expected[:12]}..., on disk {actual[:12]}...)"
+    if actual == expected:
+        return
+    report.hash_failures.setdefault((rel, expected, actual), []).append(label)
+
+
+def _finalize_hash_failures(report: Report) -> None:
+    """Turn collected hash mismatches into one error per distinct mismatch."""
+    for (rel, expected, actual), labels in report.hash_failures.items():
+        # Print both hashes in full. Truncating them meant a single mistyped character
+        # at the end produced a message showing two identical-looking strings and
+        # asserting they differed, which is the least useful moment to be imprecise: a
+        # hand-authored run.json is exactly where typos come from.
+        detail = (
+            f"'{rel}' does not match the hash recorded for it\n"
+            f"          recorded: {expected}\n"
+            f"          on disk:  {actual}"
         )
+        if len(expected) != 64:
+            detail += (
+                f"\n          the recorded value is {len(expected)} characters, not 64, "
+                f"so it is malformed rather than stale"
+            )
+        elif sum(a != b for a, b in zip(expected, actual)) <= 2:
+            detail += (
+                "\n          they differ in one or two characters, which usually means "
+                "a typo in the recorded hash rather than a changed file"
+            )
+        if len(labels) == 1:
+            detail += f"\n          referenced by: {labels[0]}"
+        else:
+            shown = ", ".join(labels[:3])
+            more = f", and {len(labels) - 3} more" if len(labels) > 3 else ""
+            detail += (
+                f"\n          referenced by {len(labels)} places: {shown}{more}"
+            )
+        report.errors.append(detail)
 
 
 def check_run_doc(report: Report) -> dict | None:
     run_path = report.output_dir / "run.json"
     if not run_path.exists():
         report.errors.append(
-            "run.json is missing, so nothing pins this output to its inputs; "
-            "a pre-3.0.0 tree has no provenance to check"
+            "run.json is missing, so nothing pins this output to its inputs. A tree "
+            "written before 3.0.0 has no provenance to check: write a run.json "
+            "(schema at skills/storyboard-architect/templates/run.schema.json) or "
+            "re-run storyboard-architect. This is reported as an error rather than a "
+            "warning so a pipeline gate cannot pass an unauditable tree"
         )
         return None
 
@@ -179,63 +217,93 @@ def check_run_doc(report: Report) -> dict | None:
     return run_doc
 
 
+def _round_of(path: Path, output_dir: Path, data: dict) -> int:
+    """
+    Which round a critique belongs to.
+
+    The directory name wins, because that is the addressing scheme. A legacy critique
+    sitting at the output root has no directory to read, so fall back to its own
+    `round` field and then to 1.
+    """
+    try:
+        parent = path.relative_to(output_dir).parent.name
+    except ValueError:
+        parent = ""
+    if parent.startswith("round-") and parent[len("round-"):].isdigit():
+        return int(parent[len("round-"):])
+    declared = data.get("round")
+    return declared if isinstance(declared, int) and declared >= 1 else 1
+
+
 def check_critiques(report: Report, run_doc: dict | None) -> None:
     critique_validator = Draft202012Validator(_load_critique_schema())
     seen: dict[tuple[str, int], Path] = {}
 
-    for round_no, directory in round_dirs(report.output_dir, "critiques"):
-        for path in sorted(directory.glob("*.json")):
+    # critique_paths() is the one definition of "where critiques live", shared with
+    # validate_critique.py and shots-to-html.py. Walking the round directories directly
+    # meant this tool ignored a legacy root critique.json that the other two read, so
+    # the preview showed a verdict badge for a shot this tool called unreviewed.
+    for path in critique_paths(report.output_dir):
+        try:
             rel = path.relative_to(report.output_dir)
-            data, err = load_json(path)
-            if err:
-                report.errors.append(f"{rel}: {err}")
-                continue
+        except ValueError:
+            rel = path
+        data, err = load_json(path)
+        if err:
+            report.errors.append(f"{rel}: {err}")
+            continue
+        if not isinstance(data, dict):
+            report.errors.append(f"{rel}: top level is not an object")
+            continue
 
-            errors, warnings = validate_critique_doc(data, critique_validator)
-            report.errors.extend(f"{rel}: {e}" for e in errors)
-            report.warnings.extend(f"{rel}: {w}" for w in warnings)
-            if errors:
-                continue
+        errors, warnings = validate_critique_doc(data, critique_validator)
+        report.errors.extend(f"{rel}: {e}" for e in errors)
+        report.warnings.extend(f"{rel}: {w}" for w in warnings)
+        if errors:
+            continue
 
-            if data.get("round") not in (None, round_no):
-                report.errors.append(
-                    f"{rel}: declares round {data.get('round')} but sits in round-{round_no}/"
-                )
-            if run_doc and data.get("run_id") not in (None, run_doc["run_id"]):
-                report.errors.append(
-                    f"{rel}: run_id '{data.get('run_id')}' does not match run.json "
-                    f"'{run_doc['run_id']}'"
-                )
+        round_no = _round_of(path, report.output_dir, data)
+        in_round_dir = rel.parent.name.startswith("round-")
 
-            shot_id = data.get("shot_id")
-            if shot_id:
-                key = (shot_id, round_no)
-                if key in seen:
-                    report.errors.append(
-                        f"{rel}: a second critique for {shot_id} in round {round_no} "
-                        f"already exists at {seen[key].relative_to(report.output_dir)}; "
-                        f"two operators reviewed the same shot in the same round"
-                    )
-                else:
-                    seen[key] = path
-
-            _check_hash(report, f"{rel} image", data.get("image_ref"), data.get("image_sha256"))
-            _check_hash(report, f"{rel} prompt", data.get("prompt_ref"), data.get("prompt_sha256"))
-            _check_hash(
-                report,
-                f"{rel} brand-lock",
-                data.get("brand_lock_ref"),
-                data.get("brand_lock_sha256"),
+        if in_round_dir and data.get("round") not in (None, round_no):
+            report.errors.append(
+                f"{rel}: declares round {data.get('round')} but sits in round-{round_no}/"
+            )
+        if run_doc and data.get("run_id") not in (None, run_doc["run_id"]):
+            report.errors.append(
+                f"{rel}: run_id '{data.get('run_id')}' does not match run.json "
+                f"'{run_doc['run_id']}'"
             )
 
-            if shot_id:
-                entry = report.shots.setdefault(shot_id, {"rounds": {}})
-                entry["rounds"][str(round_no)] = {
-                    "verdict": data.get("verdict"),
-                    "confidence": data.get("confidence"),
-                    "critique_ref": str(rel),
-                    "issues": len(data.get("issues", [])),
-                }
+        shot_id = data.get("shot_id")
+        if shot_id:
+            key = (shot_id, round_no)
+            if key in seen:
+                report.errors.append(
+                    f"{rel}: a second critique for {shot_id} in round {round_no} "
+                    f"already exists at {seen[key]}; "
+                    f"two operators reviewed the same shot in the same round"
+                )
+            else:
+                seen[key] = rel
+
+        _check_hash(report, f"{rel} image", data.get("image_ref"), data.get("image_sha256"))
+        _check_hash(report, f"{rel} prompt", data.get("prompt_ref"), data.get("prompt_sha256"))
+        _check_hash(
+            report,
+            f"{rel} brand-lock",
+            data.get("brand_lock_ref"),
+            data.get("brand_lock_sha256"),
+        )
+
+        if shot_id:
+            entry = report.shots.setdefault(shot_id, {"rounds": {}})
+            entry["rounds"][str(round_no)] = {
+                "verdict": data.get("verdict"),
+                "confidence": data.get("confidence"),
+                "critique_ref": str(rel),
+                "issues": len(data.get("issues", [])),
+            }
 
 
 def check_coverage(report: Report, run_doc: dict | None) -> None:
@@ -294,6 +362,7 @@ def validate_tree(output_dir: Path) -> Report:
     run_doc = check_run_doc(report)
     check_critiques(report, run_doc)
     check_coverage(report, run_doc)
+    _finalize_hash_failures(report)
     return report
 
 
@@ -332,7 +401,7 @@ def selftest() -> int:
         frame = scratch / "frames" / "round-2" / "shot_02.png"
         frame.write_bytes(frame.read_bytes() + b"\x00")
         report = validate_tree(scratch)
-        if any("has changed since it was recorded" in e for e in report.errors):
+        if any("does not match the hash recorded" in e for e in report.errors):
             print("  ok    selftest: a frame regenerated after its critique is caught")
         else:
             print(f"  FAIL  selftest: frame tampering was not caught, got: {report.errors}")
@@ -344,7 +413,7 @@ def selftest() -> int:
         lock = scratch / "brand-lock.snapshot.md"
         lock.write_text(lock.read_text() + "\n<!-- edited mid-project -->\n")
         report = validate_tree(scratch)
-        if any("brand-lock.snapshot.md' has changed" in e for e in report.errors):
+        if any("brand-lock.snapshot.md' does not match" in e for e in report.errors):
             print("  ok    selftest: a brand-lock edited mid-project is caught")
         else:
             print(f"  FAIL  selftest: brand-lock drift was not caught, got: {report.errors}")
@@ -374,6 +443,28 @@ def selftest() -> int:
             print("  ok    selftest: a frame with no critique for its round is caught")
         else:
             print(f"  FAIL  selftest: unreviewed frame was not caught, got: {report.errors}")
+            ok = False
+
+    # A legacy tree keeps its critique at the output root. validate_critique.py and
+    # shots-to-html.py both read it, so this tool has to as well: reporting a shot as
+    # unreviewed while the preview shows its verdict badge is the exact kind of
+    # disagreement between consumers that this release exists to remove.
+    with tempfile.TemporaryDirectory() as tmp:
+        scratch = Path(tmp) / "legacy"
+        scratch.mkdir()
+        shutil.copy(WORKED_RUN / "shots.json", scratch / "shots.json")
+        shutil.copy(
+            WORKED_RUN / "critiques" / "round-1" / "shot_01.critique.json",
+            scratch / "critique.json",
+        )
+        report = validate_tree(scratch)
+        if "shot_01" in report.shots:
+            print("  ok    selftest: a legacy root critique.json is still discovered")
+        else:
+            print(
+                "  FAIL  selftest: legacy root critique.json was ignored; "
+                f"shots seen: {sorted(report.shots)}"
+            )
             ok = False
 
     print()

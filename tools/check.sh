@@ -44,6 +44,20 @@ run() {
 echo "shotkit checks, using $("$PYTHON" --version 2>&1)"
 echo
 
+# Preflight the two dependencies. Without this, a missing package turns one actionable
+# line into fourteen identical failures and you have to read all of them to find out.
+missing=""
+"$PYTHON" -c 'import yaml' 2>/dev/null || missing="pyyaml"
+"$PYTHON" -c 'import jsonschema' 2>/dev/null || missing="${missing:+$missing }jsonschema"
+if [[ -n "$missing" ]]; then
+  echo "Missing Python package(s): ${missing}" >&2
+  echo >&2
+  echo "  ${PYTHON} -m pip install ${missing}" >&2
+  echo >&2
+  echo "Then re-run ./tools/check.sh" >&2
+  exit 1
+fi
+
 # Structure and schemas
 run "skills: frontmatter"            tools/validate_skills.py
 run "schemas: are valid schemas"     tools/validate_schemas.py

@@ -48,7 +48,8 @@ and critique schema `1.0` documents still validate with a warning. Nothing auto-
   input was unavailable, a missing key records nothing. `additionalProperties: false` with no
   `meta` previously made it impossible to add provenance without a schema bump.
 - **`tools/check.sh`.** One entry point for all sixteen checks, called by CI, so a green local
-  run means a green PR.
+  run means a green PR. It preflights `pyyaml` and `jsonschema` and prints one install command,
+  rather than failing every check with the same message.
 - **A `--selftest` on every validator.** Each constructs failing fixtures and fails if the check
   does not catch them. `validate_critique.py` now runs fourteen cases, up from two.
 - **Worked run example** at `skills/visual-asset-critic/examples/worked-run/`: two shots through
