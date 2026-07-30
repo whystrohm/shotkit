@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.2",
   "project": {
     "title": "shotkit. The Explainer.",
     "duration_s": 90,
@@ -106,7 +106,7 @@
       "subject": "full-frame typography. install command appears via type-on in JetBrains Mono Regular at 22pt, ink color, monospace block. below it the project tagline in Inter italic 500 18pt, color muted. coral period on the signature beat. door closes with the standard footer chrome holding.",
       "environment_ref": "series_lock.environment",
       "lighting_ref": "series_lock.lighting",
-      "on_screen_text": "text_06",
+      "on_screen_text": ["text_06", "text_07"],
       "vo": null,
       "rationale": "Promise beat. The viewer has the diagnosis, the architecture, the artifact, and the proof. The CTA is one paste-into-terminal command. No friction surface, no signup, no email gate."
     }

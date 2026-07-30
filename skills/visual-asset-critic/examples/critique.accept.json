@@ -2,7 +2,7 @@
   "version": "1.0",
   "shot_id": "shot_01",
   "brand_lock_ref": "brand-lock.snapshot.md",
-  "image_ref": "output/generated/shot_01.png",
+  "image_ref": "frames/round-1/shot_01.png",
   "verdict": "ACCEPT",
   "confidence": "HIGH",
   "working": [

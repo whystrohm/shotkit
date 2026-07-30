@@ -6,20 +6,20 @@
 <meta name="generator" content="storyboard-html-preview / WhyStrohm">
 <title>{{PROJECT_TITLE}} · Storyboard</title>
 <style>
-{{INLINE_CSS}}
+{{{INLINE_CSS}}}
 </style>
 </head>
 <body>
 
 <header class="sb-header">
   <div class="sb-header-inner">
-    <div class="sb-eyebrow">Storyboard · v1.0</div>
+    <div class="sb-eyebrow">Storyboard · shots {{SHOTS_VERSION}}</div>
     <h1 class="sb-title">{{PROJECT_TITLE}}</h1>
     <dl class="sb-meta">
       <div><dt>Duration</dt><dd>{{DURATION}}s</dd></div>
       <div><dt>Aspect</dt><dd>{{ASPECT}}</dd></div>
       <div><dt>Framework</dt><dd>{{FRAMEWORK}}</dd></div>
-      <div><dt>Generated</dt><dd>{{TIMESTAMP}}</dd></div>
+      <div><dt>Run</dt><dd>{{RUN_CREATED_AT}}</dd></div>
     </dl>
   </div>
 </header>
@@ -32,10 +32,12 @@
   </ul>
 </nav>
 
+{{#if BRIEF}}
 <section class="sb-section sb-brief">
   <h2>Brief</h2>
   <p>{{BRIEF}}</p>
 </section>
+{{/if}}
 
 <section class="sb-section sb-series-lock">
   <h2>Series lock</h2>
@@ -74,11 +76,11 @@
       </div>
       {{/if}}
 
-      {{#if on_screen_text}}
-      <div class="sb-overlay sb-overlay-{{overlay_position}}">
-        <span class="sb-overlay-text" style='font-family: {{overlay_font}}; font-weight: {{overlay_weight}}; color: {{overlay_color}};'>{{overlay_content}}</span>
+      {{#each overlays}}
+      <div class="sb-overlay sb-overlay-{{position_class}}">
+        <span class="sb-overlay-text" style="font-family: {{font}}; font-weight: {{weight}}; color: {{color}};">{{content}}</span>
       </div>
-      {{/if}}
+      {{/each}}
     </div>
 
     <div class="sb-shot-body">
@@ -86,6 +88,9 @@
         <span class="sb-shot-id">{{id_short}}</span>
         <span class="sb-shot-time">{{start}}–{{end}}s</span>
         <span class="sb-shot-beat">{{beat}}</span>
+        {{#if has_verdict}}
+        <span class="sb-verdict sb-verdict-{{verdict_class}}">{{verdict}}<span class="sb-verdict-round">round {{verdict_round}}</span></span>
+        {{/if}}
       </header>
 
       <dl class="sb-shot-meta">
@@ -109,11 +114,13 @@
       </div>
       {{/if}}
 
-      {{#if on_screen_text}}
+      {{#if has_overlays}}
       <div class="sb-shot-text">
         <h3>On-screen text</h3>
-        <p class="sb-text-content">"{{overlay_content}}"</p>
-        <p class="sb-text-meta">{{overlay_size}} · {{overlay_position}} · enter {{overlay_enter_at}}s ({{overlay_enter_anim}}) · exit {{overlay_exit_at}}s</p>
+        {{#each overlays}}
+        <p class="sb-text-content">"{{content}}"</p>
+        <p class="sb-text-meta">{{id}} · {{size}} · {{position_label}} · enter {{enter_at}}s ({{enter_animation}}) · exit {{exit_at}}s ({{exit_animation}})</p>
+        {{/each}}
       </div>
       {{/if}}
 
@@ -128,8 +135,16 @@
 
 <footer class="sb-footer">
   <div class="sb-footer-inner">
-    <div>Generated against <a href="brand-lock.snapshot.md"><code>brand-lock.snapshot.md</code></a> on {{TIMESTAMP}}.</div>
+    <div>
+      Built against <a href="{{BRAND_LOCK_REF}}"><code>{{BRAND_LOCK_REF}}</code></a>{{#if BRAND_LOCK_SHA_SHORT}} (<code>{{BRAND_LOCK_SHA_SHORT}}</code>){{/if}}.
+    </div>
     <div>Built with <a href="https://github.com/whystrohm/shotkit">shotkit</a> · WhyStrohm</div>
+  </div>
+  <div class="sb-footer-inner sb-provenance">
+    <div>
+      Run {{RUN_ID}} started {{RUN_CREATED_AT}}. This page rendered {{RENDERED_AT}}.
+      {{#if PROVENANCE_NOTE}}{{PROVENANCE_NOTE}}{{/if}}
+    </div>
   </div>
 </footer>
 

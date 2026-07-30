@@ -1,6 +1,6 @@
 # Adapter: Kling 3.0 (motion-aware video)
 
-> Capability data (length limits, motion/text support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. If a number here and in `_capabilities.json` disagree, the JSON wins.
+> Capability data (length ceiling, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. `max_prompt_words` there is a ceiling; the range below is the recommended target and has to sit inside it. Where a fact here and a fact in the JSON disagree, the JSON wins, and `tools/validate_capabilities.py` fails the build instead of letting the two drift.
 
 Kling 3.0 generates short video clips, not still frames. It is the default motion model: the best camera-motion realism per dollar on fal.ai, and the strongest image-to-video of the four. Reach for it first. Escalate to Veo (dialogue/lipsync), Seedance (multi-shot), or Hailuo (cheap iteration) only when the shot needs what Kling does not do.
 
@@ -28,7 +28,7 @@ Camera motion goes **first**. This is the inverse of image generators where came
 Document parameters as a comment line above each prompt:
 
 ```
-# shot_01. Kling 3.0: duration=5s, ar=9:16, cfg=0.5, start_image=output/generated/shot_01.png
+# shot_01. Kling 3.0: duration=5s, ar=9:16, cfg=0.5, start_image=frames/round-1/shot_01.png
 {prompt}
 ```
 

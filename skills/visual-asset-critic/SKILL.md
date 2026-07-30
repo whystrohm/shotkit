@@ -21,7 +21,12 @@ Trigger when the user:
 
 ## What you produce
 
-**Two artifacts from every review, always both:** a human-readable markdown critique (the primary surface) and a machine-readable `output/critique.json` (so a pipeline can gate on the verdict instead of parsing prose). The JSON is detailed in Step 6; it never replaces the markdown.
+**Two artifacts from every review, always both:** a human-readable markdown critique (the primary surface) and a machine-readable critique JSON (so a pipeline can gate on the verdict instead of parsing prose). The JSON is detailed in Step 6; it never replaces the markdown.
+
+The JSON goes to `output/critiques/round-{N}/{shot_id}.critique.json`. One file per shot
+per round, never a shared filename. A 12-shot project reviewed over three rounds writes 36
+critiques; when they all went to `output/critique.json` it kept one, and which one depended
+on review order.
 
 The markdown critique uses these sections:
 
@@ -115,9 +120,18 @@ Be honest about uncertainty:
 | MEDIUM | Some references missing but core intent is clear |
 | LOW | Only the image, intent is inferred; verdict is your best guess |
 
-### Step 6. Emit structured output (critique.json)
+HIGH is a factual claim about what you had, not a mood. `tools/validate_critique.py`
+rejects a `1.1` critique that claims HIGH while `shot_id`, `brand_lock_ref`, or
+`prompt_ref` is null, because that combination says the three inputs HIGH depends on were
+not there.
 
-After writing the markdown critique, **also** write `output/critique.json` conforming to `templates/critique.schema.json`. Same review, two surfaces. The markdown is for the human; the JSON is so an automated QA loop (e.g. `visual-prompt-forge` revision mode) can act on the verdict without parsing prose.
+### Step 6. Emit structured output (critique JSON)
+
+After writing the markdown critique, **also** write
+`output/critiques/round-{N}/{shot_id}.critique.json` conforming to
+`templates/critique.schema.json` at version `1.1`. Same review, two surfaces. The markdown
+is for the human; the JSON is so an automated QA loop (e.g. `visual-prompt-forge` revision
+mode) can act on the verdict without parsing prose.
 
 **Map the markdown to the schema, section for section:**
 
@@ -128,7 +142,34 @@ After writing the markdown critique, **also** write `output/critique.json` confo
 | `## What's not working` + `## Revision plan` | `issues[]`, merge them: each issue carries its layer/note from "what's not working" and its `fix_type`/`fix` from the matching revision-plan line |
 | `## Confidence` | `confidence` (`HIGH` / `MEDIUM` / `LOW`) |
 
-Also set `shot_id` (or `null` if no storyboard), `image_ref`, and `brand_lock_ref` when known.
+**Provenance, all of it required at 1.1.** A verdict is a claim about specific bytes. Name
+them, and hash them:
+
+| Field | Value |
+|---|---|
+| `run_id`, `round` | from `run.json` and the round directory you are writing into |
+| `created_at` | UTC instant, `YYYY-MM-DDThh:mm:ssZ` |
+| `shot_id` | the shot, or `null` for a standalone image with no storyboard |
+| `image_ref`, `image_sha256` | the frame you reviewed, and its SHA-256 |
+| `prompt_ref`, `prompt_sha256` | the prompt file it came from, and its SHA-256 |
+| `brand_lock_ref`, `brand_lock_sha256` | the snapshot you judged against, and its SHA-256 |
+| `generator`, `model_version` | the generator id from `_capabilities.json`, and its model version |
+| `seed` | if the generator exposes one, else `null` |
+
+```bash
+shasum -a 256 output/frames/round-1/shot_03.png \
+              output/prompts/round-1/flux.txt \
+              output/brand-lock.snapshot.md
+```
+
+Every one of those fields is required, and every one is nullable. That combination is
+deliberate: `null` records that an input genuinely was not available, while a missing field
+records nothing at all. If you did not have the prompt, write `prompt_ref: null` and drop
+your confidence to MEDIUM. Do not omit the key.
+
+The hashes are the point. Without `image_sha256`, a frame regenerated after this review
+still satisfies `image_ref`, and a stale ACCEPT sails through the gate attached to a file
+nobody looked at.
 
 **Severity, assign one per issue.** This is the field the gate runs on, so map it from the layer rubric deterministically:
 
@@ -141,12 +182,40 @@ Also set `shot_id` (or `null` if no storyboard), `image_ref`, and `brand_lock_re
 **Gating rule, the verdict is derived from severities, not chosen freely.** This guarantees the markdown verdict and the JSON verdict always agree:
 
 - Any `blocking` issue ⇒ verdict is `REJECT`.
-- Any `major` issue (and no blocking) ⇒ verdict is `REVISE` (escalate to `REJECT` at your discretion if there are three or more).
+- Three or more `major` issues ⇒ verdict is `REJECT`.
+- One or two `major` issues (and no blocking) ⇒ verdict is `REVISE`.
 - Only `minor` issues, or none ⇒ verdict is `ACCEPT` (with post notes).
 
-Pick the markdown `## Verdict` by this same rule. A critique that says `ACCEPT` while carrying a `major` or `blocking` issue is a bug, `tools/validate_critique.py` will reject it.
+The three-major rule used to read "escalate to REJECT at your discretion." Discretion in a
+gate is not a gate, and it disagreed with `references/critique-rubric.md`, which called
+three hard fails a REJECT outright. It is now a threshold, and the validator enforces it.
 
-`output/critique.json` is validated by `tools/validate_critique.py` (schema + this gating rule). Worked examples live in `examples/critique.accept.json` and `examples/critique.revise.json`.
+Pick the markdown `## Verdict` by this same rule.
+
+### Step 7. Run the gate
+
+Writing a schema-valid critique is not the same as passing the gate. Run it:
+
+```bash
+python tools/validate_critique.py output/critiques/round-1/shot_03.critique.json
+```
+
+Or check the whole tree at once, which also recomputes every hash against the files on
+disk:
+
+```bash
+python tools/validate_provenance.py output/
+```
+
+This step is not optional and it is not someone else's job. A critique that says `ACCEPT`
+while carrying a `major` issue is a bug, and the only reason to write a validator for that
+bug is to actually run it. Before this step existed, the gate ran in CI against two
+fixtures that ship in the repo and never once against a real client's critique.
+
+Worked examples: `examples/critique.accept.json` and `examples/critique.revise.json` show
+the shape at version `1.0`, which is still valid and carries no provenance.
+`examples/worked-run/critiques/` shows version `1.1` with real hashes, two shots across two
+rounds.
 
 ## Hard rules
 
@@ -199,8 +268,15 @@ Generation is one stage in a pipeline. If the image is 80% right and the gap is 
 
 ## Handoff
 
-After delivering the critique, if the verdict is REVISE or REJECT, offer:
+After delivering the critique, if the verdict is REVISE, offer:
 
-> "Want me to draft the revised prompt? Hand `shots.json` and this `critique.json` to `visual-prompt-forge` in revision mode and it will re-emit prompts for just the failed shots."
+> "Want me to draft the revised prompt? Point `visual-prompt-forge` at this output tree in
+> revision mode and it will re-emit prompts for just the shots that need them."
 
-Don't auto-revise. The user picks. The `critique.json` you just wrote is exactly what closes that loop.
+If the verdict is REJECT, do not offer that. REJECT means a blocking issue or three or more
+major ones, which is a failure with no clear fix path, and revision mode is built to stop
+there and ask. Say what blocked it and what decision it needs: a changed shot spec, a
+changed brand-lock, or a different generator.
+
+Don't auto-revise. The user picks. The critique you just wrote is exactly what closes that
+loop.

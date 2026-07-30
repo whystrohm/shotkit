@@ -1,0 +1,50 @@
+{
+  "version": "1.2",
+  "project": {
+    "title": "Worked Run, Two Shots",
+    "duration_s": 8,
+    "aspect": "9:16",
+    "framework": "custom"
+  },
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "series_lock": {
+    "character": "founder, mid-thirties, salt-and-pepper hair, navy crewneck",
+    "environment": "minimalist home office, white walls, oak desk, single houseplant",
+    "lighting": "soft natural side-light from a large window camera-left, warm afternoon golden hour",
+    "color_grade": "warm filmic, muted teal shadows, slight grain"
+  },
+  "shots": [
+    {
+      "id": "shot_01",
+      "beat": "hook",
+      "start": 0.0,
+      "end": 3.0,
+      "framing": "MCU",
+      "angle": "eye-level",
+      "motion": "static",
+      "depth_of_field": "shallow",
+      "subject": "founder seated at the desk, hands still on the laptop, looking slightly off-camera, held frame-left with the right two thirds open",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": "text_01",
+      "vo": null,
+      "rationale": "Opens on stillness so the first overlay lands in silence; frame-left placement reserves the space the hook needs."
+    },
+    {
+      "id": "shot_02",
+      "beat": "promise",
+      "start": 3.0,
+      "end": 8.0,
+      "framing": "MS",
+      "angle": "eye-level",
+      "motion": "push",
+      "depth_of_field": "shallow",
+      "subject": "founder leaning back from the laptop, shoulders dropping, a small almost-smile, desk surface visible",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": "text_02",
+      "vo": null,
+      "rationale": "The slow push and the released posture carry the payoff without a line of voiceover."
+    }
+  ]
+}

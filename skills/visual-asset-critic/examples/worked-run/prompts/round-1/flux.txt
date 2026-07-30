@@ -1,0 +1,13 @@
+# Storyboard: Worked Run, Two Shots
+# Generator: flux
+# Model: 2 Pro
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Run: 20260730T142300Z-9f2c1ab4
+# Round: 1
+
+# shot_01, hook, 0.0-3.0s, MCU eye-level static
+Medium close-up of a founder in his mid-thirties with salt-and-pepper hair, wearing a navy crewneck, seated at his laptop with his hands still on the keys, looking slightly off-camera. He is held in the left third of the frame and the composition leaves the right two-thirds open. The setting is a minimalist home office with white walls, an oak desk, and a single houseplant. Soft natural side-light from a large window camera-left, warm afternoon golden hour. Shot on a 50mm prime at f/2.0, shallow depth of field. Warm filmic color grade with muted teal shadows and slight grain. Calm, considered mood. Photorealistic, natural skin texture, no AI artifacts.
+
+# shot_02, promise, 3.0-8.0s, MS eye-level push
+Medium shot of a founder in his mid-thirties with salt-and-pepper hair, wearing a navy crewneck, leaning back from his laptop with his shoulders dropping and a small almost-smile. The desk surface is visible in the lower frame. The setting is a minimalist home office with white walls, an oak desk, and a single houseplant. Soft natural side-light from a large window camera-left, warm afternoon golden hour. Shot on a 50mm prime at f/2.0, shallow depth of field. Warm filmic color grade with muted teal shadows and slight grain. Calm, considered mood. Photorealistic, natural skin texture, no AI artifacts.

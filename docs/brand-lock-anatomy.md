@@ -84,7 +84,37 @@ The shots.schema.json defines text overlay colors as a regex match against `^#[0
 
 This is not pedantry. It is what makes the brand-lock load-bearing. If color was a freeform string, the pack would produce one shot with `color: "deep blue"`, the next with `color: "navy blue"`, the next with `color: "midnight blue"`. Three shots, three slightly different blues, none of which match the brand. Hex precision forces every reference to compose against the same value.
 
-The brand-lock file enforces this at the source. The schema enforces it at the output. The two together produce deterministic color across every run.
+The brand-lock file is the source. `tools/validate_shots.py` enforces it at the output: every
+overlay color has to appear in the brand-lock palette, and a hex that does not is a build
+failure.
+
+That check is a validator, not the schema. `text-overlays.schema.json` can only see that a
+color is six hex digits; it cannot open the brand-lock to find out whether those digits are
+allowed. This document used to claim the schema enforced it, and while it did not, an
+off-palette gray sat in one of this repo's own shipped examples.
+
+## The palette role names are load-bearing
+
+`tools/shots-to-html.py` maps five roles onto the preview's CSS variables:
+
+| Role | Used for |
+|---|---|
+| `Background` | page canvas |
+| `Ink` | primary text |
+| `Accent` | links, emphasis, verdict badges |
+| `Muted` | secondary text |
+| `Rule` | borders and dividers |
+
+Match those words in the Role column and the preview renders in the brand. A row named
+`Primary` or `Surface` instead does not match, and that slot falls back to a generic default.
+Adding extra rows is fine, and a qualifier is fine too: `Accent (warm)` matches `Accent`.
+
+`validate_brand_lock.py` warns when a role is missing rather than failing, because a
+brand-lock is allowed to be unusual. It is a warning you should read.
+
+Font names have the same requirement: put the name in backticks immediately after the label,
+as in `` **Display font:** `Inter Black 900`, headlines ``. The tools read the backticked
+value, and prose before it is ignored.
 
 ## Why archetype is the most undervalued field
 

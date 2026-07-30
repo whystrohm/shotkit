@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "overlays": [
+    {
+      "id": "text_01",
+      "shot_id": "shot_01",
+      "content": "You are the bottleneck.",
+      "font": "Inter Black 900",
+      "size": "display",
+      "weight": "black",
+      "color": "#2A2A32",
+      "position": "right-third",
+      "enter": { "at": 0.3, "animation": "fade-in" },
+      "exit": { "at": 2.8, "animation": "hard-cut" }
+    },
+    {
+      "id": "text_02",
+      "shot_id": "shot_02",
+      "content": "Build the system instead.",
+      "font": "Inter Black 900",
+      "size": "headline",
+      "weight": "black",
+      "color": "#D94F3A",
+      "position": "lower-third",
+      "enter": { "at": 4.0, "animation": "slide-up" },
+      "exit": { "at": 8.0, "animation": "fade-out" }
+    }
+  ]
+}

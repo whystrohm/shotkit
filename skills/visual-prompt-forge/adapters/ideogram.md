@@ -1,6 +1,6 @@
 # Adapter: Ideogram (v3)
 
-> Capability data (length limits, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. If a number here and in `_capabilities.json` disagree, the JSON wins.
+> Capability data (length ceiling, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. `max_prompt_words` there is a ceiling; the range below is the recommended target and has to sit inside it. Where a fact here and a fact in the JSON disagree, the JSON wins, and `tools/validate_capabilities.py` fails the build instead of letting the two drift.
 
 Ideogram is the only generator that reliably renders text inside images. Use it for cases where text-as-image is the deliverable, posters, branded social tiles, signage, packaging mockups. For everything else, default to Flux or Midjourney and composite text separately.
 
@@ -44,6 +44,12 @@ Document in comment block:
 # shot_01, params: ar=9:16, model=V_3, magic_prompt=OFF, style=DESIGN, seed=2840193
 {prompt}
 ```
+
+## Length
+
+Ideogram handles **60–120 words** comfortably. Text-bearing prompts run shorter still:
+the more scene description you stack around a text instruction, the more likely the
+render drops or garbles the copy.
 
 ## Composition pattern (Mode 1, composited)
 

@@ -1,6 +1,6 @@
 # Adapter: GPT Image (1.5 / 2)
 
-> Capability data (length limits, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. If a number here and in `_capabilities.json` disagree, the JSON wins.
+> Capability data (length ceiling, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. `max_prompt_words` there is a ceiling; the range below is the recommended target and has to sit inside it. Where a fact here and a fact in the JSON disagree, the JSON wins, and `tools/validate_capabilities.py` fails the build instead of letting the two drift.
 
 GPT Image rewards paragraph-form prompts with explicit spatial reasoning and complex composition descriptions. It interprets relational language ("to the left of", "behind", "in the foreground") more accurately than any other generator. Choose GPT Image when the brief requires precise scene composition, multiple objects, or accurate text rendering.
 

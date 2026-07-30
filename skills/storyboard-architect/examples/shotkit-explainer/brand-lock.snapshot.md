@@ -1,4 +1,4 @@
-<!-- snapshot taken: 2026-05-08 -->
+<!-- snapshot taken: 2026-05-08T14:34:24Z -->
 <!-- source: brand-packs/whystrohm.md -->
 <!-- storyboard: shotkit-explainer -->
 

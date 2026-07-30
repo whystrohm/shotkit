@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "run_id": "20260508T143424Z-a38d935c",
+  "created_at": "2026-05-08T14:34:24Z",
+  "shotkit_version": "3.0.0",
+  "operator": null,
+  "project": {
+    "title": "shotkit. The Explainer.",
+    "duration_s": 90,
+    "aspect": "16:9",
+    "framework": "founder-explainer"
+  },
+  "inputs": {
+    "shots_ref": "shots.json",
+    "shots_sha256": "09f0e08a1623c033629bbc859cac198599f4823dba14e598d1ce3cdbba6aa21e",
+    "text_overlays_ref": "text-overlays.json",
+    "text_overlays_sha256": "d685bcebbca9d59565bf81c12fc0266084c3f7361c48635f5d7d87183bbe1002",
+    "brand_lock_ref": "brand-lock.snapshot.md",
+    "brand_lock_sha256": "dbb416f3cbac8e40982ad2f260e277487ebe4bf4c783c0aee75045260e4fbf14",
+    "brand_lock_source": "brand-packs/whystrohm.md",
+    "brand_lock_configured": true
+  },
+  "rounds": []
+}

@@ -1,6 +1,6 @@
 # Adapter: Veo 3 (motion-aware video, native audio)
 
-> Capability data (length limits, motion/text support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. If a number here and in `_capabilities.json` disagree, the JSON wins.
+> Capability data (length ceiling, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. `max_prompt_words` there is a ceiling; the range below is the recommended target and has to sit inside it. Where a fact here and a fact in the JSON disagree, the JSON wins, and `tools/validate_capabilities.py` fails the build instead of letting the two drift.
 
 Veo 3 is the dialogue and lipsync model. It is the only adapter that generates **synchronised native audio**, speech, ambience, and sound effects, in the same pass as the video. It also has the strongest prompt adherence and physical realism of the four motion models. It is the most expensive, so reserve it for shots that actually need spoken dialogue, lipsync, or audio baked in. For silent B-roll and camera moves, Kling is the cheaper default.
 

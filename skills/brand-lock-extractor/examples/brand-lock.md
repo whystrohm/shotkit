@@ -21,8 +21,8 @@ Every hex value here is allowed. Anything outside this list is not.
 
 ## Typography
 
-**Display font:** Tiempos Headline, Semibold (serif)
-**Body font:** Söhne, Regular and Medium (sans-serif)
+**Display font:** `Tiempos Headline Semibold`, serif
+**Body font:** `Söhne Regular`, sans-serif, Medium for emphasis
 
 ## Mood adjectives
 

@@ -24,16 +24,29 @@ One file: `preview.html`. Self-contained. Inline CSS. No JavaScript dependencies
 
 ```
 output/
+├── run.json                   # input, for the run id and date
 ├── storyboard.md              # input
 ├── shots.json                 # input
 ├── text-overlays.json         # input
 ├── brand-lock.snapshot.md     # input
+├── frames/round-N/            # input, if generation has happened
+├── critiques/round-N/         # input, for the verdict badges
 └── preview.html               # ← what this skill produces
 ```
 
-If the user has generated images (`output/generated/shot_01.png`, etc.), the HTML references them via relative paths so the file works when the whole `output/` folder is shared.
+If the user has generated frames, the HTML references them via relative paths so the file
+works when the whole `output/` folder is shared. Resolve a shot's frame in this order:
 
-If no generated images exist yet, the HTML uses styled placeholder cards with the prompt text and shot spec, still useful for review and handoff.
+1. An entry in `shot.assets.generated` marked `accepted: true`
+2. The newest entry in `shot.assets.generated`
+3. `frames/round-{highest}/{shot_id}.{png,jpg,jpeg,webp}`
+4. `generated/{shot_id}.{ext}`, the pre-3.0.0 flat layout
+
+Data first, convention second. Reading the path convention first meant the page showed
+whatever file happened to sit there, accepted or rejected, first draft or fifth re-roll.
+
+If no frames exist yet, the HTML uses styled placeholder cards with the shot spec, still
+useful for review and handoff.
 
 ## Workflow
 
@@ -47,10 +60,16 @@ Required:
 
 Optional:
 
+- `run.json` (for the run id and date; without it the page says "not recorded")
 - `storyboard.md` (for narrative context, surface the brief at the top)
-- `output/generated/shot_NN.{png,jpg}` (if image generation has happened)
+- `frames/round-N/{shot_id}.{png,jpg,jpeg,webp}` (if generation has happened)
+- `critiques/round-N/{shot_id}.critique.json` (for verdict badges)
 
-If shots.json doesn't validate against the schema, stop and tell the user.
+Validate before rendering, and stop if it fails:
+
+```bash
+python tools/validate_shots.py output/
+```
 
 ### Step 2. Extract brand parameters
 
@@ -125,28 +144,53 @@ The HTML structure:
 </html>
 ```
 
-### Step 4. Embed images if available
+### Step 4. Embed frames if available
 
-If `output/generated/shot_NN.{png,jpg}` files exist, the HTML references them via relative path:
+Resolve each shot's frame by the order in "What you produce" above, then reference it by a
+path relative to the output root:
 
 ```html
-<img src="generated/shot_01.png" alt="Shot 01: hook beat" />
+<img src="frames/round-2/shot_01.png" alt="shot_01: hook" loading="lazy" />
 ```
 
 This works when the whole output folder is zipped and shared.
 
-For hard-copy print (single file with no folder structure), the skill can offer to inline images as base64. Ask the user which they prefer if generated images are present.
+For hard-copy print (a single file with no folder structure), the skill can offer to inline
+frames as base64. Ask the user which they prefer if frames are present.
 
-If no images exist, render styled placeholder cards showing the framing, subject, and prompt summary. These are still useful for stakeholder review at the storyboard stage.
+If a shot's `assets.generated` entry carries a `sha256` and the file no longer matches it,
+render the frame but say so on the page. That mismatch means the frame changed after it was
+recorded, which is exactly the case where a preview quietly showing the new file is worse
+than one that flags it.
+
+If no frames exist, render styled placeholder cards showing the framing, subject, and shot
+spec. These are still useful for stakeholder review at the storyboard stage.
 
 **Template flag convention.** When composing the per-shot context for `preview.html.tpl`, set exactly one of:
 
-- `has_image: true` and `image_path: "generated/shot_NN.png"`, when a generated image exists
-- `has_no_image: true`, when no generated image exists (renders the placeholder card)
+- `has_image: true` and `image_path: "frames/round-2/shot_NN.png"`, when a frame exists
+- `has_no_image: true`, when none does (renders the placeholder card)
 
 The template uses two parallel `{{#if}}` blocks rather than `{{#if}}/{{else}}` to keep the rendering portable across template engines.
 
-For text overlays, set `on_screen_text: true` (boolean flag) plus the resolved overlay fields (`overlay_content`, `overlay_position`, `overlay_size`, `overlay_font`, `overlay_weight`, `overlay_color`, `overlay_enter_at`, `overlay_enter_anim`, `overlay_exit_at`) when the shot has an `on_screen_text` reference in `shots.json`. Otherwise omit the flag.
+For text overlays, set `has_overlays: true` and an `overlays` array on the shot. Each entry
+carries `id`, `content`, `font`, `weight`, `color`, `size`, `position_class`,
+`position_label`, `enter_at`, `enter_animation`, `exit_at`, `exit_animation`. The template
+iterates that array with `{{#each overlays}}`.
+
+It is an array because `shots.json` lets a shot carry several overlays and
+`text-overlays.json` always did. A single set of `overlay_*` fields could hold one, so the
+second overlay on a shot rendered nowhere and nothing reported it.
+
+For verdict badges, set `has_verdict`, `verdict`, `verdict_round`, and `verdict_class`
+(the lowercased verdict) from the newest critique for that shot under `critiques/`. Omit
+them when the shot has no critique.
+
+**Escape everything.** Subjects, rationales, VO lines, and overlay copy are model-generated
+prose that lands in both text and attribute contexts. One angle bracket in a rationale, or
+one quote in an overlay font name, breaks the page a client is reading.
+`tools/shots-to-html.py` escapes every substitution by default and reserves raw output for
+the inlined CSS alone.
 
 ### Step 5. Render text overlays visually
 
@@ -209,12 +253,41 @@ Before declaring done, verify:
 - [ ] No external network requests fire on load
 - [ ] Print preview produces a clean PDF
 - [ ] Mobile viewport (375px) renders without horizontal scroll
-- [ ] Brand colors appear (palette references work)
+- [ ] Brand colors and fonts come from the brand-lock, not from a fallback
 - [ ] Every shot from `shots.json` is present
-- [ ] Every text overlay from `text-overlays.json` is rendered
-- [ ] Brand-lock snapshot reference appears in footer
-- [ ] Audit timestamp appears
+- [ ] Every overlay referenced by a shot is rendered, including second and third overlays
+- [ ] `brand_lock_ref` from `shots.json` is what the footer links to, not a hardcoded name
+- [ ] The run date and the render date are both shown, and labelled differently
+- [ ] No `{{` remains anywhere in the output
+
+The CLI renderer checks the mechanical half of that list against itself:
+
+```bash
+python tools/shots-to-html.py --selftest
+```
+
+## Two timestamps, not one
+
+"Run" is when the storyboard was produced, read from `run.json`. "Rendered" is when the page
+was written. They are separate lines in the footer and they must stay separate.
+
+Collapsing them into a single "Generated" date meant re-rendering a preview six months later
+restamped the run as today, and the footer went on asserting the page was built against a
+brand-lock on a date that had nothing to do with the frames above it.
+
+If the brand-lock on disk no longer hashes to what `run.json` recorded, say so on the page.
+The reader is looking at frames built against a brand state they can no longer see.
 
 ## Examples
 
-`examples/` contains generated `preview.html` files for the storyboard-architect example projects. Open them in a browser to calibrate quality.
+Generated `preview.html` files ship next to the storyboards that produced them:
+
+- `../storyboard-architect/examples/30s-pain-proof-promise/preview.html`
+- `../storyboard-architect/examples/60s-founder-explainer/preview.html`
+- `../storyboard-architect/examples/shotkit-explainer/preview.html`, including the
+  two-overlay shot
+- `../visual-asset-critic/examples/worked-run/preview.html`, with frames and verdict badges
+
+Open them in a browser to calibrate quality. All four are re-rendered in CI with pinned
+timestamps and the build fails if the output moves, so they are also the regression test for
+this skill's output.

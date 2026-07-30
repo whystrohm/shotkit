@@ -1,0 +1,24 @@
+{
+  "version": "1.1",
+  "run_id": "20260730T142300Z-9f2c1ab4",
+  "round": 2,
+  "created_at": "2026-07-30T15:19:00Z",
+  "shot_id": "shot_02",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "f364bc71f68d16187d0721fbc092450174545e247f2f563a4c45686b4a877f50",
+  "image_ref": "frames/round-2/shot_02.png",
+  "image_sha256": "168ccb9e622e99e48a2a13f05a982ef906a32f4eee5a79974913f555789c6296",
+  "prompt_ref": "prompts/round-2/revised-flux.txt",
+  "prompt_sha256": "b5cc92894ce1c951739cf01cdc32415e26ef0a5f23a5f783dafbe2d6861c3748",
+  "generator": "flux",
+  "model_version": "2 Pro",
+  "seed": 481207,
+  "verdict": "ACCEPT",
+  "confidence": "HIGH",
+  "working": [
+    "Reframed to MCU; the subject now carries the payoff beat.",
+    "Hands are anatomically correct in this sample.",
+    "Character, environment, and lighting still match the series_lock anchors."
+  ],
+  "issues": []
+}

@@ -1,0 +1,64 @@
+{
+  "version": "1.0",
+  "run_id": "20260730T142300Z-9f2c1ab4",
+  "created_at": "2026-07-30T14:23:00Z",
+  "shotkit_version": "3.0.0",
+  "operator": "worked-example",
+  "project": {
+    "title": "Worked Run, Two Shots",
+    "duration_s": 8,
+    "aspect": "9:16",
+    "framework": "custom"
+  },
+  "inputs": {
+    "shots_ref": "shots.json",
+    "shots_sha256": "24e5babc987ea595076aba90316bad23bdcf64a4f1e80ee0d4bef2fd29b55095",
+    "text_overlays_ref": "text-overlays.json",
+    "text_overlays_sha256": "5071e111d5a64c3dcfb3548061cabe7e00ec7505ce01314e85a0cd8328f0b89d",
+    "brand_lock_ref": "brand-lock.snapshot.md",
+    "brand_lock_sha256": "f364bc71f68d16187d0721fbc092450174545e247f2f563a4c45686b4a877f50",
+    "brand_lock_source": "brand-packs/whystrohm.md",
+    "brand_lock_configured": true
+  },
+  "generators": [
+    {
+      "id": "flux",
+      "model_version": "2 Pro",
+      "capabilities_sha256": "948776594cafead0455c9b3f12e47bdd58f27f1f9c5d49a93d908c0b08377ece"
+    }
+  ],
+  "rounds": [
+    {
+      "round": 1,
+      "started_at": "2026-07-30T14:23:00Z",
+      "reason": "initial",
+      "prompts": [
+        {
+          "generator": "flux",
+          "ref": "prompts/round-1/flux.txt",
+          "sha256": "39b8c4ef214896b3d410449516632028f2f0e8738c0ac47c50c9c85248f31229",
+          "shot_ids": [
+            "shot_01",
+            "shot_02"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "started_at": "2026-07-30T15:02:00Z",
+      "reason": "shot_02 came back REVISE on Shot Spec framing and a Technical hand defect",
+      "prompts": [
+        {
+          "generator": "flux",
+          "ref": "prompts/round-2/revised-flux.txt",
+          "sha256": "b5cc92894ce1c951739cf01cdc32415e26ef0a5f23a5f783dafbe2d6861c3748",
+          "shot_ids": [
+            "shot_02"
+          ]
+        }
+      ],
+      "post_only_shots": []
+    }
+  ]
+}

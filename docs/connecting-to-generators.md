@@ -13,16 +13,16 @@ This is deliberate. This doc explains why, and how to wire up the generator side
    storyboard-architect ──▶ shots.json
                             │
                             ▼
-                  visual-prompt-forge ──▶ prompts/midjourney.txt
-                                          prompts/flux.txt
-                                          prompts/ideogram.txt
-                                          prompts/gpt-image.txt
-                                          prompts/nano-banana.txt
-                                          prompts/seedream.txt
-                                          prompts/kling.txt
-                                          prompts/veo.txt
-                                          prompts/seedance.txt
-                                          prompts/hailuo.txt
+                  visual-prompt-forge ──▶ prompts/round-1/midjourney.txt
+                                          prompts/round-1/flux.txt
+                                          prompts/round-1/ideogram.txt
+                                          prompts/round-1/gpt-image.txt
+                                          prompts/round-1/nano-banana.txt
+                                          prompts/round-1/seedream.txt
+                                          prompts/round-1/kling.txt
+                                          prompts/round-1/veo.txt
+                                          prompts/round-1/seedance.txt
+                                          prompts/round-1/hailuo.txt
 
       ◀────── this is where the skill pack stops ──────▶
 
@@ -40,15 +40,15 @@ Everything to the left of that line is the methodology. Everything to the right 
 
 **The methodology survives generator change.** A prompt file produced for Flux today is still a usable prompt for whatever replaces Flux. The shot structure in `shots.json` is generator-agnostic. The brand-lock is generator-agnostic. Only the adapter layer touches generator-specific syntax, and adapters are the easiest layer to update.
 
-**Open methodology, paid pipeline.** This is the WhyStrohm thesis. The methodology is what we publish. The operated pipeline (running generators, managing rendering, automated publishing) is what WhyStrohm offers commercially at $3,000/month.
+**Open methodology, paid pipeline.** This is the WhyStrohm thesis. The methodology is what we publish. The operated pipeline (running generators, managing rendering, publishing) is what WhyStrohm offers commercially. Current scope and pricing live at [whystrohm.com](https://whystrohm.com).
 
 ## How to wire up image generation
 
-The seven adapters in `visual-prompt-forge` produce prompts in the syntax each generator expects. Here's what each adapter pairs with in production:
+The ten adapters in `visual-prompt-forge` produce prompts in the syntax each generator expects, six for stills and four for motion. Here's what each adapter pairs with in production:
 
 ### Midjourney
 
-The `prompts/midjourney.txt` file is designed for paste into Discord or the Midjourney web app. Limited API access as of Q2 2026, so most teams use:
+The `prompts/round-1/midjourney.txt` file is designed for paste into Discord or the Midjourney web app. Limited API access as of Q2 2026, so most teams use:
 
 - **Discord**, paste prompts manually for hero work
 - **PiAPI** or **useapi.net**, third-party Midjourney API wrappers, accept the same prompt syntax
@@ -56,7 +56,7 @@ The `prompts/midjourney.txt` file is designed for paste into Discord or the Midj
 
 ### Flux
 
-The `prompts/flux.txt` file works on multiple platforms:
+The `prompts/round-1/flux.txt` file works on multiple platforms:
 
 - **fal.ai**, fastest for series work, supports all Flux variants
 - **Replicate**, broader model selection, slightly slower
@@ -67,7 +67,7 @@ The prompt syntax is identical across all four surfaces. Pass the params alongsi
 
 ### Ideogram
 
-The `prompts/ideogram.txt` file works on:
+The `prompts/round-1/ideogram.txt` file works on:
 
 - **Ideogram official API**, direct, all features
 - **fal.ai**, Ideogram v3 with a clean wrapper
@@ -77,7 +77,7 @@ For text-in-image work (Mode 2), Ideogram is the right choice. For everything el
 
 ### GPT Image
 
-The `prompts/gpt-image.txt` file feeds into:
+The `prompts/round-1/gpt-image.txt` file feeds into:
 
 - **OpenAI Images API**, standard `images.generate` endpoint
 - **ChatGPT Plus** UI for one-off work
@@ -86,7 +86,7 @@ Strong on prompt accuracy and spatial reasoning. Use for shots where composition
 
 ### Nano Banana (Gemini 2.5 Flash Image)
 
-The `prompts/nano-banana.txt` file feeds into:
+The `prompts/round-1/nano-banana.txt` file feeds into:
 
 - **Gemini API direct**, Google's native surface
 - **Vertex AI**, for enterprise GCP integration
@@ -97,7 +97,7 @@ Strongest for image-to-image work and rapid variation generation. Pair with hero
 
 ### Seedream
 
-The `prompts/seedream.txt` file feeds into:
+The `prompts/round-1/seedream.txt` file feeds into:
 
 - **fal.ai**, `bytedance/seedream-4.5` and `seedream-4.0`
 - **Replicate**, same models
@@ -109,10 +109,10 @@ Use for high-volume series work where cost matters more than peak quality.
 
 The motion adapters each write their own per-shot prompt file. All run on fal.ai:
 
-- **Kling 3.0** (`prompts/kling.txt`), the default. Best camera-motion realism per dollar, strong image-to-video.
-- **Veo 3** (`prompts/veo.txt`), dialogue and lipsync with synchronised native audio.
-- **Seedance 2.0** (`prompts/seedance.txt`), multi-shot sequences in one generation.
-- **Hailuo 02 Pro** (`prompts/hailuo.txt`), cheap, fast iteration to find the shot before a final-tier re-roll.
+- **Kling 3.0** (`prompts/round-1/kling.txt`), the default. Best camera-motion realism per dollar, strong image-to-video.
+- **Veo 3** (`prompts/round-1/veo.txt`), dialogue and lipsync with synchronised native audio.
+- **Seedance 2.0** (`prompts/round-1/seedance.txt`), multi-shot sequences in one generation.
+- **Hailuo 02 Pro** (`prompts/round-1/hailuo.txt`), cheap, fast iteration to find the shot before a final-tier re-roll.
 
 For storyboard-to-video pipelines. Generated clips are raw material: assemble to timing, composite text overlays, grade, and add audio in post.
 

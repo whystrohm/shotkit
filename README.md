@@ -17,6 +17,10 @@ That installs all five skills into `~/.claude/skills/`. Restart your Claude Code
 
 **Watch shotkit explain itself.** The 90-second explainer was made *by* shotkit. The storyboard, shots.json, brand-lock snapshot, per-generator prompts, and rendered preview live at [`skills/storyboard-architect/examples/shotkit-explainer/`](skills/storyboard-architect/examples/shotkit-explainer/). Full breakdown at [whystrohm.com/blog/you-dont-have-a-content-problem](https://whystrohm.com/blog/you-dont-have-a-content-problem).
 
+The rendered video and the demo GIF above are from v0.1.0 and have not been re-cut: they show
+seven adapters including Runway/Sora, which was discontinued and replaced by the fal.ai motion
+lineup. The storyboard files beside them are current.
+
 ---
 
 ## What it does
@@ -25,11 +29,12 @@ You describe a video. The kit produces a complete pre-production package:
 
 ```
 output/
+├── run.json                   # Run id + every input pinned by content hash
 ├── storyboard.md              # Human-readable, shot-by-shot
 ├── shots.json                 # Schema-validated, machine-readable
 ├── text-overlays.json         # On-screen text + timing
 ├── brand-lock.snapshot.md     # Frozen brand state at generation time
-├── prompts/                   # Per-generator prompts, copy-paste ready
+├── prompts/round-1/           # Per-generator prompts, copy-paste ready
 │   ├── midjourney.txt
 │   ├── flux.txt
 │   ├── ideogram.txt
@@ -40,10 +45,16 @@ output/
 │   ├── veo.txt                # Motion: dialogue/lipsync + native audio
 │   ├── seedance.txt           # Motion: multi-shot sequences
 │   └── hailuo.txt             # Motion: budget iteration
+├── frames/round-1/            # Your generated frames
+├── critiques/round-1/         # One verdict per shot, hashing what it reviewed
 └── preview.html               # Single file. Shareable. Printable. Brand-aware.
 ```
 
 Files. Not panels. Not a SaaS dashboard. Files an editor, agency, or developer can act on without asking follow-up questions.
+
+Everything is addressed by round and shot, so no two writes land on the same path. Two people
+can work one project without overwriting each other's verdicts, and round 2 never destroys the
+prompt that produced round 1's frames.
 
 ---
 
@@ -83,7 +94,7 @@ Read more in [`docs/why-this-exists.md`](docs/why-this-exists.md).
 
 The category isn't empty. It's full of tools that solve the wrong half.
 
-- **Brand-lock snapshots.** Every storyboard freezes brand state at run time. Six months later, you can still answer "what brand version was this approved against." None of the SaaS tools do this.
+- **Provenance you can check, not just claim.** Every run freezes brand state and records a content hash for every input, prompt, and reviewed frame. Six months later you can answer "what brand version was this built against" and *prove* the files have not moved since, because `validate_provenance.py` recomputes the hashes. A frame regenerated after its review fails that check instead of passing quietly on a stale ACCEPT.
 - **Ten generators, one spec.** The same shot data adapts to six stills generators (Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream) and four motion-video models (Kling, Veo, Seedance, Hailuo). Every other storyboard skill on GitHub locks to one generator family.
 - **Files, not panels.** The output is structured Markdown and JSON an editor, motion designer, or developer can act on. No dashboard, no export step, no platform.
 - **Methodology over pipeline.** The pack stops at prompts and specs. Generator APIs churn monthly, the methodology stays stable. The pipeline lives where it belongs, in the operator's tooling.
@@ -107,14 +118,22 @@ A complete worked example lives at [`skills/storyboard-architect/examples/30s-pa
 The complete loop, idea to revised image:
 
 1. **Brief** describes the video.
-2. **`storyboard-architect`** produces `storyboard.md`, `shots.json`, `text-overlays.json`, `brand-lock.snapshot.md`.
-3. **`visual-prompt-forge`** writes a prompt file per generator under `output/prompts/`.
+2. **`storyboard-architect`** produces `run.json`, `storyboard.md`, `shots.json`, `text-overlays.json`, `brand-lock.snapshot.md`.
+3. **`visual-prompt-forge`** writes a prompt file per generator under `output/prompts/round-1/`.
 4. **`tools/copy-prompt.py`** pipes one shot's prompt to the clipboard. Paste into the generator UI.
-5. **The generator** returns an image.
-6. **`visual-asset-critic`** scores the image against the shot spec and brand-lock. Returns ACCEPT, REVISE, or REJECT with revision notes.
-7. Revise the prompt or the shot and re-run.
+5. **The generator** returns an image. It goes in `output/frames/round-1/shot_NN.png`.
+6. **`visual-asset-critic`** scores the frame against the shot spec and brand-lock, writing `critiques/round-1/shot_NN.critique.json` with the hash of the frame, the prompt, and the brand-lock it judged.
+7. **`tools/validate_provenance.py`** re-checks every hash and reports which shots are still open.
+8. On REVISE, **`visual-prompt-forge` revision mode** re-emits prompts for only those shots into `round-2/`. On REJECT, it stops and asks: a REJECT means no fix path exists.
+9. Repeat from 5 until `--require-accept` exits 0.
 
-Files at every step. Reproducible end-to-end.
+```bash
+python tools/validate_provenance.py output/ --require-accept || echo "work remains"
+```
+
+Files at every step. See [`docs/the-qa-loop.md`](docs/the-qa-loop.md) for the full loop and
+[`skills/visual-asset-critic/examples/worked-run/`](skills/visual-asset-critic/examples/worked-run/)
+for a real two-round output tree with hashes.
 
 ---
 
@@ -124,7 +143,7 @@ Four ideas. None negotiable.
 
 **1. Five-layer prompt anatomy.** Every image prompt is composed from locked layers: Brand Lock, Series Lock, Shot Spec, Text Layer, Generator Adapter. Change a brand color once. Every prompt updates. See [`docs/the-five-layer-prompt.md`](docs/the-five-layer-prompt.md).
 
-**2. Versioned brand state.** Every storyboard run snapshots the brand-lock file it was built against. Brand changes later? You can see exactly what version this storyboard targeted. Defense-grade audit trail applied to commercial output. See [`docs/audit-trail-pattern.md`](docs/audit-trail-pattern.md).
+**2. Versioned brand state, pinned by hash.** Every run snapshots the brand-lock it was built against and records its SHA-256 in `run.json`. Brand changes later? The snapshot stays frozen, and if someone overwrites it, the hash mismatch says so. A filename alone never proved anything, which is the whole reason the hashes are there. See [`docs/audit-trail-pattern.md`](docs/audit-trail-pattern.md).
 
 **3. Text never gets baked into images.** On-screen copy is a separate layer with its own timing, font, and animation spec. Always composited after generation. AI text rendering is not production-ready in 2026; treat text as a separate compositing pass.
 
@@ -214,12 +233,16 @@ Tested against Claude Opus 4.7 and Claude Sonnet 4.6.
 
 ## Roadmap
 
-v2.0.0 (unreleased) closes the QA loop: structured `critique.json` output, a guarded capability matrix, prompt-forge revision mode, and the fal.ai motion lineup (Kling / Veo / Seedance / Hailuo). See the [changelog](CHANGELOG.md). Still on the roadmap:
+v3.0.0 makes the audit trail checkable: content hashes on every input and reviewed frame, an
+output tree addressed by round and shot so concurrent work cannot overwrite itself, and
+validators that run against a real project instead of only against the repo. See the
+[changelog](CHANGELOG.md). Still on the roadmap:
 
-- **`brand-lock-extractor`**. Upload a brand book (PDF, screenshots, URL), get a `brand-lock.md` back. The cold-start killer.
 - **PDF + PPTX exporters**. Siblings to `storyboard-html-preview` for client review and agency handoff.
-- **User-supplied asset folder**. The `shot.assets` field landed in shots schema v1.1; wiring the HTML preview and critic to consume it is the remaining work.
+- **Approval log**. `run.json` records what was built and reviewed, not who signed it off. Approver identity and timestamp is the missing link for regulated handoffs.
 - **Duration rescale workflow**. Change a project from :30 to :60 and have the timing redistribute correctly across the beat framework.
+- **Worked examples for the motion adapters**. `one-shot-all-adapters/` covers the six stills generators plus Kling; Veo, Seedance, and Hailuo have prompt examples in their adapter files but no side-by-side entry.
+- **A CLI or MCP surface**, so the pipeline runs outside Claude-skill hosts.
 
 If any of these are blocking for you, open an issue. Real use cases jump the queue.
 
@@ -233,18 +256,20 @@ PRs welcome for:
 - New beat frameworks (`skills/storyboard-architect/references/beat-frameworks.md`)
 - Brand pack examples (`brand-packs/examples/`)
 
-Open an issue first for anything that changes the file schemas. Run validators locally before opening a PR:
+Open an issue first for anything that changes the file schemas. Run the checks locally before opening a PR:
 
 ```bash
 pip install pyyaml jsonschema
-python tools/validate_skills.py
-python tools/validate_schemas.py
-python tools/validate_brand_lock.py brand-packs/_template.md
-python tools/validate_capabilities.py
-python tools/validate_critique.py --selftest
+./tools/check.sh
 ```
 
-CI runs all of these on every PR.
+That is the same entry point CI runs, so green locally means green on the PR. It covers
+frontmatter, schemas, capability-to-adapter parity, brand-locks, storyboard instances, the
+critique gate, the provenance chain, and both shipped tools.
+
+New checks need a `--selftest` that constructs a failing fixture and proves the check catches
+it. A validator nobody can see fail is a validator nobody should trust. See
+[`tools/README.md`](tools/README.md).
 
 ---
 

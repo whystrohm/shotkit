@@ -1,7 +1,7 @@
 {
-  "$schema_note": "Capability matrix for visual-prompt-forge adapters. Generator models churn monthly. When you re-verify an adapter, bump its model_version and last_verified date here, then reconcile the prose adapter file. This file is the single source of truth for 'what each generator can do'; the .md files are the how-to-prompt guidance.",
-  "version": "1.0",
-  "matrix_last_reviewed": "2026-06-18",
+  "$schema_note": "Capability matrix for visual-prompt-forge adapters. Generator models churn monthly. When you re-verify an adapter, bump its model_version and last_verified date here, then reconcile the prose adapter file. This file is the single source of truth for 'what each generator can do'; the .md files are the how-to-prompt guidance. max_prompt_words is a ceiling, not a target: an adapter .md may recommend a narrower range, but it may never advertise more than the ceiling. tools/validate_capabilities.py enforces that relationship and checks that each .md documents the aspect_param named here.",
+  "version": "1.1",
+  "matrix_last_reviewed": "2026-07-30",
   "generators": [
     {
       "id": "midjourney",
@@ -9,7 +9,7 @@
       "model_version": "v7",
       "last_verified": "2026-05-08",
       "prompt_style": "keyword",
-      "max_prompt_words": 80,
+      "max_prompt_words": 100,
       "supports_text_render": false,
       "supports_motion": false,
       "supports_character_ref": true,
@@ -17,7 +17,7 @@
       "supports_negative_prompt": true,
       "aspect_param": "--ar",
       "api_access": "limited",
-      "notes": "Short high-signal phrases. Over 100 words underperforms. --cref/--sref for series consistency."
+      "notes": "Short high-signal phrases. 100 words is the ceiling, past which signal drops off; the adapter recommends 40 to 80. --cref/--sref for series consistency."
     },
     {
       "id": "flux",
@@ -57,7 +57,7 @@
       "model_version": "1.5/2",
       "last_verified": "2026-05-08",
       "prompt_style": "paragraph",
-      "max_prompt_words": 250,
+      "max_prompt_words": 300,
       "supports_text_render": true,
       "supports_motion": false,
       "supports_character_ref": true,
@@ -79,9 +79,9 @@
       "supports_character_ref": true,
       "supports_style_ref": true,
       "supports_negative_prompt": false,
-      "aspect_param": "aspect_ratio",
+      "aspect_param": "aspectRatio",
       "api_access": "full",
-      "notes": "Fast, cheap, strong editing/consistency via reference images. Good for high-volume iteration."
+      "notes": "Fast, cheap, strong editing/consistency via reference images. Good for high-volume iteration. Parameter name is camelCase here, unlike the fal.ai models; it ignores --ar."
     },
     {
       "id": "seedream",

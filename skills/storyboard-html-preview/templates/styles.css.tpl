@@ -389,6 +389,47 @@ h1, h2, h3 {
   gap: 16px;
 }
 
+/* ─── QA verdict ─── */
+
+.sb-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border: 1px solid var(--sb-color-rule);
+  border-radius: 2px;
+  font-family: var(--sb-font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-color-muted);
+  white-space: nowrap;
+}
+
+.sb-verdict-accept { border-color: var(--sb-color-ink); color: var(--sb-color-ink); }
+.sb-verdict-revise { border-color: var(--sb-color-accent); color: var(--sb-color-accent); }
+.sb-verdict-reject {
+  border-color: var(--sb-color-accent);
+  background: var(--sb-color-accent);
+  color: var(--sb-color-bg);
+}
+
+.sb-verdict-round { font-weight: 400; letter-spacing: 0.04em; opacity: 0.75; }
+
+.sb-provenance {
+  max-width: 960px;
+  margin: 0 auto;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--sb-color-muted);
+}
+
+.sb-provenance code {
+  font-size: 10px;
+  word-break: break-all;
+}
+
 /* ─── Responsive ─── */
 
 @media (max-width: 720px) {

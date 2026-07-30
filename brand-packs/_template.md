@@ -26,9 +26,13 @@ Add more rows if the brand has more named colors. Don't add more than 8, past th
 
 ## Typography
 
-**Display font:** font name, weights used (e.g. `Inter Black 900`)
-**Body font:** font name, weights used (e.g. `Inter Medium 500`)
-**Mono font (optional):** for code/data
+**Display font:** `______`
+**Body font:** `______`
+**Mono font (optional):** `______`
+
+Put the font name and weight in backticks immediately after the label, e.g.
+`` **Display font:** `Inter Black 900`, headlines and hooks ``. The HTML preview and
+the overlay-font check read that backticked value; anything before it is prose.
 
 Two fonts max for production work. Three only if one is reserved for code/data.
 
