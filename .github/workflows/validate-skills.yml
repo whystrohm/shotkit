@@ -1,10 +1,19 @@
 name: validate-skills
 
+# Runs on every branch, not just main. Filtering pushes to main meant a feature branch
+# got no CI at all until someone opened a pull request, so the first signal arrived after
+# the review had already started. Contributors should find out from the branch.
 on:
+  push:
+    branches: ['**']
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
+
+# A pull-request branch would otherwise run twice per push, once for each trigger.
+# Superseded runs are cancelled rather than left to finish.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
