@@ -2,15 +2,15 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://whystrohm.com/schemas/shotkit/shots.schema.json",
   "title": "Shots",
-  "description": "Structured shot list for a storyboard. Versioned, audit-friendly, generator-agnostic.",
+  "description": "Structured shot list for a storyboard. Versioned, audit-friendly, generator-agnostic. Write-once: the QA loop never mutates this file, so its hash in run.json stays valid for the life of the project. Cross-field rules this schema cannot express (end greater than start, shots tiling project.duration_s, on_screen_text resolving into text-overlays.json, overlay colors coming from the brand-lock palette) are enforced by tools/validate_shots.py.",
   "type": "object",
   "required": ["version", "project", "brand_lock_ref", "series_lock", "shots"],
   "additionalProperties": false,
   "properties": {
     "version": {
       "type": "string",
-      "enum": ["1.0", "1.1"],
-      "description": "1.1 adds optional shot.assets and top-level meta. Backward compatible: every valid 1.0 file is a valid 1.1 file."
+      "enum": ["1.0", "1.1", "1.2"],
+      "description": "1.1 added optional shot.assets and top-level meta. 1.2 added content hashes and critique back-references to shot.assets.generated, and allows on_screen_text to be an array so a shot can carry more than one overlay. Backward compatible: every valid 1.0 file is a valid 1.2 file."
     },
     "meta": {
       "type": "object",
@@ -36,7 +36,8 @@
     },
     "brand_lock_ref": {
       "type": "string",
-      "description": "Relative path to brand-lock.snapshot.md within the output directory."
+      "minLength": 1,
+      "description": "Path to brand-lock.snapshot.md, relative to the output directory root. The content hash of that file lives in run.json:inputs.brand_lock_sha256, which is what actually pins the brand state. This field alone is a name, not a proof."
     },
     "series_lock": {
       "type": "object",
@@ -67,7 +68,11 @@
           },
           "beat": { "type": "string", "minLength": 1 },
           "start": { "type": "number", "minimum": 0 },
-          "end": { "type": "number", "exclusiveMinimum": 0 },
+          "end": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Must be greater than start. JSON Schema cannot compare two sibling properties, so tools/validate_shots.py enforces it."
+          },
           "framing": {
             "type": "string",
             "enum": ["ECU", "CU", "MCU", "MS", "MLS", "WS", "EWS"]
@@ -83,11 +88,13 @@
               "pan-left", "pan-right",
               "tilt-up", "tilt-down",
               "handheld", "orbit", "whip", "rack"
-            ]
+            ],
+            "description": "Camera movement. 'rack' here means a rack focus used as the shot's motion. The identically named depth_of_field value describes the focus state instead."
           },
           "depth_of_field": {
             "type": "string",
-            "enum": ["shallow", "deep", "rack"]
+            "enum": ["shallow", "deep", "rack"],
+            "description": "Focus behaviour. 'rack' means focus shifts mid-shot."
           },
           "subject": { "type": "string", "minLength": 1 },
           "environment_ref": {
@@ -101,8 +108,15 @@
           "on_screen_text": {
             "oneOf": [
               { "type": "null" },
-              { "type": "string", "pattern": "^text_[0-9]{2,3}$" }
-            ]
+              { "type": "string", "pattern": "^text_[0-9]{2,3}$" },
+              {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": { "type": "string", "pattern": "^text_[0-9]{2,3}$" }
+              }
+            ],
+            "description": "Overlay id, array of overlay ids for a shot carrying several, or null. Added the array form in 1.2: text-overlays.json has always allowed many overlays per shot, and a single string could not represent that."
           },
           "vo": {
             "oneOf": [
@@ -113,13 +127,27 @@
           "rationale": { "type": "string", "minLength": 1 },
           "assets": {
             "type": "object",
-            "description": "Optional. Frames associated with this shot. Lets visual-asset-critic and the HTML preview find images without a schema bump. Added in 1.1.",
+            "description": "Optional. Frames associated with this shot. Read by tools/shots-to-html.py and tools/validate_provenance.py; both fall back to the frames/round-N/{shot_id}.{ext} path convention when this block is absent. Added in 1.1, given content hashes and critique back-references in 1.2.",
             "additionalProperties": false,
             "properties": {
               "source": {
                 "type": "array",
-                "description": "User-supplied images for this shot (skip generation).",
-                "items": { "type": "string" }
+                "description": "User-supplied images for this shot (skip generation). Paths relative to the output directory root.",
+                "items": {
+                  "oneOf": [
+                    { "type": "string", "minLength": 1 },
+                    {
+                      "type": "object",
+                      "required": ["path"],
+                      "additionalProperties": false,
+                      "properties": {
+                        "path": { "type": "string", "minLength": 1 },
+                        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+                        "note": { "type": "string", "minLength": 1 }
+                      }
+                    }
+                  ]
+                }
               },
               "generated": {
                 "type": "array",
@@ -128,8 +156,37 @@
                   "required": ["path"],
                   "additionalProperties": false,
                   "properties": {
-                    "path": { "type": "string" },
-                    "generator": { "type": "string" },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Relative to the output directory root."
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$",
+                      "description": "SHA-256 of the frame. Without this, 'accepted' is an assertion about a filename."
+                    },
+                    "round": { "type": "integer", "minimum": 1 },
+                    "generator": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9][a-z0-9-]*$",
+                      "description": "Must match an id in visual-prompt-forge/adapters/_capabilities.json."
+                    },
+                    "model_version": { "type": "string", "minLength": 1 },
+                    "seed": {
+                      "oneOf": [
+                        { "type": "null" },
+                        { "type": "integer" },
+                        { "type": "string", "minLength": 1 }
+                      ]
+                    },
+                    "prompt_ref": { "type": "string", "minLength": 1 },
+                    "prompt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+                    "critique_ref": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Path to the critique.json that produced 'accepted'. An accepted frame with no critique_ref is an unsourced approval."
+                    },
                     "accepted": { "type": "boolean" }
                   }
                 }

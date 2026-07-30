@@ -15,12 +15,12 @@
   /* Brand-lock variables, get substituted at compose time */
   --sb-color-bg: #F5F0E8;
   --sb-color-ink: #2A2A32;
-  --sb-color-accent: #3B82F6;
+  --sb-color-accent: #D94F3A;
   --sb-color-muted: #7A7580;
   --sb-color-rule: #E8E1D4;
 
-  --sb-font-display: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --sb-font-body: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sb-font-display: Inter Black 900, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sb-font-body: Inter Medium 500, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --sb-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --sb-radius: 6px;
@@ -397,6 +397,47 @@ h1, h2, h3 {
   gap: 16px;
 }
 
+/* ─── QA verdict ─── */
+
+.sb-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border: 1px solid var(--sb-color-rule);
+  border-radius: 2px;
+  font-family: var(--sb-font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-color-muted);
+  white-space: nowrap;
+}
+
+.sb-verdict-accept { border-color: var(--sb-color-ink); color: var(--sb-color-ink); }
+.sb-verdict-revise { border-color: var(--sb-color-accent); color: var(--sb-color-accent); }
+.sb-verdict-reject {
+  border-color: var(--sb-color-accent);
+  background: var(--sb-color-accent);
+  color: var(--sb-color-bg);
+}
+
+.sb-verdict-round { font-weight: 400; letter-spacing: 0.04em; opacity: 0.75; }
+
+.sb-provenance {
+  max-width: 960px;
+  margin: 0 auto;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--sb-color-muted);
+}
+
+.sb-provenance code {
+  font-size: 10px;
+  word-break: break-all;
+}
+
 /* ─── Responsive ─── */
 
 @media (max-width: 720px) {
@@ -596,33 +637,56 @@ h1, h2, h3 {
 
 <header class="sb-header">
   <div class="sb-header-inner">
-    <div class="sb-eyebrow">Storyboard · v1.0</div>
+    <div class="sb-eyebrow">Storyboard · shots 1.2</div>
     <h1 class="sb-title">shotkit. The Explainer.</h1>
     <dl class="sb-meta">
       <div><dt>Duration</dt><dd>90s</dd></div>
       <div><dt>Aspect</dt><dd>16:9</dd></div>
       <div><dt>Framework</dt><dd>founder-explainer</dd></div>
-      <div><dt>Generated</dt><dd>2026-05-08 13:45 UTC</dd></div>
+      <div><dt>Run</dt><dd>2026-05-08T14:34:24Z</dd></div>
     </dl>
   </div>
 </header>
 
 <nav class="sb-nav" aria-label="Shot navigation">
-  <ul><li><a href="#shot_01">01</a></li>
-<li><a href="#shot_02">02</a></li>
-<li><a href="#shot_03">03</a></li>
-<li><a href="#shot_04">04</a></li>
-<li><a href="#shot_05">05</a></li>
-<li><a href="#shot_06">06</a></li></ul>
+  <ul>
+    
+    <li><a href="#shot_01">01</a></li>
+    
+    <li><a href="#shot_02">02</a></li>
+    
+    <li><a href="#shot_03">03</a></li>
+    
+    <li><a href="#shot_04">04</a></li>
+    
+    <li><a href="#shot_05">05</a></li>
+    
+    <li><a href="#shot_06">06</a></li>
+    
+  </ul>
 </nav>
+
+
 
 <section class="sb-section sb-series-lock">
   <h2>Series lock</h2>
   <dl class="sb-series-grid">
-    <div><dt>Character</dt><dd>no human subject. typography-driven explainer. document-control aesthetic with cream canvas, ink type, coral accents on signature beats</dd></div>
-    <div><dt>Environment</dt><dd>operator-grade dashboard. cream background, JetBrains Mono headers, Inter body, single coral accent per beat. no clutter, no decorative imagery</dd></div>
-    <div><dt>Lighting</dt><dd>even diffuse. no shadow rolloff. flat operator-doc grading throughout</dd></div>
-    <div><dt>Color grade</dt><dd>cream highlights (#F5F0E8), ink shadows (#2A2A32), coral (#D94F3A) reserved for signature beats only. no saturation drift</dd></div>
+    <div>
+      <dt>Character</dt>
+      <dd>no human subject. typography-driven explainer. document-control aesthetic with cream canvas, ink type, coral accents on signature beats</dd>
+    </div>
+    <div>
+      <dt>Environment</dt>
+      <dd>operator-grade dashboard. cream background, JetBrains Mono headers, Inter body, single coral accent per beat. no clutter, no decorative imagery</dd>
+    </div>
+    <div>
+      <dt>Lighting</dt>
+      <dd>even diffuse. no shadow rolloff. flat operator-doc grading throughout</dd>
+    </div>
+    <div>
+      <dt>Color grade</dt>
+      <dd>cream highlights (#F5F0E8), ink shadows (#2A2A32), coral (#D94F3A) reserved for signature beats only. no saturation drift</dd>
+    </div>
   </dl>
 </section>
 
@@ -631,173 +695,390 @@ h1, h2, h3 {
   
   <article class="sb-shot" id="shot_01">
     <div class="sb-shot-frame aspect-16-9">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">01</div><div class="sb-placeholder-meta">WS · eye-level · static</div></div>
-      <div class="sb-overlay sb-overlay-center"><span class="sb-overlay-text" style='font-family: Inter Black 900; font-weight: black; color: #2A2A32;'>You don't have a content problem.
-You have a pre-production problem.</span></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">01</div>
+        <div class="sb-placeholder-meta">WS · eye-level · static</div>
+      </div>
+      
+
+      
+      <div class="sb-overlay sb-overlay-center">
+        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #2A2A32;">You don&#x27;t have a content problem.
+You have a pre-production problem.</span>
+      </div>
+      
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">01</span>
         <span class="sb-shot-time">0.0–12.0s</span>
         <span class="sb-shot-beat">pain</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>WS</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>static</dd></div>
+        
         <div><dt>DOF</dt><dd>deep</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>vague founder brief types into the left panel in JetBrains Mono. cursor blinks. then a chaos cut shows four image generators producing slightly off-brand outputs in a 2x2 grid. each tile renders the same shot with a different palette, framing, and font choice. the misfire is the visual.</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>vague founder brief types into the left panel in JetBrains Mono. cursor blinks. then a chaos cut shows four image generators producing slightly off-brand outputs in a 2x2 grid. each tile renders the same shot with a different palette, framing, and font choice. the misfire is the visual.</p>
+      </div>
+
       
-      <div class="sb-shot-text"><h3>On-screen text</h3><p class="sb-text-content">"You don't have a content problem.
-You have a pre-production problem."</p><p class="sb-text-meta">display · center · enter 6.0s (fade-in) · exit 11.5s</p></div>
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>Cold open names the failure mode every founder recognizes. Vague brief plus model-roulette equals brand drift. The 2x2 grid does the work text cannot. Static framing keeps the focus on the diagnosis.</p></div>
+
+      
+      <div class="sb-shot-text">
+        <h3>On-screen text</h3>
+        
+        <p class="sb-text-content">"You don&#x27;t have a content problem.
+You have a pre-production problem."</p>
+        <p class="sb-text-meta">text_01 · display · center · enter 6.0s (fade-in) · exit 11.5s (fade-out)</p>
+        
+      </div>
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>Cold open names the failure mode every founder recognizes. Vague brief plus model-roulette equals brand drift. The 2x2 grid does the work text cannot. Static framing keeps the focus on the diagnosis.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_02">
     <div class="sb-shot-frame aspect-16-9">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">02</div><div class="sb-placeholder-meta">MS · eye-level · static</div></div>
-      <div class="sb-overlay sb-overlay-upper-third"><span class="sb-overlay-text" style='font-family: Inter Black 900; font-weight: black; color: #2A2A32;'>Five layers. Locked top to bottom.</span></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">02</div>
+        <div class="sb-placeholder-meta">MS · eye-level · static</div>
+      </div>
+      
+
+      
+      <div class="sb-overlay sb-overlay-upper-third">
+        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #2A2A32;">Five layers. Locked top to bottom.</span>
+      </div>
+      
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">02</span>
         <span class="sb-shot-time">12.0–30.0s</span>
         <span class="sb-shot-beat">reframe</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>MS</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>static</dd></div>
+        
         <div><dt>DOF</dt><dd>deep</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>five horizontal layers stack from top to bottom. each labeled in JetBrains Mono caps with 0.08em letter-spacing. brand lock, series lock, shot spec, text layer, generator adapter. each layer slides in from below on a 6-frame stagger. ink rules between. coral accent appears as a single dot on the brand lock layer when it lands.</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>five horizontal layers stack from top to bottom. each labeled in JetBrains Mono caps with 0.08em letter-spacing. brand lock, series lock, shot spec, text layer, generator adapter. each layer slides in from below on a 6-frame stagger. ink rules between. coral accent appears as a single dot on the brand lock layer when it lands.</p>
+      </div>
+
       
-      <div class="sb-shot-text"><h3>On-screen text</h3><p class="sb-text-content">"Five layers. Locked top to bottom."</p><p class="sb-text-meta">display · upper-third · enter 12.5s (type-on) · exit 29.5s</p></div>
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>Architecture beat. The reader needs to see the layers exist before any claim about composability lands. Stack layout is the diagram doing the explanation. Coral accent on brand lock signals it as the load-bearing field.</p></div>
+
+      
+      <div class="sb-shot-text">
+        <h3>On-screen text</h3>
+        
+        <p class="sb-text-content">"Five layers. Locked top to bottom."</p>
+        <p class="sb-text-meta">text_02 · display · upper-third · enter 12.5s (type-on) · exit 29.5s (fade-out)</p>
+        
+      </div>
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>Architecture beat. The reader needs to see the layers exist before any claim about composability lands. Stack layout is the diagram doing the explanation. Coral accent on brand lock signals it as the load-bearing field.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_03">
     <div class="sb-shot-frame aspect-16-9">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">03</div><div class="sb-placeholder-meta">MS · eye-level · push</div></div>
-      <div class="sb-overlay sb-overlay-upper-third"><span class="sb-overlay-text" style='font-family: Inter Medium 500; font-weight: medium; color: #2A2A32;'>Brief in. Storyboard out. Audit trail included.</span></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">03</div>
+        <div class="sb-placeholder-meta">MS · eye-level · push</div>
+      </div>
+      
+
+      
+      <div class="sb-overlay sb-overlay-upper-third">
+        <span class="sb-overlay-text" style="font-family: Inter Medium 500; font-weight: medium; color: #2A2A32;">Brief in. Storyboard out. Audit trail included.</span>
+      </div>
+      
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">03</span>
         <span class="sb-shot-time">30.0–50.0s</span>
         <span class="sb-shot-beat">proof-1</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>MS</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>push</dd></div>
+        
         <div><dt>DOF</dt><dd>deep</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>split panel. left BRIEF column shows typewriter brief slowly assembling. right OUTPUT column starts empty with a pulsing waiting dot, then file tree assembles row by row in JetBrains Mono Regular 16pt. storyboard.md, shots.json, text-overlays.json, brand-lock.snapshot.md, prompts directory with seven adapter files, preview.html. coral dot appears next to preview.html on completion.</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>split panel. left BRIEF column shows typewriter brief slowly assembling. right OUTPUT column starts empty with a pulsing waiting dot, then file tree assembles row by row in JetBrains Mono Regular 16pt. storyboard.md, shots.json, text-overlays.json, brand-lock.snapshot.md, prompts directory with seven adapter files, preview.html. coral dot appears next to preview.html on completion.</p>
+      </div>
+
       
-      <div class="sb-shot-text"><h3>On-screen text</h3><p class="sb-text-content">"Brief in. Storyboard out. Audit trail included."</p><p class="sb-text-meta">body · upper-third · enter 30.5s (fade-in) · exit 49.5s</p></div>
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>The build moment is the centerpiece. Brief in, structured files out. This is the shot that earns the methodology claim. Same animation language as the social demo so brand consistency reads across both surfaces.</p></div>
+
+      
+      <div class="sb-shot-text">
+        <h3>On-screen text</h3>
+        
+        <p class="sb-text-content">"Brief in. Storyboard out. Audit trail included."</p>
+        <p class="sb-text-meta">text_03 · body · upper-third · enter 30.5s (fade-in) · exit 49.5s (fade-out)</p>
+        
+      </div>
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>The build moment is the centerpiece. Brief in, structured files out. This is the shot that earns the methodology claim. Same animation language as the social demo so brand consistency reads across both surfaces.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_04">
     <div class="sb-shot-frame aspect-16-9">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">04</div><div class="sb-placeholder-meta">MCU · eye-level · push</div></div>
-      <div class="sb-overlay sb-overlay-lower-third"><span class="sb-overlay-text" style='font-family: Inter Black 900; font-weight: black; color: #2A2A32;'>Files. Not panels. Not a SaaS dashboard.</span></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">04</div>
+        <div class="sb-placeholder-meta">MCU · eye-level · push</div>
+      </div>
+      
+
+      
+      <div class="sb-overlay sb-overlay-lower-third">
+        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #2A2A32;">Files. Not panels. Not a SaaS dashboard.</span>
+      </div>
+      
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">04</span>
         <span class="sb-shot-time">50.0–65.0s</span>
         <span class="sb-shot-beat">proof-2</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>MCU</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>push</dd></div>
+        
         <div><dt>DOF</dt><dd>shallow</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>coral wipe expands radially from the preview.html dot. wipe reveals a rendered preview iframe scrolling vertically. the reader sees the actual shot cards from the 30-second example pass through frame, including framing, angle, motion, color-grade rows. subtle ten-percent vignette on edges.</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>coral wipe expands radially from the preview.html dot. wipe reveals a rendered preview iframe scrolling vertically. the reader sees the actual shot cards from the 30-second example pass through frame, including framing, angle, motion, color-grade rows. subtle ten-percent vignette on edges.</p>
+      </div>
+
       
-      <div class="sb-shot-text"><h3>On-screen text</h3><p class="sb-text-content">"Files. Not panels. Not a SaaS dashboard."</p><p class="sb-text-meta">display · lower-third · enter 51.0s (type-on) · exit 64.5s</p></div>
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>Reveal beat. The reader has now seen the methodology and the file outputs. The iframe shows the actual deliverable, not a mock. This is what separates the claim from the artifact.</p></div>
+
+      
+      <div class="sb-shot-text">
+        <h3>On-screen text</h3>
+        
+        <p class="sb-text-content">"Files. Not panels. Not a SaaS dashboard."</p>
+        <p class="sb-text-meta">text_04 · display · lower-third · enter 51.0s (type-on) · exit 64.5s (fade-out)</p>
+        
+      </div>
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>Reveal beat. The reader has now seen the methodology and the file outputs. The iframe shows the actual deliverable, not a mock. This is what separates the claim from the artifact.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_05">
     <div class="sb-shot-frame aspect-16-9">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">05</div><div class="sb-placeholder-meta">MS · eye-level · static</div></div>
-      <div class="sb-overlay sb-overlay-upper-third"><span class="sb-overlay-text" style='font-family: Inter Black 900; font-weight: black; color: #2A2A32;'>One shot. Seven generators. One spec.</span></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">05</div>
+        <div class="sb-placeholder-meta">MS · eye-level · static</div>
+      </div>
+      
+
+      
+      <div class="sb-overlay sb-overlay-upper-third">
+        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #2A2A32;">One shot. Seven generators. One spec.</span>
+      </div>
+      
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">05</span>
         <span class="sb-shot-time">65.0–80.0s</span>
         <span class="sb-shot-beat">proof-3</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>MS</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>static</dd></div>
+        
         <div><dt>DOF</dt><dd>deep</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>single shot description card sits center-frame. seven generator adapter logos and labels fan out radially around it in a 280-pixel radius. midjourney, flux, ideogram, gpt image, nano banana, seedream, runway sora. lines connect center card to each adapter label in 1px ink. each adapter shows its prompt syntax appearing as a typewriter pass, all running simultaneously.</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>single shot description card sits center-frame. seven generator adapter logos and labels fan out radially around it in a 280-pixel radius. midjourney, flux, ideogram, gpt image, nano banana, seedream, runway sora. lines connect center card to each adapter label in 1px ink. each adapter shows its prompt syntax appearing as a typewriter pass, all running simultaneously.</p>
+      </div>
+
       
-      <div class="sb-shot-text"><h3>On-screen text</h3><p class="sb-text-content">"One shot. Seven generators. One spec."</p><p class="sb-text-meta">display · upper-third · enter 65.5s (fade-in) · exit 79.5s</p></div>
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>Cross-generator demonstration. Same shot description compiles to seven different prompt syntaxes simultaneously. The visual proves model-agnosticism is structural, not aspirational.</p></div>
+
+      
+      <div class="sb-shot-text">
+        <h3>On-screen text</h3>
+        
+        <p class="sb-text-content">"One shot. Seven generators. One spec."</p>
+        <p class="sb-text-meta">text_05 · display · upper-third · enter 65.5s (fade-in) · exit 79.5s (fade-out)</p>
+        
+      </div>
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>Cross-generator demonstration. Same shot description compiles to seven different prompt syntaxes simultaneously. The visual proves model-agnosticism is structural, not aspirational.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_06">
     <div class="sb-shot-frame aspect-16-9">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">06</div><div class="sb-placeholder-meta">WS · eye-level · static</div></div>
-      <div class="sb-overlay sb-overlay-center"><span class="sb-overlay-text" style='font-family: JetBrains Mono Regular; font-weight: regular; color: #2A2A32;'>git clone github.com/whystrohm/shotkit
-cd shotkit && ./install.sh</span></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">06</div>
+        <div class="sb-placeholder-meta">WS · eye-level · static</div>
+      </div>
+      
+
+      
+      <div class="sb-overlay sb-overlay-center">
+        <span class="sb-overlay-text" style="font-family: JetBrains Mono Regular; font-weight: regular; color: #2A2A32;">git clone github.com/whystrohm/shotkit
+cd shotkit &amp;&amp; ./install.sh</span>
+      </div>
+      
+      <div class="sb-overlay sb-overlay-lower-third">
+        <span class="sb-overlay-text" style="font-family: Inter Medium 500; font-weight: medium; color: #7A7580;">Pre-production for founder-led video at scale.</span>
+      </div>
+      
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">06</span>
         <span class="sb-shot-time">80.0–90.0s</span>
         <span class="sb-shot-beat">promise</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>WS</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>static</dd></div>
+        
         <div><dt>DOF</dt><dd>deep</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>full-frame typography. install command appears via type-on in JetBrains Mono Regular at 22pt, ink color, monospace block. below it the project tagline in Inter italic 500 18pt, color muted. coral period on the signature beat. door closes with the standard footer chrome holding.</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>full-frame typography. install command appears via type-on in JetBrains Mono Regular at 22pt, ink color, monospace block. below it the project tagline in Inter italic 500 18pt, color muted. coral period on the signature beat. door closes with the standard footer chrome holding.</p>
+      </div>
+
       
-      <div class="sb-shot-text"><h3>On-screen text</h3><p class="sb-text-content">"git clone github.com/whystrohm/shotkit
-cd shotkit && ./install.sh"</p><p class="sb-text-meta">body · center · enter 80.5s (type-on) · exit 90.0s</p></div>
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>Promise beat. The viewer has the diagnosis, the architecture, the artifact, and the proof. The CTA is one paste-into-terminal command. No friction surface, no signup, no email gate.</p></div>
+
+      
+      <div class="sb-shot-text">
+        <h3>On-screen text</h3>
+        
+        <p class="sb-text-content">"git clone github.com/whystrohm/shotkit
+cd shotkit &amp;&amp; ./install.sh"</p>
+        <p class="sb-text-meta">text_06 · body · center · enter 80.5s (type-on) · exit 90.0s (hard-cut)</p>
+        
+        <p class="sb-text-content">"Pre-production for founder-led video at scale."</p>
+        <p class="sb-text-meta">text_07 · caption · lower-third · enter 86.0s (fade-in) · exit 90.0s (hard-cut)</p>
+        
+      </div>
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>Promise beat. The viewer has the diagnosis, the architecture, the artifact, and the proof. The CTA is one paste-into-terminal command. No friction surface, no signup, no email gate.</p>
+      </div>
     </div>
   </article>
-
+  
 </section>
 
 <footer class="sb-footer">
   <div class="sb-footer-inner">
-    <div>Generated against <a href="brand-lock.snapshot.md"><code>brand-lock.snapshot.md</code></a> on 2026-05-08 13:45 UTC.</div>
+    <div>
+      Built against <a href="brand-lock.snapshot.md"><code>brand-lock.snapshot.md</code></a> (<code>dbb416f3cbac</code>).
+    </div>
     <div>Built with <a href="https://github.com/whystrohm/shotkit">shotkit</a> · WhyStrohm</div>
+  </div>
+  <div class="sb-footer-inner sb-provenance">
+    <div>
+      Run 20260508T143424Z-a38d935c started 2026-05-08T14:34:24Z. This page rendered 2026-05-08T14:34:24Z.
+      
+    </div>
   </div>
 </footer>
 
 <script>
+// Keyboard navigation: arrow keys move between shots
 (function() {
   const shots = Array.from(document.querySelectorAll('.sb-shot'));
   if (!shots.length) return;
+
   function shotInView() {
     const mid = window.innerHeight / 2;
-    let best = 0, bestDist = Infinity;
+    let best = 0;
+    let bestDist = Infinity;
     shots.forEach((shot, i) => {
       const rect = shot.getBoundingClientRect();
       const dist = Math.abs(rect.top + rect.height / 2 - mid);
@@ -805,16 +1086,19 @@ cd shotkit && ./install.sh"</p><p class="sb-text-meta">body · center · enter 8
     });
     return best;
   }
+
   document.addEventListener('keydown', function(e) {
     if (e.target.matches('input, textarea')) return;
     const i = shotInView();
     if (e.key === 'ArrowDown' || e.key === 'j') {
       e.preventDefault();
-      shots[Math.min(shots.length - 1, i + 1)].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const next = shots[Math.min(shots.length - 1, i + 1)];
+      next.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     if (e.key === 'ArrowUp' || e.key === 'k') {
       e.preventDefault();
-      shots[Math.max(0, i - 1)].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const prev = shots[Math.max(0, i - 1)];
+      prev.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 })();

@@ -1,6 +1,6 @@
 # Adapter: Hailuo 02 Pro (motion-aware video, budget iteration)
 
-> Capability data (length limits, motion/text support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. If a number here and in `_capabilities.json` disagree, the JSON wins.
+> Capability data (length ceiling, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. `max_prompt_words` there is a ceiling; the range below is the recommended target and has to sit inside it. Where a fact here and a fact in the JSON disagree, the JSON wins, and `tools/validate_capabilities.py` fails the build instead of letting the two drift.
 
 Hailuo 02 Pro is the cheap, fast iteration model. Strong motion response and prompt-following for the price, on fal.ai. Use it to **find the shot**, block out camera move, framing, and timing across many quick drafts, then re-generate the keeper on Kling (motion finals), Veo (dialogue), or Seedance (sequences). Treat Hailuo output as a working draft, not a final asset.
 

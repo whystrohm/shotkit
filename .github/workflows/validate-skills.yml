@@ -1,40 +1,50 @@
 name: validate-skills
 
+# Runs on every branch, not just main. Filtering pushes to main meant a feature branch
+# got no CI at all until someone opened a pull request, so the first signal arrived after
+# the review had already started. Contributors should find out from the branch.
 on:
+  push:
+    branches: ['**']
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
+
+# A pull-request branch would otherwise run twice per push, once for each trigger.
+# Superseded runs are cancelled rather than left to finish.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
       - name: Install dependencies
         run: pip install pyyaml jsonschema
 
-      - name: Validate every SKILL.md has correct frontmatter
-        run: python tools/validate_skills.py
+      # One entry point, so a green local run means a green PR. tools/check.sh runs
+      # frontmatter, schema, capability-parity, brand-lock, storyboard-instance,
+      # prompt-file, critique-gate, provenance, renderer, and prompt-helper checks.
+      # Each check ships a selftest that proves the check itself fires, so a
+      # validator that silently stops catching things fails the build rather than
+      # going quiet.
+      - name: Run all checks
+        run: ./tools/check.sh
 
-      - name: Validate JSON schemas
-        run: python tools/validate_schemas.py
-
-      - name: Validate brand-pack template and extracted example
-        run: python tools/validate_brand_lock.py brand-packs/_template.md skills/brand-lock-extractor/examples/brand-lock.md
-
-      - name: Validate generator capability matrix
-        run: python tools/validate_capabilities.py
-
-      - name: Validate critique gate (selftest, then example fixtures)
+      # The bundled previews are committed artifacts. Re-render them with the same
+      # pinned timestamps they were built with and fail if the output moved: that is
+      # the determinism claim, tested rather than asserted.
+      - name: Bundled previews are reproducible
         run: |
-          python tools/validate_critique.py --selftest
-          python tools/validate_critique.py \
-            skills/visual-asset-critic/examples/critique.accept.json \
-            skills/visual-asset-critic/examples/critique.revise.json
+          python tools/shots-to-html.py skills/storyboard-architect/examples/30s-pain-proof-promise --rendered-at 2026-05-07T14:23:00Z
+          python tools/shots-to-html.py skills/storyboard-architect/examples/60s-founder-explainer  --rendered-at 2026-05-07T14:23:00Z
+          python tools/shots-to-html.py skills/storyboard-architect/examples/shotkit-explainer      --rendered-at 2026-05-08T14:34:24Z
+          python tools/shots-to-html.py skills/visual-asset-critic/examples/worked-run              --rendered-at 2026-07-30T15:20:00Z
+          git diff --exit-code -- '**/preview.html'

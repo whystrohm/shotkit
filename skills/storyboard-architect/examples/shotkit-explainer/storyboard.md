@@ -4,8 +4,15 @@
 **Duration:** 90 seconds
 **Aspect:** 16:9 (1280x720 hero render, 1080x1920 vertical cut for socials)
 **Framework:** founder-explainer
-**Brand-lock:** [brand-lock.snapshot.md](./brand-lock.snapshot.md) snapshotted 2026-05-08
+**Brand-lock:** [brand-lock.snapshot.md](./brand-lock.snapshot.md) snapshotted 2026-05-08T14:34:24Z
 **Generated:** 2026-05-08
+
+> This storyboard is the record of the v0.1.0 explainer film as it was actually rendered, so
+> shot_05 still names seven adapters including Runway/Sora. Sora was discontinued and the
+> motion lane moved to Kling, Veo, Seedance, and Hailuo. The storyboard is deliberately left
+> matching the artifact it produced: editing it to describe a video that was never made is
+> exactly the kind of drift this repo exists to prevent. See `CHANGELOG.md` for the adapter
+> change.
 
 ## Brief
 

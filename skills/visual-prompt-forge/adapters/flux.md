@@ -1,6 +1,6 @@
 # Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev)
 
-> Capability data (length limits, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. If a number here and in `_capabilities.json` disagree, the JSON wins.
+> Capability data (length ceiling, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. `max_prompt_words` there is a ceiling; the range below is the recommended target and has to sit inside it. Where a fact here and a fact in the JSON disagree, the JSON wins, and `tools/validate_capabilities.py` fails the build instead of letting the two drift.
 
 Flux rewards natural-language prompts that read like a competent photographer briefing themselves. It interprets full sentences accurately and handles spatial relationships better than Midjourney. It's the photorealism leader as of Q2 2026, choose Flux over Midjourney when the brief calls for "looks like a real photograph" rather than "looks designed."
 

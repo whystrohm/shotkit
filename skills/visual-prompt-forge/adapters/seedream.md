@@ -1,6 +1,6 @@
 # Adapter: Seedream (4.5 / 4.0)
 
-> Capability data (length limits, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. If a number here and in `_capabilities.json` disagree, the JSON wins.
+> Capability data (length ceiling, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. `max_prompt_words` there is a ceiling; the range below is the recommended target and has to sit inside it. Where a fact here and a fact in the JSON disagree, the JSON wins, and `tools/validate_capabilities.py` fails the build instead of letting the two drift.
 
 ByteDance's Seedream models are the high-volume cost-efficient choice. Quality is below Flux 2 Pro and Midjourney v7 but above older mid-tier models, and the cost-per-image is roughly 5–10× lower. Choose Seedream when you're producing **many variations or doing rapid concept iteration**, not for hero/final assets.
 

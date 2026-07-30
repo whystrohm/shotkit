@@ -1,0 +1,13 @@
+# Storyboard: Worked Run, Two Shots
+# Generator: flux
+# Model: 2 Pro
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Run: 20260730T142300Z-9f2c1ab4
+# Round: 2
+# Revision of round 1. Shots not listed here already passed.
+
+# shot_02, promise, 3.0-8.0s, MCU eye-level push, revision (was REVISE)
+# fix [Shot Spec, major]: framing MS -> MCU, subject read too small in frame
+# fix [Technical, re-roll]: left hand was malformed, same prompt, pick a clean sample
+Medium close-up framing, camera at eye level, pushing slowly toward the subject. A founder, mid-thirties, salt-and-pepper hair, navy crewneck, leaning back from the laptop with his shoulders dropping and a small almost-smile. His hands rest loosely and are fully visible. Minimalist home office, white walls, oak desk, single houseplant. Soft natural side-light from a large window camera-left, warm afternoon golden hour. Shot at f/2.0, shallow depth of field, 50mm prime. Warm filmic, muted teal shadows, slight grain. Calm, considered mood. Photorealistic, natural skin texture, anatomically correct hands, no AI artifacts.

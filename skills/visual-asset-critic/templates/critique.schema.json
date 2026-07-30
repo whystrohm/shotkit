@@ -2,26 +2,115 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://whystrohm.com/schemas/shotkit/critique.schema.json",
   "title": "Critique",
-  "description": "Machine-readable verdict for a generated image reviewed against its shot spec and brand-lock. The structured sibling of the markdown critique. Lets the QA loop gate an automated pipeline instead of relying on prose.",
+  "description": "Machine-readable verdict for one generated frame reviewed against its shot spec and brand-lock. The structured sibling of the markdown critique. Version 1.1 adds run provenance: the frame, prompt, and brand-lock are identified by content hash as well as by path, so a verdict can be proven to describe the bytes that were actually reviewed. Every provenance field is required at 1.1 and explicitly nullable, so an absent input is a recorded decision rather than an omission.",
   "type": "object",
   "required": ["version", "verdict", "confidence", "issues"],
   "additionalProperties": false,
   "properties": {
-    "version": { "type": "string", "const": "1.0" },
+    "version": {
+      "type": "string",
+      "enum": ["1.0", "1.1"],
+      "description": "1.1 adds run_id, round, created_at, the *_sha256 hashes, prompt_ref, generator, model_version, seed, and the meta passthrough. 1.0 documents remain valid and are treated as legacy: they carry a verdict with no proof of what it reviewed."
+    },
+    "meta": {
+      "type": "object",
+      "description": "Forward-compat passthrough for tooling that needs to annotate a critique without a schema bump. Ignored by core skills.",
+      "additionalProperties": true
+    },
+    "run_id": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$" }
+      ],
+      "description": "The run this critique belongs to. Matches run.json:run_id. Format: UTC compact timestamp, a dash, then 8 hex characters."
+    },
+    "round": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "integer", "minimum": 1 }
+      ],
+      "description": "Revision round, 1-indexed. Round 1 is the first generation pass."
+    },
+    "created_at": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        }
+      ],
+      "description": "UTC ISO-8601 instant the critique was written. Second precision, trailing Z required."
+    },
     "shot_id": {
       "oneOf": [
         { "type": "null" },
         { "type": "string", "pattern": "^shot_[0-9]{2,3}$" }
       ],
-      "description": "Shot this image was generated for. Null when critiquing a standalone image with no storyboard."
+      "description": "Shot this frame was generated for. Null when critiquing a standalone image with no storyboard."
     },
     "brand_lock_ref": {
-      "type": "string",
-      "description": "Relative path to the brand-lock.snapshot.md the image was judged against, if any."
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "minLength": 1 }
+      ],
+      "description": "Path to the brand-lock.snapshot.md the frame was judged against, relative to the output directory root. Null when no brand-lock was available, which caps confidence at MEDIUM."
+    },
+    "brand_lock_sha256": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      ],
+      "description": "SHA-256 of the brand-lock file as read. Null only when brand_lock_ref is null."
     },
     "image_ref": {
-      "type": "string",
-      "description": "Relative path to the image that was critiqued."
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "minLength": 1 }
+      ],
+      "description": "Path to the frame that was critiqued, relative to the output directory root."
+    },
+    "image_sha256": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      ],
+      "description": "SHA-256 of the frame bytes as reviewed. This is what makes the verdict falsifiable: if the file at image_ref no longer hashes to this value, the verdict does not describe it."
+    },
+    "prompt_ref": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "minLength": 1 }
+      ],
+      "description": "Path to the prompt file the frame was generated from, relative to the output directory root. Null when the prompt is unknown, which caps confidence at MEDIUM."
+    },
+    "prompt_sha256": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      ],
+      "description": "SHA-256 of the prompt file. Null only when prompt_ref is null."
+    },
+    "generator": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" }
+      ],
+      "description": "Generator id that produced the frame. Must match an id in visual-prompt-forge/adapters/_capabilities.json. Null when unknown."
+    },
+    "model_version": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "minLength": 1 }
+      ],
+      "description": "Model version string as of generation, copied from the capability matrix entry. The matrix records what is current; this records what ran."
+    },
+    "seed": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "integer" },
+        { "type": "string", "minLength": 1 }
+      ],
+      "description": "Generation seed if the generator exposes one. Null when it does not."
     },
     "verdict": {
       "type": "string",
@@ -50,7 +139,7 @@
           "severity": {
             "type": "string",
             "enum": ["minor", "major", "blocking"],
-            "description": "blocking on any issue forces REJECT. A major issue forces at most REVISE."
+            "description": "Any blocking issue forces REJECT. One or two major issues cap the verdict at REVISE. Three or more major issues force REJECT. Enforced by tools/validate_critique.py, not by this schema."
           },
           "note": { "type": "string", "minLength": 1 },
           "fix_type": {
@@ -61,5 +150,34 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "version": { "const": "1.1" } },
+        "required": ["version"]
+      },
+      "then": {
+        "required": [
+          "version",
+          "run_id",
+          "round",
+          "created_at",
+          "shot_id",
+          "brand_lock_ref",
+          "brand_lock_sha256",
+          "image_ref",
+          "image_sha256",
+          "prompt_ref",
+          "prompt_sha256",
+          "generator",
+          "model_version",
+          "seed",
+          "verdict",
+          "confidence",
+          "issues"
+        ]
+      }
+    }
+  ]
 }

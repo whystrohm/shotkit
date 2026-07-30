@@ -59,14 +59,32 @@ The methodology is identical across surfaces. The skills produce the same `story
 
 ## Downloading output files
 
-When a shotkit skill produces output in Claude.ai, the four core files appear as message attachments in order:
+When a shotkit skill produces output in Claude.ai, the five core files appear as message attachments in order:
 
-1. `storyboard.md`
-2. `shots.json`
-3. `text-overlays.json`
-4. `brand-lock.snapshot.md`
+1. `run.json`
+2. `storyboard.md`
+3. `shots.json`
+4. `text-overlays.json`
+5. `brand-lock.snapshot.md`
 
-If `visual-prompt-forge` ran in the same conversation, the per-generator prompts appear as additional attachments named `prompts-{generator}.txt`.
+If `visual-prompt-forge` ran in the same conversation, the per-generator prompts appear as additional attachments named `prompts-round-{N}-{generator}.txt`. Rebuild the directory structure locally when you save them; the round in the name is what keeps a revision pass from overwriting the original.
+
+### Two limits worth knowing on this surface
+
+**The validators are not there.** `tools/` is a repo directory, not part of a skill upload,
+so nothing in a Claude.ai conversation can run `validate_shots.py` or the critique gate. The
+model will check by hand against the schema, which is weaker. For work under real
+accountability, save the output locally and run:
+
+```bash
+python tools/validate_shots.py path/to/output/
+python tools/validate_provenance.py path/to/output/
+```
+
+**Cross-skill file references break.** Each skill is uploaded as a separate `.skill` zip, so
+a path like `../storyboard-architect/templates/shots.schema.json` has no parent to resolve
+against. If a skill asks for a schema it cannot reach, paste the schema into the
+conversation rather than letting it work from memory of the format.
 
 Click each attachment to download. Save them into a local directory matching the project structure documented in [`docs/audit-trail-pattern.md`](./audit-trail-pattern.md). The directory layout is identical regardless of which surface produced the files.
 

@@ -1,0 +1,38 @@
+{
+  "version": "1.1",
+  "run_id": "20260730T142300Z-9f2c1ab4",
+  "round": 1,
+  "created_at": "2026-07-30T14:44:00Z",
+  "shot_id": "shot_02",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "f364bc71f68d16187d0721fbc092450174545e247f2f563a4c45686b4a877f50",
+  "image_ref": "frames/round-1/shot_02.png",
+  "image_sha256": "d025648c33854b27eedb9b99fcebf81a4980e61f4fc69e387b0810490e29d6d4",
+  "prompt_ref": "prompts/round-1/flux.txt",
+  "prompt_sha256": "a0203e0c49cafd75d8fcb86997ba619c5ac82700dc4ab430812a9929aca89328",
+  "generator": "flux",
+  "model_version": "2 Pro",
+  "seed": 481207,
+  "verdict": "REVISE",
+  "confidence": "HIGH",
+  "working": [
+    "Posture reads as release, which is the beat.",
+    "Environment and lighting match the series_lock anchors."
+  ],
+  "issues": [
+    {
+      "layer": "Shot Spec",
+      "severity": "major",
+      "note": "Generated as MS but the subject reads too small for a payoff beat at 9:16.",
+      "fix_type": "prompt-level",
+      "fix": "Change 'medium shot' to 'medium close-up' in the prompt. Re-roll."
+    },
+    {
+      "layer": "Technical",
+      "severity": "major",
+      "note": "Left hand on the desk is malformed, a known Flux failure mode.",
+      "fix_type": "re-roll",
+      "fix": "Re-roll 2-3 times with the same prompt and pick a clean sample."
+    }
+  ]
+}

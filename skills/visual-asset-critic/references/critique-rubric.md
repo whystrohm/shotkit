@@ -9,7 +9,7 @@ The structured layer-by-layer pass. Use this as the checklist when reviewing a g
 | Palette | Image colors come from brand-lock palette | Colors close but slightly off | Colors not in palette at all |
 | Mood adjectives | Image reads as the brand mood | Mood reads as adjacent (e.g. "calm" vs "neutral") | Image reads as a different mood (e.g. "energetic" when brief was "calm") |
 | "Never" list | None of the items in the never list are present | One item in the never list shows softly | Multiple never-list violations |
-| Aspect ratio | Matches `project.aspect` |, | Wrong aspect |
+| Aspect ratio | Matches `project.aspect` | Within a crop of the spec | Wrong aspect |
 
 Hard fail on Brand Lock = REJECT or REVISE depending on whether prompt fix exists.
 
@@ -69,19 +69,38 @@ Technical hard fails are almost always **re-roll required**. The prompt was prob
 
 Continuity hard fails break the storyboard. REVISE with verbatim-anchor checks on the prompt.
 
+## From pass/fail to severity
+
+The tables above grade each check as pass, soft fail, or hard fail. The JSON critique
+records a severity instead, and the verdict is derived from those severities. Map them
+this way, and only this way:
+
+| Rubric result | Severity | Why |
+|---|---|---|
+| Soft fail on any layer | `minor` | Post can absorb it. `fix_type` is usually `post-level` |
+| Hard fail **with** a clear fix path | `major` | A prompt change or a re-roll resolves it |
+| Hard fail on Brand Lock or Series Lock **with no** fix path | `blocking` | Nothing downstream recovers this |
+| Any defect that makes the asset unusable | `blocking` | Same, regardless of layer |
+
 ## Aggregating verdict
 
-Count hard fails across layers:
+The verdict follows from the severities. It is not a separate judgement:
 
-| Hard fails | Verdict |
+| Severities present | Verdict |
 |---|---|
-| 0 | ACCEPT |
-| 1 (with clear prompt fix) | REVISE |
-| 1 (Brand Lock or Series Lock with no prompt fix) | REJECT |
-| 2 | REVISE if both have prompt fixes; REJECT otherwise |
-| 3+ | REJECT |
+| any `blocking` | REJECT |
+| three or more `major` | REJECT |
+| one or two `major` | REVISE |
+| only `minor`, or none | ACCEPT (with post notes) |
 
-Soft fails are noted but don't change verdict unless they cluster (3+ soft fails = REVISE).
+`tools/validate_critique.py` enforces exactly this table, so a critique that disagrees with
+it fails rather than shipping. Earlier versions of this file counted hard fails and called
+3+ a REJECT while the skill said "escalate at your discretion." Those two rules disagreed,
+and the disagreement is the reason the threshold is now a number.
+
+Soft fails are noted but don't change the verdict on their own. If you have three or more of
+them, look again: a cluster of soft fails usually means one of them is really a hard fail
+you talked yourself out of.
 
 ## Speed bumps to remember
 

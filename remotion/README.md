@@ -1,8 +1,29 @@
 # shotkit/remotion
 
-Remotion composition source for the demo GIF embedded in the project README at `../docs/images/demo.gif`. Ships with the repo so contributors can regenerate the GIF after brand-pack updates.
+Remotion composition source for the repo's rendered assets: the demo GIF at
+`../docs/images/demo.gif`, the social preview card at `../docs/images/social-preview.png`, and
+the explainer film at `../docs/images/shotkit-explainer.mp4`. Ships with the repo so
+contributors can regenerate them after brand-pack updates.
 
-This is composition source, not a redistributable Remotion framework. It exists for the demo asset only.
+This is composition source, not a redistributable Remotion framework. It exists for the repo's
+own assets only.
+
+## Which sources are current
+
+| Composition | Rendered asset | State |
+|---|---|---|
+| `SocialPreview.tsx` | `social-preview.png` | Current |
+| `ShotkitDemo.tsx` | `demo.gif` | Current |
+| `ShotkitExplainer.tsx` | `shotkit-explainer.mp4`, `-vertical.mp4` | v0.1.0, not re-cut |
+
+`ShotkitExplainer.tsx` still shows seven generator adapters including Runway/Sora, and stamps
+`v0.1.0`. Sora was discontinued in 2026 and the motion lane moved to Kling, Veo, Seedance, and
+Hailuo.
+
+The source is left matching the video it produced rather than edited to describe a render that
+does not exist. Re-cutting means updating the adapter list, the file tree, and the version
+stamp, then re-rendering both cuts and the storyboard example beside them. Until that happens,
+source and artifact agree, and both are labelled.
 
 ## Install
 

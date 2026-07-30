@@ -1,6 +1,6 @@
 ---
 name: storyboard-architect
-description: Turn a creative brief into a production-grade storyboard with shot specs, timing, on-screen text, and per-shot rationale. Use when the user describes a video brief, plans a video, references shots or beats, scripts a social video, or hands over a creative concept to break into scenes. Produces storyboard.md, shots.json, text-overlays.json, and brand-lock.snapshot.md. Pairs with visual-prompt-forge, visual-asset-critic, storyboard-html-preview.
+description: Turn a creative brief into a production-grade storyboard with shot specs, timing, on-screen text, and per-shot rationale. Use when the user describes a video brief, plans a video, references shots or beats, scripts a social video, or hands over a creative concept to break into scenes. Produces run.json, storyboard.md, shots.json, text-overlays.json, and brand-lock.snapshot.md. Pairs with visual-prompt-forge, visual-asset-critic, storyboard-html-preview.
 ---
 
 # Storyboard Architect
@@ -27,11 +27,17 @@ For every storyboard run, create this exact set of files in the working output d
 
 ```
 output/
+├── run.json                   # Run identity + every input pinned by content hash
 ├── storyboard.md              # Human-readable, structured per shot
 ├── shots.json                 # Machine-readable, schema in templates/shots.schema.json
 ├── text-overlays.json         # On-screen text + timing
 └── brand-lock.snapshot.md     # Frozen copy of the brand-lock used (audit trail)
 ```
+
+`run.json` is what makes the rest of the tree auditable later. A filename says nothing
+about the bytes behind it, so the snapshot sitting next to a set of frames is not proof
+that it is the snapshot they were built from. The hashes in `run.json` are that proof.
+Write it once, at the end of the run, and never edit it.
 
 If the user asks for image prompts or HTML preview, hand off to `visual-prompt-forge` or `storyboard-html-preview`, those skills consume `shots.json` directly. Don't try to do their job here.
 
@@ -91,20 +97,31 @@ Don't fight the framework. If the brief and the duration disagree, surface the d
 
 ### Step 4. Draft the shot list
 
-Read `references/shot-grammar.md` for controlled vocabulary. Every shot has:
+Read `references/shot-grammar.md` for controlled vocabulary. The field names below are
+the schema's field names. `templates/shots.schema.json` sets `additionalProperties:
+false`, so a near-miss like `environment` instead of `environment_ref` is a validation
+failure, not a synonym.
 
 - `id`, sequential, zero-padded (`shot_01`, `shot_02`...)
 - `beat`, which beat this shot serves
-- `start` / `end`, timestamps in seconds, decimal allowed
+- `start` / `end`, timestamps in seconds, decimal allowed. `end` must be after `start`
 - `framing`, ECU / CU / MCU / MS / MLS / WS / EWS
 - `angle`, eye-level / high / low / overhead / dutch
-- `motion`, static / push / pull / pan-left / pan-right / handheld / orbit
+- `motion`, static / push / pull / pan-left / pan-right / tilt-up / tilt-down /
+  handheld / orbit / whip / rack. All eleven are legal; the schema enum is the
+  authority and `references/shot-grammar.md` explains when each earns its keep
+- `depth_of_field`, optional, shallow / deep / rack
 - `subject`, what's in frame, structured
-- `environment`, references series-lock language
-- `lighting`, references series-lock language
-- `on_screen_text`, null OR a text-overlay reference
+- `environment_ref`, references series-lock language, default `series_lock.environment`
+- `lighting_ref`, references series-lock language, default `series_lock.lighting`
+- `on_screen_text`, null, one text-overlay id, OR an array of ids when a shot carries
+  more than one overlay
 - `vo`, voiceover line, or null
 - `rationale`, one sentence explaining *why this shot at this moment*
+
+Note on `rack`: as a `motion` value it means the rack focus is the shot's movement; as a
+`depth_of_field` value it means focus shifts mid-shot. Same word, two fields, two
+meanings.
 
 ### Step 5. Separate the text layer
 
@@ -118,8 +135,12 @@ Every piece of on-screen text becomes an entry in `text-overlays.json`. Never ba
 - `size`, `display`, `headline`, `body`, `caption`
 - `weight`, `regular`, `medium`, `bold`, `black`
 - `color`, hex (must come from brand-lock palette)
-- `enter`, `{ at: seconds, animation: fade-in | slide-up | type-on | hard-cut }`
-- `exit`, `{ at: seconds, animation: fade-out | slide-down | hard-cut }`
+- `enter`, `{ at: seconds, animation: fade-in | slide-up | slide-down | type-on | hard-cut }`
+- `exit`, `{ at: seconds, animation: fade-out | slide-up | slide-down | hard-cut }`
+
+Enter and exit have different animation vocabularies, and `templates/text-overlays.schema.json`
+is the authority on both. A shot may carry more than one overlay; list every id in that
+shot's `on_screen_text` array, or the extra overlays render nowhere.
 
 ### Step 6. Lock the series
 
@@ -131,14 +152,38 @@ Every shot has a one-sentence rationale. Why this beat. Why this framing. Why th
 
 ### Step 8. Snapshot the brand-lock
 
-Copy the brand-lock file (or template) into the output as `brand-lock.snapshot.md`. Add a header line at the top:
+Copy the brand-lock file (or template) into the output as `brand-lock.snapshot.md`. Add
+these two comments at the very top, in this order:
 
 ```
-<!-- snapshot taken: ISO-8601 timestamp -->
-<!-- source: original path or "template default" -->
+<!-- snapshot taken: 2026-05-07T14:23:00Z -->
+<!-- source: brand-packs/whystrohm.md -->
 ```
 
-This is what makes the storyboard reproducible later.
+The timestamp is a full UTC instant, `YYYY-MM-DDThh:mm:ssZ`. A bare date cannot
+distinguish two runs made on the same day, which is the case that matters. The source is
+the path it was copied from, or the literal string `template default` for an
+unconfigured run. Extra comments after these two are fine.
+
+`tools/validate_brand_lock.py --snapshot <path>` checks both lines. Run it.
+
+### Step 9. Write run.json
+
+Last step, after the other four files are final. Fill in
+`templates/run.schema.json`: a `run_id`, the `created_at` instant, and the SHA-256 of
+`shots.json`, `text-overlays.json`, and `brand-lock.snapshot.md` as written.
+
+```bash
+shasum -a 256 output/shots.json output/text-overlays.json output/brand-lock.snapshot.md
+```
+
+`run_id` is the compact UTC timestamp, a dash, then 8 hex characters, e.g.
+`20260730T142300Z-9f2c1ab4`. The hex suffix is what keeps two operators starting a run
+in the same second from colliding. Set `brand_lock_configured: false` when the snapshot
+is an unfilled template.
+
+Leave `rounds` empty. `visual-prompt-forge` appends a round entry when it writes
+prompts.
 
 ## Output formats
 
@@ -152,8 +197,8 @@ Must validate against `templates/shots.schema.json`. Read it before writing. The
 
 ```json
 {
-  "version": "1.0",
-  "project": { "title": "...", "duration_s": 30, "aspect": "9:16" },
+  "version": "1.2",
+  "project": { "title": "...", "duration_s": 30, "aspect": "9:16", "framework": "..." },
   "brand_lock_ref": "brand-lock.snapshot.md",
   "series_lock": {
     "character": "...",
@@ -170,6 +215,7 @@ Must validate against `templates/shots.schema.json`. Read it before writing. The
       "framing": "MCU",
       "angle": "eye-level",
       "motion": "static",
+      "depth_of_field": "shallow",
       "subject": "...",
       "environment_ref": "series_lock.environment",
       "lighting_ref": "series_lock.lighting",
@@ -181,24 +227,48 @@ Must validate against `templates/shots.schema.json`. Read it before writing. The
 }
 ```
 
+Write `1.2` for new storyboards. `1.0` and `1.1` files stay valid; the array form of
+`on_screen_text` and the hashed `assets` block need `1.2`.
+
 ### `text-overlays.json`
 
 Must validate against `templates/text-overlays.schema.json`. Read it before writing.
 
 ## Quality bar
 
-Before declaring the storyboard complete, verify:
+Run the validator. Do not eyeball this list.
 
-- [ ] Every shot has a rationale
-- [ ] Total of `(end - start)` across shots equals project duration (within 0.1s)
-- [ ] Every `on_screen_text` reference resolves to an entry in `text-overlays.json`
-- [ ] Every text overlay color appears in the brand-lock palette
-- [ ] `series_lock` is populated (not empty strings)
-- [ ] `brand-lock.snapshot.md` exists in output
-- [ ] No on-screen text is described inside a shot's `subject` field
-- [ ] No specific brand colors are described in shot subjects (those live in series_lock and brand-lock)
+```bash
+python tools/validate_shots.py output/
+python tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
+python tools/validate_provenance.py output/
+```
 
-If any check fails, fix before declaring done.
+`validate_shots.py` checks every mechanical rule that used to live here as a checkbox,
+because a checkbox is a rule enforced by remembering to look:
+
+- shots.json and text-overlays.json validate against their schemas
+- `end` is after `start`, no duplicate ids, no gaps, no overlaps, and the covered span
+  matches `project.duration_s` within 0.1s
+- every `on_screen_text` resolves to an overlay, every `overlay.shot_id` resolves to a
+  shot, and every overlay is reachable from at least one shot
+- every overlay's timing sits inside its shot window, and exit is after enter
+- every overlay color appears in the brand-lock palette
+- `brand_lock_ref` resolves on disk
+
+It warns, rather than fails, on judgement calls worth a second look: overlay copy
+repeated inside a shot subject, a raw hex in a subject, shot ids out of chronological
+order, an overlay font the brand-lock does not declare.
+
+What the validator cannot check, and you still have to:
+
+- [ ] Every rationale says *why this shot at this moment*, not what the shot contains
+- [ ] `series_lock` anchors are specific enough to reproduce (not "a person in a room")
+- [ ] The beat structure actually matches the brief's argument
+- [ ] `run.json` is written and its hashes are the files as shipped
+
+If the validator fails, fix it before declaring done. A green validator plus an unread
+rationale is not a finished storyboard.
 
 ## Reference files
 
@@ -213,12 +283,20 @@ Load these as needed:
 
 - `examples/30s-pain-proof-promise/`, full output set for a 30-second conversion ad
 - `examples/60s-founder-explainer/`, full output set for a founder explainer
+- `examples/shotkit-explainer/`, the 90-second explainer, including a shot that carries
+  two overlays
 
 Read these to understand the expected output quality, especially the rationale fields.
+All three validate clean under `tools/validate_shots.py --examples`, so they are also
+the reference for what a passing file looks like.
+
+For what the output tree looks like after generation and review, see
+`../visual-asset-critic/examples/worked-run/`: two shots through two rounds, with real
+hashes, per-round prompts and frames, and one critique per shot per round.
 
 ## Handoff
 
-After producing the four files, tell the user what's in `output/` and offer the obvious next steps:
+After producing the five files, tell the user what's in `output/` and offer the obvious next steps:
 
 - "Want image prompts? I'll run `visual-prompt-forge` on `shots.json`."
 - "Want a shareable HTML preview? I'll run `storyboard-html-preview`."

@@ -15,12 +15,12 @@
   /* Brand-lock variables, get substituted at compose time */
   --sb-color-bg: #F5F0E8;
   --sb-color-ink: #2A2A32;
-  --sb-color-accent: #3B82F6;
+  --sb-color-accent: #D94F3A;
   --sb-color-muted: #7A7580;
   --sb-color-rule: #E8E1D4;
 
-  --sb-font-display: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --sb-font-body: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sb-font-display: Inter Black 900, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sb-font-body: Inter Medium 500, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --sb-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --sb-radius: 6px;
@@ -397,6 +397,47 @@ h1, h2, h3 {
   gap: 16px;
 }
 
+/* ─── QA verdict ─── */
+
+.sb-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border: 1px solid var(--sb-color-rule);
+  border-radius: 2px;
+  font-family: var(--sb-font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-color-muted);
+  white-space: nowrap;
+}
+
+.sb-verdict-accept { border-color: var(--sb-color-ink); color: var(--sb-color-ink); }
+.sb-verdict-revise { border-color: var(--sb-color-accent); color: var(--sb-color-accent); }
+.sb-verdict-reject {
+  border-color: var(--sb-color-accent);
+  background: var(--sb-color-accent);
+  color: var(--sb-color-bg);
+}
+
+.sb-verdict-round { font-weight: 400; letter-spacing: 0.04em; opacity: 0.75; }
+
+.sb-provenance {
+  max-width: 960px;
+  margin: 0 auto;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--sb-color-muted);
+}
+
+.sb-provenance code {
+  font-size: 10px;
+  word-break: break-all;
+}
+
 /* ─── Responsive ─── */
 
 @media (max-width: 720px) {
@@ -596,35 +637,60 @@ h1, h2, h3 {
 
 <header class="sb-header">
   <div class="sb-header-inner">
-    <div class="sb-eyebrow">Storyboard · v1.0</div>
+    <div class="sb-eyebrow">Storyboard · shots 1.0</div>
     <h1 class="sb-title">WhyStrohm. How The System Actually Works</h1>
     <dl class="sb-meta">
       <div><dt>Duration</dt><dd>60s</dd></div>
       <div><dt>Aspect</dt><dd>9:16</dd></div>
       <div><dt>Framework</dt><dd>founder-explainer</dd></div>
-      <div><dt>Generated</dt><dd>2026-05-08 12:45 UTC</dd></div>
+      <div><dt>Run</dt><dd>2026-05-07T14:23:00Z</dd></div>
     </dl>
   </div>
 </header>
 
 <nav class="sb-nav" aria-label="Shot navigation">
-  <ul><li><a href="#shot_01">01</a></li>
-<li><a href="#shot_02">02</a></li>
-<li><a href="#shot_03">03</a></li>
-<li><a href="#shot_04">04</a></li>
-<li><a href="#shot_05">05</a></li>
-<li><a href="#shot_06">06</a></li>
-<li><a href="#shot_07">07</a></li>
-<li><a href="#shot_08">08</a></li></ul>
+  <ul>
+    
+    <li><a href="#shot_01">01</a></li>
+    
+    <li><a href="#shot_02">02</a></li>
+    
+    <li><a href="#shot_03">03</a></li>
+    
+    <li><a href="#shot_04">04</a></li>
+    
+    <li><a href="#shot_05">05</a></li>
+    
+    <li><a href="#shot_06">06</a></li>
+    
+    <li><a href="#shot_07">07</a></li>
+    
+    <li><a href="#shot_08">08</a></li>
+    
+  </ul>
 </nav>
+
+
 
 <section class="sb-section sb-series-lock">
   <h2>Series lock</h2>
   <dl class="sb-series-grid">
-    <div><dt>Character</dt><dd>founder, mid-thirties, salt-and-pepper hair, navy crewneck, speaking directly to camera, calm authoritative posture</dd></div>
-    <div><dt>Environment</dt><dd>minimalist home office, white walls, oak desk, single houseplant, late afternoon</dd></div>
-    <div><dt>Lighting</dt><dd>soft natural side-light, large window camera-left, warm afternoon golden hour, gentle shadow rolloff</dd></div>
-    <div><dt>Color grade</dt><dd>warm filmic, muted teal shadows, slight grain, cream highlights, deep navy shadows never crushed</dd></div>
+    <div>
+      <dt>Character</dt>
+      <dd>founder, mid-thirties, salt-and-pepper hair, navy crewneck, speaking directly to camera, calm authoritative posture</dd>
+    </div>
+    <div>
+      <dt>Environment</dt>
+      <dd>minimalist home office, white walls, oak desk, single houseplant, late afternoon</dd>
+    </div>
+    <div>
+      <dt>Lighting</dt>
+      <dd>soft natural side-light, large window camera-left, warm afternoon golden hour, gentle shadow rolloff</dd>
+    </div>
+    <div>
+      <dt>Color grade</dt>
+      <dd>warm filmic, muted teal shadows, slight grain, cream highlights, deep navy shadows never crushed</dd>
+    </div>
   </dl>
 </section>
 
@@ -633,219 +699,499 @@ h1, h2, h3 {
   
   <article class="sb-shot" id="shot_01">
     <div class="sb-shot-frame aspect-9-16">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">01</div><div class="sb-placeholder-meta">MCU · eye-level · static</div></div>
-      <div class="sb-overlay sb-overlay-lower-third"><span class="sb-overlay-text" style='font-family: Inter Black 900; font-weight: black; color: #2A2A32;'>Most founders treat content like a hobby.</span></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">01</div>
+        <div class="sb-placeholder-meta">MCU · eye-level · static</div>
+      </div>
+      
+
+      
+      <div class="sb-overlay sb-overlay-lower-third">
+        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #2A2A32;">Most founders treat content like a hobby.</span>
+      </div>
+      
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">01</span>
         <span class="sb-shot-time">0.0–2.0s</span>
         <span class="sb-shot-beat">hook</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>MCU</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>static</dd></div>
+        
         <div><dt>DOF</dt><dd>shallow</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>founder, looking directly into camera, slight knowing smile, mid-statement</p></div>
-      <div class="sb-shot-vo"><h3>VO</h3><p>"Most founders treat content like a hobby."</p></div>
-      <div class="sb-shot-text"><h3>On-screen text</h3><p class="sb-text-content">"Most founders treat content like a hobby."</p><p class="sb-text-meta">headline · lower-third · enter 0.4s (hard-cut) · exit 1.9s</p></div>
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>Hook is provocative but calm, voice carries the bite. Direct eye contact, MCU lock-in.</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>founder, looking directly into camera, slight knowing smile, mid-statement</p>
+      </div>
+
+      
+      <div class="sb-shot-vo">
+        <h3>VO</h3>
+        <p>"Most founders treat content like a hobby."</p>
+      </div>
+      
+
+      
+      <div class="sb-shot-text">
+        <h3>On-screen text</h3>
+        
+        <p class="sb-text-content">"Most founders treat content like a hobby."</p>
+        <p class="sb-text-meta">text_01 · headline · lower-third · enter 0.4s (hard-cut) · exit 1.9s (hard-cut)</p>
+        
+      </div>
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>Hook is provocative but calm, voice carries the bite. Direct eye contact, MCU lock-in.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_02">
     <div class="sb-shot-frame aspect-9-16">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">02</div><div class="sb-placeholder-meta">MS · eye-level · static</div></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">02</div>
+        <div class="sb-placeholder-meta">MS · eye-level · static</div>
+      </div>
+      
+
       
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">02</span>
         <span class="sb-shot-time">2.0–8.0s</span>
         <span class="sb-shot-beat">stakes</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>MS</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>static</dd></div>
+        
         <div><dt>DOF</dt><dd>shallow</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>founder, gesturing slightly with one hand, explaining, eye contact maintained</p></div>
-      <div class="sb-shot-vo"><h3>VO</h3><p>"Then they wonder why every post feels like starting over. New idea, new angle, no compounding."</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>founder, gesturing slightly with one hand, explaining, eye contact maintained</p>
+      </div>
+
       
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>Stakes beat. Pulled out to MS to let the gesture read. VO does the work, no on-screen text needed.</p></div>
+      <div class="sb-shot-vo">
+        <h3>VO</h3>
+        <p>"Then they wonder why every post feels like starting over. New idea, new angle, no compounding."</p>
+      </div>
+      
+
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>Stakes beat. Pulled out to MS to let the gesture read. VO does the work, no on-screen text needed.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_03">
     <div class="sb-shot-frame aspect-9-16">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">03</div><div class="sb-placeholder-meta">ECU · eye-level · static</div></div>
-      <div class="sb-overlay sb-overlay-lower-third"><span class="sb-overlay-text" style='font-family: Inter Black 900; font-weight: black; color: #D94F3A;'>It's missing infrastructure.</span></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">03</div>
+        <div class="sb-placeholder-meta">ECU · eye-level · static</div>
+      </div>
+      
+
+      
+      <div class="sb-overlay sb-overlay-lower-third">
+        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #D94F3A;">It&#x27;s missing infrastructure.</span>
+      </div>
+      
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">03</span>
         <span class="sb-shot-time">8.0–14.0s</span>
         <span class="sb-shot-beat">stakes</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>ECU</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>static</dd></div>
+        
         <div><dt>DOF</dt><dd>shallow</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>close on founder's eyes, considered expression, slight head tilt</p></div>
-      <div class="sb-shot-vo"><h3>VO</h3><p>"It's not creativity. It's missing infrastructure."</p></div>
-      <div class="sb-shot-text"><h3>On-screen text</h3><p class="sb-text-content">"It's missing infrastructure."</p><p class="sb-text-meta">headline · lower-third · enter 9.0s (type-on) · exit 13.8s</p></div>
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>ECU pulls the audience into the realization moment. Text reinforces the line that needs to land.</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>close on founder&#x27;s eyes, considered expression, slight head tilt</p>
+      </div>
+
+      
+      <div class="sb-shot-vo">
+        <h3>VO</h3>
+        <p>"It&#x27;s not creativity. It&#x27;s missing infrastructure."</p>
+      </div>
+      
+
+      
+      <div class="sb-shot-text">
+        <h3>On-screen text</h3>
+        
+        <p class="sb-text-content">"It&#x27;s missing infrastructure."</p>
+        <p class="sb-text-meta">text_02 · headline · lower-third · enter 9.0s (type-on) · exit 13.8s (fade-out)</p>
+        
+      </div>
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>ECU pulls the audience into the realization moment. Text reinforces the line that needs to land.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_04">
     <div class="sb-shot-frame aspect-9-16">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">04</div><div class="sb-placeholder-meta">MCU · eye-level · push</div></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">04</div>
+        <div class="sb-placeholder-meta">MCU · eye-level · push</div>
+      </div>
+      
+
       
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">04</span>
         <span class="sb-shot-time">14.0–24.0s</span>
         <span class="sb-shot-beat">insight</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>MCU</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>push</dd></div>
+        
         <div><dt>DOF</dt><dd>shallow</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>founder, leaning slightly forward, more energy in delivery, hands resting on desk</p></div>
-      <div class="sb-shot-vo"><h3>VO</h3><p>"Every brand has a voice. Most founders never extract it. So every post starts from scratch."</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>founder, leaning slightly forward, more energy in delivery, hands resting on desk</p>
+      </div>
+
       
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>Insight beat, slow push as the thesis builds. VO is the load-bearing element here.</p></div>
+      <div class="sb-shot-vo">
+        <h3>VO</h3>
+        <p>"Every brand has a voice. Most founders never extract it. So every post starts from scratch."</p>
+      </div>
+      
+
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>Insight beat, slow push as the thesis builds. VO is the load-bearing element here.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_05">
     <div class="sb-shot-frame aspect-9-16">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">05</div><div class="sb-placeholder-meta">MS · eye-level · static</div></div>
-      <div class="sb-overlay sb-overlay-upper-third"><span class="sb-overlay-text" style='font-family: Inter Black 900; font-weight: black; color: #2A2A32;'>Extract. Lock. Compound.</span></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">05</div>
+        <div class="sb-placeholder-meta">MS · eye-level · static</div>
+      </div>
+      
+
+      
+      <div class="sb-overlay sb-overlay-upper-third">
+        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #2A2A32;">Extract. Lock. Compound.</span>
+      </div>
+      
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">05</span>
         <span class="sb-shot-time">24.0–32.0s</span>
         <span class="sb-shot-beat">insight</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>MS</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>static</dd></div>
+        
         <div><dt>DOF</dt><dd>deep</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>founder gestures toward laptop screen, kanban-style content pipeline visible, voice extraction interface, brand-lock file open in editor</p></div>
-      <div class="sb-shot-vo"><h3>VO</h3><p>"Extract it once. Lock it in code. Now every post compounds."</p></div>
-      <div class="sb-shot-text"><h3>On-screen text</h3><p class="sb-text-content">"Extract. Lock. Compound."</p><p class="sb-text-meta">headline · upper-third · enter 24.4s (slide-up) · exit 31.8s</p></div>
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>Show the artifact. Text reinforces the three-step pattern. Deep DOF keeps the screen legible.</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>founder gestures toward laptop screen, kanban-style content pipeline visible, voice extraction interface, brand-lock file open in editor</p>
+      </div>
+
+      
+      <div class="sb-shot-vo">
+        <h3>VO</h3>
+        <p>"Extract it once. Lock it in code. Now every post compounds."</p>
+      </div>
+      
+
+      
+      <div class="sb-shot-text">
+        <h3>On-screen text</h3>
+        
+        <p class="sb-text-content">"Extract. Lock. Compound."</p>
+        <p class="sb-text-meta">text_03 · headline · upper-third · enter 24.4s (slide-up) · exit 31.8s (fade-out)</p>
+        
+      </div>
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>Show the artifact. Text reinforces the three-step pattern. Deep DOF keeps the screen legible.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_06">
     <div class="sb-shot-frame aspect-9-16">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">06</div><div class="sb-placeholder-meta">MCU · eye-level · static</div></div>
-      <div class="sb-overlay sb-overlay-upper-third"><span class="sb-overlay-text" style='font-family: Inter Medium 500; font-weight: medium; color: #2A2A32;'>hundreds of videos · 48hr cycles · 1 operator</span></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">06</div>
+        <div class="sb-placeholder-meta">MCU · eye-level · static</div>
+      </div>
+      
+
+      
+      <div class="sb-overlay sb-overlay-upper-third">
+        <span class="sb-overlay-text" style="font-family: Inter Medium 500; font-weight: medium; color: #2A2A32;">hundreds of videos · 48hr cycles · 1 operator</span>
+      </div>
+      
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">06</span>
         <span class="sb-shot-time">32.0–42.0s</span>
         <span class="sb-shot-beat">proof</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>MCU</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>static</dd></div>
+        
         <div><dt>DOF</dt><dd>shallow</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>founder, calm steady delivery, eye contact, hands folded</p></div>
-      <div class="sb-shot-vo"><h3>VO</h3><p>"Hundreds of videos rendered from code. 48-hour content cycles. One operator."</p></div>
-      <div class="sb-shot-text"><h3>On-screen text</h3><p class="sb-text-content">"hundreds of videos · 48hr cycles · 1 operator"</p><p class="sb-text-meta">body · upper-third · enter 32.5s (fade-in) · exit 41.8s</p></div>
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>Proof beat, concrete numbers. Stat callout in upper-third lets viewer absorb visually while VO confirms.</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>founder, calm steady delivery, eye contact, hands folded</p>
+      </div>
+
+      
+      <div class="sb-shot-vo">
+        <h3>VO</h3>
+        <p>"Hundreds of videos rendered from code. 48-hour content cycles. One operator."</p>
+      </div>
+      
+
+      
+      <div class="sb-shot-text">
+        <h3>On-screen text</h3>
+        
+        <p class="sb-text-content">"hundreds of videos · 48hr cycles · 1 operator"</p>
+        <p class="sb-text-meta">text_04 · body · upper-third · enter 32.5s (fade-in) · exit 41.8s (fade-out)</p>
+        
+      </div>
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>Proof beat, concrete numbers. Stat callout in upper-third lets viewer absorb visually while VO confirms.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_07">
     <div class="sb-shot-frame aspect-9-16">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">07</div><div class="sb-placeholder-meta">MS · eye-level · pull</div></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">07</div>
+        <div class="sb-placeholder-meta">MS · eye-level · pull</div>
+      </div>
+      
+
       
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">07</span>
         <span class="sb-shot-time">42.0–50.0s</span>
         <span class="sb-shot-beat">insight</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>MS</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>pull</dd></div>
+        
         <div><dt>DOF</dt><dd>shallow</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>founder, slight smile, settled into the explanation, room visible around him</p></div>
-      <div class="sb-shot-vo"><h3>VO</h3><p>"Not because we work harder. Because the system runs."</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>founder, slight smile, settled into the explanation, room visible around him</p>
+      </div>
+
       
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>Slow pull releases tension. The thesis lands. VO carries, text would dilute.</p></div>
+      <div class="sb-shot-vo">
+        <h3>VO</h3>
+        <p>"Not because we work harder. Because the system runs."</p>
+      </div>
+      
+
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>Slow pull releases tension. The thesis lands. VO carries, text would dilute.</p>
+      </div>
     </div>
   </article>
-
-
+  
   <article class="sb-shot" id="shot_08">
     <div class="sb-shot-frame aspect-9-16">
-      <div class="sb-placeholder"><div class="sb-placeholder-id">08</div><div class="sb-placeholder-meta">MCU · eye-level · static</div></div>
-      <div class="sb-overlay sb-overlay-lower-third"><span class="sb-overlay-text" style='font-family: Inter Black 900; font-weight: black; color: #D94F3A;'>whystrohm.com/scan</span></div>
+      
+      
+      <div class="sb-placeholder">
+        <div class="sb-placeholder-id">08</div>
+        <div class="sb-placeholder-meta">MCU · eye-level · static</div>
+      </div>
+      
+
+      
+      <div class="sb-overlay sb-overlay-lower-third">
+        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #D94F3A;">whystrohm.com/scan</span>
+      </div>
+      
     </div>
+
     <div class="sb-shot-body">
       <header class="sb-shot-header">
         <span class="sb-shot-id">08</span>
         <span class="sb-shot-time">50.0–60.0s</span>
         <span class="sb-shot-beat">cta</span>
+        
       </header>
+
       <dl class="sb-shot-meta">
         <div><dt>Framing</dt><dd>MCU</dd></div>
         <div><dt>Angle</dt><dd>eye-level</dd></div>
         <div><dt>Motion</dt><dd>static</dd></div>
+        
         <div><dt>DOF</dt><dd>shallow</dd></div>
+        
       </dl>
-      <div class="sb-shot-subject"><h3>Subject</h3><p>founder, calm, looks directly into camera one more time, almost-smile, settled</p></div>
-      <div class="sb-shot-vo"><h3>VO</h3><p>"If this sounds like the version of content you actually want, run a free scan."</p></div>
-      <div class="sb-shot-text"><h3>On-screen text</h3><p class="sb-text-content">"whystrohm.com/scan"</p><p class="sb-text-meta">headline · lower-third · enter 52.5s (type-on) · exit 59.8s</p></div>
-      <div class="sb-shot-rationale"><h3>Rationale</h3><p>CTA beat. Static MCU brings it home. URL holds in lower-third for full read-twice duration.</p></div>
+
+      <div class="sb-shot-subject">
+        <h3>Subject</h3>
+        <p>founder, calm, looks directly into camera one more time, almost-smile, settled</p>
+      </div>
+
+      
+      <div class="sb-shot-vo">
+        <h3>VO</h3>
+        <p>"If this sounds like the version of content you actually want, run a free scan."</p>
+      </div>
+      
+
+      
+      <div class="sb-shot-text">
+        <h3>On-screen text</h3>
+        
+        <p class="sb-text-content">"whystrohm.com/scan"</p>
+        <p class="sb-text-meta">text_05 · headline · lower-third · enter 52.5s (type-on) · exit 59.8s (hard-cut)</p>
+        
+      </div>
+      
+
+      <div class="sb-shot-rationale">
+        <h3>Rationale</h3>
+        <p>CTA beat. Static MCU brings it home. URL holds in lower-third for full read-twice duration.</p>
+      </div>
     </div>
   </article>
-
+  
 </section>
 
 <footer class="sb-footer">
   <div class="sb-footer-inner">
-    <div>Generated against <a href="brand-lock.snapshot.md"><code>brand-lock.snapshot.md</code></a> on 2026-05-08 12:45 UTC.</div>
+    <div>
+      Built against <a href="brand-lock.snapshot.md"><code>brand-lock.snapshot.md</code></a> (<code>f364bc71f68d</code>).
+    </div>
     <div>Built with <a href="https://github.com/whystrohm/shotkit">shotkit</a> · WhyStrohm</div>
+  </div>
+  <div class="sb-footer-inner sb-provenance">
+    <div>
+      Run 20260507T142300Z-005daed8 started 2026-05-07T14:23:00Z. This page rendered 2026-05-07T14:23:00Z.
+      
+    </div>
   </div>
 </footer>
 
 <script>
+// Keyboard navigation: arrow keys move between shots
 (function() {
   const shots = Array.from(document.querySelectorAll('.sb-shot'));
   if (!shots.length) return;
+
   function shotInView() {
     const mid = window.innerHeight / 2;
-    let best = 0, bestDist = Infinity;
+    let best = 0;
+    let bestDist = Infinity;
     shots.forEach((shot, i) => {
       const rect = shot.getBoundingClientRect();
       const dist = Math.abs(rect.top + rect.height / 2 - mid);
@@ -853,16 +1199,19 @@ h1, h2, h3 {
     });
     return best;
   }
+
   document.addEventListener('keydown', function(e) {
     if (e.target.matches('input, textarea')) return;
     const i = shotInView();
     if (e.key === 'ArrowDown' || e.key === 'j') {
       e.preventDefault();
-      shots[Math.min(shots.length - 1, i + 1)].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const next = shots[Math.min(shots.length - 1, i + 1)];
+      next.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     if (e.key === 'ArrowUp' || e.key === 'k') {
       e.preventDefault();
-      shots[Math.max(0, i - 1)].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const prev = shots[Math.max(0, i - 1)];
+      prev.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 })();

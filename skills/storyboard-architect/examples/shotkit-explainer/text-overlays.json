@@ -80,7 +80,7 @@
       "font": "Inter Medium 500",
       "size": "caption",
       "weight": "medium",
-      "color": "#6B6B73",
+      "color": "#7A7580",
       "position": "lower-third",
       "enter": { "at": 86.0, "animation": "fade-in" },
       "exit": { "at": 90.0, "animation": "hard-cut" }

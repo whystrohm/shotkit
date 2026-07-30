@@ -9,12 +9,13 @@ A storyboard isn't just a creative artifact. It's a decision record. Six months 
 
 The audit trail is the answer to all of those.
 
-## The four files that make a storyboard auditable
+## The five files that make a storyboard auditable
 
-Every storyboard run produces these four files. None are optional.
+Every storyboard run produces these five files. None are optional.
 
 ```
 output/
+├── run.json                   # Run identity, and every input pinned by content hash
 ├── storyboard.md              # Human-readable spec, with rationale per shot
 ├── shots.json                 # Machine-readable, schema-validated
 ├── text-overlays.json         # On-screen text, separated from images
@@ -22,6 +23,37 @@ output/
 ```
 
 Each file does one job in the audit trail.
+
+### `run.json`, the thing that makes the other four provable
+
+Reading this answers "are the files next to these frames the files they were built from."
+
+The other four files are named references to each other. `shots.json` points at
+`brand-lock.snapshot.md` by filename. A filename survives its contents being replaced, so
+for a long time this pattern could tell you *which file* a storyboard targeted and not
+*which version of it*. Re-run the architect against an updated brand-pack and the snapshot
+is overwritten in place; every reference still resolves and nothing reports a change.
+
+`run.json` closes that by recording a SHA-256 for each input alongside a `run_id` and a
+`created_at` instant:
+
+```json
+{
+  "run_id": "20260730T142300Z-9f2c1ab4",
+  "created_at": "2026-07-30T14:23:00Z",
+  "inputs": {
+    "shots_ref": "shots.json",
+    "shots_sha256": "e3b0c44298fc1c14...",
+    "brand_lock_ref": "brand-lock.snapshot.md",
+    "brand_lock_sha256": "2c26b46b68ffc68f...",
+    "brand_lock_source": "brand-packs/whystrohm.md",
+    "brand_lock_configured": true
+  }
+}
+```
+
+`tools/validate_provenance.py` recomputes those hashes. A mid-project brand-lock edit fails
+there instead of silently repointing the project's history.
 
 ### `storyboard.md`, the human-readable record
 
@@ -82,13 +114,20 @@ When a client asks "what version of our brand did this storyboard target," and y
 
 **Versioning across time.** Storyboards from before a brand refresh stay valid against their original brand-lock. New storyboards target the new state. Both are explicit.
 
-**Regeneration on demand.** Same inputs, same outputs. If a client wants to re-run a storyboard with a different generator or a different aspect ratio, the JSON makes it a one-command operation.
+**Regeneration on demand.** If a client wants to re-run a storyboard with a different generator or a different aspect ratio, the JSON is the input and you do not start over.
+
+Be precise about what is reproducible, though. The spec files are: same `shots.json` and
+brand-lock produce the same prompts, and `tools/shots-to-html.py` re-renders the same
+preview byte for byte given a pinned timestamp, which CI checks on every push. The *frames*
+are not. Image generation is non-deterministic even at a fixed seed on most services. That
+is why the audit trail records the hash of the frame you actually shipped rather than
+implying you could conjure it again.
 
 **Cross-team handoff.** An editor reading `storyboard.md` knows the intent. A motion designer reading `shots.json` knows the spec. A brand director reading `brand-lock.snapshot.md` knows the constraints. Each role gets what they need without asking.
 
 **Quality assurance.** The visual-asset-critic skill compares a generated image against the shot's spec and the brand-lock. Without the snapshot, it can't critique against historical brand state.
 
-**Legal and compliance.** When a regulated industry asks "show us the approval state," the four files are the answer.
+**Legal and compliance.** When a regulated industry asks "show us the state this was approved in," the five files plus the critique tree are the answer, and `validate_provenance.py` is how you show the files have not moved since. Approver identity is not in there, so if the question is "who signed this off," that part is still on you.
 
 ## What breaks without the audit trail
 
@@ -99,17 +138,37 @@ When a client asks "what version of our brand did this storyboard target," and y
 
 These aren't hypothetical. They're the daily friction of running content infrastructure without an audit trail.
 
-## How to extend the pattern
+## The spec-to-artifact half
 
-The four-file output is the minimum. Some teams extend it:
+The five files above cover the spec. Generation adds the other half, and it is addressed by
+round and shot so nothing overwrites anything:
 
-**Render manifests.** When images are generated, log which prompt produced which image, with which seed, on which date. A `renders.json` alongside the four files completes the loop from spec to artifact.
+```
+output/
+├── prompts/round-1/flux.txt                    the prompt, hashed in run.json
+├── frames/round-1/shot_02.png                  the frame
+└── critiques/round-1/shot_02.critique.json     the verdict, hashing both of the above
+```
 
-**Approval logs.** When a stakeholder approves a storyboard, log the approval with timestamp and approver. A `approvals.json` makes the chain auditable end-to-end.
+A critique at schema `1.1` carries `image_sha256`, `prompt_sha256`, `brand_lock_sha256`,
+`generator`, `model_version`, and `seed`. That is the link from spec to artifact: given a
+frame, you can name the prompt that produced it, the generator and model version that ran,
+the brand state it was judged against, and the verdict it received, and you can prove the
+frame has not changed since.
 
-**Diff outputs.** When a storyboard is revised, generate a diff against the previous version. Helps stakeholders see what changed without re-reading the whole spec.
+Earlier versions of this document described that link as an optional extension, a
+`renders.json` a team might add, while also claiming the pattern already let you point to
+"the prompt that drove the generation" and "the image that was approved." Both statements
+could not be true. The mechanism is now shipped, so the claim is now safe to make.
 
-These are extensions. The four files are the core. Start with them, extend as needed.
+**Still not shipped: approval logs.** Who signed off, and when, is not recorded anywhere.
+`accepted: true` on a frame carries a `critique_ref`, so an acceptance traces to a critique,
+but a critique is a review and not a human approval. If you need approver identity, that is
+yours to add.
+
+**Also worth adding: diff outputs.** When a storyboard is revised, a diff against the
+previous version helps stakeholders see what changed without re-reading the spec. Git does
+this well enough that shotkit does not try.
 
 ## How to use the audit trail in practice
 

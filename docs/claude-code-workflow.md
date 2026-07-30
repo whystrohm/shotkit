@@ -63,6 +63,7 @@ The first time you trigger a shotkit skill in a session, expect Claude to:
 2. Ask any clarifying questions the brief left ambiguous
 3. Read the relevant brand-lock file from `brand-packs/`
 4. Produce the output set into your working directory under `output/`
+5. Write `run.json`, pinning each of those files by content hash
 
 If a brand-lock is missing or invalid, the skill says so before producing anything. If the brief is missing required information (duration, beat framework, brand), the skill asks for it.
 
@@ -74,7 +75,7 @@ You: 30s pain-proof-promise for WhyStrohm. Use brand-packs/whystrohm.md.
 Claude: storyboard-architect engaging. Reading brand-packs/whystrohm.md.
         Brief looks complete. Producing storyboard.
 
-[output/ directory created with 4 files + prompts/ subdirectory]
+[output/ directory created with 5 spec files]
 
 Claude: Done. Open output/preview.html to review.
 ```
@@ -100,23 +101,30 @@ Override the path by including a target in the prompt:
 
 > "Storyboard a 30-second explainer for WhyStrohm. Output into ./projects/launch-q3/."
 
-The skill creates the target directory and writes the four files plus the prompts subdirectory.
+The skill creates the target directory and writes the five spec files. Generation and review
+add the round directories underneath.
 
 For multi-storyboard projects, name the output directory after the storyboard:
 
 ```
 projects/launch-q3/
 ├── 30s-pain-proof-promise/
+│   ├── run.json
 │   ├── storyboard.md
 │   ├── shots.json
 │   ├── text-overlays.json
 │   ├── brand-lock.snapshot.md
-│   └── prompts/
+│   ├── prompts/round-1/flux.txt
+│   ├── frames/round-1/shot_01.png
+│   └── critiques/round-1/shot_01.critique.json
 └── 60s-founder-explainer/
     └── ...
 ```
 
-The audit-trail pattern (see [`docs/audit-trail-pattern.md`](./audit-trail-pattern.md)) makes this directory structure trivial to manage in Git.
+Round-and-shot paths are what let two people work the same project without overwriting each
+other. See [`docs/the-qa-loop.md`](./the-qa-loop.md).
+
+The audit-trail pattern (see [`docs/audit-trail-pattern.md`](./audit-trail-pattern.md)) makes this directory structure trivial to manage in Git. Commit `run.json` with the spec files: it is what proves, later, that the snapshot in the directory is the snapshot the frames were built from.
 
 ## Common Claude Code patterns
 
@@ -138,7 +146,7 @@ Triggers `visual-asset-critic`. Compares the image against the shot spec and the
 
 > "Generate Flux prompts for ./output/shots.json."
 
-Triggers `visual-prompt-forge` with the Flux adapter. Writes `output/prompts/flux.txt`.
+Triggers `visual-prompt-forge` with the Flux adapter. Writes `output/prompts/round-1/flux.txt`.
 
 **Update a single shot.**
 
@@ -162,13 +170,22 @@ For day-to-day work, natural-language prompts are sufficient.
 
 ## Updating shotkit
 
-When v2.0.0 ships, update the install:
-
 ```bash
 cd shotkit
 git pull
 ./install.sh
 ```
+
+`install.sh` also refreshes `~/.claude/shotkit-tools/`, which is where the validators land.
+Re-run the checks after an update:
+
+```bash
+./tools/check.sh
+```
+
+Upgrading from v2.0.0 changes the output layout: critiques, prompts, and frames now live under
+`round-N/` directories. Existing trees still read, and nothing is migrated for you. See the
+breaking-change table at the top of `CHANGELOG.md`.
 
 The script handles existing installs by replacing the skill directories. No state carries over from the prior version. Brand-packs, output files, and project state live outside the skills directory and are unaffected.
 

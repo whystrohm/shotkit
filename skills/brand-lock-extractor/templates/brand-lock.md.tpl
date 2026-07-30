@@ -21,9 +21,12 @@ Every hex value here is allowed. Anything outside this list is not.
 
 ## Typography
 
-**Display font:** {{font name + weight, e.g. Inter Black 900}}
-**Body font:** {{font name + weight, e.g. Inter Medium 500}}
-**Mono font (optional):** {{for code/data, or remove}}
+**Display font:** `{{font name + weight, e.g. Inter Black 900}}`
+**Body font:** `{{font name + weight, e.g. Inter Medium 500}}`
+**Mono font (optional):** `{{for code/data, or remove the line}}`
+
+The font name goes in backticks, immediately after the label. Downstream tools read
+that backticked value; prose before it is not parsed.
 
 ## Mood adjectives
 
