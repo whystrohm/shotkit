@@ -81,6 +81,10 @@ run "shots: bundled examples"        tools/validate_shots.py --examples
 run "shots: worked run"              tools/validate_shots.py \
   skills/visual-asset-critic/examples/worked-run
 
+# Prompt files: the forge's hard rules, including verbatim series_lock anchors
+run "prompts: selftest"              tools/validate_prompts.py --selftest
+run "prompts: worked run"            tools/validate_prompts.py --examples
+
 # Critique gate
 run "critique: selftest"             tools/validate_critique.py --selftest
 run "critique: fixtures"             tools/validate_critique.py --examples

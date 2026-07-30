@@ -262,7 +262,33 @@ Colors come from the series_lock color_grade and the brand_lock palette. They ge
 
 ### Rule 3. Series_lock anchors are verbatim
 
-The series_lock environment / lighting / character strings flow into every prompt **verbatim**. This is what produces visual consistency across shots. If you paraphrase or vary, shots stop matching each other.
+The series_lock `environment`, `lighting`, and `color_grade` strings flow into every
+prompt **verbatim**. This is what produces visual consistency across shots. If you
+paraphrase or vary, shots stop matching each other.
+
+Verbatim means the whole string, unedited. Not "the same idea in better prose". The
+failure mode is specific and easy to walk into: you are writing fluent descriptive
+English, `environment` is "minimalist home office, white walls, oak desk, single
+houseplant", and it reads more naturally as "a minimal home office with white walls and
+an oak desk". That is drift. The frames stop matching, and it stays invisible until you
+line up six shots and see six different rooms.
+
+Capitalising the first letter to start a sentence is fine, because the check is
+case-insensitive. "Minimalist home office, white walls, oak desk, single houseplant."
+satisfies the rule and reads like a sentence. Nothing else may change: no reordering, no
+dropped clause, no synonym, no inserted adjective.
+
+`character` is a warning rather than an error, because a shot with no person in it can
+legitimately leave it out. When the shot has a person, it is verbatim too.
+
+This rule is enforced now, not trusted:
+
+```bash
+python tools/validate_prompts.py output/
+```
+
+It exists because a careful authoring pass over a seven-shot storyboard drifted on these
+anchors in all seven shots while every other validator stayed green.
 
 ### Rule 4. Adapters are the source of truth on syntax
 
@@ -297,25 +323,34 @@ One file per generator. Read these on demand, only for the generators being targ
 
 ## Quality bar
 
-Before declaring done, verify:
-
-- [ ] One output file per requested generator, under `output/prompts/round-{N}/`
-- [ ] On a full pass, every shot in shots.json appears in every output file. On a revision
-      pass, only the revised shots appear, and the rest are accounted for as ACCEPT,
-      post-only, or rejected
-- [ ] No on-screen text content appears in any image prompt (except Ideogram-with-override)
-- [ ] Series_lock strings appear verbatim in every prompt
-- [ ] Aspect ratio matches `project.aspect`, sent under the `aspect_param` named in
-      `_capabilities.json`
-- [ ] No prompt exceeds its generator's `max_prompt_words`
-- [ ] Header comment block at the top of each file, naming the run and round
-- [ ] The round is appended to `run.json` with a hash per prompt file
-
-Then confirm the files are readable by the tool that consumes them:
+Run the validator. Do not eyeball this list.
 
 ```bash
+python tools/validate_prompts.py output/
 python tools/copy-prompt.py output/prompts/round-1/flux.txt --list
 ```
+
+`validate_prompts.py` checks the mechanical half, which is everything that used to be a
+checkbox here:
+
+- the header names the storyboard, generator, aspect, brand-lock, run, and round
+- the generator is a real id in `_capabilities.json`
+- the header aspect matches `project.aspect`
+- no prompt exceeds that generator's `max_prompt_words` ceiling
+- a full pass covers every shot; a revision file covers a subset of real shots
+- no shot block is duplicated, and none has a header with no body
+- **Rule 1**: no on-screen text copy appears in any prompt
+- **Rule 3**: `environment`, `lighting`, and `color_grade` appear verbatim, with the
+  character anchor as a warning
+
+What it cannot check, and you still have to:
+
+- [ ] One output file per requested generator
+- [ ] On a revision pass, the shots you left out are accounted for as ACCEPT, post-only,
+      or rejected, and you said which is which
+- [ ] Generator-specific parameters are right for the surface the user will paste into
+- [ ] The round is appended to `run.json` with a hash per prompt file
+- [ ] The prompt actually describes the shot, which is the part no validator will ever do
 
 ## Examples
 

@@ -8,17 +8,22 @@ usage() {
   cat <<'EOF'
 shotkit. Install all five skills, plus the tools they reference, into ~/.claude/
 
-The skills cite tools/validate_critique.py, tools/validate_shots.py, and
-tools/copy-prompt.py in their workflows. Installing the skills without those tools
-leaves every one of those paths unresolvable, so both go in together.
+Three things go in, because the skills reference all three. They cite
+tools/validate_shots.py and tools/copy-prompt.py in their workflows, and
+storyboard-architect falls back to brand-packs/_template.md when no brand-lock is
+given. Installing the skills alone left every one of those paths unresolvable.
+
+  ~/.claude/skills/               the five skills
+  ~/.claude/shotkit-tools/        the validators and helpers
+  ~/.claude/shotkit-brand-packs/  the blank template and two examples
 
 Usage:
   ./install.sh                # install to ~/.claude/ (user scope)
   ./install.sh --project      # install to ./.claude/ (project scope)
-  ./install.sh --skills-only  # skip the tools, skills only
+  ./install.sh --skills-only  # skip the tools and packs, skills only
   ./install.sh --dry-run      # show what would happen, change nothing
   ./install.sh --force        # overwrite existing skills without prompting
-  ./install.sh --uninstall    # remove the five shotkit skills and the tools
+  ./install.sh --uninstall    # remove the skills, the tools, and the packs
   ./install.sh --help         # show this help
 
 The validators need two packages: pip install pyyaml jsonschema
@@ -28,6 +33,7 @@ EOF
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 SKILLS_DIR="${SCRIPT_DIR}/skills"
 TOOLS_DIR="${SCRIPT_DIR}/tools"
+PACKS_DIR="${SCRIPT_DIR}/brand-packs"
 
 SCOPE="user"
 ROOT="${HOME}/.claude"
@@ -50,6 +56,7 @@ done
 
 TARGET="${ROOT}/skills"
 TOOLS_TARGET="${ROOT}/shotkit-tools"
+PACKS_TARGET="${ROOT}/shotkit-brand-packs"
 
 SKILLS=(
   "brand-lock-extractor"
@@ -95,12 +102,14 @@ if [[ "$UNINSTALL" == "1" ]]; then
     if [[ -d "${dst}" ]]; then echo "  [remove]  ${skill}"; run rm -rf "${dst}"
     else echo "  [skip]    ${skill}: not installed"; fi
   done
-  if [[ -d "${TOOLS_TARGET}" ]]; then
-    echo "  [remove]  shotkit-tools"
-    run rm -rf "${TOOLS_TARGET}"
-  else
-    echo "  [skip]    shotkit-tools: not installed"
-  fi
+  for extra in "${TOOLS_TARGET}" "${PACKS_TARGET}"; do
+    if [[ -d "${extra}" ]]; then
+      echo "  [remove]  $(basename "${extra}")"
+      run rm -rf "${extra}"
+    else
+      echo "  [skip]    $(basename "${extra}"): not installed"
+    fi
+  done
   echo ""
   echo "Done."
   exit 0
@@ -116,7 +125,10 @@ echo ""
 echo "Installing shotkit"
 echo "  scope:  ${SCOPE}"
 echo "  skills: ${TARGET}"
-[[ "$SKILLS_ONLY" == "1" ]] || echo "  tools:  ${TOOLS_TARGET}"
+if [[ "$SKILLS_ONLY" != "1" ]]; then
+  echo "  tools:  ${TOOLS_TARGET}"
+  echo "  packs:  ${PACKS_TARGET}"
+fi
 [[ "$DRY_RUN" == "1" ]] && echo "  mode:   dry-run (no changes)"
 echo ""
 
@@ -157,6 +169,21 @@ if [[ "$SKILLS_ONLY" != "1" ]]; then
     fi
     copy_tree "${TOOLS_DIR}" "${TOOLS_TARGET}"
   fi
+
+  # storyboard-architect's documented fallback is to copy brand-packs/_template.md when
+  # no brand-lock is given. Shipping the skills without the packs left that path
+  # pointing at a directory that does not exist after an install.
+  if [[ ! -d "${PACKS_DIR}" ]]; then
+    echo "  [skip]    brand-packs: source missing"
+  else
+    if [[ -d "${PACKS_TARGET}" ]]; then
+      echo "  [replace] shotkit-brand-packs"
+      run rm -rf "${PACKS_TARGET}"
+    else
+      echo "  [install] shotkit-brand-packs"
+    fi
+    copy_tree "${PACKS_DIR}" "${PACKS_TARGET}"
+  fi
 fi
 
 echo ""
@@ -165,6 +192,9 @@ if [[ "$SKILLS_ONLY" != "1" ]]; then
   echo ""
   echo "The validators need two packages:"
   echo "  pip install pyyaml jsonschema"
+  echo ""
+  echo "Brand packs, including the blank template, are at:"
+  echo "  ${PACKS_TARGET}/"
   echo ""
   echo "Then, from a project's output directory:"
   echo "  python ${TOOLS_TARGET}/validate_shots.py output/"

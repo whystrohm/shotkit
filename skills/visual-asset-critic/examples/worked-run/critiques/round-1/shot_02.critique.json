@@ -9,7 +9,7 @@
   "image_ref": "frames/round-1/shot_02.png",
   "image_sha256": "d025648c33854b27eedb9b99fcebf81a4980e61f4fc69e387b0810490e29d6d4",
   "prompt_ref": "prompts/round-1/flux.txt",
-  "prompt_sha256": "39b8c4ef214896b3d410449516632028f2f0e8738c0ac47c50c9c85248f31229",
+  "prompt_sha256": "a0203e0c49cafd75d8fcb86997ba619c5ac82700dc4ab430812a9929aca89328",
   "generator": "flux",
   "model_version": "2 Pro",
   "seed": 481207,

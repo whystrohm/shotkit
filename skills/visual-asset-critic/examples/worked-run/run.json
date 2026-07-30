@@ -36,7 +36,7 @@
         {
           "generator": "flux",
           "ref": "prompts/round-1/flux.txt",
-          "sha256": "39b8c4ef214896b3d410449516632028f2f0e8738c0ac47c50c9c85248f31229",
+          "sha256": "a0203e0c49cafd75d8fcb86997ba619c5ac82700dc4ab430812a9929aca89328",
           "shot_ids": [
             "shot_01",
             "shot_02"
@@ -52,7 +52,7 @@
         {
           "generator": "flux",
           "ref": "prompts/round-2/revised-flux.txt",
-          "sha256": "b5cc92894ce1c951739cf01cdc32415e26ef0a5f23a5f783dafbe2d6861c3748",
+          "sha256": "f9a807549ff558950dd8a01b8525f89f7e4d480e43d28273ec0182249de83cd7",
           "shot_ids": [
             "shot_02"
           ]

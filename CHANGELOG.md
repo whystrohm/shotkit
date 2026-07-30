@@ -47,7 +47,18 @@ and critique schema `1.0` documents still validate with a warning. Nothing auto-
   `meta` passthrough. Every provenance field is required and nullable: `null` records that an
   input was unavailable, a missing key records nothing. `additionalProperties: false` with no
   `meta` previously made it impossible to add provenance without a schema bump.
-- **`tools/check.sh`.** One entry point for all sixteen checks, called by CI, so a green local
+- **`tools/validate_prompts.py`.** Validates the prompt files the forge writes: header
+  completeness, generator id, aspect agreement, the `max_prompt_words` ceiling, shot coverage,
+  duplicate blocks, and the forge's two hard rules. Rule 1, no on-screen text copy inside a
+  prompt. Rule 3, `environment` / `lighting` / `color_grade` appearing verbatim, with the
+  character anchor as a warning since a shot with no person can omit it.
+
+  Rule 3 is the reason this exists. Series consistency depends on those anchors landing
+  unedited in every prompt, and it is the easiest rule in the kit to break, because
+  paraphrasing an anchor is what writing good prose feels like. Driving the pipeline through a
+  real seven-shot brief drifted on it in all seven shots with every other validator green. The
+  `worked-run` fixture shipped earlier in this release had drifted on it too.
+- **`tools/check.sh`.** One entry point for all eighteen checks, called by CI, so a green local
   run means a green PR. It preflights `pyyaml` and `jsonschema` and prints one install command,
   rather than failing every check with the same message.
 - **A `--selftest` on every validator.** Each constructs failing fixtures and fails if the check
@@ -99,10 +110,12 @@ and critique schema `1.0` documents still validate with a warning. Nothing auto-
   after `#`, and the documented revision header led with "Revision of", so it found no shot blocks
   at all in the one file an operator pastes from most. Comment lines inside a block are now
   annotations, shown but never copied.
-- **`install.sh` installs `tools/`** to `~/.claude/shotkit-tools/`. The skills cite
-  `tools/validate_critique.py` and `tools/copy-prompt.py`, and neither path existed after install.
-  It also stops copying `.DS_Store` into the skills directory, and `--help` no longer prints a
-  line of shell.
+- **`install.sh` installs `tools/` and `brand-packs/`** to `~/.claude/shotkit-tools/` and
+  `~/.claude/shotkit-brand-packs/`. The skills cite `tools/validate_critique.py` and
+  `tools/copy-prompt.py`, and `storyboard-architect` falls back to `brand-packs/_template.md`
+  when no brand-lock is given. None of those paths existed after an install. `--uninstall`
+  removes all three. It also stops copying `.DS_Store` into the skills directory, and `--help`
+  no longer prints a line of shell.
 - **CI calls `tools/check.sh`** and re-renders every bundled preview with a pinned timestamp,
   failing if a byte moves. That is the determinism claim, tested.
 - **`critique-rubric.md` maps pass/soft/hard onto `minor`/`major`/`blocking`** and defers to the

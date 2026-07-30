@@ -22,9 +22,10 @@ jobs:
 
       # One entry point, so a green local run means a green PR. tools/check.sh runs
       # frontmatter, schema, capability-parity, brand-lock, storyboard-instance,
-      # critique-gate, provenance, renderer, and prompt-helper checks. Each check
-      # ships a selftest that proves the check itself fires, so a validator that
-      # silently stops catching things fails the build rather than going quiet.
+      # prompt-file, critique-gate, provenance, renderer, and prompt-helper checks.
+      # Each check ships a selftest that proves the check itself fires, so a
+      # validator that silently stops catching things fails the build rather than
+      # going quiet.
       - name: Run all checks
         run: ./tools/check.sh
 

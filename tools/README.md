@@ -107,6 +107,30 @@ python tools/validate_shots.py --selftest
 Warnings cover the judgement calls: overlay copy repeated in a shot subject, a raw hex in a
 subject, shot ids out of chronological order, a font the brand-lock does not declare.
 
+### `validate_prompts.py`
+
+Validates the prompt files `visual-prompt-forge` writes, against `shots.json` and the
+capability matrix. Header completeness, generator id, aspect agreement, the
+`max_prompt_words` ceiling, shot coverage, duplicate blocks, and the forge's two hard
+rules: no on-screen text copy inside a prompt, and `environment` / `lighting` /
+`color_grade` appearing verbatim.
+
+```bash
+python tools/validate_prompts.py output/
+python tools/validate_prompts.py output/prompts/round-1/flux.txt
+python tools/validate_prompts.py --examples
+python tools/validate_prompts.py --selftest
+```
+
+The verbatim check is the reason this file exists. Series consistency depends on the
+series_lock anchors landing unedited in every prompt, and that is the single easiest rule
+in the kit to break, because paraphrasing an anchor is what writing good prose feels like.
+A careful authoring pass over a seven-shot storyboard drifted on it seven times out of
+seven with every other validator green, and so did the worked-run fixture in this repo.
+
+The character anchor is a warning rather than an error: a shot with no person in it can
+legitimately omit it, and the message says so, so you can confirm rather than guess.
+
 ### `validate_critique.py`
 
 Validates a critique against `critique.schema.json` **and** the two invariants the schema
