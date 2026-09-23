@@ -184,8 +184,8 @@ Re-run the checks after an update:
 ```
 
 Upgrading from v2.0.0 changes the output layout: critiques, prompts, and frames now live under
-`round-N/` directories. Existing trees still read, and nothing is migrated for you. See the
-breaking-change table at the top of `CHANGELOG.md`.
+`round-N/` directories. Existing trees still read, and nothing is migrated for you. See
+"Upgrading from v2.0.0" in `CHANGELOG.md` for the steps and the validators that confirm them.
 
 The script handles existing installs by replacing the skill directories. No state carries over from the prior version. Brand-packs, output files, and project state live outside the skills directory and are unaffected.
 

@@ -23,6 +23,66 @@ then makes validators run against a real project instead of only against this re
 Existing trees still read: the tools fall back to `generated/` and to a root `critique.json`,
 and critique schema `1.0` documents still validate with a warning. Nothing auto-migrates.
 
+### Upgrading from v2.0.0
+
+Update the install with `git pull` and `./install.sh`. The validators now install to
+`~/.claude/shotkit-tools/` and need `pip install pyyaml jsonschema`. New runs write the new
+layout. A v2.0.0 output tree stays where it is until you move it.
+
+**What still reads as it is.**
+
+- `tools/shots-to-html.py` finds frames in `generated/` and shows the verdict from a root
+  `critique.json`. With no `run.json` it warns and prints "not recorded" for the run date.
+- `tools/validate_prompts.py` reads flat `prompts/*.txt` when there are no `round-N/`
+  directories. It warns that each header has no `# Run:` and no `# Round:` line.
+- `tools/validate_critique.py` accepts a critique with `version` `1.0` and warns that it
+  carries no run id, no round, and no hashes.
+
+**What fails on a v2.0.0 tree.**
+
+- `tools/validate_provenance.py` fails any tree with no `run.json`. That is on purpose: a tree
+  with nothing pinned must not pass a gate. It also looks for frames only under
+  `frames/round-N/`, so a frame left in `generated/` is never checked against a critique.
+- `tools/validate_shots.py` is new, and it checks rules v2.0.0 never checked: timing, gaps,
+  overlaps, overlay references, and overlay colors against the brand-lock palette. It also
+  fails an `assets.generated` entry marked `accepted: true` with no `critique_ref`. A v2.0.0
+  storyboard can fail it.
+
+**Moving a tree by hand.** Work in this order. Each hash has to be taken after its file stops
+changing, so edit first and hash last.
+
+1. Move each frame from `generated/{shot_id}.png` to `frames/round-N/{shot_id}.png`, where N is
+   the round whose prompt file produced it. With no revision pass, that is round 1.
+2. Move `prompts/{generator}.txt` to `prompts/round-1/` and `prompts/revised-{generator}.txt`
+   to `prompts/round-2/`. Add `# Run: {run_id}` and `# Round: N` to each header now.
+3. Fix `shots.json` until `validate_shots.py` passes. Repoint any `assets.generated` paths
+   from `generated/` to `frames/round-N/`, and give each `accepted: true` entry a
+   `critique_ref` or remove the flag.
+4. Write `run.json` to `skills/storyboard-architect/templates/run.schema.json`. It needs a
+   `run_id` (`YYYYMMDDTHHMMSSZ-` plus 8 hex characters, with the timestamp equal to
+   `created_at`), `shotkit_version`, `project`, the SHA-256 of `shots.json`,
+   `text-overlays.json`, and `brand-lock.snapshot.md`, and one `rounds` entry per prompt round
+   with each prompt file's hash. `shasum -a 256` prints the hashes.
+5. Move the critique. v2.0.0 wrote every review to the same `critique.json`, so only the last
+   review survives. Move it to `critiques/round-N/{shot_id}.critique.json`. Every other frame
+   has no verdict on disk, and `validate_provenance.py` fails each one as unreviewed until you
+   run `visual-asset-critic` on it. The critic writes schema `1.1` with the frame, prompt, and
+   brand-lock hashes. A moved `1.0` critique still passes, with a warning, but ties to no bytes.
+
+**Confirm.** Run the four validators against the moved tree:
+
+```bash
+python ~/.claude/shotkit-tools/validate_shots.py output/
+python ~/.claude/shotkit-tools/validate_prompts.py output/
+python ~/.claude/shotkit-tools/validate_critique.py output/
+python ~/.claude/shotkit-tools/validate_provenance.py output/ --require-accept
+```
+
+The last one exits 0 only when every recorded hash matches the file on disk, every frame has a
+critique for its round, and every shot's latest verdict is `ACCEPT`. Drop `--require-accept` to
+check the chain without the verdict gate. A hash mismatch right after a migration means a file
+changed after you hashed it. Recompute that hash.
+
 ### Added
 
 - **`run.json`, written once per run.** Records a `run_id`, a `created_at` instant, and a
