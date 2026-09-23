@@ -216,9 +216,9 @@ Named rather than left to be discovered:
 
 - **No approval log.** `run.json` records what was built and reviewed. Who approved it, and when,
   is not recorded anywhere.
-- **The explainer video and demo GIF are v0.1.0** and still show Runway/Sora.
-  `remotion/src/ShotkitExplainer.tsx` is deliberately left matching the artifact it produced; both
-  are labelled in `remotion/README.md` and `README.md`.
+- **The explainer video is v0.1.0** and still shows Runway/Sora. The demo GIF is v2.0.0 and shows
+  the v2.0.0 output layout, not the v3 one. `remotion/src/ShotkitExplainer.tsx` is deliberately left
+  matching the artifact it produced; both are labelled in `remotion/README.md` and `README.md`.
 - **No worked example for Veo, Seedance, or Hailuo** in `one-shot-all-adapters/`. Each has a prompt
   example in its adapter file.
 - **The forge and critic still apply English `fix` strings by judgement.** The file formats no

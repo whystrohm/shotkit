@@ -17,9 +17,9 @@ That installs all five skills into `~/.claude/skills/`. Restart your Claude Code
 
 **Watch shotkit explain itself.** The 90-second explainer was made *by* shotkit. The storyboard, shots.json, brand-lock snapshot, per-generator prompts, and rendered preview live at [`skills/storyboard-architect/examples/shotkit-explainer/`](skills/storyboard-architect/examples/shotkit-explainer/). Full breakdown at [whystrohm.com/blog/you-dont-have-a-content-problem](https://whystrohm.com/blog/you-dont-have-a-content-problem).
 
-The rendered video and the demo GIF above are from v0.1.0 and have not been re-cut: they show
-seven adapters including Runway/Sora, which was discontinued and replaced by the fal.ai motion
-lineup. The storyboard files beside them are current.
+The demo GIF above is from v2.0.0 and shows the v2.0.0 output layout. The rendered explainer
+video is from v0.1.0 and still shows Runway/Sora, which was discontinued and replaced by the
+fal.ai motion lineup. The storyboard files beside them are current.
 
 ---
 
