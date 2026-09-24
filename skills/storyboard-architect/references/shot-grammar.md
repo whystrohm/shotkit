@@ -61,7 +61,7 @@ Don't redefine per shot. Define once in `series_lock.lighting`. Examples:
 - `hard top-light, single source, deep shadows, studio black`
 - `practical mixed sources, neon accents, urban night`
 
-The series_lock string flows into every prompt automatically.
+The series_lock string flows into every prompt.
 
 ## Subject description
 

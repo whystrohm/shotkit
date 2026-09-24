@@ -130,7 +130,7 @@ not there.
 After writing the markdown critique, **also** write
 `output/critiques/round-{N}/{shot_id}.critique.json` conforming to
 `templates/critique.schema.json` at version `1.1`. Same review, two surfaces. The markdown
-is for the human; the JSON is so an automated QA loop (e.g. `visual-prompt-forge` revision
+is for the human; the JSON is so a scripted QA loop (e.g. `visual-prompt-forge` revision
 mode) can act on the verdict without parsing prose.
 
 **Map the markdown to the schema, section for section:**

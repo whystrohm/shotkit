@@ -103,7 +103,7 @@ When you're doing repeated, branded, multi-shot, production-bound work, the five
 
 ## How to apply this without the skill pack
 
-The skill pack automates the composition. But the layers exist independently. You can apply them by hand:
+The skill pack does the composition for you. But the layers exist independently. You can apply them by hand:
 
 1. Write a brand-lock file (use the template)
 2. Write a series-lock per storyboard (one paragraph each: character / environment / lighting / color grade)

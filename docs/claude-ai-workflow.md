@@ -49,7 +49,7 @@ The pattern operators land on: one storyboard per Claude.ai conversation, brand-
 
 Three operational differences between the two surfaces.
 
-**Auto-discovery does not apply.** Claude Code reads `~/.claude/skills/` automatically at session start. Claude.ai does not have a filesystem to read. Skills are uploaded explicitly per skill.
+**Auto-discovery does not apply.** Claude Code reads `~/.claude/skills/` on its own at session start. Claude.ai does not have a filesystem to read. Skills are uploaded explicitly per skill.
 
 **Working directory does not exist.** Claude Code writes output relative to the directory where you started the session. Claude.ai produces output as message attachments. The "where files go" question gets answered differently in each surface.
 

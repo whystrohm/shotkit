@@ -302,4 +302,4 @@ After producing the five files, tell the user what's in `output/` and offer the 
 - "Want a shareable HTML preview? I'll run `storyboard-html-preview`."
 - "Want to QA a generated image against this storyboard? I'll run `visual-asset-critic`."
 
-Don't run those automatically. The user picks.
+Don't run those on your own. The user picks.
