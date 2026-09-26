@@ -220,8 +220,11 @@ whystrohm-voice-extract is a good source for a brand-lock's voice rules. The bra
 itself comes from `brand-lock-extractor` or the template.
 
 The skills connect through shared file formats in a `brand/` folder in your project, not through
-one big repo. This repo holds the canonical schemas in [`contracts/`](contracts/). Today
-whystrohm-voice-extract writes `brand/voice-profile.json` and whystrohm-voice-scorer reads it.
+one big repo. This repo holds the canonical schemas in [`contracts/`](contracts/):
+`brand/voice-profile.json` (voice-extract writes it, voice-scorer reads it),
+`brand/audit-findings.json` (whystrohm-audit writes it, `storyboard-architect` can take it as
+a brief input) and `brand/foundrkit.rules.json` (foundrkit-lint builds it from the brand folder
+and lints against it).
 
 For the operated version of the full pipeline, see [whystrohm.com](https://whystrohm.com).
 

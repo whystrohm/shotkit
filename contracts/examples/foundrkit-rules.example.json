@@ -1,0 +1,12 @@
+{
+  "contract": "foundrkit-rules",
+  "version": "1",
+  "brand": "Northwind Studio",
+  "generated_from": ["brand/voice-profile.json", "brand/brand-lock.md"],
+  "rules": [
+    { "pattern": "solutions", "severity": "error", "suggestion": "Name the thing you deliver.", "category": "vocabulary", "source": "voice-profile" },
+    { "pattern": "world-class", "severity": "error", "category": "vocabulary", "source": "voice-profile" },
+    { "pattern": "/!\\s*$/m", "severity": "warn", "suggestion": "No exclamation marks.", "category": "tone", "source": "voice-profile" },
+    { "pattern": "/\\u2014/", "severity": "error", "suggestion": "Use a period, comma or colon.", "category": "punctuation", "source": "brand-lock" }
+  ]
+}

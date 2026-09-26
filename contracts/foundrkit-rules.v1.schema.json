@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/whystrohm/shotkit/blob/main/contracts/foundrkit-rules.v1.schema.json",
+  "title": "WhyStrohm foundrkit rules, v1",
+  "description": "A brand's checkable voice rules. Written to brand/foundrkit.rules.json by foundrkit-lint --from-brand, from brand/voice-profile.json and brand/brand-lock.md, or by hand. Read by foundrkit-lint. The canonical copy lives in github.com/whystrohm/shotkit under contracts/. Other repos keep a byte-identical copy, and CI checks it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract", "version", "brand", "rules"],
+  "properties": {
+    "contract": { "const": "foundrkit-rules" },
+    "version": { "const": "1" },
+    "brand": { "type": "string", "minLength": 1 },
+    "generated_from": {
+      "type": "array",
+      "description": "The files the rules were built from, relative to the project folder. Empty or absent for hand-written rules.",
+      "items": { "type": "string" }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["pattern", "severity", "source"],
+        "properties": {
+          "pattern": { "type": "string", "minLength": 1, "description": "A plain phrase, or a regex written as /body/flags." },
+          "severity": { "enum": ["error", "warn"] },
+          "suggestion": { "type": "string" },
+          "category": { "type": "string" },
+          "source": { "enum": ["voice-profile", "brand-lock", "manual"] }
+        }
+      }
+    }
+  }
+}

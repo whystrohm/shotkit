@@ -13,6 +13,8 @@ exact checkout on line 2 of `~/.claude/shotkit-tools/VERSION`.
   folder. First one: `voice-profile.v1.schema.json`, written by whystrohm-voice-extract and read
   by whystrohm-voice-scorer. `tools/validate_contracts.py` checks each schema and its example,
   and `--against <repo>` checks another repo's copy is byte-identical. `check.sh` runs it.
+- `contracts/audit-findings.v1.schema.json` and `contracts/foundrkit-rules.v1.schema.json`,
+  with examples.
 - `VERSION` at the repo root. `install.sh` writes it to `~/.claude/shotkit-tools/VERSION`, and
   `storyboard-architect` reads it for `run.json`'s `shotkit_version`.
 - `NOTICE`, and a line in the README License section on the Shotkit and WhyStrohm names.

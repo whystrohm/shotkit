@@ -1,0 +1,32 @@
+{
+  "contract": "audit-findings",
+  "version": "1",
+  "url": "https://northwind.example",
+  "audited_at": "2026-09-26",
+  "method": {
+    "name": "whystrohm-audit",
+    "weights": { "vocabulary": 0.15, "structure": 0.2, "proof": 0.25, "voice_consistency": 0.2, "buyer_alignment": 0.2 }
+  },
+  "sample": {
+    "source": "pasted",
+    "text": "We deliver world-class video solutions that elevate your brand. Our passionate team crafts stories that resonate. Contact us today."
+  },
+  "layers": {
+    "vocabulary": { "score": 3, "evidence": [{ "quote": "world-class video solutions", "why": "Category filler that any studio could claim." }] },
+    "structure": { "score": 5, "evidence": [{ "quote": "Contact us today.", "why": "The only call to action is company-centric." }] },
+    "proof": { "score": 2, "evidence": [{ "quote": "stories that resonate", "why": "A claim with no example, number or method beside it." }] },
+    "voice_consistency": { "score": 4, "evidence": [{ "quote": "Our passionate team crafts", "why": "The site's plain, short lines give way to adjectives." }] },
+    "buyer_alignment": { "score": 4, "evidence": [{ "quote": "Our passionate team", "why": "Describes the studio, not what the buyer gets." }] }
+  },
+  "total": { "score": 36 },
+  "top_gaps": [
+    { "layer": "proof", "gap": "No claim has proof beside it.", "fix": "Show one step of the method, or one result the company can name." },
+    { "layer": "vocabulary", "gap": "Filler words carry the sentence.", "fix": "Replace each adjective with the thing it stands for." },
+    { "layer": "buyer_alignment", "gap": "The copy is about the studio.", "fix": "Open with what the buyer gets." }
+  ],
+  "rewrite": {
+    "before": "We deliver world-class video solutions that elevate your brand.",
+    "after": "You get a shot list, a call sheet and a cut, in that order. [A result the company can name.]",
+    "after_score": null
+  }
+}

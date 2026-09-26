@@ -6,6 +6,8 @@ reading and writing the same files in a `brand/` folder in the user's project.
 | File | Written by | Read by | Schema |
 |---|---|---|---|
 | `brand/voice-profile.json` | whystrohm-voice-extract | whystrohm-voice-scorer | `voice-profile.v1.schema.json` |
+| `brand/audit-findings.json` | whystrohm-audit | storyboard-architect (optional brief input) | `audit-findings.v1.schema.json` |
+| `brand/foundrkit.rules.json` | `foundrkit-lint --from-brand`, or by hand | foundrkit-lint | `foundrkit-rules.v1.schema.json` |
 
 This folder holds the canonical schemas. Examples are in `examples/`.
 Every other repo keeps a byte-identical copy, and its CI fails if the copy drifts. To change a
