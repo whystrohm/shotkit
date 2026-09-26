@@ -58,7 +58,7 @@
       "additionalProperties": false,
       "required": ["score"],
       "properties": {
-        "score": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Sum of each layer score times 10 times its weight, rounded." }
+        "score": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Sum of each layer score times 10 times its weight, rounded half up (22.5 becomes 23)." }
       }
     },
     "top_gaps": {
