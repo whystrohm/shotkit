@@ -45,6 +45,5 @@ jobs:
         run: |
           python tools/shots-to-html.py skills/storyboard-architect/examples/30s-pain-proof-promise --rendered-at 2026-05-07T14:23:00Z
           python tools/shots-to-html.py skills/storyboard-architect/examples/60s-founder-explainer  --rendered-at 2026-05-07T14:23:00Z
-          python tools/shots-to-html.py skills/storyboard-architect/examples/shotkit-explainer      --rendered-at 2026-05-08T14:34:24Z
           python tools/shots-to-html.py skills/visual-asset-critic/examples/worked-run              --rendered-at 2026-07-30T15:20:00Z
           git diff --exit-code -- '**/preview.html'

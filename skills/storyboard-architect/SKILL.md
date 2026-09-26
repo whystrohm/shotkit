@@ -301,11 +301,9 @@ Load these as needed:
 
 - `examples/30s-pain-proof-promise/`, full output set for a 30-second conversion ad
 - `examples/60s-founder-explainer/`, full output set for a founder explainer
-- `examples/shotkit-explainer/`, the 90-second explainer, including a shot that carries
-  two overlays
 
 Read these to understand the expected output quality, especially the rationale fields.
-All three validate clean under `tools/validate_shots.py --examples`, so they are also
+Both validate clean under `validate_shots.py --examples`, so they are also
 the reference for what a passing file looks like.
 
 For what the output tree looks like after generation and review, see

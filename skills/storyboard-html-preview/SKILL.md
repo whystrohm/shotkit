@@ -317,10 +317,8 @@ Generated `preview.html` files ship next to the storyboards that produced them:
 
 - `../storyboard-architect/examples/30s-pain-proof-promise/preview.html`
 - `../storyboard-architect/examples/60s-founder-explainer/preview.html`
-- `../storyboard-architect/examples/shotkit-explainer/preview.html`, including the
-  two-overlay shot
 - `../visual-asset-critic/examples/worked-run/preview.html`, with frames and verdict badges
 
-Open them in a browser to calibrate quality. All four are re-rendered in CI with pinned
+Open them in a browser to calibrate quality. All three are re-rendered in CI with pinned
 timestamps and the build fails if the output moves, so they are also the regression test for
 this skill's output.
