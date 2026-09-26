@@ -4,10 +4,59 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+`VERSION` stays at 3.0.0 until this is tagged. An install from a git clone also records the
+exact checkout on line 2 of `~/.claude/shotkit-tools/VERSION`.
+
+### Added
+
+- `VERSION` at the repo root. `install.sh` writes it to `~/.claude/shotkit-tools/VERSION`, and
+  `storyboard-architect` reads it for `run.json`'s `shotkit_version`.
+- `NOTICE`, and a line in the README License section on the Shotkit and WhyStrohm names.
+- `--no-web-fonts` on `tools/shots-to-html.py`.
+- `# covers:` lines in prompt files, for a multi-shot sequence that renders several shots in
+  one block.
+- Optional `project.seed` in `shots.json` and `run.json`.
+- `semibold` (600) in the overlay weight enum.
+- 15-second timings in the beat frameworks and timing rules.
+- `rack` in the shot-grammar motion table, so all eleven motion values are explained.
+- Selftests for `validate_skills.py` and `validate_schemas.py`.
+
 ### Changed
 
-- The worked two-round run in the README is described as a worked example with stand-in frames.
-- Plain wording in the README, the docs and two skill files.
+- Every `SKILL.md` names the installed paths first, `~/.claude/shotkit-tools/` and
+  `~/.claude/shotkit-brand-packs/`, with the repo paths after them.
+- `tools/check.sh` runs from a clone or from `~/.claude/shotkit-tools/`, from any folder.
+- `validate_skills.py`, `validate_schemas.py` and `validate_brand_lock.py --snapshots` look at
+  the five shotkit skills only.
+- `validate_provenance.py --require-accept` counts a shot with no critique as outstanding. Its
+  summary line gives the shot count and how many were reviewed.
+- The preview splits a brand-lock font value into a quoted family, a weight and a width, takes
+  the mono font from the brand-lock, and links the brand fonts from Google Fonts with a system
+  fallback. A dark brand's ground is its page background, as Rule 4 now says.
+- Every adapter writes parameters on a `# params:` line under the block header.
+  `validate_prompts.py` explains the old form when it sees it, and checks a shot's
+  `environment_ref` or `lighting_ref` override in place of the series anchor.
+  `copy-prompt.py --list` names params lines, fix notes and variant lines separately.
+- Nano Banana moves to Gemini 3.1 Flash Image (Nano Banana 2), and its word ceiling goes from
+  120 to 160 so the four verbatim series anchors leave room for the shot.
+- `brand-packs/whystrohm.md` is version 2.0: dark ground `#07080A`, ink `#F6F5F2`, Signal
+  `#E4552A`, Archivo and IBM Plex Mono, with the install film's motion and voice rules. The
+  bundled examples stay on pack 1.0, the look their shots and frames were built on.
+- `run.json` has one rule: everything except `rounds` is written once, and `rounds` is
+  append-only.
+- Narrower triggers for `storyboard-html-preview`, `visual-prompt-forge` and
+  `storyboard-architect`.
+- Plain, true statements in the README, docs, skills and examples: no volume or cadence
+  figures, no price, no personal credential lines, and model support stated without a tested
+  version. media-tsunami is described by what it writes, and brand-lock generation points at
+  `brand-lock-extractor`.
+- The CHANGELOG and release notes describe each version by what it does.
+
+### Removed
+
+- The v0.1.0 explainer videos and the `shotkit-explainer` example storyboard. The README links
+  the install film on whystrohm.com.
+- `AUDIT-v2.md` and `.archive/`, internal notes.
 
 ## [3.0.0] - 2026-07-30
 
