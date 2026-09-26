@@ -16,7 +16,8 @@ That installs all five skills into `~/.claude/skills/`. Restart your Claude Code
 ![shotkit demo: a brief is typed in, then the brand lock, shots.json, the storyboard and the generated frames with the critic's verdicts](docs/images/demo.gif)
 
 The loop is one real Shotkit run: the brief, the brand lock, `shots.json`, the storyboard, and
-the generated frames with the critic's verdict on each. A silent MP4 of the same loop is at
+the generated frames with the critic's verdict on each. Two shots came back REVISE; you can watch
+their re-rolled frames replace them and land ACCEPT. A silent MP4 of the same loop is at
 [`docs/images/demo.mp4`](docs/images/demo.mp4). The install film on
 [whystrohm.com](https://whystrohm.com) shows the same pipeline, from one sentence to every asset.
 
