@@ -48,7 +48,8 @@
           },
           "weight": {
             "type": "string",
-            "enum": ["regular", "medium", "bold", "black"]
+            "enum": ["regular", "medium", "semibold", "bold", "black"],
+            "description": "CSS weights: regular 400, medium 500, semibold 600, bold 700, black 900."
           },
           "color": {
             "type": "string",

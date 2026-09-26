@@ -28,7 +28,7 @@ commands below give the installed path first and the clone path second. The tool
 
 ## What you produce
 
-One file: `preview.html`. Self-contained. Inline CSS. No JavaScript dependencies (vanilla JS only, embedded). No external font files (uses system stack with brand-font fallbacks). No external images (placeholder slots; if generated images exist, embed as base64 OR reference relative paths).
+One file: `preview.html`. Self-contained. Inline CSS. No JavaScript dependencies (vanilla JS only, embedded). The brand fonts are linked from Google Fonts, with a system fallback stack behind each one, so the page reads the same offline in the fallback fonts. No external images (placeholder slots; if generated images exist, embed as base64 OR reference relative paths).
 
 ```
 output/
@@ -85,9 +85,21 @@ python ~/.claude/shotkit-tools/validate_shots.py output/
 
 From `brand-lock.snapshot.md`, extract:
 
-- Palette (hex values), used for HTML accent colors
-- Display font and body font names, used as font-family values with system fallbacks
+- Palette (hex values), mapped by role onto the CSS variables
+- Display, body, and mono fonts
 - Brand voice / mood, used in subtle copy choices
+
+A font value in a brand-lock carries more than a family, for example
+`Archivo Bold 700 wdth 80`. Split it before it goes into CSS:
+
+- the family (`Archivo`) goes into `font-family`, in quotes, ahead of a system fallback
+  stack: `"Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`
+- the weight (`700`, or a name such as `Bold`) goes into `font-weight`
+- a width (`wdth 80`) goes into `font-stretch` as `80%`
+
+Writing the whole value into `font-family` makes the declaration invalid, and the page
+renders in the browser default. Use the brand-lock's mono font for labels, ids and
+timings. When it declares none, use the system mono stack.
 
 The HTML preview should *feel* like the brand without going overboard. Quiet branding, not loud.
 
@@ -229,11 +241,15 @@ The user should be able to hit Cmd-P / Ctrl-P and get a clean PDF.
 
 The output is one `.html` file. If you find yourself wanting a separate stylesheet or JS file, inline it. If you find yourself wanting a build step, you're solving the wrong problem.
 
-### Rule 2. No external dependencies at runtime
+### Rule 2. No external dependencies at runtime, except the brand fonts
 
-No CDN scripts. No Google Fonts. No external CSS frameworks. The file must work with no internet connection.
+No CDN scripts. No external CSS frameworks. The file must work with no internet connection.
 
-The exception: if the user explicitly opts in (e.g. "make it pretty, I'm online"), Tailwind via CDN is acceptable. Default is no.
+One exception: the page links the brand's fonts from Google Fonts, one stylesheet per
+family, so a reader who is online sees the real typefaces. Offline, or for a family
+Google does not host, each font falls back to the system stack named after it and
+nothing else on the page changes. When the user wants a page that makes no network
+request at all, leave the links out (`shots-to-html.py --no-web-fonts`).
 
 ### Rule 3. Print must work
 
@@ -241,7 +257,11 @@ Hit Cmd-P. The result should be a clean PDF. If layout breaks across page bounda
 
 ### Rule 4. Brand-aware but quiet
 
-Use brand colors as accents, not as full backgrounds. The reviewer's job is to read the storyboard, not admire the design. Subtle.
+The palette's `background` role is the page background, and its `ink` role is the text.
+For a dark brand that means a dark page: its ground is its background, not an accent,
+and a light page would not look like the brand. Every other color is an accent: a
+rule, a label, a badge, an id. Never flood a section with the accent color. The
+reviewer's job is to read the storyboard, not admire the design.
 
 ### Rule 5. Mobile-readable
 
@@ -260,7 +280,8 @@ The skill reads all three and assembles them into a single `preview.html`.
 Before declaring done, verify:
 
 - [ ] File opens in any browser (Chrome, Safari, Firefox) with no errors
-- [ ] No external network requests fire on load
+- [ ] The only network requests on load are the Google Fonts links, and there are none
+      with `--no-web-fonts`
 - [ ] Print preview produces a clean PDF
 - [ ] Mobile viewport (375px) renders without horizontal scroll
 - [ ] Brand colors and fonts come from the brand-lock, not from a fallback

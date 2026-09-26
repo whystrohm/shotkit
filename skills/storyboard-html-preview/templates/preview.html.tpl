@@ -3,8 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="storyboard-html-preview / WhyStrohm">
+<meta name="generator" content="storyboard-html-preview / shotkit">
 <title>{{PROJECT_TITLE}} · Storyboard</title>
+{{#if HAS_FONT_LINKS}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{{#each FONT_LINKS}}
+<link rel="stylesheet" href="{{href}}">
+{{/each}}
+{{/if}}
 <style>
 {{{INLINE_CSS}}}
 </style>
@@ -78,7 +85,7 @@
 
       {{#each overlays}}
       <div class="sb-overlay sb-overlay-{{position_class}}">
-        <span class="sb-overlay-text" style="font-family: {{font}}; font-weight: {{weight}}; color: {{color}};">{{content}}</span>
+        <span class="sb-overlay-text" style="font-family: {{font_css}}; font-weight: {{weight_css}};{{#if stretch_css}} font-stretch: {{stretch_css}};{{/if}} color: {{color}};">{{content}}</span>
       </div>
       {{/each}}
     </div>

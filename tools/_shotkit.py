@@ -232,6 +232,96 @@ def parse_typography(text: str) -> dict[str, str | None]:
     return out
 
 
+# Weight names a brand-lock may write after the family, and the CSS weight each means.
+WEIGHT_NAMES = {
+    "thin": 100,
+    "hairline": 100,
+    "extralight": 200,
+    "ultralight": 200,
+    "light": 300,
+    "regular": 400,
+    "normal": 400,
+    "book": 400,
+    "medium": 500,
+    "semibold": 600,
+    "demibold": 600,
+    "bold": 700,
+    "extrabold": 800,
+    "ultrabold": 800,
+    "black": 900,
+    "heavy": 900,
+}
+
+# The overlay weight enum in text-overlays.schema.json, as CSS weights.
+OVERLAY_WEIGHTS = {
+    "regular": 400,
+    "medium": 500,
+    "semibold": 600,
+    "bold": 700,
+    "black": 900,
+}
+
+_WIDTH_RE = re.compile(r"^(?:wdth|width)[=:]?(\d+(?:\.\d+)?)%?$", re.IGNORECASE)
+
+
+def parse_font_spec(value: str | None) -> dict:
+    """
+    Split a brand-lock font value into family, weight, width and italic.
+
+    The value is the family name followed by optional descriptors, in any order:
+    a weight name (`SemiBold`), a numeric weight (`600`), a width (`wdth 80`), and
+    `Italic`. Examples:
+
+        `Inter Black 900`          -> Inter, 900
+        `Archivo Bold 700 wdth 80` -> Archivo, 700, width 80
+        `IBM Plex Mono Regular`    -> IBM Plex Mono, 400
+        `Source Sans 3`            -> Source Sans 3 (3 is not a weight)
+
+    The family is every token before the first descriptor. Writing the whole value
+    into a CSS font-family made the declaration invalid, because `Archivo SemiBold
+    600` is not a family name, and the page fell back to the browser default.
+    """
+    out: dict = {"family": None, "weight": None, "width": None, "italic": False}
+    if not value:
+        return out
+    tokens = value.replace(",", " ").split()
+    family: list[str] = []
+    in_descriptors = False
+    i = 0
+    while i < len(tokens):
+        tok = tokens[i]
+        low = tok.lower().replace("-", "")
+        width = _WIDTH_RE.match(tok)
+        if low in ("wdth", "width") and i + 1 < len(tokens):
+            nxt = tokens[i + 1].rstrip("%")
+            try:
+                out["width"] = float(nxt)
+                in_descriptors = True
+                i += 2
+                continue
+            except ValueError:
+                pass
+        if width:
+            out["width"] = float(width.group(1))
+            in_descriptors = True
+        elif low in WEIGHT_NAMES:
+            out["weight"] = out["weight"] or WEIGHT_NAMES[low]
+            in_descriptors = True
+        elif low == "italic":
+            out["italic"] = True
+            in_descriptors = True
+        elif tok.isdigit() and 100 <= int(tok) <= 1000:
+            out["weight"] = int(tok)
+            in_descriptors = True
+        elif not in_descriptors:
+            family.append(tok)
+        i += 1
+    if out["width"] is not None and out["width"] == int(out["width"]):
+        out["width"] = int(out["width"])
+    out["family"] = " ".join(family) or None
+    return out
+
+
 def parse_snapshot_header(text: str) -> dict[str, str | None]:
     """The two provenance comments storyboard-architect writes at the top of a snapshot."""
     taken = SNAPSHOT_TAKEN_RE.search(text)

@@ -36,6 +36,11 @@ Hex precision matters because the schema validates it. The `shots.schema.json` a
 
 Display font, body font, optional mono font. Each with explicit weight (e.g. `Inter Black 900`, not `Inter Bold`).
 
+Write each value as the family, then its descriptors: a weight name, a numeric weight, and
+for a variable font a width, as in `Archivo Bold 700 wdth 80`. The tools split that into a
+family, a weight and a width, and the preview sets each as its own CSS property. The mono
+font, when declared, is what the preview uses for ids, labels and timings.
+
 Two fonts is the production maximum. Three only if one is reserved for code or data (mono). Past three, the brand stops being recognizable. This is not aesthetic preference, it is a perception fact across all serious brand systems.
 
 ### Mood adjectives

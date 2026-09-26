@@ -210,8 +210,15 @@ python tools/shots-to-html.py output/
 python tools/shots-to-html.py output/ --inline-images
 python tools/shots-to-html.py output/ --out review.html
 python tools/shots-to-html.py output/ --rendered-at 2026-07-30T00:00:00Z
+python tools/shots-to-html.py output/ --no-web-fonts
 python tools/shots-to-html.py --selftest
 ```
+
+Fonts come from the brand-lock. A value such as `Archivo Bold 700 wdth 80` is split into a
+quoted family, a weight and a width, and each is set as its own CSS property. The mono font
+comes from the brand-lock's Mono line, with the system mono stack when there is none. The
+page links each brand font from Google Fonts, one stylesheet per family, and falls back to
+the system stack offline. `--no-web-fonts` leaves the links out.
 
 It renders `skills/storyboard-html-preview/templates/preview.html.tpl`, the same structural
 template the skill uses, through the small engine in `_template.py`. It did not always: the

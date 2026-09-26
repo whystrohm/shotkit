@@ -3,12 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="storyboard-html-preview / WhyStrohm">
+<meta name="generator" content="storyboard-html-preview / shotkit">
 <title>shotkit. The Explainer. · Storyboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&amp;display=swap">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&amp;display=swap">
+
+
 <style>
 /* ─────────────────────────────────────────────────────────────
-   Storyboard HTML Preview · WhyStrohm
-   Single-file output. No external deps. Prints clean.
+   Storyboard HTML Preview · shotkit
+   Single-file output. Prints clean. Brand fonts load from Google
+   Fonts when online and fall back to the system stack offline.
    ───────────────────────────────────────────────────────────── */
 
 :root {
@@ -19,9 +29,16 @@
   --sb-color-muted: #7A7580;
   --sb-color-rule: #E8E1D4;
 
-  --sb-font-display: Inter Black 900, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --sb-font-body: Inter Medium 500, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --sb-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  /* Family, weight and width are separate. A brand-lock value such as
+     `Archivo Bold 700 wdth 80` is split before it lands here, and the family
+     is quoted, because the whole string is not a valid font-family. */
+  --sb-font-display: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sb-font-display-weight: 900;
+  --sb-font-display-stretch: normal;
+  --sb-font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sb-font-body-weight: 500;
+  --sb-font-body-stretch: normal;
+  --sb-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --sb-radius: 6px;
   --sb-pad: 24px;
@@ -34,6 +51,8 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--sb-font-body);
+  font-weight: var(--sb-font-body-weight);
+  font-stretch: var(--sb-font-body-stretch);
   font-size: 16px;
   line-height: 1.55;
   color: var(--sb-color-ink);
@@ -58,7 +77,8 @@ code {
 
 h1, h2, h3 {
   font-family: var(--sb-font-display);
-  font-weight: 800;
+  font-weight: var(--sb-font-display-weight);
+  font-stretch: var(--sb-font-display-stretch);
   line-height: 1.15;
   letter-spacing: -0.01em;
 }
@@ -356,8 +376,9 @@ h1, h2, h3 {
 
 .sb-text-content {
   font-family: var(--sb-font-display);
+  font-stretch: var(--sb-font-display-stretch);
   font-size: 18px;
-  font-weight: 700;
+  font-weight: var(--sb-font-display-weight);
   margin-bottom: 4px;
 }
 
@@ -705,7 +726,7 @@ h1, h2, h3 {
 
       
       <div class="sb-overlay sb-overlay-center">
-        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #2A2A32;">You don&#x27;t have a content problem.
+        <span class="sb-overlay-text" style="font-family: &quot;Inter&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-weight: 900; color: #2A2A32;">You don&#x27;t have a content problem.
 You have a pre-production problem.</span>
       </div>
       
@@ -765,7 +786,7 @@ You have a pre-production problem."</p>
 
       
       <div class="sb-overlay sb-overlay-upper-third">
-        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #2A2A32;">Five layers. Locked top to bottom.</span>
+        <span class="sb-overlay-text" style="font-family: &quot;Inter&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-weight: 900; color: #2A2A32;">Five layers. Locked top to bottom.</span>
       </div>
       
     </div>
@@ -823,7 +844,7 @@ You have a pre-production problem."</p>
 
       
       <div class="sb-overlay sb-overlay-upper-third">
-        <span class="sb-overlay-text" style="font-family: Inter Medium 500; font-weight: medium; color: #2A2A32;">Brief in. Storyboard out. Audit trail included.</span>
+        <span class="sb-overlay-text" style="font-family: &quot;Inter&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-weight: 500; color: #2A2A32;">Brief in. Storyboard out. Audit trail included.</span>
       </div>
       
     </div>
@@ -881,7 +902,7 @@ You have a pre-production problem."</p>
 
       
       <div class="sb-overlay sb-overlay-lower-third">
-        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #2A2A32;">Files. Not panels. Not a SaaS dashboard.</span>
+        <span class="sb-overlay-text" style="font-family: &quot;Inter&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-weight: 900; color: #2A2A32;">Files. Not panels. Not a SaaS dashboard.</span>
       </div>
       
     </div>
@@ -939,7 +960,7 @@ You have a pre-production problem."</p>
 
       
       <div class="sb-overlay sb-overlay-upper-third">
-        <span class="sb-overlay-text" style="font-family: Inter Black 900; font-weight: black; color: #2A2A32;">One shot. Seven generators. One spec.</span>
+        <span class="sb-overlay-text" style="font-family: &quot;Inter&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-weight: 900; color: #2A2A32;">One shot. Seven generators. One spec.</span>
       </div>
       
     </div>
@@ -997,12 +1018,12 @@ You have a pre-production problem."</p>
 
       
       <div class="sb-overlay sb-overlay-center">
-        <span class="sb-overlay-text" style="font-family: JetBrains Mono Regular; font-weight: regular; color: #2A2A32;">git clone github.com/whystrohm/shotkit
+        <span class="sb-overlay-text" style="font-family: &quot;JetBrains Mono&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-weight: 400; color: #2A2A32;">git clone github.com/whystrohm/shotkit
 cd shotkit &amp;&amp; ./install.sh</span>
       </div>
       
       <div class="sb-overlay sb-overlay-lower-third">
-        <span class="sb-overlay-text" style="font-family: Inter Medium 500; font-weight: medium; color: #7A7580;">Pre-production for founder-led video at scale.</span>
+        <span class="sb-overlay-text" style="font-family: &quot;Inter&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-weight: 500; color: #7A7580;">Pre-production for founder-led video at scale.</span>
       </div>
       
     </div>

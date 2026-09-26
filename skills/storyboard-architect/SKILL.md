@@ -141,7 +141,7 @@ Every piece of on-screen text becomes an entry in `text-overlays.json`. Never ba
 - `font`, references brand-lock typography
 - `position`, `center`, `lower-third`, `upper-third`, `left-third`, `right-third`, or `{x, y}` percentages
 - `size`, `display`, `headline`, `body`, `caption`
-- `weight`, `regular`, `medium`, `bold`, `black`
+- `weight`, `regular` (400), `medium` (500), `semibold` (600), `bold` (700), `black` (900)
 - `color`, hex (must come from brand-lock palette)
 - `enter`, `{ at: seconds, animation: fade-in | slide-up | slide-down | type-on | hard-cut }`
 - `exit`, `{ at: seconds, animation: fade-out | slide-up | slide-down | hard-cut }`

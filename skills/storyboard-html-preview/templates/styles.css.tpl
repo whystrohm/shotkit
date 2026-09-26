@@ -1,6 +1,7 @@
 /* ─────────────────────────────────────────────────────────────
-   Storyboard HTML Preview · WhyStrohm
-   Single-file output. No external deps. Prints clean.
+   Storyboard HTML Preview · shotkit
+   Single-file output. Prints clean. Brand fonts load from Google
+   Fonts when online and fall back to the system stack offline.
    ───────────────────────────────────────────────────────────── */
 
 :root {
@@ -11,9 +12,16 @@
   --sb-color-muted: {{MUTED_COLOR}};
   --sb-color-rule: {{RULE_COLOR}};
 
-  --sb-font-display: {{DISPLAY_FONT}}, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --sb-font-body: {{BODY_FONT}}, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --sb-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  /* Family, weight and width are separate. A brand-lock value such as
+     `Archivo Bold 700 wdth 80` is split before it lands here, and the family
+     is quoted, because the whole string is not a valid font-family. */
+  --sb-font-display: {{DISPLAY_FONT_STACK}};
+  --sb-font-display-weight: {{DISPLAY_WEIGHT}};
+  --sb-font-display-stretch: {{DISPLAY_STRETCH}};
+  --sb-font-body: {{BODY_FONT_STACK}};
+  --sb-font-body-weight: {{BODY_WEIGHT}};
+  --sb-font-body-stretch: {{BODY_STRETCH}};
+  --sb-font-mono: {{MONO_FONT_STACK}};
 
   --sb-radius: 6px;
   --sb-pad: 24px;
@@ -26,6 +34,8 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--sb-font-body);
+  font-weight: var(--sb-font-body-weight);
+  font-stretch: var(--sb-font-body-stretch);
   font-size: 16px;
   line-height: 1.55;
   color: var(--sb-color-ink);
@@ -50,7 +60,8 @@ code {
 
 h1, h2, h3 {
   font-family: var(--sb-font-display);
-  font-weight: 800;
+  font-weight: var(--sb-font-display-weight);
+  font-stretch: var(--sb-font-display-stretch);
   line-height: 1.15;
   letter-spacing: -0.01em;
 }
@@ -348,8 +359,9 @@ h1, h2, h3 {
 
 .sb-text-content {
   font-family: var(--sb-font-display);
+  font-stretch: var(--sb-font-display-stretch);
   font-size: 18px;
-  font-weight: 700;
+  font-weight: var(--sb-font-display-weight);
   margin-bottom: 4px;
 }
 
