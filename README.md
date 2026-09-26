@@ -13,9 +13,12 @@ cd shotkit && ./install.sh
 
 That installs all five skills into `~/.claude/skills/`. Restart your Claude Code session and they're live.
 
-![shotkit demo](docs/images/demo.gif)
+![shotkit demo: a brief is typed in, then the brand lock, shots.json, the storyboard and the generated frames with the critic's verdicts](docs/images/demo.gif)
 
-The install film on [whystrohm.com](https://whystrohm.com) shows the same pipeline, from one sentence to every asset.
+The loop is one real Shotkit run: the brief, the brand lock, `shots.json`, the storyboard, and
+the generated frames with the critic's verdict on each. A silent MP4 of the same loop is at
+[`docs/images/demo.mp4`](docs/images/demo.mp4). The install film on
+[whystrohm.com](https://whystrohm.com) shows the same pipeline, from one sentence to every asset.
 
 ---
 

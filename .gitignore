@@ -35,9 +35,3 @@ evals/iteration-*/
 output/
 generated/
 
-# Remotion (composition source ships, build artifacts do not)
-remotion/node_modules/
-remotion/.cache/
-remotion/dist/
-remotion/out/
-remotion/public/

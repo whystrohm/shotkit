@@ -27,6 +27,8 @@ exact checkout on line 2 of `~/.claude/shotkit-tools/VERSION`.
 
 ### Changed
 
+- New `docs/images/demo.gif`, `docs/images/demo.mp4` and `docs/images/social-preview.png`, in
+  the WhyStrohm film style, from one real Shotkit run. They show the v3 output tree.
 - Every `SKILL.md` names the installed paths first, `~/.claude/shotkit-tools/` and
   `~/.claude/shotkit-brand-packs/`, with the repo paths after them.
 - `tools/check.sh` runs from a clone or from `~/.claude/shotkit-tools/`, from any folder.
@@ -61,6 +63,8 @@ exact checkout on line 2 of `~/.claude/shotkit-tools/VERSION`.
 - The v0.1.0 explainer videos and the `shotkit-explainer` example storyboard. The README links
   the install film on whystrohm.com.
 - `AUDIT-v2.md` and `.archive/`, internal notes.
+- `remotion/`, the source of the old demo media. The new demo media is rendered from
+  WhyStrohm's own film source, and only the rendered files ship here.
 
 ## [3.0.0] - 2026-07-30
 
