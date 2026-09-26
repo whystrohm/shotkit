@@ -14,7 +14,7 @@ storyboard-architect falls back to brand-packs/_template.md when no brand-lock i
 given. Installing the skills alone left every one of those paths unresolvable.
 
   ~/.claude/skills/               the five skills
-  ~/.claude/shotkit-tools/        the validators and helpers
+  ~/.claude/shotkit-tools/        the validators and helpers, plus VERSION
   ~/.claude/shotkit-brand-packs/  the blank template and two examples
 
 Usage:
@@ -94,6 +94,25 @@ copy_tree() {
   fi
 }
 
+# Record which shotkit this is. storyboard-architect reads line 1 into run.json's
+# shotkit_version, and nothing else in an install carries the version. Line 2 names the
+# exact checkout when this is a git clone, since a clone can sit between two releases.
+write_version() {
+  local dst="$1" version source
+  version="$(head -n 1 "${SCRIPT_DIR}/VERSION" 2>/dev/null || true)"
+  [[ -n "$version" ]] || version="unknown"
+  source=""
+  if command -v git >/dev/null 2>&1 && git -C "${SCRIPT_DIR}" rev-parse --git-dir >/dev/null 2>&1; then
+    source="$(git -C "${SCRIPT_DIR}" describe --tags --always --dirty 2>/dev/null || true)"
+  fi
+  if [[ "$DRY_RUN" == "1" ]]; then
+    echo "  [dry-run] write ${dst}: ${version}${source:+ (${source})}"
+    return
+  fi
+  echo "$version" > "${dst}"
+  if [[ -n "$source" ]]; then echo "source: ${source}" >> "${dst}"; fi
+}
+
 if [[ "$UNINSTALL" == "1" ]]; then
   echo ""
   echo "Uninstalling shotkit from ${ROOT}"
@@ -168,6 +187,7 @@ if [[ "$SKILLS_ONLY" != "1" ]]; then
       echo "  [install] shotkit-tools"
     fi
     copy_tree "${TOOLS_DIR}" "${TOOLS_TARGET}"
+    write_version "${TOOLS_TARGET}/VERSION"
   fi
 
   # storyboard-architect's documented fallback is to copy brand-packs/_template.md when
@@ -196,9 +216,12 @@ if [[ "$SKILLS_ONLY" != "1" ]]; then
   echo "Brand packs, including the blank template, are at:"
   echo "  ${PACKS_TARGET}/"
   echo ""
-  echo "Then, from a project's output directory:"
+  echo "Then, from the folder that holds a project's output/ directory:"
   echo "  python ${TOOLS_TARGET}/validate_shots.py output/"
   echo "  python ${TOOLS_TARGET}/validate_provenance.py output/ --require-accept"
+  echo ""
+  echo "To check the install itself:"
+  echo "  ${TOOLS_TARGET}/check.sh --quiet"
 fi
 echo ""
 echo 'Try: "30-second founder explainer for your-brand. Pain-reframe-promise structure."'

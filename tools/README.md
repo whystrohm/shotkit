@@ -11,15 +11,32 @@ pip install pyyaml jsonschema
 
 Standard library otherwise. No pandas, no numpy.
 
+## Where the tools are
+
+In a repo clone they are in `tools/`. `./install.sh` copies them to
+`~/.claude/shotkit-tools/` (or `./.claude/shotkit-tools/` with `--project`), and the
+brand packs to `~/.claude/shotkit-brand-packs/`. Every command below works from either
+place. The examples use the repo path; after an install, swap `tools/` for
+`~/.claude/shotkit-tools/`.
+
+The installed tools find the skills in `~/.claude/skills/`, but they only look at the
+five shotkit skills. Other skills in that folder are never checked.
+
+`install.sh` also writes `~/.claude/shotkit-tools/VERSION`. Line 1 is the shotkit
+version from the repo's `VERSION` file. Line 2, when the install came from a git clone,
+names the exact checkout.
+
 ## Run everything
 
 ```bash
-./tools/check.sh            # every check, with output
-./tools/check.sh --quiet    # pass/fail lines only
+./tools/check.sh                          # every check, with output
+./tools/check.sh --quiet                  # pass/fail lines only
+~/.claude/shotkit-tools/check.sh --quiet  # the same checks, run against an install
 PYTHON=python3.12 ./tools/check.sh
 ```
 
-This is exactly what CI runs, so a green local run means a green PR.
+This is exactly what CI runs, so a green local run means a green PR. `check.sh` finds
+its own folder, so it runs from a clone or from an install, from any working directory.
 
 Every validator below also ships a `--selftest` that constructs failing fixtures and fails if
 the check does not catch them. A validator that silently stops catching things is worse than
@@ -29,20 +46,24 @@ no validator, and the selftests are how that gets noticed.
 
 ### `validate_skills.py`
 
-Checks every `SKILL.md` in `skills/` has the required YAML frontmatter, a `name` that matches
-its directory and a substantive `description`.
+Checks each of the five shotkit `SKILL.md` files has the required YAML frontmatter, a
+`name` that matches its directory and a substantive `description`. Other skills in the
+same folder are not checked. In a repo clone, a directory under `skills/` that is not one
+of the five is an error, because `install.sh` would skip it.
 
 ```bash
 python tools/validate_skills.py
+python tools/validate_skills.py --selftest
 ```
 
 ### `validate_schemas.py`
 
-Checks every `*.schema.json` file is itself valid JSON Schema (Draft 2020-12) and carries
-`$id`, `title`, and `description`.
+Checks every `*.schema.json` file in the five shotkit skills is itself valid JSON Schema
+(Draft 2020-12) and carries `$id`, `title`, and `description`.
 
 ```bash
 python tools/validate_schemas.py
+python tools/validate_schemas.py --selftest
 ```
 
 It validates schemas, not instances. For instances, see `validate_shots.py`.
@@ -77,7 +98,7 @@ backticked form the tools read.
 python tools/validate_brand_lock.py brand-packs/whystrohm.md
 python tools/validate_brand_lock.py --require-configured brand-packs/whystrohm.md
 python tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
-python tools/validate_brand_lock.py --snapshots     # every snapshot in the repo
+python tools/validate_brand_lock.py --snapshots     # every snapshot in the five skills
 python tools/validate_brand_lock.py --selftest
 ```
 

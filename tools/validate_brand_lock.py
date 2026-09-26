@@ -25,6 +25,11 @@ Usage:
     python tools/validate_brand_lock.py --snapshot path/to/brand-lock.snapshot.md
     python tools/validate_brand_lock.py --require-configured brand-packs/whystrohm.md
     python tools/validate_brand_lock.py --snapshots            # every bundled snapshot
+    python ~/.claude/shotkit-tools/validate_brand_lock.py ...  # the same, after install
+
+--snapshots searches the five shotkit skill directories only. After an install the
+tools sit inside ~/.claude/, and searching all of it would pick up files that belong
+to other tools.
     python tools/validate_brand_lock.py --selftest
 """
 
@@ -38,10 +43,12 @@ from _shotkit import (
     ISO_INSTANT_RE,
     PALETTE_ROLES,
     REPO_ROOT,
+    SKILLS_ROOT,
     is_unconfigured,
     parse_palette,
     parse_snapshot_header,
     parse_typography,
+    shotkit_skill_dirs,
 )
 
 REQUIRED_SECTIONS = {
@@ -219,6 +226,15 @@ def validate_brand_lock(
     return (errors, warnings)
 
 
+def find_snapshots(skills_root: Path | None = None) -> list[Path]:
+    """Every brand-lock.snapshot.md under the five shotkit skill directories."""
+    found: list[Path] = []
+    for skill_dir in shotkit_skill_dirs(skills_root):
+        if skill_dir.is_dir():
+            found.extend(skill_dir.rglob("brand-lock.snapshot.md"))
+    return sorted(found)
+
+
 def selftest() -> int:
     ok = True
     minimal = "\n".join(
@@ -320,6 +336,22 @@ def selftest() -> int:
             print(f"  FAIL  selftest: expected a muted-role warning, got {warnings}")
             ok = False
 
+        # --snapshots must not wander outside shotkit's own skills. After an install
+        # the tools sit inside ~/.claude/, next to every other skill and tool.
+        skills = Path(tmp) / "skills"
+        own = skills / "storyboard-architect" / "examples" / "a"
+        own.mkdir(parents=True)
+        (own / "brand-lock.snapshot.md").write_text(minimal, encoding="utf-8")
+        foreign = skills / "someone-elses-skill"
+        foreign.mkdir(parents=True)
+        (foreign / "brand-lock.snapshot.md").write_text("not a brand-lock")
+        found = find_snapshots(skills)
+        if found == [own / "brand-lock.snapshot.md"]:
+            print("  ok    selftest: --snapshots searches only the shotkit skills")
+        else:
+            print(f"  FAIL  selftest: --snapshots found {found}")
+            ok = False
+
     print()
     print("Selftest passed." if ok else "Selftest FAILED.")
     return 0 if ok else 1
@@ -342,9 +374,9 @@ def main() -> int:
     require_configured = "--require-configured" in args
 
     if "--snapshots" in args:
-        paths = sorted(REPO_ROOT.rglob("brand-lock.snapshot.md"))
+        paths = find_snapshots()
         if not paths:
-            print("ERROR: no brand-lock.snapshot.md files found in the repo")
+            print(f"ERROR: no brand-lock.snapshot.md files found under {SKILLS_ROOT}")
             return 1
     else:
         paths = [Path(a) for a in args if not a.startswith("--")]

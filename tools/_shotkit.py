@@ -16,7 +16,44 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+TOOLS_DIR = Path(__file__).resolve().parent
+
+# The folder the tools sit in. In a repo clone that is the repo root. After
+# ./install.sh it is ~/.claude/ (or ./.claude/ for a project install), where the
+# tools live in shotkit-tools/, the skills in skills/, and the packs in
+# shotkit-brand-packs/. The name REPO_ROOT is kept because every tool imports it.
+REPO_ROOT = TOOLS_DIR.parent
+
+# True when the tools run from an install rather than a repo clone.
+INSTALLED = TOOLS_DIR.name == "shotkit-tools"
+
+SKILLS_ROOT = REPO_ROOT / "skills"
+BRAND_PACKS_DIR = REPO_ROOT / ("shotkit-brand-packs" if INSTALLED else "brand-packs")
+
+# The five skills shotkit ships. install.sh installs exactly these. After an install,
+# ~/.claude/skills/ also holds every other skill the user has, so any tool that walks
+# skills/ walks these five and nothing else.
+SHOTKIT_SKILLS = (
+    "brand-lock-extractor",
+    "storyboard-architect",
+    "visual-prompt-forge",
+    "visual-asset-critic",
+    "storyboard-html-preview",
+)
+
+
+def shotkit_skill_dirs(skills_root: Path | None = None) -> list[Path]:
+    """The five shotkit skill directories under skills_root, whether or not they exist."""
+    root = skills_root or SKILLS_ROOT
+    return [root / name for name in SHOTKIT_SKILLS]
+
+
+def shown_path(path: Path) -> Path:
+    """A path relative to REPO_ROOT when it sits under it, else the path as given."""
+    try:
+        return path.resolve().relative_to(REPO_ROOT)
+    except ValueError:
+        return path
 
 CAPABILITIES_PATH = (
     REPO_ROOT / "skills" / "visual-prompt-forge" / "adapters" / "_capabilities.json"
