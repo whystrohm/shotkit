@@ -41,6 +41,14 @@ Write it once, at the end of the run, and never edit it.
 
 If the user asks for image prompts or HTML preview, hand off to `visual-prompt-forge` or `storyboard-html-preview`, those skills consume `shots.json` directly. Don't try to do their job here.
 
+## Where the tools and packs are
+
+After `./install.sh`, the validators and helpers are in `~/.claude/shotkit-tools/` and the
+brand packs are in `~/.claude/shotkit-brand-packs/`. A `--project` install puts both
+under `./.claude/` instead. From a repo clone they are `tools/` and `brand-packs/`. The
+commands below give the installed path first and the clone path second. The tools need
+`pip install pyyaml jsonschema`.
+
 ## Inputs
 
 You need these. If any are missing, ask before drafting.
@@ -51,7 +59,7 @@ You need these. If any are missing, ask before drafting.
 | Total duration | Yes | Ask |
 | Aspect ratio | Yes | Ask (16:9, 9:16, 1:1) |
 | Beat framework | No | Suggest based on brief |
-| Brand-lock file path | No | Use `brand-packs/_template.md` and flag the gap |
+| Brand-lock file path | No | Use `~/.claude/shotkit-brand-packs/_template.md` (clone: `brand-packs/_template.md`) and flag the gap |
 | Voiceover style (VO present, on-screen only, captions) | No | Ask if unclear |
 | Target generator(s) for downstream prompts | No | Note as "to be specified" |
 
@@ -71,7 +79,7 @@ If a brand-lock file path is provided, read it first. Extract:
 - Voice tone
 - Aspect-ratio preferences
 
-If no brand-lock is provided, copy `brand-packs/_template.md` into the output as `brand-lock.snapshot.md` with a note: `# UNCONFIGURED, using template defaults. Recommend providing a real brand-lock for production work.`
+If no brand-lock is provided, copy `~/.claude/shotkit-brand-packs/_template.md` (from a clone, `brand-packs/_template.md`) into the output as `brand-lock.snapshot.md` with a note: `# UNCONFIGURED, using template defaults. Recommend providing a real brand-lock for production work.`
 
 ### Step 2. Pick the beat framework
 
@@ -165,7 +173,13 @@ distinguish two runs made on the same day, which is the case that matters. The s
 the path it was copied from, or the literal string `template default` for an
 unconfigured run. Extra comments after these two are fine.
 
-`tools/validate_brand_lock.py --snapshot <path>` checks both lines. Run it.
+`validate_brand_lock.py --snapshot <path>` checks both lines. Run it:
+
+```bash
+python ~/.claude/shotkit-tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
+# from a repo clone:
+# python tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
+```
 
 ### Step 9. Write run.json
 
@@ -239,9 +253,13 @@ Must validate against `templates/text-overlays.schema.json`. Read it before writ
 Run the validator. Do not eyeball this list.
 
 ```bash
-python tools/validate_shots.py output/
-python tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
-python tools/validate_provenance.py output/
+python ~/.claude/shotkit-tools/validate_shots.py output/
+python ~/.claude/shotkit-tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
+python ~/.claude/shotkit-tools/validate_provenance.py output/
+# from a repo clone:
+# python tools/validate_shots.py output/
+# python tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
+# python tools/validate_provenance.py output/
 ```
 
 `validate_shots.py` checks every mechanical rule that used to live here as a checkbox,

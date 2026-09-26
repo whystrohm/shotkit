@@ -19,6 +19,14 @@ Trigger when the user:
 - Has a generated image and a `shots.json` shot reference and wants QA
 - Has a generated image and just wants editorial feedback (no storyboard reference)
 
+## Where the tools and packs are
+
+After `./install.sh`, the validators and helpers are in `~/.claude/shotkit-tools/` and the
+brand packs are in `~/.claude/shotkit-brand-packs/`. A `--project` install puts both
+under `./.claude/` instead. From a repo clone they are `tools/` and `brand-packs/`. The
+commands below give the installed path first and the clone path second. The tools need
+`pip install pyyaml jsonschema`.
+
 ## What you produce
 
 **Two artifacts from every review, always both:** a human-readable markdown critique (the primary surface) and a machine-readable critique JSON (so a pipeline can gate on the verdict instead of parsing prose). The JSON is detailed in Step 6; it never replaces the markdown.
@@ -120,7 +128,7 @@ Be honest about uncertainty:
 | MEDIUM | Some references missing but core intent is clear |
 | LOW | Only the image, intent is inferred; verdict is your best guess |
 
-HIGH is a factual claim about what you had, not a mood. `tools/validate_critique.py`
+HIGH is a factual claim about what you had, not a mood. `validate_critique.py`
 rejects a `1.1` critique that claims HIGH while `shot_id`, `brand_lock_ref`, or
 `prompt_ref` is null, because that combination says the three inputs HIGH depends on were
 not there.
@@ -197,14 +205,18 @@ Pick the markdown `## Verdict` by this same rule.
 Writing a schema-valid critique is not the same as passing the gate. Run it:
 
 ```bash
-python tools/validate_critique.py output/critiques/round-1/shot_03.critique.json
+python ~/.claude/shotkit-tools/validate_critique.py output/critiques/round-1/shot_03.critique.json
+# from a repo clone:
+# python tools/validate_critique.py output/critiques/round-1/shot_03.critique.json
 ```
 
 Or check the whole tree at once, which also recomputes every hash against the files on
 disk:
 
 ```bash
-python tools/validate_provenance.py output/
+python ~/.claude/shotkit-tools/validate_provenance.py output/
+# from a repo clone:
+# python tools/validate_provenance.py output/
 ```
 
 This step is not optional and it is not someone else's job. A critique that says `ACCEPT`

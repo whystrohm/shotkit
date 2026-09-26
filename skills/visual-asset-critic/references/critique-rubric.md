@@ -93,7 +93,7 @@ The verdict follows from the severities. It is not a separate judgement:
 | one or two `major` | REVISE |
 | only `minor`, or none | ACCEPT (with post notes) |
 
-`tools/validate_critique.py` enforces exactly this table, so a critique that disagrees with
+`validate_critique.py` (in `~/.claude/shotkit-tools/`, or `tools/` in a clone) enforces exactly this table, so a critique that disagrees with
 it fails rather than shipping. Earlier versions of this file counted hard fails and called
 3+ a REJECT while the skill said "escalate at your discretion." Those two rules disagreed,
 and the disagreement is the reason the threshold is now a number.

@@ -5,11 +5,19 @@ description: Extract a production-ready brand-lock.md from a brand's existing as
 
 # Brand Lock Extractor
 
-The blank `brand-packs/_template.md` is the single biggest point of friction in shotkit. Nobody wants to hand-author nine sections of brand parameters before they can produce a single storyboard. This skill removes that wall: hand it what you already have, get a filled brand-lock back.
+The blank brand-pack template (`_template.md`) is the single biggest point of friction in shotkit. Nobody wants to hand-author nine sections of brand parameters before they can produce a single storyboard. This skill removes that wall: hand it what you already have, get a filled brand-lock back.
 
-The output is a `brand-lock.md` in the exact format `tools/validate_brand_lock.py` validates and every other skill consumes. Same file the pipeline reads, produced from your assets instead of from scratch.
+The output is a `brand-lock.md` in the exact format `validate_brand_lock.py` validates and every other skill consumes. Same file the pipeline reads, produced from your assets instead of from scratch.
 
 This skill extracts. It does not invent. Every value is sampled from a real asset or flagged as an estimate the user must confirm. A confident-sounding wrong hex is worse than a flagged guess.
+
+## Where the tools and packs are
+
+After `./install.sh`, the validators and helpers are in `~/.claude/shotkit-tools/` and the
+brand packs are in `~/.claude/shotkit-brand-packs/`. A `--project` install puts both
+under `./.claude/` instead. From a repo clone they are `tools/` and `brand-packs/`. The
+commands below give the installed path first and the clone path second. The tools need
+`pip install pyyaml jsonschema`.
 
 ## When to use
 
@@ -20,7 +28,7 @@ Trigger when the user:
 - Hands over a URL, a PDF, image files, or a written brand description and asks for a brand-lock
 - Has a brand-lock that is half-filled and wants the gaps extracted from assets
 
-If the user has nothing but a vague idea (no assets, no description), they are not extracting, they are authoring. Point them at `brand-packs/_template.md` and help them fill it directly.
+If the user has nothing but a vague idea (no assets, no description), they are not extracting, they are authoring. Point them at `~/.claude/shotkit-brand-packs/_template.md` (from a clone, `brand-packs/_template.md`) and help them fill it directly.
 
 ## Inputs
 
@@ -85,7 +93,7 @@ Before you present it, confirm the file would pass validation:
 
 Then hand off:
 
-> "Here is your brand-lock. I sampled the palette and type from your assets and flagged N values that need your eyes (see Extraction notes). Drop it in `brand-packs/`, confirm the flagged values, and run `python tools/validate_brand_lock.py path/to/file.md` to verify. Then: `'30-second explainer. Use brand-packs/your-brand.md as the brand lock.'`"
+> "Here is your brand-lock. I sampled the palette and type from your assets and flagged N values that need your eyes (see Extraction notes). Save it next to your other brand packs, confirm the flagged values, and run `python ~/.claude/shotkit-tools/validate_brand_lock.py --require-configured path/to/file.md` to verify (from a clone: `python tools/validate_brand_lock.py --require-configured path/to/file.md`). Then: `'30-second explainer. Use brand-packs/your-brand.md as the brand lock.'`"
 
 ## Hard rules
 

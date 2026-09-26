@@ -77,8 +77,11 @@ model will check by hand against the schema, which is weaker. For work under rea
 accountability, save the output locally and run:
 
 ```bash
-python tools/validate_shots.py path/to/output/
-python tools/validate_provenance.py path/to/output/
+python ~/.claude/shotkit-tools/validate_shots.py path/to/output/
+python ~/.claude/shotkit-tools/validate_provenance.py path/to/output/
+# from a repo clone:
+# python tools/validate_shots.py path/to/output/
+# python tools/validate_provenance.py path/to/output/
 ```
 
 **Cross-skill file references break.** Each skill is uploaded as a separate `.skill` zip, so

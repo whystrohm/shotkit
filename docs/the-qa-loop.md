@@ -121,7 +121,8 @@ replaced, which is the whole failure mode.
 1. Generate frames from prompts/round-N/{generator}.txt into frames/round-N/
 2. For each frame, run visual-asset-critic with the shot_id and brand-lock
    -> writes critiques/round-N/shot_NN.critique.json
-3. python tools/validate_provenance.py output/
+3. python ~/.claude/shotkit-tools/validate_provenance.py output/
+   (from a repo clone: python tools/validate_provenance.py output/)
    Recomputes every hash, so a frame swapped after review fails here.
 4. If any verdict is REVISE:
    point visual-prompt-forge at output/ in revision mode
@@ -135,8 +136,9 @@ replaced, which is the whole failure mode.
 The same loop scripts cleanly because every step is a file:
 
 ```bash
-# Is the chain intact, and is every shot done?
-python tools/validate_provenance.py output/ --require-accept || exit 1
+# Is the chain intact, and is every shot reviewed and accepted?
+python ~/.claude/shotkit-tools/validate_provenance.py output/ --require-accept || exit 1
+# from a repo clone: python tools/validate_provenance.py output/ --require-accept
 ```
 
 Exit 0 means every hash matches and every shot's latest verdict is ACCEPT. Exit 1 means

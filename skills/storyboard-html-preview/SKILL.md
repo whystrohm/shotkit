@@ -18,6 +18,14 @@ Trigger when the user:
 - Says "what's the next step" after a storyboard-architect run
 - Hands off `storyboard.md` + `shots.json` + asks for a deliverable for review
 
+## Where the tools and packs are
+
+After `./install.sh`, the validators and helpers are in `~/.claude/shotkit-tools/` and the
+brand packs are in `~/.claude/shotkit-brand-packs/`. A `--project` install puts both
+under `./.claude/` instead. From a repo clone they are `tools/` and `brand-packs/`. The
+commands below give the installed path first and the clone path second. The tools need
+`pip install pyyaml jsonschema`.
+
 ## What you produce
 
 One file: `preview.html`. Self-contained. Inline CSS. No JavaScript dependencies (vanilla JS only, embedded). No external font files (uses system stack with brand-font fallbacks). No external images (placeholder slots; if generated images exist, embed as base64 OR reference relative paths).
@@ -68,7 +76,9 @@ Optional:
 Validate before rendering, and stop if it fails:
 
 ```bash
-python tools/validate_shots.py output/
+python ~/.claude/shotkit-tools/validate_shots.py output/
+# from a repo clone:
+# python tools/validate_shots.py output/
 ```
 
 ### Step 2. Extract brand parameters
@@ -189,7 +199,7 @@ them when the shot has no critique.
 **Escape everything.** Subjects, rationales, VO lines, and overlay copy are model-generated
 prose that lands in both text and attribute contexts. One angle bracket in a rationale, or
 one quote in an overlay font name, breaks the page a client is reading.
-`tools/shots-to-html.py` escapes every substitution by default and reserves raw output for
+`shots-to-html.py` escapes every substitution by default and reserves raw output for
 the inlined CSS alone.
 
 ### Step 5. Render text overlays visually
@@ -263,7 +273,9 @@ Before declaring done, verify:
 The CLI renderer checks the mechanical half of that list against itself:
 
 ```bash
-python tools/shots-to-html.py --selftest
+python ~/.claude/shotkit-tools/shots-to-html.py --selftest
+# from a repo clone:
+# python tools/shots-to-html.py --selftest
 ```
 
 ## Two timestamps, not one

@@ -20,6 +20,14 @@ Trigger when the user:
 
 If the user wants to build a storyboard from scratch (no shots.json yet), use `storyboard-architect` first, then chain into this skill.
 
+## Where the tools and packs are
+
+After `./install.sh`, the validators and helpers are in `~/.claude/shotkit-tools/` and the
+brand packs are in `~/.claude/shotkit-brand-packs/`. A `--project` install puts both
+under `./.claude/` instead. From a repo clone they are `tools/` and `brand-packs/`. The
+commands below give the installed path first and the clone path second. The tools need
+`pip install pyyaml jsonschema`.
+
 ## What you produce
 
 For a given `shots.json` and a list of target generators, produce one file per generator,
@@ -71,13 +79,15 @@ You need:
 Validate before composing:
 
 ```bash
-python tools/validate_shots.py output/
+python ~/.claude/shotkit-tools/validate_shots.py output/
+# from a repo clone:
+# python tools/validate_shots.py output/
 ```
 
 If the brand-lock is missing or `shots.json` does not validate, stop and tell the user.
 Don't try to forge prompts from incomplete data.
 
-If `tools/` is not on hand (a Claude.ai upload, or a single-skill install), read the
+If the tools are not on hand (a Claude.ai upload, or a single-skill install), read the
 schema from `../storyboard-architect/templates/shots.schema.json` and check by hand. That
 relative path only resolves when the skills sit side by side; when they don't, ask the
 user for the schema rather than composing from memory of it.
@@ -106,7 +116,7 @@ and always sits inside that ceiling, so a `.md` saying "40 to 70 words" under a 
 120 is guidance, not a conflict. Where a fact in a `.md` and a fact in the JSON genuinely
 disagree, **the JSON wins**.
 
-That rule is now enforced rather than trusted. `tools/validate_capabilities.py` fails the
+That rule is now enforced rather than trusted. `validate_capabilities.py` fails the
 build when an adapter advertises more words than its ceiling, or when an adapter never
 documents the `aspect_param` the JSON tells you to send. The second check exists because
 nano-banana's matrix entry said `aspect_ratio` while its adapter said the API expects
@@ -145,7 +155,7 @@ One file per generator, into `output/prompts/round-{N}/`. Format:
 ...
 ```
 
-The `#` lines are comments; the user copies just the prompt body. `tools/copy-prompt.py`
+The `#` lines are comments; the user copies just the prompt body. `copy-prompt.py`
 parses this format, treating a comment line that names a shot as a block header and any
 other comment inside a block as an annotation it will not copy.
 
@@ -175,8 +185,11 @@ Tell the user where the files are. Offer the next step:
 For paste-into-generator workflows, the user can pipe individual shots to the clipboard with the bundled helper:
 
 ```bash
-python tools/copy-prompt.py output/prompts/round-1/midjourney.txt
-python tools/copy-prompt.py output/prompts/round-2/revised-midjourney.txt --shot shot_03
+python ~/.claude/shotkit-tools/copy-prompt.py output/prompts/round-1/midjourney.txt
+python ~/.claude/shotkit-tools/copy-prompt.py output/prompts/round-2/revised-midjourney.txt --shot shot_03
+# from a repo clone:
+# python tools/copy-prompt.py output/prompts/round-1/midjourney.txt
+# python tools/copy-prompt.py output/prompts/round-2/revised-midjourney.txt --shot shot_03
 ```
 
 This is optional. The `.txt` files are also directly readable, and the user can copy any block by hand. The helper exists for the case where the operator is bouncing between the terminal and a generator UI repeatedly.
@@ -227,7 +240,7 @@ citing the issue:
 {the revised prompt}
 ```
 
-The block header leads with the shot id, same as a full pass. `tools/copy-prompt.py`
+The block header leads with the shot id, same as a full pass. `copy-prompt.py`
 identifies a block by the shot id near the start of the line, so a header that led with
 "Revision of" produced a file the paste helper could not read at all, which is
 inconvenient in the one file the operator is about to paste from repeatedly.
@@ -284,7 +297,9 @@ legitimately leave it out. When the shot has a person, it is verbatim too.
 This rule is enforced now, not trusted:
 
 ```bash
-python tools/validate_prompts.py output/
+python ~/.claude/shotkit-tools/validate_prompts.py output/
+# from a repo clone:
+# python tools/validate_prompts.py output/
 ```
 
 It exists because a careful authoring pass over a seven-shot storyboard drifted on these
@@ -326,8 +341,11 @@ One file per generator. Read these on demand, only for the generators being targ
 Run the validator. Do not eyeball this list.
 
 ```bash
-python tools/validate_prompts.py output/
-python tools/copy-prompt.py output/prompts/round-1/flux.txt --list
+python ~/.claude/shotkit-tools/validate_prompts.py output/
+python ~/.claude/shotkit-tools/copy-prompt.py output/prompts/round-1/flux.txt --list
+# from a repo clone:
+# python tools/validate_prompts.py output/
+# python tools/copy-prompt.py output/prompts/round-1/flux.txt --list
 ```
 
 `validate_prompts.py` checks the mechanical half, which is everything that used to be a

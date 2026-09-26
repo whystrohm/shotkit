@@ -180,7 +180,8 @@ git pull
 Re-run the checks after an update:
 
 ```bash
-./tools/check.sh
+~/.claude/shotkit-tools/check.sh --quiet   # checks the install
+./tools/check.sh                           # from the repo clone
 ```
 
 Upgrading from v2.0.0 changes the output layout: critiques, prompts, and frames now live under
