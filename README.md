@@ -2,7 +2,7 @@
 
 ![shotkit](docs/images/social-preview.png)
 
-**The pre-production system we use to ship hundreds of videos a month. Open-sourced.**
+**From a brief to an on-brand storyboard, with prompts for every generator and every frame checked.**
 
 Five Claude Skills that turn a creative brief into a production-grade storyboard with model-specific image prompts, on-screen text specs, an HTML preview, and a versioned audit trail, plus a brand-lock extractor that onboards a brand from its existing assets. Built by [WhyStrohm](https://whystrohm.com). Apache 2.0.
 
