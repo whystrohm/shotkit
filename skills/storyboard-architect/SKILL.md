@@ -171,7 +171,9 @@ these two comments at the very top, in this order:
 The timestamp is a full UTC instant, `YYYY-MM-DDThh:mm:ssZ`. A bare date cannot
 distinguish two runs made on the same day, which is the case that matters. The source is
 the path it was copied from, or the literal string `template default` for an
-unconfigured run. Extra comments after these two are fine.
+unconfigured run. After an install, a pack path is
+`~/.claude/shotkit-brand-packs/whystrohm.md`; from a repo clone it is
+`brand-packs/whystrohm.md`. Either passes the validator. Extra comments after these two are fine.
 
 `validate_brand_lock.py --snapshot <path>` checks both lines. Run it:
 

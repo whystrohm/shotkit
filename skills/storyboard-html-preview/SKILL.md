@@ -109,6 +109,18 @@ The HTML preview should *feel* like the brand without going overboard. Quiet bra
 
 ### Step 3. Generate the HTML
 
+When the tools are installed, render with the CLI. It does every step below and writes
+`preview.html` into the output folder:
+
+```bash
+python ~/.claude/shotkit-tools/shots-to-html.py output/
+# from a repo clone:
+# python tools/shots-to-html.py output/
+```
+
+Build the page by hand, following the steps below, only where the tools are not available
+(for example a Claude.ai upload).
+
 Use `templates/preview.html.tpl` as the structural template. Read it before generating.
 
 The HTML structure:
