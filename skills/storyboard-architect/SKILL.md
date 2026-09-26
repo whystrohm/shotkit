@@ -62,6 +62,7 @@ You need these. If any are missing, ask before drafting.
 | Brand-lock file path | No | Use `~/.claude/shotkit-brand-packs/_template.md` (clone: `brand-packs/_template.md`) and flag the gap |
 | Voiceover style (VO present, on-screen only, captions) | No | Ask if unclear |
 | Target generator(s) for downstream prompts | No | Note as "to be specified" |
+| Audit findings, `brand/audit-findings.json` from whystrohm-audit | No | Skip Step 1b |
 
 ## Workflow
 
@@ -80,6 +81,21 @@ If a brand-lock file path is provided, read it first. Extract:
 - Aspect-ratio preferences
 
 If no brand-lock is provided, copy `~/.claude/shotkit-brand-packs/_template.md` (from a clone, `brand-packs/_template.md`) into the output as `brand-lock.snapshot.md` with a note: `# UNCONFIGURED, using template defaults. Recommend providing a real brand-lock for production work.`
+
+### Step 1b. Read the audit findings, if there are any
+
+If the user points at `brand/audit-findings.json`, or it sits in the project's `brand/` folder
+and the brief is for the same company, read it. Its format is
+`contracts/audit-findings.v1.schema.json` in this repo. Check `contract` is `audit-findings`
+and `version` is `"1"` before using it.
+
+- The first of `top_gaps` is a candidate for the pain or world beat: the problem the film
+  answers.
+- `rewrite.after` is a candidate overlay line. Use it only as written. A bracketed
+  placeholder in it means the proof is missing, so leave that line out rather than filling it.
+- Name the file and its `audited_at` in the Brief section of `storyboard.md`.
+
+The brief still decides. Findings inform the beats; they never replace what the user asked for.
 
 ### Step 2. Pick the beat framework
 

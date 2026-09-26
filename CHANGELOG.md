@@ -15,6 +15,8 @@ exact checkout on line 2 of `~/.claude/shotkit-tools/VERSION`.
   and `--against <repo>` checks another repo's copy is byte-identical. `check.sh` runs it.
 - `contracts/audit-findings.v1.schema.json` and `contracts/foundrkit-rules.v1.schema.json`,
   with examples.
+- `storyboard-architect` Step 1b: reads `brand/audit-findings.json` from whystrohm-audit, when
+  there is one, as a source for the pain beat and a candidate overlay line.
 - `VERSION` at the repo root. `install.sh` writes it to `~/.claude/shotkit-tools/VERSION`, and
   `storyboard-architect` reads it for `run.json`'s `shotkit_version`.
 - `NOTICE`, and a line in the README License section on the Shotkit and WhyStrohm names.
