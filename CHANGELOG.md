@@ -62,11 +62,8 @@ and the exact checkout on line 2.
   append-only.
 - Narrower triggers for `storyboard-html-preview`, `visual-prompt-forge` and
   `storyboard-architect`.
-- Plain, true statements in the README, docs, skills and examples: no volume or cadence
-  figures, no price, no personal credential lines, and model support stated without a tested
-  version. media-tsunami is described by what it writes, and brand-lock generation points at
-  `brand-lock-extractor`.
-- The CHANGELOG and release notes describe each version by what it does.
+- The README, docs, skills and examples describe the kit in plain statements. media-tsunami is
+  described by what it writes, and brand-lock generation points at `brand-lock-extractor`.
 
 ### Removed
 
