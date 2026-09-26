@@ -1,0 +1,41 @@
+{
+  "contract": "voice-profile",
+  "version": "1",
+  "url": "https://northwind.example",
+  "extracted_at": "2026-09-26",
+  "source_urls": [
+    "https://northwind.example/",
+    "https://northwind.example/about",
+    "https://northwind.example/services"
+  ],
+  "dimensions": {
+    "authority": { "score": 4, "evidence": "\"We plan every shoot before we book it.\" Direct claim, no hedging." },
+    "formality": { "score": 2, "evidence": "\"You'll see the plan before you pay a cent.\" Contractions, second person." },
+    "emotional_temperature": { "score": 2, "evidence": "\"The work is the pitch.\" Warm but fact-led, no exclamation marks." },
+    "specificity": { "score": 3, "evidence": "\"A shot list, a call sheet and a cut, in that order.\" Concrete steps, few figures." },
+    "buyer_orientation": { "score": 4, "evidence": "\"You bring the product. We bring the plan.\" Written to the buyer." },
+    "rhythm": { "score": 4, "evidence": "Short lines, most under 12 words, one long line per section." }
+  },
+  "vocabulary": {
+    "signature_phrases": ["the work is the pitch", "plan before we book", "a shot list, a call sheet and a cut"],
+    "power_words": ["plan", "shot", "cut", "book", "ship"],
+    "absent_words": ["solutions", "synergy", "world-class"],
+    "vocab_pattern": "conversational",
+    "proof_style": "mechanisms",
+    "avg_sentence_words": 9,
+    "paragraph_style": "short"
+  },
+  "positioning": {
+    "calls_itself": "studio",
+    "serves": "product companies that need launch video",
+    "leads_with": "solution",
+    "summary": "Northwind Studio calls itself a studio. It writes to product companies planning a launch. It leads with its process, not the buyer's problem. Proof is the method itself, shown as steps."
+  },
+  "guardrails": [
+    { "category": "vocabulary", "rule": "Never use \"solutions\", \"synergy\" or \"world-class\"." },
+    { "category": "structure", "rule": "Keep sentences under 14 words. One longer line per section at most." },
+    { "category": "tone", "rule": "No exclamation marks." },
+    { "category": "proof", "rule": "Back each claim with a step of the method, not an adjective." },
+    { "category": "buyer", "rule": "Address the reader as \"you\" in the first sentence." }
+  ]
+}

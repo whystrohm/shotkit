@@ -216,6 +216,10 @@ The voice tools and shotkit work side by side. A voice profile from media-tsunam
 whystrohm-voice-extract is a good source for a brand-lock's voice rules. The brand-lock file
 itself comes from `brand-lock-extractor` or the template.
 
+The skills connect through shared file formats in a `brand/` folder in your project, not through
+one big repo. This repo holds the canonical schemas in [`contracts/`](contracts/). Today
+whystrohm-voice-extract writes `brand/voice-profile.json` and whystrohm-voice-scorer reads it.
+
 For the operated version of the full pipeline, see [whystrohm.com](https://whystrohm.com).
 
 ---

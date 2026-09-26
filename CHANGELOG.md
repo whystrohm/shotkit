@@ -9,6 +9,10 @@ exact checkout on line 2 of `~/.claude/shotkit-tools/VERSION`.
 
 ### Added
 
+- `contracts/`: the canonical schemas for files the WhyStrohm skills share through a `brand/`
+  folder. First one: `voice-profile.v1.schema.json`, written by whystrohm-voice-extract and read
+  by whystrohm-voice-scorer. `tools/validate_contracts.py` checks each schema and its example,
+  and `--against <repo>` checks another repo's copy is byte-identical. `check.sh` runs it.
 - `VERSION` at the repo root. `install.sh` writes it to `~/.claude/shotkit-tools/VERSION`, and
   `storyboard-architect` reads it for `run.json`'s `shotkit_version`.
 - `NOTICE`, and a line in the README License section on the Shotkit and WhyStrohm names.

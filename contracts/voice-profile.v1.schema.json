@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/whystrohm/shotkit/blob/main/contracts/voice-profile.v1.schema.json",
+  "title": "WhyStrohm voice profile, v1",
+  "description": "A brand's written voice, measured from its own website. Written by whystrohm-voice-extract to brand/voice-profile.json. Read by whystrohm-voice-scorer as its website baseline. The canonical copy lives in github.com/whystrohm/shotkit under contracts/. Other repos keep a byte-identical copy, and CI checks it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract", "version", "url", "extracted_at", "source_urls", "dimensions", "vocabulary", "positioning", "guardrails"],
+  "properties": {
+    "contract": { "const": "voice-profile" },
+    "version": { "const": "1" },
+    "url": {
+      "type": "string",
+      "description": "The site the profile describes, as the user gave it, e.g. https://example.com",
+      "pattern": "^https?://"
+    },
+    "extracted_at": {
+      "type": "string",
+      "description": "ISO 8601 date or date-time of the extraction.",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+    },
+    "source_urls": {
+      "type": "array",
+      "description": "Every page the profile was built from.",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^https?://" }
+    },
+    "dimensions": {
+      "type": "object",
+      "description": "Six voice dimensions, each scored 1 to 5 with a quote from the site as evidence. Scales are defined in whystrohm-voice-extract rules/voice-dimensions.md.",
+      "additionalProperties": false,
+      "required": ["authority", "formality", "emotional_temperature", "specificity", "buyer_orientation", "rhythm"],
+      "properties": {
+        "authority": { "$ref": "#/$defs/dimension" },
+        "formality": { "$ref": "#/$defs/dimension" },
+        "emotional_temperature": { "$ref": "#/$defs/dimension" },
+        "specificity": { "$ref": "#/$defs/dimension" },
+        "buyer_orientation": { "$ref": "#/$defs/dimension" },
+        "rhythm": { "$ref": "#/$defs/dimension" }
+      }
+    },
+    "vocabulary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signature_phrases", "power_words", "absent_words", "vocab_pattern", "proof_style"],
+      "properties": {
+        "signature_phrases": { "type": "array", "items": { "type": "string" }, "description": "Distinctive phrases quoted from the site, most distinctive first." },
+        "power_words": { "type": "array", "items": { "type": "string" } },
+        "absent_words": { "type": "array", "items": { "type": "string" }, "description": "Common category words the site does not use." },
+        "vocab_pattern": { "enum": ["technical", "conversational", "hype", "mixed"] },
+        "proof_style": { "enum": ["numbers", "stories", "mechanisms", "social", "none"], "description": "The primary way the site backs its claims." },
+        "avg_sentence_words": { "type": ["number", "null"], "minimum": 0 },
+        "paragraph_style": { "enum": ["short", "medium", "long", "mixed", null] }
+      }
+    },
+    "positioning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calls_itself", "serves", "summary"],
+      "properties": {
+        "calls_itself": { "type": "string", "description": "What the site calls the company: studio, agency, platform, firm." },
+        "serves": { "type": "string", "description": "Who the site says it serves." },
+        "leads_with": { "enum": ["problem", "solution", "mixed", null] },
+        "summary": { "type": "string", "description": "Three to five plain sentences." }
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "description": "Starter content rules. Each one specific enough to check.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["category", "rule"],
+        "properties": {
+          "category": { "enum": ["vocabulary", "structure", "tone", "proof", "buyer"] },
+          "rule": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "evidence"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "evidence": { "type": "string", "minLength": 1, "description": "An exact quote from the site, with a few words on why it earns the score." }
+      }
+    }
+  }
+}

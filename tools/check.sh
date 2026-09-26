@@ -108,6 +108,10 @@ run "critique: fixtures"             "$TOOLS/validate_critique.py" --examples
 run "provenance: selftest"           "$TOOLS/validate_provenance.py" --selftest
 run "provenance: worked run"         "$TOOLS/validate_provenance.py" --examples --require-accept
 
+# Shared contracts with the other WhyStrohm skills (skipped after an install)
+run "contracts: selftest"            "$TOOLS/validate_contracts.py" --selftest
+run "contracts: schemas and examples" "$TOOLS/validate_contracts.py"
+
 # Tools that ship as part of the workflow
 run "preview renderer: selftest"     "$TOOLS/shots-to-html.py" --selftest
 run "prompt helper: selftest"        "$TOOLS/copy-prompt.py" --selftest

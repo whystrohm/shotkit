@@ -56,6 +56,19 @@ python tools/validate_skills.py
 python tools/validate_skills.py --selftest
 ```
 
+### `validate_contracts.py`
+
+Checks the shared schemas in `contracts/`: each is valid JSON Schema with `$id`, `title` and
+`description`, its `$id` ends with its own filename, and every example in `contracts/examples/`
+passes it. `--against <repo>` checks that repo's `contracts/` copies are byte-identical. After an
+install there is no `contracts/` folder, so it reports a skip.
+
+```bash
+python tools/validate_contracts.py
+python tools/validate_contracts.py --against ../whystrohm-voice-extract
+python tools/validate_contracts.py --selftest
+```
+
 ### `validate_schemas.py`
 
 Checks every `*.schema.json` file in the five shotkit skills is itself valid JSON Schema
