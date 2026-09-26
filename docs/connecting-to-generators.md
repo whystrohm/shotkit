@@ -132,7 +132,7 @@ Three common paths:
 
 **1. Manual editorial.** Drop generated images, VO files, and text overlays into After Effects, Premiere, or Resolve. Cut to the timing in `storyboard.md`. Slow but flexible.
 
-**2. Programmatic video framework.** Build a composition (Remotion, Motion Canvas, or similar React-based renderer) that reads `shots.json`, renders each shot from generated images, animates text overlays from `text-overlays.json`, and outputs MP4. See [`connecting-to-video-pipelines.md`](./connecting-to-video-pipelines.md). Fast, version-controlled, scales to many brands. This is what WhyStrohm runs commercially.
+**2. Programmatic video framework.** Build a composition (Remotion, Motion Canvas, or similar React-based renderer) that reads `shots.json`, renders each shot from generated images, animates text overlays from `text-overlays.json`, and outputs MP4. See [`connecting-to-video-pipelines.md`](./connecting-to-video-pipelines.md). Fast, version-controlled, scales to many brands.
 
 **3. CapCut, Descript, hybrid.** For social-first content where speed matters more than precision. Hand off `storyboard.md` to an editor working in a fast tool.
 

@@ -2,7 +2,7 @@
 
 This is a pointer document. The skill pack stops at the `shots.json` spec. This doc explains how that spec maps to a programmatic video framework for teams that want to build the bridge themselves.
 
-The actual implementation is intentionally not included. WhyStrohm runs the implementation as part of its commercial offering. The methodology is open.
+The implementation is not included. The methodology is open.
 
 ## Why a programmatic video framework
 
@@ -101,5 +101,3 @@ Three reasons:
 - You're happy with manual editorial assembly
 
 The skill pack works without a programmatic video framework. The bridge is for teams scaling beyond manual assembly.
-
-WhyStrohm runs this commercially as a managed service for founder-led brands.
