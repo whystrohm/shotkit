@@ -4,8 +4,14 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
-`VERSION` stays at 3.0.0 until this is tagged. An install from a git clone also records the
-exact checkout on line 2 of `~/.claude/shotkit-tools/VERSION`.
+## [3.1.0] - 2026-09-26
+
+The installed tools line up with every `SKILL.md`, the preview renders in the brand's own
+fonts, the verdict gate counts every shot, and the skills share file formats with the other
+WhyStrohm skills through `contracts/`.
+
+An install from a git clone records the version on line 1 of `~/.claude/shotkit-tools/VERSION`
+and the exact checkout on line 2.
 
 ### Added
 
