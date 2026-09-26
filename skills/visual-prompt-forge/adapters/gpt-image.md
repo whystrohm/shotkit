@@ -27,11 +27,14 @@ GPT Image is API-driven through OpenAI:
 | `style` | `natural` for photoreal, `vivid` for stylized | |
 | `model` | `gpt-image-1.5` (or `gpt-image-2` if available) | |
 
-Document in comment:
+Document in a comment under the block header:
 ```
-# shot_01, params: size=1024x1792, quality=high, style=natural, model=gpt-image-1.5
+# shot_01, hook, 0.0-2.0s, MCU eye-level static
+# params: size=1024x1792, quality=high, style=natural, model=gpt-image-1.5
 {prompt}
 ```
+
+The block header is the same as every other adapter's. Parameters go on their own `# params:` line directly under it, never on a second `# shot_NN` line, because `validate_prompts.py` reads every `# shot_NN` line as a new block. `copy-prompt.py` shows the `# params:` line and never copies it.
 
 ## Length
 

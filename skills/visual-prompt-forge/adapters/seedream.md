@@ -27,11 +27,14 @@ Seedream is API-driven through fal.ai, Replicate, or BytePlus direct:
 | `guidance_scale` | `4.5` | Lower = more creative, higher = more literal |
 | `steps` | `28` | Default. Increase to 50 for higher quality at cost |
 
-Document:
+Document in a comment under the block header:
 ```
-# shot_01, params: ar=9:16, seed=2840193, guidance=4.5, steps=28
+# shot_01, hook, 0.0-2.0s, MCU eye-level static
+# params: ar=9:16, seed=2840193, guidance=4.5, steps=28
 {prompt}
 ```
+
+The block header is the same as every other adapter's. Parameters go on their own `# params:` line directly under it, never on a second `# shot_NN` line, because `validate_prompts.py` reads every `# shot_NN` line as a new block. `copy-prompt.py` shows the `# params:` line and never copies it.
 
 ## Length
 

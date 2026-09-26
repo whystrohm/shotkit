@@ -1,8 +1,10 @@
-# Storyboard: WhyStrohm, The Content Infrastructure Pitch
-# Generator: gpt-image (1.5)
+# Storyboard: WhyStrohm. The Content Infrastructure Pitch
+# Generator: gpt-image
+# Model: 1.5
 # Aspect: 9:16
 # Brand-lock: brand-lock.snapshot.md
-# Generated: 2026-05-07
+# Run: 20260507T142300Z-4b8f5796
+# Round: 1
 
 # shot_04, reframe, 11.0-16.0s, MCU eye-level push
 # params: size=1024x1792, quality=high, style=natural, model=gpt-image-1.5

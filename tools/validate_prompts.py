@@ -23,6 +23,18 @@ Checks:
      legitimately omit it.
   8. No duplicate shot blocks in one file.
 
+Block format. A block opens with `# shot_NN, ...`. The comment lines under it are
+annotations and never count as prompt text: `# params: ...` for generator parameters,
+`# fix [...]` in a revision file, `# variant: ...` for a variant template, and
+`# covers: shot_03, shot_04` for a multi-shot sequence that renders more than one shot
+in one block. A second `# shot_NN` line always opens a new block, so parameters written
+as `# shot_01, params: ...` read as a duplicate block, and the error says so.
+
+Overrides. A shot whose `environment_ref` or `lighting_ref` is not the series_lock
+default is an override. That shot's prompt has to carry the override text verbatim
+instead of the series_lock anchor. An override that names another series_lock key,
+such as `series_lock.lighting`, is resolved to that key's text.
+
 Usage:
     python tools/validate_prompts.py <output-dir>
     python tools/validate_prompts.py <output-dir>/prompts/round-1/flux.txt
@@ -45,6 +57,8 @@ SHOT_HEADER = re.compile(
     r"^#\s*(?:revision\s+of\s+)?(shot_\d{2,3})\b(.*)$", re.IGNORECASE
 )
 COMMENT = re.compile(r"^\s*#")
+COVERS = re.compile(r"^#\s*covers\s*:\s*(.+)$", re.IGNORECASE)
+SHOT_ID = re.compile(r"shot_\d{2,3}")
 
 HEADER_FIELDS = ("Storyboard", "Generator", "Aspect", "Brand-lock", "Run", "Round")
 
@@ -52,27 +66,55 @@ HEADER_FIELDS = ("Storyboard", "Generator", "Aspect", "Brand-lock", "Run", "Roun
 UNIVERSAL_ANCHORS = ("environment", "lighting", "color_grade")
 
 
-def parse_blocks(text: str) -> tuple[dict[str, str], list[tuple[str, str]]]:
-    """Return (header fields, [(shot_id, prompt body)])."""
+def parse_blocks_detailed(text: str) -> tuple[dict[str, str], list[dict]]:
+    """Return (header fields, blocks). Each block: shot_id, header rest, body, covers."""
     header: dict[str, str] = {}
-    blocks: list[tuple[str, list[str]]] = []
-    current: list[str] | None = None
+    blocks: list[dict] = []
+    current: dict | None = None
 
     for line in text.splitlines():
         m = SHOT_HEADER.match(line)
         if m:
-            current = []
-            blocks.append((m.group(1), current))
+            current = {"shot_id": m.group(1), "rest": m.group(2), "body": [], "covers": []}
+            blocks.append(current)
             continue
         if current is None:
             hm = re.match(r"^#\s*([A-Za-z-]+)\s*:\s*(.+?)\s*$", line)
             if hm:
                 header[hm.group(1).strip()] = hm.group(2).strip()
             continue
+        cm = COVERS.match(line.strip())
+        if cm:
+            current["covers"].extend(SHOT_ID.findall(cm.group(1)))
+            continue
         if not COMMENT.match(line):
-            current.append(line)
+            current["body"].append(line)
 
-    return (header, [(sid, "\n".join(b).strip()) for sid, b in blocks])
+    for block in blocks:
+        block["body"] = "\n".join(block["body"]).strip()
+    return (header, blocks)
+
+
+def parse_blocks(text: str) -> tuple[dict[str, str], list[tuple[str, str]]]:
+    """Return (header fields, [(shot_id, prompt body)])."""
+    header, blocks = parse_blocks_detailed(text)
+    return (header, [(b["shot_id"], b["body"]) for b in blocks])
+
+
+def expected_anchor(shot: dict, series: dict, key: str) -> tuple[str | None, str]:
+    """
+    The text a shot's prompt has to carry for one anchor, and where it came from.
+
+    environment and lighting honour a per-shot override in environment_ref or
+    lighting_ref. color_grade has no per-shot ref, so it is always the series value.
+    """
+    default = f"series_lock.{key}"
+    ref = shot.get(f"{key}_ref") if key in ("environment", "lighting") else None
+    if not ref or ref == default:
+        return (series.get(key), f"series_lock {key}")
+    if ref.startswith("series_lock."):
+        return (series.get(ref.split(".", 1)[1]), f"{key}_ref override ({ref})")
+    return (ref, f"{key}_ref override")
 
 
 def check_file(
@@ -83,7 +125,8 @@ def check_file(
     label = path.name
 
     text = path.read_text(encoding="utf-8")
-    header, blocks = parse_blocks(text)
+    header, detailed = parse_blocks_detailed(text)
+    blocks = [(b["shot_id"], b["body"]) for b in detailed]
 
     if not blocks:
         return ([f"{label}: no shot blocks found; expected '# shot_NN, ...' lines"], warnings)
@@ -120,10 +163,25 @@ def check_file(
     series = shots_data.get("series_lock", {})
 
     seen: set[str] = set()
-    for sid, body in blocks:
+    covered: set[str] = set()
+    previous: dict | None = None
+    for block in detailed:
+        sid, body = block["shot_id"], block["body"]
         if sid in seen:
-            errors.append(f"{label}: {sid} appears in more than one block")
+            message = f"{label}: {sid} appears in more than one block"
+            if previous is not None and previous["shot_id"] == sid and not previous["body"]:
+                message += (
+                    f". The first '# {sid}' line has no prompt under it, so the second "
+                    f"reads as a new block. Write parameters as '# params: ...' on the "
+                    f"line under the block header, not as a second '# {sid}, ...' line"
+                )
+            errors.append(message)
         seen.add(sid)
+        previous = block
+        for extra in block["covers"]:
+            if extra not in by_id:
+                errors.append(f"{label}: {sid} covers {extra}, which is not in shots.json")
+            covered.add(extra)
         if sid not in by_id:
             errors.append(f"{label}: names {sid}, which is not in shots.json")
             continue
@@ -142,10 +200,10 @@ def check_file(
 
         low = body.lower()
         for key in UNIVERSAL_ANCHORS:
-            value = series.get(key)
+            value, source = expected_anchor(by_id[sid], series, key)
             if value and value.lower() not in low:
                 errors.append(
-                    f"{label}: {sid} does not carry the series_lock {key} verbatim. "
+                    f"{label}: {sid} does not carry the {source} verbatim. "
                     f"Paraphrasing an anchor is what makes shots stop matching each other"
                 )
         character = series.get("character")
@@ -174,7 +232,7 @@ def check_file(
 
     is_revision = path.name.startswith("revised-")
     if not is_revision:
-        for missing in [s for s in shot_ids if s not in seen]:
+        for missing in [s for s in shot_ids if s not in seen and s not in covered]:
             errors.append(f"{label}: full pass is missing a block for {missing}")
 
     return (errors, warnings)
@@ -330,6 +388,72 @@ def selftest() -> int:
             print("  ok    selftest: a revision file may cover a subset of shots")
         else:
             print(f"  FAIL  selftest: revision subset flagged -> {errors}")
+            ok = False
+
+        # Parameters on their own '# params:' line are an annotation, not a block.
+        p.write_text(
+            _fixture(good, good).replace(
+                "# shot_01, hook, 0.0-2.0s, MCU eye-level static\n",
+                "# shot_01, hook, 0.0-2.0s, MCU eye-level static\n"
+                "# params: ar=9:16, seed=2840193\n",
+            )
+        )
+        errors, _ = check_file(p, SHOTS_FIXTURE, caps)
+        if not errors:
+            print("  ok    selftest: a '# params:' line under the header is accepted")
+        else:
+            print(f"  FAIL  selftest: '# params:' line flagged -> {errors}")
+            ok = False
+
+        # The old form, a second '# shot_01, params:' line, is caught with a hint.
+        p.write_text(
+            _fixture(good, good).replace(
+                "# shot_01, hook, 0.0-2.0s, MCU eye-level static\n",
+                "# shot_01, hook, 0.0-2.0s, MCU eye-level static\n"
+                "# shot_01, params: ar=9:16, seed=2840193\n",
+            )
+        )
+        errors, _ = check_file(p, SHOTS_FIXTURE, caps)
+        if any("Write parameters as '# params: ...'" in e for e in errors):
+            print("  ok    selftest: a params line written as a second shot header is caught")
+        else:
+            print(f"  FAIL  selftest: old params form not explained -> {errors}")
+            ok = False
+
+        # A multi-shot sequence block names the other shots it renders.
+        p.write_text(
+            _fixture(good).replace(
+                "# shot_01, hook, 0.0-2.0s, MCU eye-level static\n",
+                "# shot_01, hook, 0.0-6.0s, multi-shot sequence\n# covers: shot_02\n",
+            )
+        )
+        errors, _ = check_file(p, SHOTS_FIXTURE, caps)
+        if not errors:
+            print("  ok    selftest: '# covers:' counts the other shots of a sequence")
+        else:
+            print(f"  FAIL  selftest: covered shot reported missing -> {errors}")
+            ok = False
+
+        # An environment override with its own text: the prompt carries the override,
+        # not the series anchor.
+        override = "rooftop terrace at dusk, city skyline behind"
+        shots_override = json.loads(json.dumps(SHOTS_FIXTURE))
+        shots_override["shots"][1]["environment_ref"] = override
+        with_override = good.replace(sl["environment"], override)
+        p.write_text(_fixture(good, with_override))
+        errors, _ = check_file(p, shots_override, caps)
+        if not errors:
+            print("  ok    selftest: an environment override replaces the series anchor")
+        else:
+            print(f"  FAIL  selftest: override not honoured -> {errors}")
+            ok = False
+
+        p.write_text(_fixture(good, good))
+        errors, _ = check_file(p, shots_override, caps)
+        if any("environment_ref override" in e for e in errors):
+            print("  ok    selftest: a prompt missing its override text is caught")
+        else:
+            print(f"  FAIL  selftest: missing override text not caught -> {errors}")
             ok = False
 
     print()

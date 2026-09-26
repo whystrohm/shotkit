@@ -24,12 +24,15 @@ Flux parameters are typically passed alongside the prompt, not inside it:
 | `prompt_upsampling` | API call field | `false` for series work, auto-rewrites kill consistency |
 | `seed` | API call field | set per-storyboard for series consistency |
 
-In the `flux.txt` output, document parameters as a comment line above each prompt:
+In the `flux.txt` output, document parameters as a comment line under each block header:
 
 ```
-# shot_01, params: ar=9:16, seed=2840193, upsampling=false
+# shot_01, hook, 0.0-2.0s, MCU eye-level static
+# params: ar=9:16, seed=2840193, upsampling=false
 {prompt}
 ```
+
+The block header is the same as every other adapter's. Parameters go on their own `# params:` line directly under it, never on a second `# shot_NN` line, because `validate_prompts.py` reads every `# shot_NN` line as a new block. `copy-prompt.py` shows the `# params:` line and never copies it.
 
 ## Length
 

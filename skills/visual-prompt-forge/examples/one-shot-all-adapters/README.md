@@ -46,6 +46,16 @@ Each `.txt` file in this directory is the prompt for one adapter:
 - `seedream.txt`. Seedream 4.5
 - `kling.txt`. Kling 3.0 (motion video, the default motion adapter)
 
+These are examples, written against the models named in each file's `# Model:` line at the
+time. The capability matrix records what is current now.
+
+Each file uses the forge's current format: a header naming the storyboard, generator, model,
+aspect, brand-lock, run and round, then a `# shot_NN` block header, a `# params:` line, and
+the prompt. The `# Run:` line names the 30-second example's run for illustration. That
+run's `run.json` records no prompt round, because this folder is a one-shot extract rather
+than a full pass. The nano-banana file keeps its variant template inside the same block, as
+`# variant:` lines after the prompt.
+
 The other three motion adapters (`veo` for dialogue/lipsync, `seedance` for multi-shot sequences, `hailuo` for budget iteration) follow the same five-layer anatomy as Kling and are chosen by need; see their files in `adapters/`. This single silent push shot doesn't exercise dialogue or a sequence, so Kling is the representative motion example here.
 
 Note the differences:

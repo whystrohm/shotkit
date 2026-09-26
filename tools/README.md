@@ -152,6 +152,12 @@ seven with every other validator green, and so did the worked-run fixture in thi
 The character anchor is a warning rather than an error: a shot with no person in it can
 legitimately omit it, and the message says so, so you can confirm rather than guess.
 
+A shot that overrides `environment_ref` or `lighting_ref` is checked for its override text
+instead of the series anchor. Comment lines inside a block are never prompt text:
+`# params:`, `# fix`, `# variant:`, and `# covers:`, which names the other shots a
+multi-shot sequence renders. A parameters line written as a second `# shot_NN, ...` header
+fails as a duplicate block, and the error names the `# params:` form.
+
 ### `validate_critique.py`
 
 Validates a critique against `critique.schema.json` **and** the two invariants the schema
@@ -247,9 +253,9 @@ python tools/copy-prompt.py --selftest
 ```
 
 Reads both file shapes the forge writes. Comment lines inside a shot block are annotations and
-never land in the clipboard, so a revision file's `# fix [...]` notes are shown but not
-copied. Revision files used to be unreadable to this tool entirely, which was awkward given
-they are the files an operator pastes from most.
+never land in the clipboard, so a revision file's `# fix [...]` notes and every `# params:`
+line are shown but not copied. `--list` counts each kind by name: params lines, fix notes,
+variant lines, covers lines, and other notes.
 
 Pure standard library. `pbcopy` on macOS, `xclip` or `xsel` on Linux, `clip` on Windows.
 

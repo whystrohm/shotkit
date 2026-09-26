@@ -4,7 +4,9 @@
 Handles both file shapes the forge writes: a full pass, and a revision file where each
 shot block carries `# fix [...]` annotations above the prompt. Comment lines inside a
 block are treated as annotations and never land in the clipboard, so what you paste
-into a generator is the prompt and nothing else.
+into a generator is the prompt and nothing else. --list names each kind of annotation:
+`# params:` lines, `# fix` notes, `# variant:` templates, `# covers:` lines, and other
+notes.
 
 Usage:
   python tools/copy-prompt.py output/prompts/round-1/flux.txt
@@ -45,8 +47,32 @@ class Block:
     def prompt(self) -> str:
         return "\n".join(self.body).strip()
 
+    def annotation_counts(self) -> dict[str, int]:
+        """Annotations by kind, in a fixed order, skipping kinds with none."""
+        counts = {"params": 0, "fix": 0, "variant": 0, "covers": 0, "note": 0}
+        for line in self.annotations:
+            key = line.lstrip("#").strip().lower()
+            for kind in ("params", "fix", "variant", "covers"):
+                if key.startswith(kind):
+                    counts[kind] += 1
+                    break
+            else:
+                counts["note"] += 1
+        return {k: v for k, v in counts.items() if v}
+
     def label(self) -> str:
-        note = f"  [{len(self.annotations)} fix note(s)]" if self.annotations else ""
+        names = {
+            "params": "params line",
+            "fix": "fix note",
+            "variant": "variant line",
+            "covers": "covers line",
+            "note": "other note",
+        }
+        parts = [
+            f"{n} {names[k]}{'' if n == 1 else 's'}"
+            for k, n in self.annotation_counts().items()
+        ]
+        note = f"  [{', '.join(parts)}]" if parts else ""
         return f"{self.header}{note}  ({len(self.prompt())} chars)"
 
 
@@ -184,6 +210,22 @@ def selftest() -> int:
         print("  ok    selftest: fix annotations are captured for display")
     else:
         print(f"  FAIL  selftest: expected 2 annotations, got {blocks[0].annotations}")
+        ok = False
+
+    params_block = parse_prompt_text(
+        "# shot_01, hook, 0.0-2.0s, MCU eye-level static\n"
+        "# params: ar=9:16, seed=2840193\n"
+        "prompt body\n"
+    )[0]
+    if "1 params line" in params_block.label() and "fix" not in params_block.label():
+        print("  ok    selftest: --list calls a '# params:' line a params line, not a fix note")
+    else:
+        print(f"  FAIL  selftest: params line labelled as {params_block.label()!r}")
+        ok = False
+    if "2 fix notes" in blocks[0].label():
+        print("  ok    selftest: --list counts fix notes as fix notes")
+    else:
+        print(f"  FAIL  selftest: fix notes labelled as {blocks[0].label()!r}")
         ok = False
 
     header_only = parse_prompt_text("# Storyboard: x\n# Generator: flux\n")

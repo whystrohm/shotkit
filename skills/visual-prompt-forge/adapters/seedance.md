@@ -28,9 +28,16 @@ Shot 1: {camera + action}. Shot 2: {camera + action}. Shot 3: {camera + action}.
 | `shots` | 1 | Number of cuts in the sequence when using multi-shot mode |
 
 ```
-# shot_02-shot_04. Seedance 2.0: ar=9:16, shots=3, multi-shot sequence
+# shot_02, pain, 2.0-11.0s, multi-shot sequence
+# params: model=Seedance 2.0, ar=9:16, shots=3
+# covers: shot_03, shot_04
 {prompt}
 ```
+
+A multi-shot sequence is one block, headed by its first shot. The `# covers:` line names the
+other shots the sequence renders, so `validate_prompts.py` counts them as covered in a full
+pass instead of reporting them missing. Parameters go on the `# params:` line, never on a
+second `# shot_NN` line, because every `# shot_NN` line opens a new block.
 
 ## Length
 

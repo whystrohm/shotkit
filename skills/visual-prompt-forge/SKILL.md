@@ -147,9 +147,11 @@ One file per generator, into `output/prompts/round-{N}/`. Format:
 # Round: 1
 
 # shot_01, hook, 0.0-2.0s, MCU eye-level static
+# params: {generator parameters, from the adapter}
 {the prompt}
 
 # shot_02, pain, 2.0-6.0s, MS eye-level push
+# params: {generator parameters}
 {the prompt}
 
 ...
@@ -158,6 +160,12 @@ One file per generator, into `output/prompts/round-{N}/`. Format:
 The `#` lines are comments; the user copies just the prompt body. `copy-prompt.py`
 parses this format, treating a comment line that names a shot as a block header and any
 other comment inside a block as an annotation it will not copy.
+
+Every adapter uses this one block format. Parameters go on a `# params:` line under the
+block header. Never write them as a second `# shot_NN, ...` line: every line that starts
+with `# shot_NN` opens a new block, and `validate_prompts.py` fails the file for a
+duplicate block. Other annotation lines are `# variant:` (a variant template, nano-banana)
+and `# covers: shot_03, shot_04` (the other shots a multi-shot sequence renders, seedance).
 
 Record the run and round in the header, not a wall-clock "Generated" line. A timestamp in
 the header made every file differ between two otherwise identical runs, which is a strange
@@ -294,6 +302,10 @@ dropped clause, no synonym, no inserted adjective.
 `character` is a warning rather than an error, because a shot with no person in it can
 legitimately leave it out. When the shot has a person, it is verbatim too.
 
+A shot may override `environment_ref` or `lighting_ref`, with its reason in the rationale.
+Then that shot's prompt carries the override text verbatim in place of the series anchor.
+The validator checks the override text for that shot and skips the series anchor.
+
 This rule is enforced now, not trusted:
 
 ```bash
@@ -329,7 +341,7 @@ One file per generator. Read these on demand, only for the generators being targ
 | `adapters/flux.md` | Flux 2 / Flux 1.1 Pro | Photorealism |
 | `adapters/ideogram.md` | Ideogram v3 | Text in image (override only) |
 | `adapters/gpt-image.md` | GPT Image 1.5 / 2 | Prompt accuracy, spatial reasoning |
-| `adapters/nano-banana.md` | Gemini 2.5 Flash Image | Edit fidelity, inpainting |
+| `adapters/nano-banana.md` | Nano Banana 2 (Gemini 3.1 Flash Image) | Edit fidelity, inpainting |
 | `adapters/seedream.md` | Seedream 4.5 | High-volume, cost-efficient |
 | `adapters/kling.md` | Kling 3.0 | Motion video, default (best camera motion per dollar) |
 | `adapters/veo.md` | Veo 3 | Motion video, dialogue/lipsync + native audio |

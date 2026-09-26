@@ -1,8 +1,8 @@
-# Adapter: Nano Banana (Gemini 2.5 Flash Image)
+# Adapter: Nano Banana 2 (Gemini 3.1 Flash Image)
 
 > Capability data (length ceiling, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. `max_prompt_words` there is a ceiling; the range below is the recommended target and has to sit inside it. Where a fact here and a fact in the JSON disagree, the JSON wins, and `tools/validate_capabilities.py` fails the build instead of letting the two drift.
 
-Google's Nano Banana model (`gemini-2.5-flash-image`) is the edit-and-iterate champion. Where other generators are best for first-frame creation, Nano Banana excels at variations, inpainting, and reference-based modification. The 2026 production pattern is to generate hero frames in Midjourney or Flux, then use Nano Banana for variants.
+Google's Nano Banana 2 model (`gemini-3.1-flash-image`) is the edit-and-iterate model in this kit. The earlier `gemini-2.5-flash-image` still answers in the Gemini API, and Google lists it as the legacy model. Where other generators are best for first-frame creation, Nano Banana excels at variations, inpainting, and reference-based modification. The 2026 production pattern is to generate hero frames in Midjourney or Flux, then use Nano Banana for variants.
 
 For storyboard work, Nano Banana is the right choice when you need **many variations of a single concept** or you're feeding generated images back through for refinement.
 
@@ -26,20 +26,27 @@ Nano Banana goes through the Gemini API:
 
 | Parameter | Default | Notes |
 |---|---|---|
-| `model` | `gemini-2.5-flash-image` | |
-| `aspectRatio` | from `project.aspect` | Native support for `9:16`, `16:9`, `1:1`, `4:5`, `3:4`, `21:9` |
+| `model` | `gemini-3.1-flash-image` | Nano Banana 2. `gemini-3-pro-image` is Nano Banana Pro |
+| `aspectRatio` | from `project.aspect` | Set in the image config. `aspect_ratio` in the Python SDK. Supports `1:1`, `3:2`, `2:3`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, `21:9` |
 | `numberOfImages` | `1` for series, `4` for variant exploration | |
 | `referenceImages` | array of base64 images | Optional |
 
-Document:
+Document in a comment under the block header:
 ```
-# shot_01, params: ar=9:16, n=1, ref=none (or list of refs)
+# shot_01, hook, 0.0-2.0s, MCU eye-level static
+# params: ar=9:16, n=1, ref=none (or list of refs)
 {prompt}
 ```
 
+The block header is the same as every other adapter's. Parameters go on their own `# params:` line directly under it, never on a second `# shot_NN` line, because `validate_prompts.py` reads every `# shot_NN` line as a new block. `copy-prompt.py` shows the `# params:` line and never copies it.
+
 ## Length
 
-Nano Banana handles **60–120 words** efficiently. Shorter than GPT Image, longer than Midjourney.
+Aim for **80–140 words**. Shorter than GPT Image, longer than Midjourney.
+
+The ceiling in `_capabilities.json` is 160 words. It was 120, and the four series_lock
+anchors, which go in verbatim, took about 62 of those words in a real run. That left about
+60 words for the shot itself. The anchors stay whole, so the ceiling moved instead.
 
 ## Composition pattern (text-to-image)
 
@@ -88,13 +95,16 @@ When generating prompts for Nano Banana in `nano-banana.txt`, include both:
 - A modification template comment showing how to use the result for variants:
 
 ```
-# shot_01, text-to-image prompt:
-{prompt}
-
-# shot_01, variant template (after generating once):
-# Reference: [the generated image]. Modify the image to {your change}.
-# Preserve {anchors}. Change {target}.
+# shot_01, hook, 0.0-2.0s, MCU eye-level static
+# params: ar=9:16, n=1, ref=none
+{text-to-image prompt}
+# variant: Reference: [the generated image]. Modify the image to {your change}.
+# variant: Preserve {anchors}. Change {target}.
 ```
+
+The variant template sits inside the same block, as `# variant:` comment lines after the
+prompt. A second `# shot_01, variant template` line would open a second block for the same
+shot, and `validate_prompts.py` fails a file with two blocks for one shot.
 
 ## Pitfalls to avoid
 

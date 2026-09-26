@@ -1,8 +1,10 @@
-# Storyboard: WhyStrohm, The Content Infrastructure Pitch
-# Generator: flux (Flux 2 Pro)
+# Storyboard: WhyStrohm. The Content Infrastructure Pitch
+# Generator: flux
+# Model: 2 Pro
 # Aspect: 9:16
 # Brand-lock: brand-lock.snapshot.md
-# Generated: 2026-05-07
+# Run: 20260507T142300Z-4b8f5796
+# Round: 1
 
 # shot_04, reframe, 11.0-16.0s, MCU eye-level push
 # params: aspect_ratio=9:16, output_format=png, prompt_upsampling=false, seed=2840193

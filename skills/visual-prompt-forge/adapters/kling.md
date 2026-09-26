@@ -25,12 +25,15 @@ Camera motion goes **first**. This is the inverse of image generators where came
 | `tail_image` | optional | End-frame target for controlled moves |
 | `negative_prompt` | per series | Supported. Use to suppress drift, e.g. `extra fingers, warped face` |
 
-Document parameters as a comment line above each prompt:
+Document parameters as a comment line under each block header:
 
 ```
-# shot_01. Kling 3.0: duration=5s, ar=9:16, cfg=0.5, start_image=frames/round-1/shot_01.png
+# shot_01, hook, 0.0-2.0s, MCU eye-level static
+# params: model=Kling 3.0, duration=5s, ar=9:16, cfg=0.5, start_image=frames/round-1/shot_01.png
 {prompt}
 ```
+
+The block header is the same as every other adapter's. Parameters go on their own `# params:` line directly under it, never on a second `# shot_NN` line, because `validate_prompts.py` reads every `# shot_NN` line as a new block. `copy-prompt.py` shows the `# params:` line and never copies it.
 
 ## Length
 

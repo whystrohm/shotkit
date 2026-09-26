@@ -22,9 +22,12 @@ With video the **camera motion is load-bearing**. When the shot has dialogue, th
 | `start_image` | optional | Image-to-video from an accepted still |
 
 ```
-# shot_04. Veo 3: duration=8s, ar=9:16, generate_audio=true
+# shot_04, proof, 16.0-24.0s, MS eye-level static
+# params: model=Veo 3, duration=8s, ar=9:16, generate_audio=true
 {prompt}
 ```
+
+The block header is the same as every other adapter's. Parameters go on their own `# params:` line directly under it, never on a second `# shot_NN` line, because `validate_prompts.py` reads every `# shot_NN` line as a new block. `copy-prompt.py` shows the `# params:` line and never copies it.
 
 ## Length
 

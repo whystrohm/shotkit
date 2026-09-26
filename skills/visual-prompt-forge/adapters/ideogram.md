@@ -39,11 +39,14 @@ The exact text must be in straight double-quotes. Ideogram parses these as the t
 | `style_type` | API field | `DESIGN` for posters, `REALISTIC` for scenes |
 | `seed` | API field | set per-storyboard |
 
-Document in comment block:
+Document in a comment under the block header:
 ```
-# shot_01, params: ar=9:16, model=V_3, magic_prompt=OFF, style=DESIGN, seed=2840193
+# shot_01, hook, 0.0-2.0s, MCU eye-level static
+# params: ar=9:16, model=V_3, magic_prompt=OFF, style=DESIGN, seed=2840193
 {prompt}
 ```
+
+The block header is the same as every other adapter's. Parameters go on their own `# params:` line directly under it, never on a second `# shot_NN` line, because `validate_prompts.py` reads every `# shot_NN` line as a new block. `copy-prompt.py` shows the `# params:` line and never copies it.
 
 ## Length
 

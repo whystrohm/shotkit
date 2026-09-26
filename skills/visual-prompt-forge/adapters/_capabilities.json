@@ -1,7 +1,7 @@
 {
   "$schema_note": "Capability matrix for visual-prompt-forge adapters. Generator models churn monthly. When you re-verify an adapter, bump its model_version and last_verified date here, then reconcile the prose adapter file. This file is the single source of truth for 'what each generator can do'; the .md files are the how-to-prompt guidance. max_prompt_words is a ceiling, not a target: an adapter .md may recommend a narrower range, but it may never advertise more than the ceiling. tools/validate_capabilities.py enforces that relationship and checks that each .md documents the aspect_param named here.",
   "version": "1.1",
-  "matrix_last_reviewed": "2026-07-30",
+  "matrix_last_reviewed": "2026-09-26",
   "generators": [
     {
       "id": "midjourney",
@@ -69,11 +69,11 @@
     },
     {
       "id": "nano-banana",
-      "display_name": "Nano Banana (Gemini Flash Image)",
-      "model_version": "Gemini 2.5 Flash Image",
-      "last_verified": "2026-05-08",
+      "display_name": "Nano Banana 2 (Gemini Flash Image)",
+      "model_version": "Gemini 3.1 Flash Image",
+      "last_verified": "2026-09-26",
       "prompt_style": "natural",
-      "max_prompt_words": 120,
+      "max_prompt_words": 160,
       "supports_text_render": true,
       "supports_motion": false,
       "supports_character_ref": true,
@@ -81,7 +81,7 @@
       "supports_negative_prompt": false,
       "aspect_param": "aspectRatio",
       "api_access": "full",
-      "notes": "Fast, cheap, strong editing/consistency via reference images. Good for high-volume iteration. Parameter name is camelCase here, unlike the fal.ai models; it ignores --ar."
+      "notes": "Fast, cheap, strong editing/consistency via reference images. Good for high-volume iteration. Parameter name is camelCase here, unlike the fal.ai models; it ignores --ar. The ceiling is 160 so the four verbatim series_lock anchors, about 60 words, leave room for the shot. Model id gemini-3.1-flash-image, verified against the Gemini API docs on 2026-09-26."
     },
     {
       "id": "seedream",
