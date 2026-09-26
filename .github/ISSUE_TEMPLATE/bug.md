@@ -5,6 +5,7 @@ labels: bug
 ---
 
 **Which skill?**
+- [ ] brand-lock-extractor
 - [ ] storyboard-architect
 - [ ] visual-prompt-forge
 - [ ] visual-asset-critic
@@ -13,7 +14,7 @@ labels: bug
 
 **Environment**
 - Claude product (Claude.ai / Claude Code / API):
-- Claude model (Opus 4.7 / Sonnet 4.6 / other):
+- Claude model (for example Opus 5.5 or Sonnet 5):
 - OS (if Claude Code):
 
 **What you ran**

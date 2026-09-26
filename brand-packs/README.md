@@ -26,10 +26,10 @@ The template is a checklist, not a creative-writing exercise. Three rules:
 
 The pack ships with two reference brand packs:
 
-- **`whystrohm.md`** (flagship). The actual brand pack WhyStrohm uses on its own content. Real palette, real voice rules, real "never" list. Use this as the reference for the level of specificity production work requires.
+- **`whystrohm.md`** (flagship). The brand pack WhyStrohm uses on its own content: dark ground, one accent, Archivo and IBM Plex Mono. Real palette, real voice rules, real "never" list. Use this as the reference for the level of specificity production work requires.
 - **`examples/saas-clean.md`**. B2B SaaS, restrained, professional. Light backgrounds, single accent. Inter type stack. A neutral counterpoint to the WhyStrohm flagship.
 
-More example brand packs will land in v2.0.0. PRs welcome.
+PRs welcome.
 
 ## Generating a brand pack from existing assets
 
@@ -37,7 +37,7 @@ Don't hand-author from scratch if the brand already exists. The **`brand-lock-ex
 
 > "Extract a brand-lock from acme.com" or "build a brand pack from this brand book PDF."
 
-For bulk or programmatic extraction across many URLs, [media-tsunami](https://github.com/whystrohm/media-tsunami) (WhyStrohm's open-source brand voice extractor) scrapes URLs and produces a `brand-lock.md` in the same format.
+[media-tsunami](https://github.com/whystrohm/media-tsunami) extracts brand voice from a URL into a CLAUDE.md and a brand-config.json. It does not write a brand-lock. Its voice findings are a good source for a brand-lock's voice rules, which you then fill in by hand or with `brand-lock-extractor`.
 
 ## Versioning
 
@@ -46,7 +46,7 @@ Every storyboard run snapshots the brand pack it was built against. If you updat
 When you make a brand-pack revision that materially changes look or voice, bump the `Version:` field at the bottom and note the change. e.g.:
 
 ```
-Version: 1.1 (2026-05-12: switched accent from #D94F3A coral to #C44233 deeper coral)
+Version: 1.1 (2026-05-12: switched accent from #D94F3A to #C44233)
 ```
 
 ## Contributing examples

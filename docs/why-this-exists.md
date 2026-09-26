@@ -19,24 +19,24 @@ We're using "production-grade" deliberately. It means:
 - **Files, not panels.** The storyboard is a directory of structured Markdown and JSON. An editor, motion designer, or developer can act on it without asking the AI a follow-up question.
 - **Versioned brand state.** Every storyboard run snapshots the brand parameters it was built against. If the brand evolves later, you can still see exactly what version any given piece of content targeted.
 - **Per-shot rationale.** Every shot has a one-sentence explanation. Why this beat. Why this duration. Why this framing. Decisions are logged so they can be challenged.
-- **Model-agnostic.** Same shot data renders to Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream for stills and Kling, Veo, Seedance, Hailuo for motion, different syntax, identical intent. No vendor lock-in. (When Sora was discontinued, swapping the motion lane cost one capability-matrix edit and four adapter files.)
+- **Model-agnostic.** Same shot data renders to Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream for stills and Kling, Veo, Seedance, Hailuo for motion, different syntax, identical intent. No vendor lock-in. When a motion model was discontinued, swapping the motion lane took one capability-matrix edit and four adapter files.
 - **Composable.** The storyboard skill stops at the spec. The prompt skill stops at the prompt. The critique skill stops at the critique. Each does one job. They compose because they agree on file formats, not because they import each other.
 
 This is how serious teams have always worked. We're just bringing AI generation into the same discipline.
 
-## The defense influence
+## The habits it is built on
 
-The author spent a decade in defense systems engineering, building motion design and proposal graphics for federal programs. Defense work has different reflexes than agency work:
+The kit borrows four habits from engineering work, where a document has to hold up in review:
 
 **Auditability**, every artifact has a chain back to the source decision. You can answer "why does it look this way?" by reading the file, not asking a person.
 
-**Determinism**, same inputs, same outputs, and the parts that cannot be deterministic say so. Given the same `shots.json` and brand-lock, the prompts and the HTML preview are reproducible, and CI re-renders the bundled previews on every push and fails if a byte moves. Image generation is not reproducible, so instead of pretending otherwise the trail records the hash of the frame you actually shipped. Vibes don't survive a stop-work order; neither do claims you cannot test.
+**Determinism**, same inputs, same outputs, and the parts that cannot be deterministic say so. Given the same `shots.json` and brand-lock, the prompts and the HTML preview are reproducible, and CI re-renders the bundled previews on every push and fails if a byte moves. Image generation is not reproducible, so instead of pretending otherwise the trail records the hash of the frame you actually shipped. Vibes do not survive a review, and neither do claims you cannot test.
 
 **Clean architectural boundaries**, each component has one job. Components don't reach into each other. Changes are surgical.
 
 **No surprises**, the file behaves like its name suggests. The prompt does what its description says. The skill triggers when the docs say it triggers.
 
-These reflexes don't go away when the work shifts from defense to commercial. They become the operator's edge.
+These habits are rare in content work. That makes them the operator's edge.
 
 ## What this skill pack is competing against
 
@@ -73,6 +73,6 @@ The gap isn't a better dashboard. The gap is the whole *file-native, generator-a
 
 The bet is that file-native, generator-agnostic, methodology-encoded skills are the long-term shape of serious creative tooling. SaaS apps will keep launching, but they'll always be working against the grain of how production teams actually move.
 
-We're publishing the methodology because the methodology isn't the moat. The operator running the pipeline at $3,000 a month is. If teams adopt the methodology and run it themselves, that's a good outcome, they ship better work, the category grows, and the operators who run it best continue to lead.
+We're publishing the methodology because the methodology isn't the moat. The operator running the pipeline is. If teams adopt the methodology and run it themselves, that's a good outcome, they ship better work, the category grows, and the operators who run it best continue to lead.
 
-That's the WhyStrohm thesis applied. Defense-grade habits, applied to commercial content, distributed openly.
+That's the WhyStrohm thesis applied: engineering habits, applied to content, published openly.

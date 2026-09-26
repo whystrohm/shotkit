@@ -80,7 +80,7 @@ That's not how serious teams work. Serious teams want:
 - **Model agnosticism**. Prompts adapt to whichever image generator you're using this month.
 - **No vendor lock-in**. Markdown, JSON, HTML. Open formats only.
 
-shotkit is what we use internally at WhyStrohm to ship hundreds of videos from code. We're publishing the methodology because the methodology isn't the moat. The operator is.
+shotkit is the pre-production method WhyStrohm uses on its own work. We're publishing the methodology because the methodology isn't the moat. The operator is.
 
 Read more in [`docs/why-this-exists.md`](docs/why-this-exists.md).
 
@@ -154,10 +154,10 @@ Four ideas. None negotiable.
 A brand pack is a single Markdown file that locks palette, typography, voice, and visual rules for a project. Three live in this repo:
 
 - [`brand-packs/_template.md`](brand-packs/_template.md). Empty starter.
-- [`brand-packs/whystrohm.md`](brand-packs/whystrohm.md). Flagship example, real WhyStrohm brand.
+- [`brand-packs/whystrohm.md`](brand-packs/whystrohm.md). Flagship example, the real WhyStrohm brand: dark ground, one accent, Archivo and IBM Plex Mono.
 - [`brand-packs/examples/saas-clean.md`](brand-packs/examples/saas-clean.md). Neutral B2B SaaS reference.
 
-Roll your own from the template. Or generate one from existing brand assets with [media-tsunami](https://github.com/whystrohm/media-tsunami), WhyStrohm's open-source brand voice extractor.
+Roll your own from the template. Or generate one from a site, a brand book or screenshots with the `brand-lock-extractor` skill in this repo.
 
 See [`brand-packs/README.md`](brand-packs/README.md) for the full pattern.
 
@@ -199,8 +199,8 @@ For wiring it up yourself, see [`docs/connecting-to-generators.md`](docs/connect
 shotkit is part of a broader WhyStrohm open-source ecosystem of brand-infrastructure tools:
 
 - [media-tsunami](https://github.com/whystrohm/media-tsunami)
-  brand voice extraction. Generates the brand-pack files
-  shotkit consumes.
+  brand voice extraction. Writes a CLAUDE.md and a
+  brand-config.json from a site.
 - [whystrohm-audit](https://github.com/whystrohm/whystrohm-audit)
   content audit against a 5-layer framework.
 - [whystrohm-voice-extract](https://github.com/whystrohm/whystrohm-voice-extract)
@@ -210,9 +210,11 @@ shotkit is part of a broader WhyStrohm open-source ecosystem of brand-infrastruc
 - [digital-twin](https://github.com/whystrohm/digital-twin-of-yourself)
   personal voice as system prompt.
 - [ritual](https://github.com/whystrohm/ritual)
-  Claude Code routine orchestration.
+  drafts a Claude Code routine from your own work history.
 
-The voice tools and shotkit compose. Brand voice extracted via media-tsunami feeds shotkit's brand-pack files for end-to-end brand consistency.
+The voice tools and shotkit work side by side. A voice profile from media-tsunami or
+whystrohm-voice-extract is a good source for a brand-lock's voice rules. The brand-lock file
+itself comes from `brand-lock-extractor` or the template.
 
 For the operated version of the full pipeline, see [whystrohm.com](https://whystrohm.com).
 
@@ -225,7 +227,7 @@ For the operated version of the full pipeline, see [whystrohm.com](https://whyst
 - **Claude API**. All five skills via Skills API.
 - **Other agents** that support the SKILL.md open standard (Codex, Cursor, Gemini CLI, Antigravity, Windsurf) should work, not officially tested.
 
-Tested against Claude Opus 4.7 and Claude Sonnet 4.6.
+Built for current Claude models (Opus, Sonnet).
 
 ---
 
@@ -261,6 +263,9 @@ pip install pyyaml jsonschema
 ./tools/check.sh
 ```
 
+After an install, `~/.claude/shotkit-tools/check.sh --quiet` runs the same checks against the
+installed copy.
+
 That is the same entry point CI runs, so green locally means green on the PR. It covers
 frontmatter, schemas, capability-to-adapter parity, brand-locks, storyboard instances, the
 critique gate, the provenance chain, and both shipped tools.
@@ -273,13 +278,15 @@ it. A validator nobody can see fail is a validator nobody should trust. See
 
 ## License
 
-Apache 2.0. See [LICENSE](LICENSE).
+Apache 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+The Apache License 2.0 covers the code and documentation in this repository. It does not grant rights to the Shotkit name or the WhyStrohm name.
 
 ---
 
 ## Who built this
 
-[Yuri Strohm](https://whystrohm.com). Motion Design and Narrative Visualization Specialist, founder of WhyStrohm. A decade of defense-adjacent design work informs how I build content systems: deterministic, auditable, no surprises.
+[Yuri Strohm](https://whystrohm.com), founder of WhyStrohm.
 
 If you want the version where this is wired into a programmatic video pipeline and publishing: [whystrohm.com](https://whystrohm.com).
 

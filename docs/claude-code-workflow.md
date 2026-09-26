@@ -86,7 +86,7 @@ If the run takes more than one round-trip, the brief was ambiguous. The follow-u
 
 shotkit is designed to compose. The five skills cooperate by file format, not by import. They also compose with other community skills:
 
-- **Brand-voice extractors** (e.g. media-tsunami) feed into `brand-packs/`
+- **Brand-voice extractors** (e.g. media-tsunami) give you voice findings to write into a brand-lock's voice rules; `brand-lock-extractor` writes the brand-lock itself
 - **Frontmatter-aware editors** can hand-edit `shots.json` between runs
 - **Render skills** can read `shots.json` and produce video without re-running storyboard-architect
 - **Publishing skills** can read `text-overlays.json` and post per-platform copy

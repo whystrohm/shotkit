@@ -97,9 +97,9 @@ Snapshotting the brand-lock per run captures this. The snapshot is dated and ref
 
 If the brand-lock is updated later, the snapshot stays frozen. The storyboard remains reproducible against its original inputs.
 
-## The defense influence
+## Where the pattern comes from
 
-This pattern came from defense-adjacent design work. In defense contexts:
+The pattern is standard in engineering work, where a document has to hold up in review:
 
 - Every artifact has a chain back to the source decision
 - "Why does it look this way" is answered by reading the file, not asking a person
@@ -191,7 +191,7 @@ this well enough that shotkit does not try.
 - New storyboards reference the current version
 - The brand-lock change log itself is committed
 
-## The audit trail is also the operator's defense
+## The audit trail also protects the operator
 
 If something goes wrong with a piece of content, wrong color, wrong messaging, wrong character, the audit trail makes the failure analyzable. You can point to:
 

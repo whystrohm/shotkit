@@ -94,4 +94,4 @@ Default for storyboard work is still composited text, keep the override flag pat
 
 ## API access
 
-GPT Image is OpenAI-only as of Q2 2026. Standard `images.generate` endpoint. Pricing roughly $0.04–0.08 per image depending on size and quality. ChatGPT Plus and above gives UI access.
+GPT Image is OpenAI-only as of Q2 2026. Standard `images.generate` endpoint. Check OpenAI's pricing page for current per-image cost. ChatGPT Plus and above gives UI access.

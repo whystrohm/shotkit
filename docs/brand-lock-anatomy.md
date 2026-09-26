@@ -24,7 +24,7 @@ Every brand-lock has nine sections. Each is required. Missing sections fail vali
 
 Brand name. One-line description. Archetype. Voice posture.
 
-The one-line description is the most important sentence in the file. It is what a generator implicitly references when producing prompts. "Managed content infrastructure for founder-led brands. 30 minutes a week of founder time, 48-hour content cycles" reads differently than "Content agency for entrepreneurs." The former produces operator-coded shots. The latter produces hustle-coded shots. Same brand, different output.
+The one-line description is the most important sentence in the file. It is what a generator implicitly references when producing prompts. "A media studio for founder-led companies. It researches the market, builds the site at the center of it, and keeps the media around it moving" reads differently than "Content agency for entrepreneurs." The former produces operator-coded shots. The latter produces hustle-coded shots. Same brand, different output.
 
 ### Palette
 

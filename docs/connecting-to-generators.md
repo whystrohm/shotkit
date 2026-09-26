@@ -36,7 +36,7 @@ Everything to the left of that line is the methodology. Everything to the right 
 
 ## Why this boundary
 
-**Methodology is stable. Pipelines are not.** Generators churn monthly. Flux 2 Pro replaced Flux 1.1 Pro in months. Seedream 4.5 dropped right after 4.0. Nano Banana joined the Gemini family. Sora was discontinued outright and Kling, Veo, and Seedance took the motion lane. If the pack hard-coded any specific API integration, half of it would be broken every quarter. (When the Sora adapter died, swapping in the new motion lineup was a single capability-matrix edit and four adapter files, exactly the point.)
+**Methodology is stable. Pipelines are not.** Generators change every few months. Flux 2 Pro replaced Flux 1.1 Pro. Seedream and Nano Banana both shipped new versions. A motion model the kit once supported was discontinued, and Kling, Veo, Seedance and Hailuo took the motion lane. If the pack hard-coded any specific API integration, half of it would need rework every quarter. Swapping in the new motion lineup was one capability-matrix edit and four adapter files.
 
 **The methodology survives generator change.** A prompt file produced for Flux today is still a usable prompt for whatever replaces Flux. The shot structure in `shots.json` is generator-agnostic. The brand-lock is generator-agnostic. Only the adapter layer touches generator-specific syntax, and adapters are the easiest layer to update.
 
@@ -153,11 +153,9 @@ If you want the methodology, this repo is the methodology. If you want the opera
 Signs that managed infrastructure starts to make sense:
 
 - You're generating for 3+ brands and the prompt-to-publish friction is daily-pain level
-- Your output cadence is slower than 48 hours and you want it faster
+- Your output cadence is slower than you need it to be
 - You're spending more time on pipeline maintenance than creative work
 - Generator API breaking changes cost you a day each time
 - You're rebuilding the same render-pipeline components for every new client
-
-These aren't hypothetical. They're the daily friction of self-running content infrastructure at scale. Most teams hit them around the third active brand.
 
 The pack itself remains useful at any scale. The pipeline question is separate.

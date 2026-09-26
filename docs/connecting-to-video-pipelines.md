@@ -84,7 +84,7 @@ Three reasons:
 
 **The methodology is what matters.** The architectural decisions, separating brand-lock from series-lock from shot-spec from text-layer, survive any implementation. The implementation is plumbing.
 
-**Operating it well is part of the value WhyStrohm delivers.** The infrastructure that runs hundreds of rendered videos per month against the methodology is the product offering.
+**Operating it well is the part WhyStrohm does for clients.** The methodology is open. Running it every week, with the render pipeline and the publishing, is the service.
 
 ## Worth building yourself if
 
