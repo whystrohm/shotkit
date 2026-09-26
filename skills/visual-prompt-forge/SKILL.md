@@ -1,6 +1,6 @@
 ---
 name: visual-prompt-forge
-description: Generate model-specific prompts from shots.json. Outputs copy-paste-ready prompts for stills (Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream) and motion video (Kling, Veo, Seedance, Hailuo). Also runs a revision mode that reads a critique.json and re-emits prompts for only the failed shots, closing the QA loop. Use when the user asks for image or video prompts, mentions any of those generators, wants AI-generated frames for a storyboard, or hands over shots.json. The prompt half of the pipeline. Composes with storyboard-architect upstream, visual-asset-critic downstream.
+description: Write model-specific image and video prompts for the shots in a storyboard or shot list (shots.json). Outputs copy-paste-ready prompts for stills (Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream) and motion video (Kling, Veo, Seedance, Hailuo), and a revision mode that reads critiques and re-emits prompts for only the shots that failed. Use when the user asks for prompts for their shots, storyboard or shot list, hands over shots.json, or asks to apply a critique to failed shots. Naming a generator is not enough on its own; the request has to be for prompts for storyboard shots. Composes with storyboard-architect upstream and visual-asset-critic downstream.
 ---
 
 # Visual Prompt Forge
@@ -14,9 +14,12 @@ This skill adapts. Same shot, different syntax.
 Trigger when the user:
 
 - Hands over a `shots.json` (or any structured shot list) and asks for prompts
-- Names a specific generator (Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream, Kling, Veo, Seedance, Hailuo)
-- Asks for "image prompts," "Midjourney prompts," "AI prompts," "generation prompts" for a storyboard
+- Asks for "image prompts," "Midjourney prompts," "video prompts," "generation prompts" for a storyboard or its shots
+- Names target generators for a storyboard's prompts (Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream, Kling, Veo, Seedance, Hailuo)
 - Wants the same shot adapted to multiple generators
+
+Naming a generator is not enough on its own. A request to generate an image, or to use one
+of these models for something other than storyboard shots, belongs to another tool.
 
 If the user wants to build a storyboard from scratch (no shots.json yet), use `storyboard-architect` first, then chain into this skill.
 
@@ -179,8 +182,8 @@ it covers.
 shasum -a 256 output/prompts/round-1/*.txt
 ```
 
-This is the only writeable part of `run.json`. Everything else was fixed when the
-architect wrote it.
+`rounds` is append-only. Add the new entry at the end and never edit an earlier one.
+Everything else in `run.json` was written once by the architect and is never edited.
 
 ### Step 5. Hand off
 

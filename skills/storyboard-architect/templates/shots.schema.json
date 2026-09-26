@@ -28,6 +28,13 @@
           "type": "string",
           "enum": ["16:9", "9:16", "1:1", "4:5", "21:9"]
         },
+        "seed": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "integer", "minimum": 0 }
+          ],
+          "description": "Optional. One seed for every shot, for generators that take one (Flux, Seedream, Ideogram). Null or absent when the project sets none. See visual-prompt-forge/references/consistency-locks.md."
+        },
         "framework": {
           "type": "string",
           "description": "Beat framework name. e.g. 'pain-reframe-promise', 'hero-trilogy', 'founder-explainer', 'content-spiral', 'educational-demo', 'custom'"

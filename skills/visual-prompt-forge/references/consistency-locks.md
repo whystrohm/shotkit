@@ -36,7 +36,8 @@ Same principle for `series_lock.lighting`. Lighting direction in particular is c
 
 For generators that support seeds (Flux, Seedream, Ideogram, Stable Diffusion), set the seed at the storyboard level. Same seed across every shot. This anchors the generator's randomness so character features carry.
 
-In `shots.json`, you can document the seed at the project level:
+In `shots.json`, you can document the seed at the project level. `project.seed` is an
+optional integer in the schema, or `null` when the project sets none:
 
 ```json
 {

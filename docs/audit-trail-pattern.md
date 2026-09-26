@@ -29,10 +29,8 @@ Each file does one job in the audit trail.
 Reading this answers "are the files next to these frames the files they were built from."
 
 The other four files are named references to each other. `shots.json` points at
-`brand-lock.snapshot.md` by filename. A filename survives its contents being replaced, so
-for a long time this pattern could tell you *which file* a storyboard targeted and not
-*which version of it*. Re-run the architect against an updated brand-pack and the snapshot
-is overwritten in place; every reference still resolves and nothing reports a change.
+`brand-lock.snapshot.md` by filename. A filename survives its contents being replaced, so a
+filename alone tells you *which file* a storyboard targeted and not *which version of it*.
 
 `run.json` closes that by recording a SHA-256 for each input alongside a `run_id` and a
 `created_at` instant:
@@ -54,6 +52,10 @@ is overwritten in place; every reference still resolves and nothing reports a ch
 
 `tools/validate_provenance.py` recomputes those hashes. A mid-project brand-lock edit fails
 there instead of silently repointing the project's history.
+
+One rule governs edits. Everything in `run.json` except `rounds` is written once and never edited. `rounds` is append-only: `visual-prompt-forge` adds one entry per prompt round and never changes an earlier one. The storyboard architect writes it as its last
+step, after the other four files are final, and records `shotkit_version` from the
+installed `VERSION` file.
 
 ### `storyboard.md`, the human-readable record
 

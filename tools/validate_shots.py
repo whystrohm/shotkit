@@ -31,6 +31,7 @@ Usage:
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -509,6 +510,35 @@ def selftest() -> int:
             print(f"  ok    selftest: {label} is caught")
         else:
             print(f"  FAIL  selftest: {label} was not caught")
+            ok = False
+
+    # project.seed is optional: an integer, null, or absent. Anything else fails.
+    shots_schema, _ = load_json(SHOTS_SCHEMA)
+    validator = Draft202012Validator(shots_schema)
+    base = {
+        "version": "1.2",
+        "project": {"title": "Seed", "duration_s": 2, "aspect": "9:16"},
+        "brand_lock_ref": "brand-lock.snapshot.md",
+        "series_lock": {"character": "c", "environment": "e", "lighting": "l", "color_grade": "g"},
+        "shots": [{
+            "id": "shot_01", "beat": "hook", "start": 0.0, "end": 2.0, "framing": "MCU",
+            "angle": "eye-level", "motion": "static", "subject": "s",
+            "environment_ref": "series_lock.environment", "lighting_ref": "series_lock.lighting",
+            "on_screen_text": None, "vo": None, "rationale": "r",
+        }],
+    }
+    for label, seed, should_pass in (
+        ("an integer project.seed is accepted", 2840193, True),
+        ("a null project.seed is accepted", None, True),
+        ("a string project.seed is rejected", "2840193", False),
+    ):
+        doc = json.loads(json.dumps(base))
+        doc["project"]["seed"] = seed
+        passed = not list(validator.iter_errors(doc))
+        if passed == should_pass:
+            print(f"  ok    selftest: {label}")
+        else:
+            print(f"  FAIL  selftest: {label}")
             ok = False
 
     clean, clean_warn = check_timing(

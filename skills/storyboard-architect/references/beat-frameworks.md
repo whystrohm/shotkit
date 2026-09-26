@@ -10,6 +10,7 @@ Default for conversion content. Three beats:
 2. **Reframe**, flip the problem on its head. The point is *not* what they thought it was. "You don't have a content problem. You have an infrastructure problem."
 3. **Promise**, what life looks like on the other side. Specific, verifiable, time-bound when possible.
 
+Timing for 15s: 0–4 / 4–10 / 10–15. The hook is the first 2s of Pain, and the CTA is the last 3–4s of Promise.
 Timing for 30s: 0–8 / 8–22 / 22–30.
 Timing for 60s: 0–15 / 15–45 / 45–60.
 
@@ -23,6 +24,7 @@ Default for product films and brand films. Three beats:
 2. **Hero**, the product/founder/methodology arrives. Show what it does, not what it is.
 3. **Transformation**, the world changes. Show before/after at scale.
 
+Timing for 15s: 0–4 / 4–10 / 10–15. At this length World is one shot and Transformation carries the CTA.
 Timing for 60s: 0–20 / 20–40 / 40–60.
 Timing for 90s: 0–30 / 30–60 / 60–90.
 
@@ -38,6 +40,9 @@ Default for personal-brand video where a person speaks to camera. Five micro-bea
 4. **Proof**, one concrete example or data point
 5. **CTA**, what to do next, narrow and specific
 
+For 15s the five beats compress to four: Hook 0–2, Stakes 2–5, Insight with its proof
+inside it 5–11, CTA 11–15.
+
 Use when: founder content, thought leadership, personal-brand pieces.
 
 ## Content Spiral
@@ -51,6 +56,8 @@ Default for kinetic typography or opinion content. The structure is recursive, e
 
 Each zoom is 1.5–2x faster than the previous. Pacing accelerates inward.
 
+Timing for 15s: wide claim 0–5, zoom 1 5–9, zoom 2 9–11.5, snap-back 11.5–15.
+
 Use when: opinion videos, kinetic-type pieces, social-native commentary.
 
 ## Educational Demo
@@ -61,6 +68,8 @@ Default for how-to content. Four beats:
 2. **Reveal**, the technique or trick
 3. **Walk-through**, apply it step by step
 4. **Result**, the after-state, side-by-side with before
+
+Timing for 15s: 0–3 / 3–6 / 6–12 / 12–15. One technique only; a second one needs a longer cut.
 
 Use when: tutorials, demo videos, training content.
 

@@ -12,7 +12,7 @@ Pacing is math, not feel. Use these as defaults. Override only with reason docum
 | Demo / how-to | 3.0–5.0s | 2.0–7.0s |
 | Cinematic brand film | 3.5–6.0s | 2.0–10.0s |
 
-If a single shot is longer than 7 seconds in a 30-second piece, justify it in rationale. Long shots are not bad. Unjustified long shots are.
+If a single shot is longer than 5 seconds in a 15-second piece, or 7 seconds in a 30-second piece, justify it in rationale. Long shots are not bad. Unjustified long shots are.
 
 ## Hook timing (the first beat)
 
@@ -25,7 +25,7 @@ The hook shot framing should be high-contrast against the shots that follow. If 
 
 ## CTA timing (the final beat)
 
-The CTA is the final 4–6s for 30s content, 6–10s for 60s content. Specifically:
+The CTA is the final 3–4s for 15s content, 4–6s for 30s content, 6–10s for 60s content. Specifically:
 
 - Last shot should hold long enough for someone to read the CTA text and act
 - Don't put motion on the CTA shot, let the text breathe
@@ -71,6 +71,10 @@ Energy
 The apex is two-thirds in, not at the end. The CTA is a release, not a peak.
 
 For 60-second content, scale the same curve. Apex around 0:40, CTA from 0:50.
+
+For 15-second content, the same curve compresses: hook 0–2, build 2–6, apex 6–10, release
+10–12, CTA 12–15. That leaves room for about four to six shots, and for one line of
+on-screen text per shot at most, given the read-twice rule below.
 
 ## Validating timing
 

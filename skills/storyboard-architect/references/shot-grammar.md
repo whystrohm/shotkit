@@ -40,6 +40,9 @@ Default to eye-level. Use the others deliberately, not for variety.
 | `handheld` | Subtle organic shake | Documentary feel, urgency |
 | `orbit` | Camera circles subject | Hero shots, product reveal |
 | `whip` | Fast pan as transition | Beat-cuts in fast-paced content |
+| `rack` | Camera holds still while focus shifts from one subject to another | Moving attention between two things in one frame without a cut |
+
+All eleven values above are the `motion` enum in `templates/shots.schema.json`. `rack` as a motion means the focus pull is the shot's movement. `rack` as a `depth_of_field` value describes the focus state instead.
 
 For AI-generated still frames, motion is mostly intent for the editor. For motion-video prompts (Kling, Veo, Seedance, Hailuo), motion translates directly.
 

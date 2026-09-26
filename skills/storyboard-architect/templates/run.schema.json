@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://whystrohm.com/schemas/shotkit/run.schema.json",
   "title": "Run",
-  "description": "Written once at the start of a storyboard run and never edited. Pins every input by content hash, so six months later you can prove which brand-lock, shot list, and text spec a set of frames was produced against, rather than trusting that the files sitting next to them are the originals. Everything downstream (prompts, frames, critiques) is addressed by round and shot id under the output root, so no two operators write the same path. Validated by tools/validate_provenance.py.",
+  "description": "Written once by storyboard-architect, after shots.json, text-overlays.json and brand-lock.snapshot.md are final. Everything except rounds is write-once and never edited. rounds is append-only: visual-prompt-forge adds one entry per prompt round and never changes an earlier entry. Pins every input by content hash, so six months later you can prove which brand-lock, shot list, and text spec a set of frames was produced against, rather than trusting that the files sitting next to them are the originals. Everything downstream (prompts, frames, critiques) is addressed by round and shot id under the output root, so no two operators write the same path. Validated by tools/validate_provenance.py.",
   "type": "object",
   "required": ["version", "run_id", "created_at", "shotkit_version", "project", "inputs"],
   "additionalProperties": false,
@@ -26,7 +26,7 @@
     "shotkit_version": {
       "type": "string",
       "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
-      "description": "Version of shotkit that produced the run."
+      "description": "Version of shotkit that produced the run. Read line 1 of ~/.claude/shotkit-tools/VERSION (written by install.sh), or VERSION at the root of a repo clone."
     },
     "operator": {
       "oneOf": [
@@ -46,7 +46,14 @@
           "type": "string",
           "enum": ["16:9", "9:16", "1:1", "4:5", "21:9"]
         },
-        "framework": { "type": "string", "minLength": 1 }
+        "framework": { "type": "string", "minLength": 1 },
+        "seed": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "integer", "minimum": 0 }
+          ],
+          "description": "Copied from shots.json project.seed when it is set."
+        }
       }
     },
     "inputs": {
@@ -107,7 +114,7 @@
     },
     "rounds": {
       "type": "array",
-      "description": "Appended once per revision round. Each round records the prompt files it produced. Frames and critiques are found on disk under frames/round-N/ and critiques/round-N/, not listed here, so two operators working the same round never write the same JSON.",
+      "description": "Append-only. One entry per prompt round, added by visual-prompt-forge; an earlier entry is never edited. Each round records the prompt files it produced. Frames and critiques are found on disk under frames/round-N/ and critiques/round-N/, not listed here, so two operators working the same round never write the same JSON.",
       "items": {
         "type": "object",
         "required": ["round", "started_at", "prompts"],

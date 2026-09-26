@@ -1,6 +1,6 @@
 ---
 name: storyboard-architect
-description: Turn a creative brief into a production-grade storyboard with shot specs, timing, on-screen text, and per-shot rationale. Use when the user describes a video brief, plans a video, references shots or beats, scripts a social video, or hands over a creative concept to break into scenes. Produces run.json, storyboard.md, shots.json, text-overlays.json, and brand-lock.snapshot.md. Pairs with visual-prompt-forge, visual-asset-critic, storyboard-html-preview.
+description: Turn a video brief into a storyboard and shot list with shot specs, timing, on-screen text and per-shot rationale. Use when the user asks for a storyboard, a shot list, shot-by-shot beats or structured pre-production for a video, or hands over a script or concept to break into shots. Produces run.json, storyboard.md, shots.json, text-overlays.json and brand-lock.snapshot.md. It plans the video; it does not render it. Pairs with visual-prompt-forge, visual-asset-critic and storyboard-html-preview.
 ---
 
 # Storyboard Architect
@@ -13,8 +13,8 @@ This is not a creative-writing exercise. The output is a spec.
 
 Trigger this skill when the user:
 
-- Describes a video they want to make ("30-second explainer for...", "TikTok ad about...")
-- Asks to storyboard, plan shots, break out beats, write a shot list
+- Asks for a storyboard or shot list for a video ("storyboard a 30-second explainer for...", "shot list for a TikTok ad about...")
+- Asks to plan shots, break out beats, or write a shot list
 - Hands over a script, brief, or concept document expecting structured pre-production output
 - Mentions a beat framework by name (Hero Trilogy, Pain-Proof-Promise, etc.)
 - References an existing brand-lock file or pack
@@ -37,7 +37,7 @@ output/
 `run.json` is what makes the rest of the tree auditable later. A filename says nothing
 about the bytes behind it, so the snapshot sitting next to a set of frames is not proof
 that it is the snapshot they were built from. The hashes in `run.json` are that proof.
-Write it once, at the end of the run, and never edit it.
+Write it once, as the last step, after the other four files are final. Everything in `run.json` except `rounds` is written once and never edited. `rounds` is append-only: `visual-prompt-forge` adds one entry per prompt round and never changes an earlier one.
 
 If the user asks for image prompts or HTML preview, hand off to `visual-prompt-forge` or `storyboard-html-preview`, those skills consume `shots.json` directly. Don't try to do their job here.
 
@@ -97,9 +97,9 @@ If none fit cleanly, build a custom beat structure but document why in `storyboa
 Read `references/timing-rules.md` for the math. Default cadence:
 
 - Hook beat: 0–2 seconds
-- Pain/setup: 2–6 seconds (for 30s) or 2–10 seconds (for 60s)
+- Pain/setup: 2–4 seconds (for 15s), 2–6 seconds (for 30s) or 2–10 seconds (for 60s)
 - Proof/reframe: middle third
-- Promise/CTA: final 4–6 seconds
+- Promise/CTA: final 3–4 seconds (for 15s), 4–6 seconds (for 30s), 6–10 seconds (for 60s)
 
 Don't fight the framework. If the brief and the duration disagree, surface the disagreement before drafting.
 
@@ -183,11 +183,25 @@ python ~/.claude/shotkit-tools/validate_brand_lock.py --snapshot output/brand-lo
 
 ### Step 9. Write run.json
 
-Last step, after the other four files are final. Fill in
-`templates/run.schema.json`: a `run_id`, the `created_at` instant, and the SHA-256 of
-`shots.json`, `text-overlays.json`, and `brand-lock.snapshot.md` as written.
+Last step, after the other four files are final. Fill in `templates/run.schema.json`.
+These fields are required:
+
+| Field | Value |
+|---|---|
+| `version` | `"1.0"`, the run.json format |
+| `run_id` | compact UTC timestamp, a dash, 8 hex characters (below) |
+| `created_at` | the same instant as `YYYY-MM-DDThh:mm:ssZ` |
+| `shotkit_version` | line 1 of `~/.claude/shotkit-tools/VERSION`; in a repo clone, `VERSION` at the root |
+| `project` | `title`, `duration_s` and `aspect` from `shots.json`, plus `framework` and `seed` if set |
+| `inputs.shots_ref`, `inputs.shots_sha256` | `shots.json` and its SHA-256 |
+| `inputs.text_overlays_ref`, `inputs.text_overlays_sha256` | `text-overlays.json` and its SHA-256, or both `null` with no on-screen text |
+| `inputs.brand_lock_ref`, `inputs.brand_lock_sha256` | `brand-lock.snapshot.md` and its SHA-256 |
+| `inputs.brand_lock_source` | the pack it was copied from, or `template default` |
+
+Optional: `operator`, `inputs.brand_lock_configured`, `generators`, `rounds`, `meta`.
 
 ```bash
+head -n 1 ~/.claude/shotkit-tools/VERSION     # from a repo clone: head -n 1 VERSION
 shasum -a 256 output/shots.json output/text-overlays.json output/brand-lock.snapshot.md
 ```
 
@@ -196,8 +210,7 @@ shasum -a 256 output/shots.json output/text-overlays.json output/brand-lock.snap
 in the same second from colliding. Set `brand_lock_configured: false` when the snapshot
 is an unfilled template.
 
-Leave `rounds` empty. `visual-prompt-forge` appends a round entry when it writes
-prompts.
+Leave `rounds` empty. Everything in `run.json` except `rounds` is written once and never edited. `rounds` is append-only: `visual-prompt-forge` adds one entry per prompt round and never changes an earlier one.
 
 ## Output formats
 

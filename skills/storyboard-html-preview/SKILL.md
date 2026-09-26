@@ -1,6 +1,6 @@
 ---
 name: storyboard-html-preview
-description: Render a structured storyboard (storyboard.md, shots.json, text-overlays.json, brand-lock.snapshot.md) into a single-file HTML preview that is shareable, printable, and offline. Use when the user wants to share a storyboard, export for review, hand off to an editor, or print a hard copy. Triggers on "preview the storyboard", "share this", "export to HTML", "print version", or after a storyboard-architect run. Produces one self-contained .html file with no build or server.
+description: Render a shotkit storyboard (shots.json, text-overlays.json, brand-lock.snapshot.md) into one self-contained HTML preview that a reviewer can open, share or print. Use when the user asks to preview, share, export or print a storyboard or shot list, for example "preview the storyboard", "share this storyboard", "export the storyboard to HTML" or "a print version of the shot list". A request to share, export or print something that is not a storyboard is not for this skill. It runs when the user asks for it; storyboard-architect offers it and does not start it.
 ---
 
 # Storyboard HTML Preview
@@ -13,10 +13,14 @@ The constraint is non-negotiable: **single file, no build step, no server, works
 
 Trigger when the user:
 
-- Asks to preview, share, or export a storyboard
-- Wants a printable version
-- Says "what's the next step" after a storyboard-architect run
+- Asks to preview, share, or export a storyboard or shot list
+- Wants a printable version of a storyboard
+- Says yes when storyboard-architect offers a preview
 - Hands off `storyboard.md` + `shots.json` + asks for a deliverable for review
+
+Share, export and print requests about anything else are not for this skill. It does not
+start on its own after a storyboard-architect run; the architect offers it and the user
+picks.
 
 ## Where the tools and packs are
 
