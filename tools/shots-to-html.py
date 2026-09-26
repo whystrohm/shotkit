@@ -372,9 +372,8 @@ def build_context(out_dir: Path, args) -> tuple[dict, list[str]]:
                     "font": overlay.get("font"),
                     "font_css": css_family(font_spec["family"], SANS_FALLBACK),
                     "weight_css": weight_css,
-                    "stretch_css": (
-                        css_stretch(font_spec["width"]) if font_spec["width"] is not None else None
-                    ),
+                    # Always set, so an overlay never inherits the body font's width.
+                    "stretch_css": css_stretch(font_spec["width"]),
                     "weight": overlay.get("weight"),
                     "color": overlay.get("color"),
                     "size": overlay.get("size"),

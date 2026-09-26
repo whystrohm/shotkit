@@ -50,6 +50,13 @@ a {
   border-bottom: 1px solid currentColor;
 }
 
+/* Mono text never takes the body font's width. */
+code, .sb-eyebrow, .sb-meta dt, .sb-nav a, .sb-series-grid dt, .sb-placeholder-id,
+.sb-placeholder-meta, .sb-shot-id, .sb-shot-time, .sb-shot-meta dt, .sb-shot-subject h3,
+.sb-shot-vo h3, .sb-shot-text h3, .sb-shot-rationale h3, .sb-text-meta {
+  font-stretch: normal;
+}
+
 code {
   font-family: var(--sb-font-mono);
   font-size: 0.9em;

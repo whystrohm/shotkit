@@ -67,6 +67,13 @@ a {
   border-bottom: 1px solid currentColor;
 }
 
+/* Mono text never takes the body font's width. */
+code, .sb-eyebrow, .sb-meta dt, .sb-nav a, .sb-series-grid dt, .sb-placeholder-id,
+.sb-placeholder-meta, .sb-shot-id, .sb-shot-time, .sb-shot-meta dt, .sb-shot-subject h3,
+.sb-shot-vo h3, .sb-shot-text h3, .sb-shot-rationale h3, .sb-text-meta {
+  font-stretch: normal;
+}
+
 code {
   font-family: var(--sb-font-mono);
   font-size: 0.9em;
@@ -715,7 +722,7 @@ h1, h2, h3 {
 
       
       <div class="sb-overlay sb-overlay-right-third">
-        <span class="sb-overlay-text" style="font-family: &quot;Inter&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-weight: 900; color: #2A2A32;">You are the bottleneck.</span>
+        <span class="sb-overlay-text" style="font-family: &quot;Inter&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-weight: 900; font-stretch: normal; color: #2A2A32;">You are the bottleneck.</span>
       </div>
       
     </div>
@@ -772,7 +779,7 @@ h1, h2, h3 {
 
       
       <div class="sb-overlay sb-overlay-lower-third">
-        <span class="sb-overlay-text" style="font-family: &quot;Inter&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-weight: 900; color: #D94F3A;">Build the system instead.</span>
+        <span class="sb-overlay-text" style="font-family: &quot;Inter&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-weight: 900; font-stretch: normal; color: #D94F3A;">Build the system instead.</span>
       </div>
       
     </div>
