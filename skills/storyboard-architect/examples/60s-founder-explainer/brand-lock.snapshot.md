@@ -1,12 +1,13 @@
 <!-- snapshot taken: 2026-05-07T14:23:00Z -->
 <!-- source: brand-packs/whystrohm.md -->
+<!-- note: a record of brand pack 1.0, the look this example was built on. Edited 2026-09-26 to drop unverified figures from the description. Brand pack 2.0 is the current WhyStrohm look. -->
 
 # Brand Lock: WhyStrohm
 
 ## Identity
 
 **Brand:** WhyStrohm
-**One-line description:** Managed content infrastructure for founder-led brands. Voice extraction, brand guardrails encoded in code, programmatic video, automated publishing. 30 minutes a week of founder time, 48-hour content cycles.
+**One-line description:** Managed content infrastructure for founder-led brands. Voice extraction, brand guardrails encoded in code, programmatic video and publishing.
 **Archetype:** Operator
 **Voice posture:** Calm, considered, confident without shouting
 
@@ -33,7 +34,6 @@
 - considered (not reactive)
 - deterministic (not vibes-based)
 - confident (without volume)
-- defense-grade (not fragile)
 
 ## Never list
 

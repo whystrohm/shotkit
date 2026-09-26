@@ -12,7 +12,7 @@
 
 ## Brief
 
-A 30-second founder explainer aimed at founders running content marketing themselves. The audience knows their content output is uneven and they're tired of the treadmill. The reframe is the WhyStrohm thesis: it's not a content problem, it's an infrastructure problem. The promise is the offer, 30 min/week of founder time, 48-hour cycle. The CTA is the free /scan diagnostic.
+A 30-second founder explainer aimed at founders running content marketing themselves. The audience knows their content output is uneven and they're tired of the treadmill. The reframe is the WhyStrohm thesis: it's not a content problem, it's an infrastructure problem. The promise is the system: one plan, made into every format. The CTA is the free /scan diagnostic.
 
 ## Beat framework: Pain-Reframe-Promise
 
@@ -103,9 +103,9 @@ Standard PRP for conversion content. Three beats with hook and CTA bookending.
 
 **Subject:** founder, calm composed posture, fully present, slight smile, hands folded on desk
 
-**On-screen text:** "30 minutes a week. / 48-hour content cycles." (Inter Black 900, lower-third, type-on at 20.5s)
+**On-screen text:** "One plan. / Every format." (Inter Black 900, lower-third, type-on at 20.5s)
 
-**Rationale:** Promise beat, the after-state is the same person, just calmer. Static frame holds the moment. Text carries the specific commitment.
+**Rationale:** Promise beat, the after-state is the same person, just calmer. Static frame holds the moment. Text carries the plain promise.
 
 ---
 

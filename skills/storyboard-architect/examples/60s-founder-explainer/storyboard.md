@@ -21,7 +21,7 @@ Five micro-beats:
 - 0–2s. Hook (provocation)
 - 2–14s. Stakes (why it matters)
 - 14–32s. Insight (the actual point, extended for 60s to give the thesis room)
-- 32–42s. Proof (the numbers)
+- 32–42s. Proof (the mechanism)
 - 42–60s. Insight wrap + CTA
 
 ## Series lock
@@ -72,10 +72,10 @@ Five micro-beats:
 
 ### shot_06 · 32.0–42.0s · MCU · static
 
-**Beat:** proof · **VO:** "Hundreds of videos rendered from code. 48-hour content cycles. One operator."
+**Beat:** proof · **VO:** "One source becomes every format. Rendered from templates, so the tenth piece costs what the first did."
 **Subject:** founder, calm steady delivery, eye contact, hands folded.
-**On-screen text:** "hundreds of videos · 48hr cycles · 1 operator" (upper-third, fade)
-**Rationale:** Proof beat, concrete numbers. Stat callout lets viewer absorb visually while VO confirms.
+**On-screen text:** "one source · every format · rendered from templates" (upper-third, fade)
+**Rationale:** Proof beat, the mechanism in plain terms. The callout lets the viewer read it while the VO says it.
 
 ### shot_07 · 42.0–50.0s · MS · pull
 

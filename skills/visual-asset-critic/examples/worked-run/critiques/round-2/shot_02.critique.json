@@ -5,7 +5,7 @@
   "created_at": "2026-07-30T15:19:00Z",
   "shot_id": "shot_02",
   "brand_lock_ref": "brand-lock.snapshot.md",
-  "brand_lock_sha256": "f364bc71f68d16187d0721fbc092450174545e247f2f563a4c45686b4a877f50",
+  "brand_lock_sha256": "11e3525c5dcdd646f16503acbcb7015e8f4a77b8d80ea64ba8bbacadb69178c3",
   "image_ref": "frames/round-2/shot_02.png",
   "image_sha256": "168ccb9e622e99e48a2a13f05a982ef906a32f4eee5a79974913f555789c6296",
   "prompt_ref": "prompts/round-2/revised-flux.txt",

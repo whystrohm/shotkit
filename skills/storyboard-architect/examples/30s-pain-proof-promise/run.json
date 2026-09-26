@@ -12,11 +12,11 @@
   },
   "inputs": {
     "shots_ref": "shots.json",
-    "shots_sha256": "a94ec63c2dd16b887bebcbceeb7b0fe184543a7e913cfc8168a3dc8d21d4c5c2",
+    "shots_sha256": "0f7e75a9aabd0aa9131bb6faad38c34aec86b852d16c7e92798a76e2d394f753",
     "text_overlays_ref": "text-overlays.json",
-    "text_overlays_sha256": "0ccd9ec3750129893680db615862a9c0c7280d6794d89cf5856bc0555a2c20a6",
+    "text_overlays_sha256": "ec1802afd4f5db12884745c23bb0d2e55d3d45f010eb59835b56d08214db4716",
     "brand_lock_ref": "brand-lock.snapshot.md",
-    "brand_lock_sha256": "f364bc71f68d16187d0721fbc092450174545e247f2f563a4c45686b4a877f50",
+    "brand_lock_sha256": "11e3525c5dcdd646f16503acbcb7015e8f4a77b8d80ea64ba8bbacadb69178c3",
     "brand_lock_source": "brand-packs/whystrohm.md",
     "brand_lock_configured": true
   },

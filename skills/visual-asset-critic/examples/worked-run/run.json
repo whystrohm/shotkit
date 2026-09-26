@@ -16,7 +16,7 @@
     "text_overlays_ref": "text-overlays.json",
     "text_overlays_sha256": "5071e111d5a64c3dcfb3548061cabe7e00ec7505ce01314e85a0cd8328f0b89d",
     "brand_lock_ref": "brand-lock.snapshot.md",
-    "brand_lock_sha256": "f364bc71f68d16187d0721fbc092450174545e247f2f563a4c45686b4a877f50",
+    "brand_lock_sha256": "11e3525c5dcdd646f16503acbcb7015e8f4a77b8d80ea64ba8bbacadb69178c3",
     "brand_lock_source": "brand-packs/whystrohm.md",
     "brand_lock_configured": true
   },
