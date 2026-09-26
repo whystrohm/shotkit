@@ -194,8 +194,10 @@ It catches, with a selftest for each:
 - two critiques for the same shot in the same round, two operators colliding
 - rounds that skip a number, or a critique whose `run_id` belongs to another run
 
-`--require-accept` makes it the pipeline stop condition: exit 0 only when the chain is intact
-*and* every shot's latest verdict is ACCEPT.
+`--require-accept` makes it the pipeline stop condition: exit 0 only when the chain is intact,
+every shot in `shots.json` has at least one critique, *and* every shot's latest verdict is
+ACCEPT. A shot with no critique is reported as "no critique" and keeps the gate shut, with a
+selftest for an unreviewed tree, a partly reviewed tree, and an all-ACCEPT tree.
 
 ## Rendering
 

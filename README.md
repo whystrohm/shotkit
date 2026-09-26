@@ -125,10 +125,12 @@ The complete loop, idea to revised image:
 6. **`visual-asset-critic`** scores the frame against the shot spec and brand-lock, writing `critiques/round-1/shot_NN.critique.json` with the hash of the frame, the prompt, and the brand-lock it judged.
 7. **`tools/validate_provenance.py`** re-checks every hash and reports which shots are still open.
 8. On REVISE, **`visual-prompt-forge` revision mode** re-emits prompts for only those shots into `round-2/`. On REJECT, it stops and asks: a REJECT means no fix path exists.
-9. Repeat from 5 until `--require-accept` exits 0.
+9. Repeat from 5 until `--require-accept` exits 0. It exits 0 only when every shot in
+   `shots.json` has a critique and every latest verdict is ACCEPT.
 
 ```bash
-python tools/validate_provenance.py output/ --require-accept || echo "work remains"
+python ~/.claude/shotkit-tools/validate_provenance.py output/ --require-accept || echo "work remains"
+# from a repo clone: python tools/validate_provenance.py output/ --require-accept
 ```
 
 Files at every step. See [`docs/the-qa-loop.md`](docs/the-qa-loop.md) for the full loop and

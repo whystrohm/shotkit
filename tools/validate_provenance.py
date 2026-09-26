@@ -24,8 +24,10 @@ Checks:
  11. Shots recorded as post_only still owe compositing work.
 
 Exit status is 0 when the chain is intact. Add --require-accept to also demand that
-every shot's latest verdict is ACCEPT, which is the pipeline stop condition made
-executable rather than described.
+every shot in shots.json has been reviewed and that its latest verdict is ACCEPT. That
+is the pipeline stop condition made executable rather than described. A shot with no
+critique at all is outstanding under --require-accept, so a tree nobody has reviewed
+cannot pass the gate.
 
 Usage:
     python tools/validate_provenance.py <output-dir> [...]
@@ -71,6 +73,8 @@ class Report:
         self.errors: list[str] = []
         self.warnings: list[str] = []
         self.shots: dict[str, dict] = {}
+        # Every shot id in shots.json, in file order. Empty when shots.json is unreadable.
+        self.shot_ids: list[str] = []
         self.rounds_seen: list[int] = []
         # (path, recorded, actual) -> the labels that referenced it. One edited file is
         # one problem, even when twenty critiques all hash it.
@@ -84,6 +88,8 @@ class Report:
             "warnings": self.warnings,
             "rounds": self.rounds_seen,
             "shots": self.shots,
+            "shot_ids": self.shot_ids,
+            "unreviewed": unreviewed(self),
         }
 
 
@@ -318,6 +324,7 @@ def check_coverage(report: Report, run_doc: dict | None) -> None:
         shot_ids = [
             s["id"] for s in shots_data.get("shots", []) if isinstance(s.get("id"), str)
         ]
+    report.shot_ids = shot_ids
 
     reviewed_by_round: dict[int, set[str]] = {}
     for shot_id, entry in report.shots.items():
@@ -366,13 +373,25 @@ def validate_tree(output_dir: Path) -> Report:
     return report
 
 
+def unreviewed(report: Report) -> list[str]:
+    """Shots in shots.json with no critique in any round."""
+    return [s for s in report.shot_ids if s not in report.shots]
+
+
 def outstanding(report: Report) -> list[str]:
-    """Shots whose latest verdict is not ACCEPT."""
-    return sorted(
+    """
+    Shots that stop --require-accept: never reviewed, or latest verdict not ACCEPT.
+
+    A shot with no critique counts. Skipping it meant a tree with no critiques at all
+    passed the gate before a single frame had been looked at.
+    """
+    open_shots = set(unreviewed(report))
+    open_shots.update(
         shot_id
         for shot_id, entry in report.shots.items()
-        if entry.get("latest_verdict") not in (None, "ACCEPT")
+        if entry.get("latest_verdict") != "ACCEPT"
     )
+    return sorted(open_shots)
 
 
 def selftest() -> int:
@@ -467,9 +486,63 @@ def selftest() -> int:
             )
             ok = False
 
+    # --require-accept on a tree nobody has reviewed. The chain is intact, since there is
+    # nothing to contradict it, but every shot is still open.
+    with tempfile.TemporaryDirectory() as tmp:
+        scratch = Path(tmp) / "run"
+        shutil.copytree(WORKED_RUN, scratch)
+        shutil.rmtree(scratch / "critiques")
+        shutil.rmtree(scratch / "frames")
+        report = validate_tree(scratch)
+        expected = sorted(report.shot_ids)
+        if not report.errors and expected and outstanding(report) == expected:
+            print("  ok    selftest: an unreviewed tree fails --require-accept")
+        else:
+            print(
+                "  FAIL  selftest: an unreviewed tree should leave every shot outstanding, "
+                f"got outstanding={outstanding(report)} errors={report.errors}"
+            )
+            ok = False
+        code = _exit_code([report], require_accept=True)
+        if code != 0:
+            print("  ok    selftest: --require-accept exits non-zero with no critiques")
+        else:
+            print("  FAIL  selftest: --require-accept exited 0 with no critiques")
+            ok = False
+
+    # One shot reviewed and accepted, the other never reviewed.
+    with tempfile.TemporaryDirectory() as tmp:
+        scratch = Path(tmp) / "run"
+        shutil.copytree(WORKED_RUN, scratch)
+        shutil.rmtree(scratch / "critiques" / "round-2")
+        shutil.rmtree(scratch / "frames" / "round-2")
+        (scratch / "critiques" / "round-1" / "shot_02.critique.json").unlink()
+        (scratch / "frames" / "round-1" / "shot_02.png").unlink()
+        report = validate_tree(scratch)
+        if "shot_02" in outstanding(report) and "shot_01" not in outstanding(report):
+            print("  ok    selftest: a partly reviewed tree names only the unreviewed shot")
+        else:
+            print(f"  FAIL  selftest: expected only shot_02 outstanding, got {outstanding(report)}")
+            ok = False
+
+    # The all-ACCEPT worked run passes the full gate.
+    if _exit_code([clean], require_accept=True) == 0:
+        print("  ok    selftest: an all-ACCEPT tree passes --require-accept")
+    else:
+        print("  FAIL  selftest: the all-ACCEPT worked run failed --require-accept")
+        ok = False
+
     print()
     print("Selftest passed." if ok else "Selftest FAILED.")
     return 0 if ok else 1
+
+
+def _exit_code(reports: list[Report], require_accept: bool) -> int:
+    if any(r.errors for r in reports):
+        return 1
+    if require_accept and any(outstanding(r) for r in reports):
+        return 1
+    return 0
 
 
 def main() -> int:
@@ -512,11 +585,21 @@ def main() -> int:
                 for err in report.errors:
                     print(f"        - {err}")
             else:
-                print(f"  ok    {label}  ({len(report.shots)} shot(s), rounds {report.rounds_seen or 'none'})")
+                total = len(report.shot_ids) or len(report.shots)
+                reviewed = len([s for s in report.shots if not report.shot_ids or s in report.shot_ids])
+                print(
+                    f"  ok    {label}  ({total} shot(s), {reviewed} reviewed, "
+                    f"rounds {report.rounds_seen or 'none'})"
+                )
             for warn in report.warnings:
                 print(f"  warn  {label}: {warn}")
-            for shot_id in sorted(report.shots):
-                entry = report.shots[shot_id]
+            listed = report.shot_ids or sorted(report.shots)
+            extra = [s for s in sorted(report.shots) if s not in listed]
+            for shot_id in list(listed) + extra:
+                entry = report.shots.get(shot_id)
+                if entry is None:
+                    print(f"        {shot_id}: no critique")
+                    continue
                 verdict = entry.get("latest_verdict", "?")
                 print(
                     f"        {shot_id}: {verdict} "
@@ -534,16 +617,20 @@ def main() -> int:
             total = sum(len(r.errors) for r in reports)
             print(f"FAILED: {total} provenance error(s).")
         elif require_accept and unresolved:
-            for path, shots in unresolved.items():
-                print(f"NOT DONE: {path} still has non-ACCEPT shots: {', '.join(shots)}")
+            for r in reports:
+                shots = outstanding(r)
+                if not shots:
+                    continue
+                never = [s for s in shots if s in unreviewed(r)]
+                other = [s for s in shots if s not in never]
+                if never:
+                    print(f"NOT DONE: {r.output_dir} has shots with no critique: {', '.join(never)}")
+                if other:
+                    print(f"NOT DONE: {r.output_dir} has shots not yet ACCEPT: {', '.join(other)}")
         else:
             print("Provenance chain intact.")
 
-    if failed:
-        return 1
-    if require_accept and unresolved:
-        return 1
-    return 0
+    return _exit_code(reports, require_accept)
 
 
 if __name__ == "__main__":
