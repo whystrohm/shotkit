@@ -11,7 +11,7 @@ shotkit. Install all five skills, plus the tools they reference, into ~/.claude/
 Three things go in, because the skills reference all three. They cite
 tools/validate_shots.py and tools/copy-prompt.py in their workflows, and
 storyboard-architect falls back to brand-packs/_template.md when no brand-lock is
-given. Installing the skills alone left every one of those paths unresolvable.
+given. All three have to be on disk for those paths to resolve.
 
   ~/.claude/skills/               the five skills
   ~/.claude/shotkit-tools/        the validators and helpers, plus VERSION

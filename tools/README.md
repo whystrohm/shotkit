@@ -85,8 +85,8 @@ python tools/validate_capabilities.py
 python tools/validate_capabilities.py --selftest
 ```
 
-The prose checks exist because the matrix and the adapters had drifted in three places while
-every file repeated the rule that the JSON wins.
+The prose checks keep the matrix and the adapter files in step, so the rule that the JSON
+wins is checked rather than trusted.
 
 ### `validate_brand_lock.py`
 
@@ -144,10 +144,8 @@ python tools/validate_prompts.py --selftest
 ```
 
 The verbatim check is the reason this file exists. Series consistency depends on the
-series_lock anchors landing unedited in every prompt, and that is the single easiest rule
-in the kit to break, because paraphrasing an anchor is what writing good prose feels like.
-A careful authoring pass over a seven-shot storyboard drifted on it seven times out of
-seven with every other validator green, and so did the worked-run fixture in this repo.
+series_lock anchors landing unedited in every prompt, and that is the easiest rule in the
+kit to break, because paraphrasing an anchor is what writing good prose feels like.
 
 The character anchor is a warning rather than an error: a shot with no person in it can
 legitimately omit it, and the message says so, so you can confirm rather than guess.
@@ -227,12 +225,11 @@ page links each brand font from Google Fonts, one stylesheet per family, and fal
 the system stack offline. `--no-web-fonts` leaves the links out.
 
 It renders `skills/storyboard-html-preview/templates/preview.html.tpl`, the same structural
-template the skill uses, through the small engine in `_template.py`. It did not always: the
-CLI used to build its HTML inline while claiming to share the template, so the two could and
-did diverge.
+template the skill uses, through the small engine in `_template.py`, so the CLI and the skill
+cannot drift apart.
 
 Everything interpolated is HTML-escaped. Shot subjects and rationales are model-generated
-prose, and one angle bracket used to be enough to break the page.
+prose, and an unescaped angle bracket would change the page structure.
 
 `--rendered-at` pins the render timestamp, which makes output reproducible. CI re-renders
 every bundled preview with a pinned value and fails if a byte moves.

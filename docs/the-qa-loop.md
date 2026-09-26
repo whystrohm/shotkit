@@ -81,8 +81,8 @@ A critique that says "ACCEPT" while listing a blocking problem is worthless, and
 including a deliberately contradictory one (ACCEPT plus a blocking issue), and fails if the
 gate lets any wrong one through, so CI proves the gate fires on every run.
 
-The three-major row used to read "escalate at your discretion," which meant the skill and
-`critique-rubric.md` disagreed about the same case. Discretion inside a gate is not a gate.
+The three-major row is a fixed threshold, the same in the skill and in
+`critique-rubric.md`. Discretion inside a gate is not a gate.
 
 ## The verdict names the bytes it reviewed
 
@@ -145,9 +145,9 @@ Exit 0 means every hash matches and every shot's latest verdict is ACCEPT. Exit 
 either the chain is broken or work remains, and the output says which. Add `--json` for a
 machine-readable report.
 
-Three things that used to end the loop quietly, and what now catches them:
+Four ways a loop can end on the wrong answer, and what catches each one:
 
-| Failure | What it used to do | What catches it |
+| Failure | What would happen unchecked | What catches it |
 |---|---|---|
 | Frame regenerated without a re-review | Stale ACCEPT satisfied the stop condition; the loop declared done on an unreviewed image | `image_sha256` mismatch |
 | Frame dropped in with no critique at all | Nothing looked for it | frames-without-critiques check |

@@ -48,9 +48,8 @@ output/prompts/round-1/
 ```
 
 Round 1 is the first pass. Revision mode writes `output/prompts/round-2/`, and so on.
-The round in the path is not decoration: prompt files used to be written to one fixed
-path per generator, so round 2 destroyed round 1 and the prompt that actually produced
-most of the surviving frames was gone.
+The round in the path keeps every round's prompts on disk, so the prompt that produced a
+frame is always there to check against it.
 
 Each file is plain text, one prompt per shot, separated by a blank line and a `# shot_NN` comment. Designed for copy-paste workflows, drop into the generator's UI or pipe into an API.
 
@@ -118,9 +117,8 @@ disagree, **the JSON wins**.
 
 That rule is now enforced rather than trusted. `validate_capabilities.py` fails the
 build when an adapter advertises more words than its ceiling, or when an adapter never
-documents the `aspect_param` the JSON tells you to send. The second check exists because
-nano-banana's matrix entry said `aspect_ratio` while its adapter said the API expects
-`aspectRatio`; the precedence rule meant the wrong one won, silently, on every prompt.
+documents the `aspect_param` the JSON tells you to send. A parameter name that differs
+between the two files would otherwise send the wrong name on every prompt.
 
 ### Step 3. Compose per shot
 
@@ -249,9 +247,8 @@ citing the issue:
 ```
 
 The block header leads with the shot id, same as a full pass. `copy-prompt.py`
-identifies a block by the shot id near the start of the line, so a header that led with
-"Revision of" produced a file the paste helper could not read at all, which is
-inconvenient in the one file the operator is about to paste from repeatedly.
+identifies a block by the shot id near the start of the line, and the revision file is the
+one the operator pastes from most.
 
 Tell the user which shots were revised, which need only post work, which were rejected,
 and which were already ACCEPT. Then they generate the revised shots and run
@@ -314,8 +311,8 @@ python ~/.claude/shotkit-tools/validate_prompts.py output/
 # python tools/validate_prompts.py output/
 ```
 
-It exists because a careful authoring pass over a seven-shot storyboard drifted on these
-anchors in all seven shots while every other validator stayed green.
+Paraphrasing an anchor reads as good writing, which is why this rule needs a check rather
+than care alone.
 
 ### Rule 4. Adapters are the source of truth on syntax
 
@@ -360,8 +357,7 @@ python ~/.claude/shotkit-tools/copy-prompt.py output/prompts/round-1/flux.txt --
 # python tools/copy-prompt.py output/prompts/round-1/flux.txt --list
 ```
 
-`validate_prompts.py` checks the mechanical half, which is everything that used to be a
-checkbox here:
+`validate_prompts.py` checks the mechanical half:
 
 - the header names the storyboard, generator, aspect, brand-lock, run, and round
 - the generator is a real id in `_capabilities.json`

@@ -50,8 +50,8 @@ works when the whole `output/` folder is shared. Resolve a shot's frame in this 
 3. `frames/round-{highest}/{shot_id}.{png,jpg,jpeg,webp}`
 4. `generated/{shot_id}.{ext}`, the pre-3.0.0 flat layout
 
-Data first, convention second. Reading the path convention first meant the page showed
-whatever file happened to sit there, accepted or rejected, first draft or fifth re-roll.
+Data first, convention second. The data says which frame was accepted; the path convention
+only says which file sits in the folder.
 
 If no frames exist yet, the HTML uses styled placeholder cards with the shot spec, still
 useful for review and handoff.
@@ -200,9 +200,8 @@ carries `id`, `content`, `font`, `weight`, `color`, `size`, `position_class`,
 `position_label`, `enter_at`, `enter_animation`, `exit_at`, `exit_animation`. The template
 iterates that array with `{{#each overlays}}`.
 
-It is an array because `shots.json` lets a shot carry several overlays and
-`text-overlays.json` always did. A single set of `overlay_*` fields could hold one, so the
-second overlay on a shot rendered nowhere and nothing reported it.
+It is an array because `shots.json` and `text-overlays.json` both let a shot carry several
+overlays, and every one of them has to render.
 
 For verdict badges, set `has_verdict`, `verdict`, `verdict_round`, and `verdict_class`
 (the lowercased verdict) from the newest critique for that shot under `critiques/`. Omit
@@ -304,9 +303,9 @@ python ~/.claude/shotkit-tools/shots-to-html.py --selftest
 "Run" is when the storyboard was produced, read from `run.json`. "Rendered" is when the page
 was written. They are separate lines in the footer and they must stay separate.
 
-Collapsing them into a single "Generated" date meant re-rendering a preview six months later
-restamped the run as today, and the footer went on asserting the page was built against a
-brand-lock on a date that had nothing to do with the frames above it.
+A single "Generated" date would restamp the run as today every time the page is
+re-rendered, and the footer would name a brand-lock date that has nothing to do with the
+frames above it.
 
 If the brand-lock on disk no longer hashes to what `run.json` recorded, say so on the page.
 The reader is looking at frames built against a brand state they can no longer see.

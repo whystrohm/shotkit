@@ -33,8 +33,7 @@ commands below give the installed path first and the clone path second. The tool
 
 The JSON goes to `output/critiques/round-{N}/{shot_id}.critique.json`. One file per shot
 per round, never a shared filename. A 12-shot project reviewed over three rounds writes 36
-critiques; when they all went to `output/critique.json` it kept one, and which one depended
-on review order.
+critiques, each at its own path, so no review overwrites another.
 
 The markdown critique uses these sections:
 
@@ -194,9 +193,8 @@ nobody looked at.
 - One or two `major` issues (and no blocking) ⇒ verdict is `REVISE`.
 - Only `minor` issues, or none ⇒ verdict is `ACCEPT` (with post notes).
 
-The three-major rule used to read "escalate to REJECT at your discretion." Discretion in a
-gate is not a gate, and it disagreed with `references/critique-rubric.md`, which called
-three hard fails a REJECT outright. It is now a threshold, and the validator enforces it.
+The three-major rule is a threshold, not a judgement call, and it matches
+`references/critique-rubric.md`. The validator enforces it.
 
 Pick the markdown `## Verdict` by this same rule.
 
@@ -221,8 +219,7 @@ python ~/.claude/shotkit-tools/validate_provenance.py output/
 
 This step is not optional and it is not someone else's job. A critique that says `ACCEPT`
 while carrying a `major` issue is a bug, and the only reason to write a validator for that
-bug is to actually run it. Before this step existed, the gate ran in CI against two
-fixtures that ship in the repo and never once against a real client's critique.
+bug is to actually run it on the critiques you write, not only on the fixtures in the repo.
 
 Worked examples: `examples/critique.accept.json` and `examples/critique.revise.json` show
 the shape at version `1.0`, which is still valid and carries no provenance.

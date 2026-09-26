@@ -95,8 +95,7 @@ failure.
 
 That check is a validator, not the schema. `text-overlays.schema.json` can only see that a
 color is six hex digits; it cannot open the brand-lock to find out whether those digits are
-allowed. This document used to claim the schema enforced it, and while it did not, an
-off-palette gray sat in one of this repo's own shipped examples.
+allowed. The validator can, and it runs over every bundled example in CI.
 
 ## The palette role names are load-bearing
 

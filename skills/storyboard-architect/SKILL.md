@@ -262,8 +262,8 @@ python ~/.claude/shotkit-tools/validate_provenance.py output/
 # python tools/validate_provenance.py output/
 ```
 
-`validate_shots.py` checks every mechanical rule that used to live here as a checkbox,
-because a checkbox is a rule enforced by remembering to look:
+`validate_shots.py` checks every mechanical rule, because a checkbox is a rule enforced by
+remembering to look:
 
 - shots.json and text-overlays.json validate against their schemas
 - `end` is after `start`, no duplicate ids, no gaps, no overlaps, and the covered span
