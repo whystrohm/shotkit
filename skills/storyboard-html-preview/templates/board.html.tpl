@@ -118,10 +118,9 @@ ul, ol { list-style: none; }
 .card:hover { border-color: #414751; transform: translateY(-2px); box-shadow: 0 14px 34px -18px #000; }
 .card[aria-current] { border-color: var(--ink); }
 .card[hidden] { display: none; }
-.card__meta { display: flex; align-items: center; gap: 8px; padding: 10px 11px 11px; }
+.card__meta { display: flex; align-items: center; gap: 8px; padding: 9px 11px 9px; }
 .card__meta b { font: 600 12px/1 var(--mono); }
 .card__meta span { flex: 1; min-width: 0; color: var(--mut); font: 500 10.5px/1 var(--mono); letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card__meta time { color: var(--dim); font: 400 11px/1 var(--mono); }
 .card__sub { margin: 0 11px 12px; color: var(--mut); font-size: 12.5px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
 /* Frame */
@@ -135,22 +134,37 @@ ul, ol { list-style: none; }
     linear-gradient(90deg, color-mix(in srgb, currentColor 13%, transparent) 1px, transparent 1px) 33.33% 0/33.33% 100%,
     var(--ph-bg, #0F1114); }
 .ph b { display: none; }
-.ph span { position: absolute; right: 10px; top: 13px; font: 500 clamp(8px, 2.6cqw, 10.5px)/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
+.ph span { position: absolute; left: 10px; top: 11px; font: 500 clamp(8px, 2.6cqw, 10.5px)/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
 .ov { position: absolute; left: 7%; right: 7%; display: flex; justify-content: center; text-align: center; pointer-events: none; transition: opacity .2s; }
-.ov span { line-height: 1.08; letter-spacing: -.01em; text-shadow: 0 1px 14px rgba(0,0,0,.6); text-wrap: balance; }
+.ov span { display: block; max-width: 100%; line-height: 1.1; letter-spacing: -.01em; text-wrap: balance; overflow-wrap: break-word;
+  text-shadow: 0 0 1px rgba(0,0,0,.5), 0 1px 3px rgba(0,0,0,.55), 0 4px 22px rgba(0,0,0,.5); }
+.ov[data-ink="dark"] span { text-shadow: 0 0 1px rgba(255,255,255,.5), 0 1px 3px rgba(255,255,255,.5), 0 4px 22px rgba(255,255,255,.45); }
 .frame[data-empty] .ov span { text-shadow: none; }
+/* A soft field behind each line of type, on the side of the frame the type sits on.
+   It is drawn by the board, not baked into the frame, and goes away with the text. */
+.field { position: absolute; inset: 0; pointer-events: none; transition: opacity .2s; }
+.field[data-pos="upper-third"] { background: linear-gradient(180deg, rgba(var(--f), .5), rgba(var(--f), .22) 26%, transparent 46%); }
+.field[data-pos="lower-third"] { background: linear-gradient(0deg, rgba(var(--f), .55), rgba(var(--f), .24) 26%, transparent 46%); }
+.field[data-pos="center"] { background: radial-gradient(75% 34% at 50% 50%, rgba(var(--f), .42), transparent 100%); }
+.field[data-pos="left-third"] { background: linear-gradient(90deg, rgba(var(--f), .5), rgba(var(--f), .2) 34%, transparent 58%); }
+.field[data-pos="right-third"] { background: linear-gradient(270deg, rgba(var(--f), .5), rgba(var(--f), .2) 34%, transparent 58%); }
+body[data-text="off"] .field { opacity: 0; }
 .ov[data-pos="center"] { top: 50%; transform: translateY(-50%); }
-.ov[data-pos="lower-third"] { bottom: 11%; }
-.ov[data-pos="upper-third"] { top: 11%; }
+.ov[data-pos="lower-third"] { bottom: 9%; }
+.ov[data-pos="upper-third"] { top: 9%; }
+.ov[data-stack="1"][data-pos="lower-third"] { bottom: calc(9% + var(--below, 0px)); }
+.ov[data-stack="1"][data-pos="upper-third"] { top: calc(9% + var(--below, 0px)); }
 .ov[data-pos="left-third"] { top: 50%; transform: translateY(-50%); right: 52%; justify-content: flex-start; text-align: left; }
 .ov[data-pos="right-third"] { top: 50%; transform: translateY(-50%); left: 52%; justify-content: flex-end; text-align: right; }
 .ov[data-size="display"] span { font-size: 9.5cqw; } .ov[data-size="headline"] span { font-size: 7.2cqw; }
 .ov[data-size="body"] span { font-size: 4.6cqw; } .ov[data-size="caption"] span { font-size: 3.6cqw; }
-.ov + .ov[data-pos="lower-third"] { bottom: 4%; }
 body[data-text="off"] .ov { opacity: 0; }
-.tag { position: absolute; z-index: 2; top: 8px; left: 8px; display: inline-flex; align-items: center; gap: 6px; height: 21px; padding: 0 8px; border-radius: 5px; background: rgba(8,9,11,.74); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font: 600 9.5px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--c); border: 1px solid color-mix(in srgb, var(--c) 40%, transparent); }
+.tag { display: inline-flex; flex: none; align-items: center; gap: 6px; height: 21px; padding: 0 8px; border-radius: 5px; background: var(--p2); font: 600 9.5px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--c); border: 1px solid color-mix(in srgb, var(--c) 40%, transparent); }
 .tag i { width: 5px; height: 5px; border-radius: 50%; background: var(--c); }
-.tag--r { left: auto; right: 8px; color: var(--mut); border-color: var(--line2); }
+.tag--r { color: var(--mut); border-color: var(--line2); padding: 0 6px; }
+.card__state { display: flex; align-items: center; gap: 6px; padding: 10px 11px 0; }
+.card__state time { margin-left: auto; color: var(--dim); font: 400 11px/1 var(--mono); white-space: nowrap; }
+.frame[data-flip] .ph { background-color: var(--ph-ink, #F3F2EE); color: var(--ph-bg, #0F1114); }
 .drop { position: absolute; inset: 6px; z-index: 3; border: 1.5px dashed var(--acc); border-radius: 7px; background: rgba(255,90,43,.14); display: none; place-items: center; font: 600 12px/1.3 var(--sans); text-align: center; padding: 10px; }
 .frame[data-over] .drop { display: grid; }
 
@@ -377,9 +391,10 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
 
   var ar = (D.project.aspect || "16:9").split(":"), ratio = (+ar[0] || 16) / (+ar[1] || 9);
   document.documentElement.style.setProperty("--ar", (+ar[0] || 16) + " / " + (+ar[1] || 9));
+  var phBg = 0.006;
   (D.brand.palette || []).forEach(function (p) {
     var role = String(p.role).toLowerCase();
-    if (role.indexOf("background") === 0) document.documentElement.style.setProperty("--ph-bg", safeColor(p.hex));
+    if (role.indexOf("background") === 0) { document.documentElement.style.setProperty("--ph-bg", safeColor(p.hex)); phBg = luminance(p.hex); }
     if (role === "ink") document.documentElement.style.setProperty("--ph-ink", safeColor(p.hex));
   });
 
@@ -388,23 +403,61 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     var box = el("div", { class: "frame" });
     if (f) box.appendChild(el("img", { src: f.src, alt: s.id + ", " + s.beat + ", round " + f.round, loading: opts.eager ? "eager" : "lazy", decoding: "async" }));
     else { box.setAttribute("data-empty", ""); box.appendChild(el("div", { class: "ph" }, el("b", { text: s.n }), el("span", { text: [s.framing, s.angle, s.motion].filter(Boolean).join(" · ") }))); }
+    var seen = {}, stacked = {};
     s.overlays.forEach(function (o) {
+      var pos = o.xy ? "custom" : o.position, dark = luminance(o.color) < 0.4;
+      // One field per side of the frame, and only over a real frame. Light type gets a
+      // dark field and dark type a light one.
+      if (f && !o.xy && !seen[pos]) { seen[pos] = 1; box.appendChild(el("div", { class: "field", "data-pos": pos, style: "--f:" + (dark ? "255,255,255" : "0,0,0") })); }
+    });
+    s.overlays.forEach(function (o) {
+      var pos = o.xy ? "custom" : o.position;
       var style = "color:" + safeColor(o.color) + ";font-weight:" + (+o.weight || 700) + ";" + (o.family ? "font-family:'" + o.family.replace(/[^A-Za-z0-9 _-]/g, "") + "'," + "var(--sans);" : "");
-      var wrap = el("div", { class: "ov", "data-pos": o.xy ? "custom" : o.position, "data-size": o.size || "headline" }, el("span", { style: style, text: o.content }));
+      var wrap = el("div", { class: "ov", "data-pos": pos, "data-size": o.size || "headline", "data-ink": luminance(o.color) < 0.4 ? "dark" : "light" }, el("span", { style: style, text: o.content }));
       if (o.xy) wrap.setAttribute("style", "left:" + (+o.xy.x || 50) + "%;top:" + (+o.xy.y || 50) + "%;right:auto;transform:translate(-50%,-50%)");
+      // A second line on the same side sits clear of the first instead of on top of it.
+      if (stacked[pos]) wrap.setAttribute("data-stack", "1");
+      stacked[pos] = (stacked[pos] || []).concat(wrap);
       box.appendChild(wrap);
     });
-    if (opts.tag !== false) {
-      var st = STATUS[s.status];
-      box.appendChild(el("span", { class: "tag", style: "--c:" + st.color }, el("i"), st.label));
-      if (f && s.frames.length > 1) box.appendChild(el("span", { class: "tag tag--r", text: "R" + f.round }));
-    }
+    // With no frame, type that would vanish into the brand's ground is shown on the
+    // brand's ink colour instead, which is the kind of field it was written for.
+    if (!f && s.overlays.some(function (o) { return contrast(luminance(o.color), phBg) < 2.2; })) box.setAttribute("data-flip", "");
+    box._stacks = stacked;
+    fitLater(box);
     if (D.live) {
       box.appendChild(el("div", { class: "drop", text: "Drop the frame for " + s.id }));
       wireDrop(box, s);
     }
     return box;
   }
+  function contrast(a, b) { return (Math.max(a, b) + .05) / (Math.min(a, b) + .05); }
+  function luminance(hex) {
+    var m = /^#([0-9a-f]{6})$/i.exec(hex || ""); if (!m) return 1;
+    var n = parseInt(m[1], 16), c = [n >> 16 & 255, n >> 8 & 255, n & 255].map(function (v) { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); });
+    return .2126 * c[0] + .7152 * c[1] + .0722 * c[2];
+  }
+  // Type is never clipped and never covers the frame: each line is scaled down until it
+  // fits its side of the frame, and stacked lines are spaced by their real height.
+  function fit(box) {
+    var W = box.clientWidth, H = box.clientHeight; if (!W || !H) return;
+    box.querySelectorAll(".ov").forEach(function (wrap) {
+      var span = wrap.firstChild, pos = wrap.getAttribute("data-pos"), scale = 1;
+      span.style.fontSize = "";
+      var base = parseFloat(getComputedStyle(span).fontSize);
+      var maxH = H * (pos === "center" || pos === "custom" ? .5 : pos === "left-third" || pos === "right-third" ? .7 : .3);
+      var maxW = pos === "custom" ? W * .86 : wrap.clientWidth;
+      while (scale > .45 && (span.scrollWidth > maxW + 1 || span.offsetHeight > maxH)) { scale -= .05; span.style.fontSize = (base * scale) + "px"; }
+    });
+    var stacks = box._stacks || {};
+    Object.keys(stacks).forEach(function (pos) {
+      var below = 0;
+      stacks[pos].forEach(function (wrap, i) { if (i) wrap.style.setProperty("--below", below + "px"); below += wrap.offsetHeight + H * .025; });
+    });
+  }
+  var pending = [];
+  function fitLater(box) { pending.push(box); requestAnimationFrame(function () { var list = pending; pending = []; list.forEach(fit); }); }
+  function fitAll() { document.querySelectorAll(".frame").forEach(fit); }
   function wireDrop(box, s) {
     box.addEventListener("dragover", function (e) { e.preventDefault(); box.setAttribute("data-over", ""); });
     box.addEventListener("dragleave", function () { box.removeAttribute("data-over"); });
@@ -480,7 +533,10 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     D.shots.forEach(function (s, i) {
       var card = el("button", { class: "card", type: "button", id: s.id, style: "--i:" + i, "aria-label": "Open " + s.id + ", " + s.beat, onclick: function () { open(s.id); } },
         frameNode(s, s.frames[s.frames.length - 1]),
-        el("div", { class: "card__meta" }, el("b", { text: s.n }), el("span", { text: s.beat || "" }), el("time", { text: fmt(s.start) + " to " + fmt(s.end) + "s" })),
+        el("div", { class: "card__state" }, el("span", { class: "tag", style: "--c:" + STATUS[s.status].color }, el("i"), STATUS[s.status].label),
+          s.frames.length > 1 ? el("span", { class: "tag tag--r", title: "Round " + s.frames[s.frames.length - 1].round, text: "R" + s.frames[s.frames.length - 1].round }) : null,
+          el("time", { text: fmt(s.start) + " to " + fmt(s.end) + "s" })),
+        el("div", { class: "card__meta" }, el("b", { text: s.n }), el("span", { text: s.beat || "" })),
         el("div", { class: "card__sub", text: s.subject || "" }));
       cards[s.id] = card; sheet.appendChild(card);
     });
@@ -615,7 +671,7 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     var shown = s.frames.length ? s.frames[s.frames.length - 1] : null;
     var pv = el("div", { class: "pv" });
     var holder = el("div"); pv.appendChild(holder);
-    function showFrame(f) { shown = f; holder.textContent = ""; holder.appendChild(frameNode(s, f, { tag: false, eager: true })); }
+    function showFrame(f) { shown = f; holder.textContent = ""; holder.appendChild(frameNode(s, f, { eager: true })); }
     showFrame(shown);
     if (s.frames.length > 1) {
       var rounds = el("div", { class: "rounds" });
@@ -700,6 +756,9 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     else if (current && (e.key === "c" || e.key === "C")) { var cp = currentPrompt(current); if (cp) copy(cp.p.body, null, genName(cp.gen) + " prompt copied"); }
   });
   if (/^#shot_\d+$/.test(location.hash)) open(location.hash.slice(1), true);
+  var refit; window.addEventListener("resize", function () { clearTimeout(refit); refit = setTimeout(fitAll, 120); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
+  panel.addEventListener("transitionend", fitAll);
   window.addEventListener("dragover", function (e) { e.preventDefault(); });
   window.addEventListener("drop", function (e) { e.preventDefault(); });
 
