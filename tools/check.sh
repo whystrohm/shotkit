@@ -120,6 +120,7 @@ run "contracts: schemas and examples" "$TOOLS/validate_contracts.py"
 # Tools that ship as part of the workflow
 run "preview renderer: selftest"     "$TOOLS/shots-to-html.py" --selftest
 run "board: selftest"                "$TOOLS/board.py" --selftest
+run "generate: selftest"             "$TOOLS/generate.py" --selftest
 run "prompt helper: selftest"        "$TOOLS/copy-prompt.py" --selftest
 
 echo "─────────────────────────────────────────"

@@ -1,6 +1,6 @@
 # Connecting to Generators
 
-This skill pack stops at the prompt. It produces structured shots, model-specific prompt files, on-screen text specs, and audit-rich preview artifacts. It does not run any image or video generators on your behalf. It does not call any API.
+From 3.3.0 Shotkit can send its prompts to fal.ai with your own key: see [`generate-with-fal.md`](./generate-with-fal.md). This page is about wiring up any generator yourself. Without that step the pack stops at the prompt. It produces structured shots, model-specific prompt files, on-screen text specs, and audit-rich preview artifacts. It does not run any image or video generators on your behalf. It does not call any API.
 
 This is deliberate. This doc explains why, and how to wire up the generator side yourself.
 
@@ -132,7 +132,7 @@ Three common paths:
 
 **1. Manual editorial.** Drop generated images, VO files, and text overlays into After Effects, Premiere, or Resolve. Cut to the timing in `storyboard.md`. Slow but flexible.
 
-**2. Programmatic video framework.** Build a composition (Remotion, Motion Canvas, or similar React-based renderer) that reads `shots.json`, renders each shot from generated images, animates text overlays from `text-overlays.json`, and outputs MP4. See [`connecting-to-video-pipelines.md`](./connecting-to-video-pipelines.md). Fast, version-controlled, scales to many brands.
+**2. Programmatic video framework.** Build a composition in a code-based video renderer that reads `shots.json`, renders each shot from generated images, animates text overlays from `text-overlays.json`, and outputs MP4. See [`connecting-to-video-pipelines.md`](./connecting-to-video-pipelines.md). Fast, version-controlled, scales to many brands.
 
 **3. CapCut, Descript, hybrid.** For social-first content where speed matters more than precision. Hand off `storyboard.md` to an editor working in a fast tool.
 

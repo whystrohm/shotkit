@@ -219,6 +219,9 @@ body[data-open] { overflow: hidden; }
 .panel__body { flex: 1; overflow-y: auto; display: grid; grid-template-columns: var(--pc, minmax(0, 340px)) minmax(0, 1fr); align-items: start; }
 .pv { position: sticky; top: 0; padding: 16px; }
 .pv .frame { border-radius: 8px; border: 1px solid var(--line2); }
+.vid { margin-top: 12px; }
+.vid video { display: block; width: 100%; border-radius: 8px; border: 1px solid var(--line2); background: #000; aspect-ratio: var(--ar); }
+.vid .lab { display: block; margin-bottom: 7px; }
 .rounds { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
 .rounds button { height: 26px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; font: 500 11px/1 var(--mono); color: var(--mut); }
 .rounds button[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); background: var(--p3); }
@@ -538,6 +541,7 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
         frameNode(s, s.frames[s.frames.length - 1]),
         el("div", { class: "card__state" }, el("span", { class: "tag", style: "--c:" + STATUS[s.status].color }, el("i"), STATUS[s.status].label),
           s.frames.length > 1 ? el("span", { class: "tag tag--r", title: "Round " + s.frames[s.frames.length - 1].round, text: "R" + s.frames[s.frames.length - 1].round }) : null,
+          s.clips && s.clips.length ? el("span", { class: "tag tag--r", title: "This shot has a clip", text: "Clip" }) : null,
           el("time", { text: fmt(s.start) + " to " + fmt(s.end) + "s" })),
         el("div", { class: "card__meta" }, el("b", { text: s.n }), el("span", { text: s.beat || "" })),
         el("div", { class: "card__sub", text: s.subject || "" }));
@@ -692,7 +696,11 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
         pv.appendChild(el("div", { class: "save" }, D.live ? "Drop the image here, or save it as" : "Save the frame you make as", el("code", { text: path })));
       }
     }
-    pv.appendChild(el("div", { style: "margin-top:10px;display:none" , class: "show-s" }));
+    if (s.clips && s.clips.length) {
+      var c = s.clips[s.clips.length - 1];
+      pv.appendChild(el("div", { class: "vid" }, el("span", { class: "lab", text: "Clip · round " + c.round }),
+        el("video", { src: c.src, controls: true, loop: true, muted: true, playsinline: true, preload: "metadata" })));
+    }
 
     // right: the detail
     var pd = el("div", { class: "pd" });

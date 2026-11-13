@@ -8,7 +8,7 @@ The implementation is not included. The methodology is open.
 
 Programmatic video frameworks render video from declarative components. Same shot data, same output, every time. Deterministic, version-controlled, scriptable. They pair naturally with the file-native, audit-rich approach in this skill pack.
 
-Several mature React-based options exist as of 2026 (Remotion, Motion Canvas, and similar). The pattern below applies to any of them. The API surface differs, the architecture does not.
+Several mature code-based video renderers exist as of 2026. The pattern below applies to any of them. The API surface differs, the architecture does not.
 
 For teams not already using one, this is a path worth considering for high-volume programmatic video. For teams using a different toolchain (After Effects, Premiere, Resolve), the same `shots.json` is still readable as a script. The pattern below is one of several valid bridges.
 

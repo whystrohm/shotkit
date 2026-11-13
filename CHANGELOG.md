@@ -4,6 +4,31 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-11-13
+
+Shotkit can now make the frames and the clips, on fal.ai with your own key.
+
+### Added
+
+- **`sk generate`.** Sends a storyboard's prompts to fal.ai and saves each still to
+  `frames/round-N/` and each clip to `clips/round-N/`. `--model` takes a generator name
+  or any fal model id, and `--list` searches fal's models. Nothing is sent without
+  `--yes`. It reads each model's published inputs, so a new fal model works without a
+  change. Every request is logged to `generations.jsonl` with its fal request id.
+  Python 3 only. Guide: `docs/generate-with-fal.md`.
+- **Clips on the board.** A shot's clip plays under its frame.
+- The README demo now shows the 3.2.0 flow on the live board.
+
+### Fixed
+
+- Type over a frame is scaled to fit and is never clipped, has a soft field behind it,
+  and stacked lines no longer overlap. Status labels moved off the picture.
+- A live board no longer replays its entrance or loses its place when it reloads.
+
+### Changed
+
+- A reviewed frame is never regenerated, by the board's drop or by `sk generate`.
+
 ## [3.2.0] - 2026-11-13
 
 A first run now ends with a page open in the browser instead of five files and a chat

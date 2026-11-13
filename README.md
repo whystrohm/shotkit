@@ -39,6 +39,9 @@ offline, and nothing is uploaded.
 - **Files checked against `run.json`.** A file that changed after the run is flagged.
 - **Live mode.** `sk board output/ --serve` reloads as files change. Drop a frame on a
   shot and it is saved to the right folder under the right name.
+- **Frames and clips, if you want them.** With your own fal.ai key, `sk generate` makes
+  the stills and the video clips and files them. See
+  [`docs/generate-with-fal.md`](docs/generate-with-fal.md).
 
 ![One shot open on the board: the frame, its spec, the on-screen text and the Flux prompt with a copy button](docs/images/board-shot.jpg)
 
@@ -79,7 +82,8 @@ output/
 │   ├── veo.txt                # Motion: dialogue/lipsync + native audio
 │   ├── seedance.txt           # Motion: multi-shot sequences
 │   └── hailuo.txt             # Motion: budget iteration
-├── frames/round-1/            # Your generated frames
+├── frames/round-1/            # The frames: yours, or made with `sk generate`
+├── clips/round-1/             # Video clips, one per shot, if you make them
 ├── board.html                 # The board. Where you work. Opens by itself.
 ├── critiques/round-1/         # One verdict per shot, hashing what it reviewed
 └── preview.html               # The page you send a client. Printable. Brand-aware.
@@ -133,7 +137,7 @@ The category isn't empty. It's full of tools that solve the wrong half.
 - **Provenance you can check, not just claim.** Every run freezes brand state and records a content hash for every input, prompt, and reviewed frame. Six months later you can answer "what brand version was this built against" and *prove* the files have not moved since, because `validate_provenance.py` recomputes the hashes. A frame regenerated after its review fails that check instead of passing quietly on a stale ACCEPT.
 - **Ten generators, one spec.** The same shot data adapts to six stills generators (Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream) and four motion-video models (Kling, Veo, Seedance, Hailuo). Every other storyboard skill on GitHub locks to one generator family.
 - **Files, not panels.** The output is structured Markdown and JSON an editor, motion designer, or developer can act on. No dashboard, no export step, no platform.
-- **Methodology over pipeline.** The pack stops at prompts and specs. Generator APIs churn monthly, the methodology stays stable. The pipeline lives where it belongs, in the operator's tooling.
+- **Methodology over pipeline.** The plan, the prompts and the checks are the product. Generation is optional and uses your own key. Generator APIs churn monthly, the methodology stays stable. The pipeline lives where it belongs, in the operator's tooling.
 
 ---
 
@@ -203,34 +207,27 @@ See [`brand-packs/README.md`](brand-packs/README.md) for the full pattern.
 
 ---
 
-## Where this stops, where the pipeline starts
+## Concepts fast. Finished video is a service.
 
-shotkit produces **specs and prompts**, not rendered images or videos. The boundary is deliberate:
+Shotkit is for getting from an idea to something you can look at, quickly and many times
+over. A marketing team can put ten concepts on ten boards in an afternoon, each with a
+shot plan, on-screen copy, frames and short clips, all in the brand.
 
-- **In scope.** The methodology, the structure, the prompts, the audit trail.
-- **Out of scope.** API integrations to image generators or voice tools, the video render pipeline, publishing.
+What it gives you is raw material and a plan, not a finished video:
 
-If you want the version where this is wired into a video render pipeline and publishing across multiple brands: [whystrohm.com](https://whystrohm.com). The methodology is open. The operator is paid.
+- **In Shotkit.** The plan, the prompts, the checks, the board. With your own
+  [fal.ai](https://fal.ai) key, the frames and clips too:
+  [`docs/generate-with-fal.md`](docs/generate-with-fal.md).
+- **Not in Shotkit.** The edit. Cutting the shots to time, setting the type, grading,
+  sound, every size a campaign needs, and posting.
 
-See [`docs/connecting-to-generators.md`](docs/connecting-to-generators.md) for how teams typically wire it up themselves, and [`docs/connecting-to-video-pipelines.md`](docs/connecting-to-video-pipelines.md) for how `shots.json` maps to programmatic video frameworks.
+The second list is what WhyStrohm does as a service. Every video is built from the same
+plan, so the hundredth one matches the first: [whystrohm.com](https://whystrohm.com).
 
----
-
-## What comes after shotkit
-
-shotkit is one stage in a longer content infrastructure pipeline:
-
-1. **Brief** captured from the founder
-2. **shotkit** turns the brief into structured pre-production files
-3. **Image generators** consume the per-generator prompt files
-4. **`visual-asset-critic`** reviews each generated frame against its shot spec
-5. Approved frames feed into a **programmatic video framework**
-6. The framework renders the final video
-7. **Publishing tools** post per-platform copy from `text-overlays.json`
-
-shotkit owns step 2. Steps 3 through 7 are file boundaries, not API integrations. Each downstream tool reads files. Nothing is coupled beyond the schema.
-
-For wiring it up yourself, see [`docs/connecting-to-generators.md`](docs/connecting-to-generators.md) and [`docs/connecting-to-video-pipelines.md`](docs/connecting-to-video-pipelines.md). For the operated version, [whystrohm.com](https://whystrohm.com).
+To hand the files to your own editor instead, `shots.json` and `text-overlays.json`
+carry every shot, length and line of text. See
+[`docs/connecting-to-generators.md`](docs/connecting-to-generators.md) and
+[`docs/connecting-to-video-pipelines.md`](docs/connecting-to-video-pipelines.md).
 
 ---
 

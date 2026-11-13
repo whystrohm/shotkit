@@ -109,8 +109,8 @@ Keep it short. The board carries the detail.
 - One line: what was made and where (`output/`, and the board address or path).
 - The defaults you used, as a short list.
 - The next step, which is the one the board shows: make the frames from the prompts.
-  Say that a frame dropped on a shot in the live board is saved to the right folder, and
-  that "check the frames" runs the critic when they are in.
+  Say the three ways: paste each prompt into a generator, drop frames on the live board,
+  or say "make the frames on fal" to have Shotkit make them with their fal key.
 
 ## Later turns
 
@@ -122,13 +122,39 @@ every time, without being asked:
 | "check the frames", or frames have appeared in `output/frames/` | `visual-asset-critic` on each new frame, then `SK board output/` |
 | "revise", or the board says a shot needs another pass | `visual-prompt-forge` in revision mode, then `SK board output/` |
 | "add Midjourney", or names another generator | `visual-prompt-forge` for that generator, then `SK board output/` |
+| "make the frames", "generate", names fal | See "Making frames and clips" below |
+| "make the clips", "animate these" | `SK generate output/ --model kling`, same rule |
 | "open the board" | `SK board output/ --open` |
 | "send this to the client" | `SK preview output/`, and give them `output/preview.html` |
+
+## Making frames and clips
+
+Shotkit can send its prompts to fal.ai with the user's own key. It costs them money, so
+it never runs on its own.
+
+1. Show the plan. It spends nothing:
+   ```bash
+   SK generate output/ --model flux
+   ```
+   Use the generator the prompts were written for. For video use a video model
+   (`kling`, `seedance`, `hailuo`); it starts from each shot's frame, so stills come
+   first.
+2. Tell the user how many requests it would send and to which model, and that fal bills
+   their account at the price on that model's page. Ask for a yes. Do not state a price
+   yourself.
+3. On a yes, run it with `--yes`. If it reports no key, tell them: make a key at
+   fal.ai/dashboard/keys and put `FAL_KEY=...` in a `.env` file in this folder. Never ask
+   them to paste the key into the chat.
+4. When it finishes, check the new frames with `visual-asset-critic`, then
+   `SK board output/`.
+
+To use a model that has no generator name: `SK generate --list <words>` searches fal's
+models, and `--model <fal id> --prompts <generator>` sends that generator's prompts to it.
 
 ## Rules
 
 - The board opens without the user asking. That is the point of this skill.
-- Never claim a frame exists that the user has not made. Shotkit writes prompts and
-  checks frames. It does not generate images or video.
+- Never claim a frame exists that is not on disk.
+- Never spend the user's money without a yes. A generation run costs them on fal.
 - Never put a fact, a number, a price or a customer on screen that the brief did not give.
 - Never overwrite a finished run.

@@ -1,0 +1,13 @@
+{
+  "note": "Which fal.ai model each Shotkit generator name sends to. Edit freely: fal adds models often, and any fal model id also works directly with --model. Checked against fal's model list on 2026-11-13. Midjourney and Veo are not listed here because fal's list had no model for them that day.",
+  "models": {
+    "flux": "fal-ai/flux-2-pro",
+    "nano-banana": "fal-ai/nano-banana-2",
+    "seedream": "bytedance/seedream/v5.5/text-to-image",
+    "ideogram": "ideogram/v4.5",
+    "gpt-image": "openai/gpt-image-2",
+    "kling": "fal-ai/kling-video/v3/standard/image-to-video",
+    "seedance": "bytedance/seedance-2.0/fast/image-to-video",
+    "hailuo": "fal-ai/minimax/hailuo-02/pro/image-to-video"
+  }
+}

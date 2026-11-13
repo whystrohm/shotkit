@@ -243,6 +243,17 @@ def read_frames(out_dir: Path, shot_id: str, inline: bool) -> list[dict]:
     return frames
 
 
+def read_clips(out_dir: Path, shot_id: str) -> list[dict]:
+    """Every clip on disk for a shot, oldest round first. Clips are never inlined."""
+    clips: list[dict] = []
+    for round_no, directory in round_dirs(out_dir, "clips"):
+        path = directory / f"{shot_id}.mp4"
+        if path.exists():
+            rel = str(path.relative_to(out_dir))
+            clips.append({"round": round_no, "path": rel, "src": rel, "bytes": path.stat().st_size})
+    return clips
+
+
 def frame_entry(out_dir: Path, path: Path, round_no: int, inline: bool) -> dict:
     rel = str(path.relative_to(out_dir))
     if inline:
@@ -337,7 +348,7 @@ def check_inputs(out_dir: Path, run_doc: dict) -> list[dict]:
 
     for name in TOP_FILES:
         add(name)
-    for kind in ("prompts", "frames", "critiques"):
+    for kind in ("prompts", "frames", "clips", "critiques"):
         for _, directory in round_dirs(out_dir, kind):
             for path in sorted(directory.iterdir()):
                 if path.is_file() and not path.name.startswith("."):
@@ -402,8 +413,9 @@ def next_step(shots: list[dict], generators: list[str], rounds: int) -> dict:
             "title": "Make the frames",
             "body": f"Waiting for a frame: {ids('frame')}. "
                     "Copy each prompt into your generator and save the result as "
-                    f"{target}shot_NN.png. On a live board, drop the image on the shot.",
-            "say": None,
+                    f"{target}shot_NN.png, or drop it on the shot on a live board. With a "
+                    "fal.ai key, Shotkit can make them for you.",
+            "say": "Make the frames with Flux on fal, then update the board.",
         }
     if by.get("check"):
         return {
@@ -440,7 +452,7 @@ def next_step(shots: list[dict], generators: list[str], rounds: int) -> dict:
     return {
         "title": "Every shot is accepted",
         "body": f"Each of the {count(total)} has an accepted frame. Send preview.html for review, "
-                "or hand shots.json and text-overlays.json to the edit.",
+                "make a clip from each frame, or hand shots.json and text-overlays.json to the edit.",
         "say": "Render the client preview for output/ and open it.",
     }
 
@@ -608,6 +620,7 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
             "rationale": raw.get("rationale"),
             "overlays": overlays,
             "frames": read_frames(out_dir, shot_id, inline_images),
+            "clips": read_clips(out_dir, shot_id),
             "critiques": critiques_by_shot.get(shot_id, []),
             "prompts": prompts_by_shot.get(shot_id, {}),
         }
@@ -784,6 +797,7 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
             kind = MIME.get(ext) or {
                 "json": "application/json", "md": "text/plain; charset=utf-8",
                 "txt": "text/plain; charset=utf-8", "html": "text/html; charset=utf-8",
+                "mp4": "video/mp4", "jsonl": "text/plain; charset=utf-8",
             }.get(ext, "application/octet-stream")
             self.send(200, target.read_bytes(), kind)
 

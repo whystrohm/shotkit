@@ -63,7 +63,7 @@ Why text is a separate layer:
 
 1. **Editability.** Composited text can be revised without re-generating images.
 2. **Quality.** Even Ideogram and GPT Image (the best at text) produce typography that lags professional design tools.
-3. **Animation.** Animated text needs After Effects / Remotion / CapCut. Static rendered text is dead-on-arrival for motion content.
+3. **Animation.** Animated text needs After Effects, CapCut or a code-based renderer. Static rendered text is dead-on-arrival for motion content.
 4. **Brand control.** Composited text uses exact brand fonts and exact brand colors. Generated text approximates.
 
 ## Layer 5. Generator Adapter

@@ -79,7 +79,7 @@ Four reasons:
 
 **2. Quality.** Even Ideogram v3 and GPT Image 1.5, the best at text rendering, produce typography that lags professional design tools. Kerning is rough, weight is approximate, brand fonts are not honored.
 
-**3. Animation.** Most production text needs animation. Type-on, fade-in, slide-up. None of this exists in a static rendered frame. Composited text gets handled in After Effects, Remotion, or CapCut.
+**3. Animation.** Most production text needs animation. Type-on, fade-in, slide-up. None of this exists in a static rendered frame. Composited text gets handled in After Effects, CapCut or a code-based renderer.
 
 **4. Brand control.** Composited text uses exact brand fonts at exact brand weights at exact brand colors. Generated text approximates. The approximation is uneven across runs.
 
