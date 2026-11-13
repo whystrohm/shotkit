@@ -162,7 +162,7 @@ body[data-text="off"] .ov { opacity: 0; }
 .tag { display: inline-flex; flex: none; align-items: center; gap: 6px; height: 21px; padding: 0 8px; border-radius: 5px; background: var(--p2); font: 600 9.5px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--c); border: 1px solid color-mix(in srgb, var(--c) 40%, transparent); }
 .tag i { width: 5px; height: 5px; border-radius: 50%; background: var(--c); }
 .tag--r { color: var(--mut); border-color: var(--line2); padding: 0 6px; }
-.card__state { display: flex; align-items: center; gap: 6px; padding: 10px 11px 0; }
+.card__state { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 11px 0; }
 .card__state time { margin-left: auto; color: var(--dim); font: 400 11px/1 var(--mono); white-space: nowrap; }
 .frame[data-flip] .ph { background-color: var(--ph-ink, #F3F2EE); color: var(--ph-bg, #0F1114); }
 .drop { position: absolute; inset: 6px; z-index: 3; border: 1.5px dashed var(--acc); border-radius: 7px; background: rgba(255,90,43,.14); display: none; place-items: center; font: 600 12px/1.3 var(--sans); text-align: center; padding: 10px; }
