@@ -19,7 +19,7 @@
   --r: 10px; --gut: clamp(16px, 3.2vw, 44px);
 }
 * { box-sizing: border-box; }
-html { background: var(--bg); color: var(--ink); -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html { background: var(--bg); color: var(--ink); -webkit-text-size-adjust: 100%; }
 body { margin: 0; font: 400 14px/1.5 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 a { color: inherit; }
@@ -284,7 +284,7 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
   .card__sub { display: none; }
   .stat__n { font-size: 22px; }
 }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 @media print { .bar, .tools, .panel, .scrim, .toast, .next .say { display: none !important; } html { background: #fff; color: #111; } }
 </style>
 </head>
@@ -356,9 +356,11 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     }
     function fallback() {
       var ta = el("textarea", { style: "position:fixed;opacity:0;top:0;left:0" }); ta.value = text;
-      document.body.appendChild(ta); ta.select();
+      // Selecting a field can scroll the page to it, so the place is kept and put back.
+      var x = window.scrollX, y = window.scrollY;
+      ta.setAttribute("readonly", ""); document.body.appendChild(ta); ta.focus({ preventScroll: true }); ta.select();
       try { document.execCommand("copy"); done(); } catch (e) { toast("Copy failed. Select the text and copy it by hand.", true); }
-      ta.remove();
+      ta.remove(); window.scrollTo(x, y);
     }
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
     else fallback();
@@ -778,7 +780,12 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     try {
       if (sessionStorage.getItem("sk-seen")) {
         document.body.setAttribute("data-quiet", "");
-        var y = +sessionStorage.getItem("sk-y") || 0; if (y) window.scrollTo(0, y);
+        // The browser also scrolls to the open shot's anchor after load, so the saved
+        // place is put back once now and once after that.
+        var y = +sessionStorage.getItem("sk-y") || 0;
+        var back = function () { window.scrollTo(0, y); };
+        try { history.scrollRestoration = "manual"; } catch (e) {}
+        back(); requestAnimationFrame(back); window.addEventListener("load", function () { back(); setTimeout(back, 60); });
       }
       sessionStorage.setItem("sk-seen", "1");
       window.addEventListener("pagehide", function () { sessionStorage.setItem("sk-y", String(window.scrollY)); });
