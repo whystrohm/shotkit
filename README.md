@@ -48,13 +48,12 @@ See a finished run before you make one:
 ~/.claude/shotkit-tools/sk board --example
 ```
 
-![shotkit demo: a brief is typed in, then the brand lock, shots.json, the storyboard and the generated frames with the critic's verdicts](docs/images/demo.gif)
+![Shotkit demo: a brief is typed, the board opens with the plan, then prompts, frames and the critic's verdicts land, one shot is revised and passes](docs/images/demo.gif)
 
-The loop is one real Shotkit run: the brief, the brand lock, `shots.json`, the storyboard, and
-the generated frames with the critic's verdict on each. Two shots came back REVISE; you can watch
-their re-rolled frames replace them and land ACCEPT. A silent MP4 of the same loop is at
-[`docs/images/demo.mp4`](docs/images/demo.mp4). The install film on
-[whystrohm.com](https://whystrohm.com) shows the same pipeline, from one sentence to every asset.
+The loop is the live board replaying one real Shotkit run in stages: the brief, the plan,
+the prompts, the frames, the critic's verdicts, then a second round for the shots that came
+back. The frames are the ones that run produced. A silent MP4 of the same loop is at
+[`docs/images/demo.mp4`](docs/images/demo.mp4).
 
 ---
 

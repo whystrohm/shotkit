@@ -118,6 +118,9 @@ ul, ol { list-style: none; }
 .card:hover { border-color: #414751; transform: translateY(-2px); box-shadow: 0 14px 34px -18px #000; }
 .card[aria-current] { border-color: var(--ink); }
 .card[hidden] { display: none; }
+/* A live board reloads often. Only its first load plays the entrance. */
+body[data-quiet] .card { animation: none; }
+body[data-quiet] .meter i { transition: none; }
 .card__meta { display: flex; align-items: center; gap: 8px; padding: 9px 11px 9px; }
 .card__meta b { font: 600 12px/1 var(--mono); }
 .card__meta span { flex: 1; min-width: 0; color: var(--mut); font: 500 10.5px/1 var(--mono); letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -763,6 +766,15 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
   window.addEventListener("drop", function (e) { e.preventDefault(); });
 
   if (D.live) {
+    // A reload should feel like an update, not a new page: no entrance, same scroll.
+    try {
+      if (sessionStorage.getItem("sk-seen")) {
+        document.body.setAttribute("data-quiet", "");
+        var y = +sessionStorage.getItem("sk-y") || 0; if (y) window.scrollTo(0, y);
+      }
+      sessionStorage.setItem("sk-seen", "1");
+      window.addEventListener("pagehide", function () { sessionStorage.setItem("sk-y", String(window.scrollY)); });
+    } catch (e) {}
     var stamp = null;
     setInterval(function () {
       fetch("/__stamp", { cache: "no-store" }).then(function (r) { return r.text(); }).then(function (t) {
