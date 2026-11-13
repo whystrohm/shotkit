@@ -1,0 +1,47 @@
+{
+  "version": "1.1",
+  "run_id": "20260926T134000Z-f493afad",
+  "round": 1,
+  "created_at": "2026-09-26T13:43:25Z",
+  "shot_id": "shot_02",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "ef551b6769ba53b9c2f1ef0db8202a2e358c9e4ab8f518a01c619aee4c65a1e8",
+  "image_ref": "frames/round-1/shot_02.png",
+  "image_sha256": "fb4a8edececd7dbbe8f35a20d65e8c56399ca7ddf3baa4d51db1b2b4983c4cf9",
+  "prompt_ref": "prompts/round-1/flux.txt",
+  "prompt_sha256": "ad25994106809dd21bf7a48874a1ad2daf045dc6b3c0f64f977eca5a86c1aab4",
+  "generator": "flux",
+  "model_version": "2 Pro",
+  "seed": 41207,
+  "verdict": "ACCEPT",
+  "confidence": "HIGH",
+  "working": [
+    "Beans pour from the drum door down a steel chute into the round perforated cooling tray; the action the motion language says a cut should land on is in frame.",
+    "Leather-gloved hands and a charcoal knit sleeve at the tray edge lower-left, no face; matches the character anchor.",
+    "Round sight glass glows amber as specified, fogged windows camera-left carry the lighting anchor.",
+    "Dark wood, black steel and brushed steel only; matte, warm, no gloss."
+  ],
+  "issues": [
+    {
+      "layer": "Brand Lock",
+      "severity": "minor",
+      "note": "A small brass nameplate beside the sight glass carries tiny pseudo-text glyphs. Not legible words, but it is a label.",
+      "fix_type": "post-level",
+      "fix": "Clone the plate to flat black steel in the edit; about 100 by 90 px at full resolution."
+    },
+    {
+      "layer": "Brand Lock",
+      "severity": "minor",
+      "note": "A lit pendant shade at top-right adds a second warm amber element next to the sight glass.",
+      "fix_type": "post-level",
+      "fix": "Pull the pendant's highlights down 1.5 stops with a soft mask, or crop the top 6 percent."
+    },
+    {
+      "layer": "Shot Spec",
+      "severity": "minor",
+      "note": "Camera reads near eye level, slightly high, rather than the low angle in the spec. The roaster still dominates the frame.",
+      "fix_type": "post-level",
+      "fix": "Accept; the slow push in the edit carries the hero read."
+    }
+  ]
+}

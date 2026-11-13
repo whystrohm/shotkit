@@ -1,0 +1,47 @@
+{
+  "version": "1.1",
+  "run_id": "20260926T134000Z-f493afad",
+  "round": 1,
+  "created_at": "2026-09-26T13:43:25Z",
+  "shot_id": "shot_01",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "ef551b6769ba53b9c2f1ef0db8202a2e358c9e4ab8f518a01c619aee4c65a1e8",
+  "image_ref": "frames/round-1/shot_01.png",
+  "image_sha256": "be2da00ed892304bd4beea736115da241066f7b66b69d649166ccff02de5a2c0",
+  "prompt_ref": "prompts/round-1/flux.txt",
+  "prompt_sha256": "ad25994106809dd21bf7a48874a1ad2daf045dc6b3c0f64f977eca5a86c1aab4",
+  "generator": "flux",
+  "model_version": "2 Pro",
+  "seed": 41207,
+  "verdict": "ACCEPT",
+  "confidence": "HIGH",
+  "working": [
+    "Matte speckled stoneware cup of black coffee on an oiled walnut sill against fogged, beaded glass; reads as fall and early morning in the first frame.",
+    "No person, no latte art, no drawn steam; the steam wisp is thin and photographic.",
+    "The drum roaster sits soft in the background right, so the environment anchor carries without competing with the cup.",
+    "Warm tungsten practical upper-right is the only amber element."
+  ],
+  "issues": [
+    {
+      "layer": "Composition",
+      "severity": "minor",
+      "note": "The cup sits lower-center (about 43 to 88 percent across), not in the lower-right third the spec asked for. The upper third is still empty, so text_01 has its space.",
+      "fix_type": "post-level",
+      "fix": "Reframe 5 percent to the left in the 9:16 edit if the cup needs to sit further right; otherwise leave it."
+    },
+    {
+      "layer": "Composition",
+      "severity": "minor",
+      "note": "The upper-left third is pale fogged glass, so cream #F2E8DA text_01 would sit on a light ground with weak contrast.",
+      "fix_type": "post-level",
+      "fix": "Composite a #1C1510 gradient over the top 35 percent at about 45 percent opacity under text_01, or set text_01 over the darker right half of the upper third."
+    },
+    {
+      "layer": "Brand Lock",
+      "severity": "minor",
+      "note": "A blurred rectangular plate on the roaster, upper-right, reads as a label shape. At 2x crop it carries no legible characters.",
+      "fix_type": "post-level",
+      "fix": "Leave as is; if a reviewer reads it as a logo, clone it to flat black in the edit."
+    }
+  ]
+}

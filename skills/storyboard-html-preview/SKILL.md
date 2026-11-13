@@ -9,6 +9,33 @@ You are turning structured storyboard files into a single shareable HTML documen
 
 The constraint is non-negotiable: **single file, no build step, no server, works offline.** Any time the output requires "run this build command" or "host this somewhere," the skill has failed.
 
+## Two pages: the board and the preview
+
+Shotkit renders two pages from the same files. Pick by who is going to read it.
+
+| | `board.html` | `preview.html` |
+|---|---|---|
+| For | the person making the video | a client, an editor, a stakeholder |
+| Look | Shotkit's own dark workspace | the brand's colours and fonts, quiet |
+| Shows | timeline, contact sheet, every prompt with a copy button, the critic's verdicts and fixes, files checked against `run.json`, the next step | the storyboard, shot by shot, with frames and verdict badges |
+| Copy for another model | the whole storyboard or one shot, as Markdown | no |
+| Prints | no | yes, one clean PDF |
+| Command | `sk board output/ --open` | `sk preview output/` |
+
+"Show me", "open it", "where do I see this" and "the board" mean the board. "Share",
+"send", "export" and "print" mean the preview. The board is rendered after every step
+of a run without being asked. The preview is rendered when the user asks for it.
+
+```bash
+~/.claude/shotkit-tools/sk board output/ --open     # write board.html and open it
+~/.claude/shotkit-tools/sk board output/ --serve    # live: reloads as files change,
+                                                    # and saves a frame dropped on a shot
+~/.claude/shotkit-tools/sk board --example          # a finished run, to see what it looks like
+# from a repo clone: tools/sk board ...
+```
+
+The rest of this file is about the preview.
+
 ## When to use
 
 Trigger when the user:
@@ -27,8 +54,8 @@ picks.
 After `./install.sh`, the validators and helpers are in `~/.claude/shotkit-tools/` and the
 brand packs are in `~/.claude/shotkit-brand-packs/`. A `--project` install puts both
 under `./.claude/` instead. From a repo clone they are `tools/` and `brand-packs/`. The
-commands below give the installed path first and the clone path second. The tools need
-`pip install pyyaml jsonschema`.
+commands below give the installed path first and the clone path second. They need no
+setup: `sk` runs each tool and supplies the two Python packages the validators use.
 
 ## What you produce
 
@@ -80,9 +107,9 @@ Optional:
 Validate before rendering, and stop if it fails:
 
 ```bash
-python ~/.claude/shotkit-tools/validate_shots.py output/
+~/.claude/shotkit-tools/sk validate_shots.py output/
 # from a repo clone:
-# python tools/validate_shots.py output/
+# tools/sk validate_shots.py output/
 ```
 
 ### Step 2. Extract brand parameters
@@ -113,9 +140,9 @@ When the tools are installed, render with the CLI. It does every step below and 
 `preview.html` into the output folder:
 
 ```bash
-python ~/.claude/shotkit-tools/shots-to-html.py output/
+~/.claude/shotkit-tools/sk shots-to-html.py output/
 # from a repo clone:
-# python tools/shots-to-html.py output/
+# tools/sk shots-to-html.py output/
 ```
 
 Build the page by hand, following the steps below, only where the tools are not available
@@ -309,9 +336,9 @@ Before declaring done, verify:
 The CLI renderer checks the mechanical half of that list against itself:
 
 ```bash
-python ~/.claude/shotkit-tools/shots-to-html.py --selftest
+~/.claude/shotkit-tools/sk shots-to-html.py --selftest
 # from a repo clone:
-# python tools/shots-to-html.py --selftest
+# tools/sk shots-to-html.py --selftest
 ```
 
 ## Two timestamps, not one

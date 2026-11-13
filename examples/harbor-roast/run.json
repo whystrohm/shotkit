@@ -1,0 +1,302 @@
+{
+  "version": "1.0",
+  "run_id": "20260926T134000Z-f493afad",
+  "created_at": "2026-09-26T13:40:00Z",
+  "shotkit_version": "3.0.0",
+  "operator": "shotkit example run",
+  "project": {
+    "title": "Harbor Roast: Fog Line Fall Roast",
+    "duration_s": 15,
+    "aspect": "9:16",
+    "framework": "hero-trilogy",
+    "seed": 41207
+  },
+  "inputs": {
+    "shots_ref": "shots.json",
+    "shots_sha256": "19cd0e71ddc24e2cf5368f0d04895f4dd558ba9a950b78855b3290ec8d41b6c5",
+    "text_overlays_ref": "text-overlays.json",
+    "text_overlays_sha256": "9b47c8f678a26a1ccc61bc9221869b40cd2a98cd13128755d2f0230d6be39c80",
+    "brand_lock_ref": "brand-lock.snapshot.md",
+    "brand_lock_sha256": "ef551b6769ba53b9c2f1ef0db8202a2e358c9e4ab8f518a01c619aee4c65a1e8",
+    "brand_lock_source": "brand/harbor-roast.md",
+    "brand_lock_configured": true
+  },
+  "generators": [
+    {
+      "id": "midjourney",
+      "model_version": "v7",
+      "capabilities_sha256": "1a27cb9b0ce34c8da0bf7ca6336380e5709b420fee5e5d1e4335cf9a7f3a5283"
+    },
+    {
+      "id": "flux",
+      "model_version": "2 Pro",
+      "capabilities_sha256": "1a27cb9b0ce34c8da0bf7ca6336380e5709b420fee5e5d1e4335cf9a7f3a5283"
+    },
+    {
+      "id": "ideogram",
+      "model_version": "v3",
+      "capabilities_sha256": "1a27cb9b0ce34c8da0bf7ca6336380e5709b420fee5e5d1e4335cf9a7f3a5283"
+    },
+    {
+      "id": "gpt-image",
+      "model_version": "1.5/2",
+      "capabilities_sha256": "1a27cb9b0ce34c8da0bf7ca6336380e5709b420fee5e5d1e4335cf9a7f3a5283"
+    },
+    {
+      "id": "nano-banana",
+      "model_version": "Gemini 3.1 Flash Image",
+      "capabilities_sha256": "1a27cb9b0ce34c8da0bf7ca6336380e5709b420fee5e5d1e4335cf9a7f3a5283"
+    },
+    {
+      "id": "seedream",
+      "model_version": "4.5",
+      "capabilities_sha256": "1a27cb9b0ce34c8da0bf7ca6336380e5709b420fee5e5d1e4335cf9a7f3a5283"
+    },
+    {
+      "id": "kling",
+      "model_version": "3.0",
+      "capabilities_sha256": "1a27cb9b0ce34c8da0bf7ca6336380e5709b420fee5e5d1e4335cf9a7f3a5283"
+    },
+    {
+      "id": "veo",
+      "model_version": "3",
+      "capabilities_sha256": "1a27cb9b0ce34c8da0bf7ca6336380e5709b420fee5e5d1e4335cf9a7f3a5283"
+    },
+    {
+      "id": "seedance",
+      "model_version": "2.0",
+      "capabilities_sha256": "1a27cb9b0ce34c8da0bf7ca6336380e5709b420fee5e5d1e4335cf9a7f3a5283"
+    },
+    {
+      "id": "hailuo",
+      "model_version": "02 Pro",
+      "capabilities_sha256": "1a27cb9b0ce34c8da0bf7ca6336380e5709b420fee5e5d1e4335cf9a7f3a5283"
+    }
+  ],
+  "rounds": [
+    {
+      "round": 1,
+      "started_at": "2026-09-26T13:41:00Z",
+      "reason": "initial",
+      "prompts": [
+        {
+          "generator": "midjourney",
+          "ref": "prompts/round-1/midjourney.txt",
+          "sha256": "1229ff0e74c68ca335b4369f083f15822bb16edb3bcbf116e9921c3b66d92237",
+          "shot_ids": [
+            "shot_01",
+            "shot_02",
+            "shot_03",
+            "shot_04",
+            "shot_05"
+          ]
+        },
+        {
+          "generator": "flux",
+          "ref": "prompts/round-1/flux.txt",
+          "sha256": "ad25994106809dd21bf7a48874a1ad2daf045dc6b3c0f64f977eca5a86c1aab4",
+          "shot_ids": [
+            "shot_01",
+            "shot_02",
+            "shot_03",
+            "shot_04",
+            "shot_05"
+          ]
+        },
+        {
+          "generator": "ideogram",
+          "ref": "prompts/round-1/ideogram.txt",
+          "sha256": "979af3c665ff4509cddf5dfc3cecacff5a9049f0d374ba41fdd859a09ff81134",
+          "shot_ids": [
+            "shot_01",
+            "shot_02",
+            "shot_03",
+            "shot_04",
+            "shot_05"
+          ]
+        },
+        {
+          "generator": "gpt-image",
+          "ref": "prompts/round-1/gpt-image.txt",
+          "sha256": "231aa72b7eb69c56788daccd5095e14b62b1bfbeed841c96d674bb39a2de64ce",
+          "shot_ids": [
+            "shot_01",
+            "shot_02",
+            "shot_03",
+            "shot_04",
+            "shot_05"
+          ]
+        },
+        {
+          "generator": "nano-banana",
+          "ref": "prompts/round-1/nano-banana.txt",
+          "sha256": "cc1e0f109baedd397776eda973bd420a20e6651ef269db981928d5d723d316a3",
+          "shot_ids": [
+            "shot_01",
+            "shot_02",
+            "shot_03",
+            "shot_04",
+            "shot_05"
+          ]
+        },
+        {
+          "generator": "seedream",
+          "ref": "prompts/round-1/seedream.txt",
+          "sha256": "4d7b0a36d20c35c7faa72f495789a701f5ea39f095a47d95f1ef530bd2faae6c",
+          "shot_ids": [
+            "shot_01",
+            "shot_02",
+            "shot_03",
+            "shot_04",
+            "shot_05"
+          ]
+        },
+        {
+          "generator": "kling",
+          "ref": "prompts/round-1/kling.txt",
+          "sha256": "3a8adfde9a4f88b6474da2da3066d8ea8395308c795bdcf2a882585e5e20c7dc",
+          "shot_ids": [
+            "shot_01",
+            "shot_02",
+            "shot_03",
+            "shot_04",
+            "shot_05"
+          ]
+        },
+        {
+          "generator": "veo",
+          "ref": "prompts/round-1/veo.txt",
+          "sha256": "dc86a2a75ed690277490c29e538ef8f6d5f8a90ba6246e31908e848cae3e0b3c",
+          "shot_ids": [
+            "shot_01",
+            "shot_02",
+            "shot_03",
+            "shot_04",
+            "shot_05"
+          ]
+        },
+        {
+          "generator": "seedance",
+          "ref": "prompts/round-1/seedance.txt",
+          "sha256": "1371fed3a5d8592e47a252a6186627279ed17319b5e0318354bd55b8400d08d1",
+          "shot_ids": [
+            "shot_01",
+            "shot_02",
+            "shot_03",
+            "shot_04",
+            "shot_05"
+          ]
+        },
+        {
+          "generator": "hailuo",
+          "ref": "prompts/round-1/hailuo.txt",
+          "sha256": "bf031e76a7d94cabf3e2384dc9183d65c37b385aeb40cc619e4f190fa7e80560",
+          "shot_ids": [
+            "shot_01",
+            "shot_02",
+            "shot_03",
+            "shot_04",
+            "shot_05"
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "started_at": "2026-09-26T13:44:39Z",
+      "reason": "shot_03 came back REVISE on Shot Spec (high angle, not overhead ECU) and Composition (no dark field for text_03); shot_04 came back REVISE on Brand Lock (cheek and beard visible). shot_01, shot_02 and shot_05 were ACCEPT with post notes.",
+      "prompts": [
+        {
+          "generator": "midjourney",
+          "ref": "prompts/round-2/revised-midjourney.txt",
+          "sha256": "d1be85a81709ddd2b8a378afd76c6c3efe7d960929d9deba504cbb910adac7c7",
+          "shot_ids": [
+            "shot_03",
+            "shot_04"
+          ]
+        },
+        {
+          "generator": "flux",
+          "ref": "prompts/round-2/revised-flux.txt",
+          "sha256": "a90cdad8c6d952cf924454b68737c19d918c9d983ac44c0e4a074a0463f154b5",
+          "shot_ids": [
+            "shot_03",
+            "shot_04"
+          ]
+        },
+        {
+          "generator": "ideogram",
+          "ref": "prompts/round-2/revised-ideogram.txt",
+          "sha256": "713236fc7c0068acaede01feb7f212cd1df7b4f613857a13c6a1ac1971d3399f",
+          "shot_ids": [
+            "shot_03",
+            "shot_04"
+          ]
+        },
+        {
+          "generator": "gpt-image",
+          "ref": "prompts/round-2/revised-gpt-image.txt",
+          "sha256": "8d6d2443e4d02c2b7ec1d774d1abb401a3d659fd48a2fdb22d898439cc99f7f7",
+          "shot_ids": [
+            "shot_03",
+            "shot_04"
+          ]
+        },
+        {
+          "generator": "nano-banana",
+          "ref": "prompts/round-2/revised-nano-banana.txt",
+          "sha256": "741393d1f8ab1cb4d33c28ecef54d0bc3065a7547827a1b89295653b05d1ee84",
+          "shot_ids": [
+            "shot_03",
+            "shot_04"
+          ]
+        },
+        {
+          "generator": "seedream",
+          "ref": "prompts/round-2/revised-seedream.txt",
+          "sha256": "e28a448576d740e528925764259d6c7a0439d06e66b245a1e29e382a043ddd72",
+          "shot_ids": [
+            "shot_03",
+            "shot_04"
+          ]
+        },
+        {
+          "generator": "kling",
+          "ref": "prompts/round-2/revised-kling.txt",
+          "sha256": "e0d17600b50b9d00a3271742c21a3dd82779fa609dd8464488035e6cddcb0869",
+          "shot_ids": [
+            "shot_03",
+            "shot_04"
+          ]
+        },
+        {
+          "generator": "veo",
+          "ref": "prompts/round-2/revised-veo.txt",
+          "sha256": "a59c1d6f2ecb697f3b4599a82b2143c2ea7e0455a0a7713129cee91394922a49",
+          "shot_ids": [
+            "shot_03",
+            "shot_04"
+          ]
+        },
+        {
+          "generator": "seedance",
+          "ref": "prompts/round-2/revised-seedance.txt",
+          "sha256": "21a8aeeb7a3fc6ebc402be338730c1d28c92fe3b9f43c2a8310c6eb998da9868",
+          "shot_ids": [
+            "shot_03",
+            "shot_04"
+          ]
+        },
+        {
+          "generator": "hailuo",
+          "ref": "prompts/round-2/revised-hailuo.txt",
+          "sha256": "675035a1fbf1e4fdd02bced9eda0cf3e00c46b2f41d8790592d4924fd6e846ef",
+          "shot_ids": [
+            "shot_03",
+            "shot_04"
+          ]
+        }
+      ]
+    }
+  ]
+}

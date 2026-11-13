@@ -1,0 +1,27 @@
+# Storyboard: Harbor Roast: Fog Line Fall Roast
+# Generator: seedream
+# Model: 4.5
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Run: 20260926T134000Z-f493afad
+# Round: 1
+
+# shot_01, world, 0.0-3.5s, CU eye-level static
+# params: aspect_ratio=9:16, seed=41207, guidance=4.5, steps=28, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+close-up, plain matte stoneware cup of black coffee on walnut window sill, faint wisp of real steam, small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows, cool fog daylight from windows camera-left, warm practicals behind, deep shadows, warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain, rule-of-thirds, cup in the lower-right third, upper two-thirds fogged glass left empty for overlay, quiet working roastery, matte, photorealistic
+
+# shot_02, hero, 3.5-6.5s, MS low push
+# params: aspect_ratio=9:16, seed=41207, guidance=4.5, steps=28, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+medium shot, low angle, roaster door open, beans pouring into perforated cooling tray, gloved hands, roaster seen only as hands or from behind, charcoal wool sweater, small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows, cool fog daylight from windows camera-left, warm practicals behind, deep shadows, warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain, rule-of-thirds, action in lower two-thirds, upper third clear for overlay, quiet working roastery, matte, photorealistic
+
+# shot_03, hero, 6.5-9.5s, ECU overhead static
+# params: aspect_ratio=9:16, seed=41207, guidance=4.5, steps=28, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+extreme close-up, overhead top-down, freshly roasted dark beans heaped in perforated steel cooling tray, faint oil sheen, stirring arm blade lower-right, small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows, cool fog daylight from windows camera-left, warm practicals behind, deep shadows, warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain, beans fill the lower two-thirds, upper third falls to shadow for overlay, quiet working roastery, matte, photorealistic
+
+# shot_04, transformation, 9.5-12.0s, MCU eye-level static
+# params: aspect_ratio=9:16, seed=41207, guidance=4.5, steps=28, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+medium close-up from behind, figure at fogged window holding plain stoneware cup at chest height, roaster seen only as hands or from behind, charcoal wool sweater, small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows, cool fog daylight from windows camera-left, warm practicals behind, deep shadows, warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain, figure in the lower-right third, upper-left open for overlay, quiet working roastery, matte, photorealistic
+
+# shot_05, transformation, 12.0-15.0s, CU eye-level static
+# params: aspect_ratio=9:16, seed=41207, guidance=4.5, steps=28, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+close-up, plain unprinted kraft paper coffee bag with folded top standing on walnut counter beside small stoneware cup, small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows, cool fog daylight from windows camera-left, warm practicals behind, deep shadows, warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain, both objects in the lower third, upper two-thirds dark and clear for overlay, quiet working roastery, matte, photorealistic

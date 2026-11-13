@@ -19,6 +19,6 @@ and `version` before it trusts the rest.
 Check them with:
 
 ```bash
-python tools/validate_contracts.py
-python tools/validate_contracts.py --against ../whystrohm-voice-extract   # compare a repo's copy
+tools/sk validate_contracts.py
+tools/sk validate_contracts.py --against ../whystrohm-voice-extract   # compare a repo's copy
 ```

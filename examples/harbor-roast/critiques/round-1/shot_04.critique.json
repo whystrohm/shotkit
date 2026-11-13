@@ -1,0 +1,39 @@
+{
+  "version": "1.1",
+  "run_id": "20260926T134000Z-f493afad",
+  "round": 1,
+  "created_at": "2026-09-26T13:43:25Z",
+  "shot_id": "shot_04",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "ef551b6769ba53b9c2f1ef0db8202a2e358c9e4ab8f518a01c619aee4c65a1e8",
+  "image_ref": "frames/round-1/shot_04.png",
+  "image_sha256": "7e6a1ec540f71a7e8adc41af438ce6866d2aac4a80b4eccdc283504256c0acb6",
+  "prompt_ref": "prompts/round-1/flux.txt",
+  "prompt_sha256": "ad25994106809dd21bf7a48874a1ad2daf045dc6b3c0f64f977eca5a86c1aab4",
+  "generator": "flux",
+  "model_version": "2 Pro",
+  "seed": 41207,
+  "verdict": "REVISE",
+  "confidence": "HIGH",
+  "working": [
+    "Hands in a charcoal knit sleeve hold a plain stoneware cup at chest height in front of fogged glass; the payoff reads.",
+    "The drum roaster through the window line and warm practicals behind hold the series anchors.",
+    "Upper-left is fogged glass with nothing in it."
+  ],
+  "issues": [
+    {
+      "layer": "Brand Lock",
+      "severity": "major",
+      "note": "At full resolution the camera is three-quarters behind, not directly behind: the ear, cheek, beard and jawline are visible at the right edge. The never list keeps people to hands or from behind, and the spec says the face is never seen.",
+      "fix_type": "prompt-level",
+      "fix": "Replace the framing sentence with 'Camera directly behind the figure at shoulder height, the head turned fully away toward the window, only hair, the back of the neck and shoulders visible, no ear, cheek or beard in frame'."
+    },
+    {
+      "layer": "Composition",
+      "severity": "minor",
+      "note": "Figure occupies the right half from top to bottom rather than the lower-right third.",
+      "fix_type": "post-level",
+      "fix": "Handled by the reframe above; otherwise accept."
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "version": "1.1",
+  "run_id": "20260926T134000Z-f493afad",
+  "round": 2,
+  "created_at": "2026-09-26T15:21:07Z",
+  "shot_id": "shot_03",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "ef551b6769ba53b9c2f1ef0db8202a2e358c9e4ab8f518a01c619aee4c65a1e8",
+  "image_ref": "frames/round-2/shot_03.png",
+  "image_sha256": "18862adb0405c0a30f74db6a9134a1e269a6f3109157c051e10f83c804077539",
+  "prompt_ref": "prompts/round-2/revised-flux.txt",
+  "prompt_sha256": "a90cdad8c6d952cf924454b68737c19d918c9d983ac44c0e4a074a0463f154b5",
+  "generator": "flux",
+  "model_version": "2 Pro",
+  "seed": 41207,
+  "verdict": "ACCEPT",
+  "confidence": "HIGH",
+  "working": [
+    "Camera looks straight down; beans fill the frame edge to edge in the perforated steel tray, with a faint oil sheen on some beans. The round-1 Shot Spec failure is cleared.",
+    "The stirring blade crosses the lower-right corner as specified.",
+    "No window and no counter in frame. The warm glow on the blade is the only amber element.",
+    "Light falls off toward the top: the upper third measures about RGB 38,33,25 against 58,43,28 for the lower two-thirds, so cream text_03 has a dark field. The round-1 Composition failure is cleared.",
+    "No text, labels, logos or faces."
+  ],
+  "issues": [
+    {
+      "layer": "Composition",
+      "severity": "minor",
+      "note": "The top 5 percent of the frame is the lit tray rim and a pale, out-of-focus shape above it (mean about RGB 90,88,74), and the bottom edge shows the tray lip and machine parts below it. The prompt asked for no roaster in frame.",
+      "fix_type": "post-level",
+      "fix": "Crop 6 percent from the top and 4 percent from the bottom and scale to fill, or burn the top strip down to #1C1510."
+    },
+    {
+      "layer": "Shot Spec",
+      "severity": "minor",
+      "note": "The upper third is dark brown beans, not near-black shadow as prompted. Contrast with cream #F2E8DA is still strong.",
+      "fix_type": "post-level",
+      "fix": "If text_03 needs more separation, lay a #1C1510 gradient over the top third at about 30 percent opacity."
+    }
+  ]
+}

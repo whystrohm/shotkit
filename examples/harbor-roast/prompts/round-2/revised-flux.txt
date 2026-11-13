@@ -1,0 +1,19 @@
+# Storyboard: Harbor Roast: Fog Line Fall Roast
+# Generator: flux
+# Model: 2 Pro
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Run: 20260926T134000Z-f493afad
+# Round: 2
+# Revision of round 1. Shots not listed here are accounted for in run.json.
+
+# shot_03, hero, 6.5-9.5s, ECU overhead static, revision (was REVISE)
+# fix [Shot Spec, major]: high-angle medium shot of the whole tray -> top-down flat lay, camera directly overhead, beans edge to edge, roaster, window and counter excluded
+# fix [Composition, major]: added light falloff so the upper third is near-black beans in shadow for text_03
+# params: aspect_ratio=9:16, seed=41207, prompt_upsampling=false, output_format=png
+Top-down flat lay, camera directly overhead, the frame filled edge to edge with dark roasted coffee beans in a perforated steel cooling tray, a faint oil sheen, the stirring blade crossing the lower-right corner, one small amber reflection on the steel. No roaster, window or counter visible. Composition: beans edge to edge, light falling off so the upper third is near-black shadow for overlay. Setting: small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Lighting: cool fog daylight from windows camera-left, warm practicals behind, deep shadows. 100mm macro lens at f/4, shallow depth of field, a few beans in crisp focus. Grade: warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Quiet working roastery, matte. No text, labels, logos, faces, latte art or second amber object. Photorealistic, natural texture, no AI artifacts.
+
+# shot_04, transformation, 9.5-12.0s, MCU eye-level static, revision (was REVISE)
+# fix [Brand Lock, major]: three-quarter rear view showed ear, cheek and beard -> camera directly behind at shoulder height, head turned fully away, no ear, cheek or beard in frame
+# params: aspect_ratio=9:16, seed=41207, prompt_upsampling=false, output_format=png
+Medium close-up, camera directly behind the figure at shoulder height, the head turned fully away toward a fogged window, holding a plain stoneware cup at chest height. Only hair, the back of the neck and the shoulders show; no ear, cheek or beard in frame. Character: roaster seen only as hands or from behind, charcoal wool sweater. Composition: figure in the lower-right third, upper-left open for overlay. Setting: small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Lighting: cool fog daylight from windows camera-left, warm practicals behind, deep shadows. 85mm lens at f/2, shallow depth of field, the window soft. Grade: warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Quiet working roastery, matte. No text, labels, logos, faces, latte art or second amber object. Photorealistic, natural texture, no AI artifacts.

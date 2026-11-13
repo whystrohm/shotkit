@@ -1,32 +1,34 @@
 #!/usr/bin/env bash
-# shotkit. Install all five skills, plus the tools they reference, into ~/.claude/
+# shotkit. Install the skills, plus the tools they reference, into ~/.claude/
 # Help text lives in usage() below, not in this comment block, so the two cannot drift.
 
 set -euo pipefail
 
 usage() {
   cat <<'EOF'
-shotkit. Install all five skills, plus the tools they reference, into ~/.claude/
+shotkit. Install the skills, plus the tools they reference, into ~/.claude/
 
-Three things go in, because the skills reference all three. They cite
-tools/validate_shots.py and tools/copy-prompt.py in their workflows, and
-storyboard-architect falls back to brand-packs/_template.md when no brand-lock is
-given. All three have to be on disk for those paths to resolve.
+Three things go in, because the skills reference all three. They run the board and
+the validators from shotkit-tools/, and a brief that names no brand uses the starter
+pack in shotkit-brand-packs/.
 
-  ~/.claude/skills/               the five skills
-  ~/.claude/shotkit-tools/        the validators and helpers, plus VERSION
-  ~/.claude/shotkit-brand-packs/  the blank template and two examples
+  ~/.claude/skills/               six skills: /shotkit, which runs the other five
+  ~/.claude/shotkit-tools/        the board, the validators, the `sk` launcher, VERSION
+  ~/.claude/shotkit-brand-packs/  the starter pack, the blank template and examples
+
+Nothing else to set up. The board needs Python 3 only. The validators need pyyaml and
+jsonschema, and the installer puts those in a private environment inside
+shotkit-tools/, so your system Python is left alone.
 
 Usage:
   ./install.sh                # install to ~/.claude/ (user scope)
   ./install.sh --project      # install to ./.claude/ (project scope)
   ./install.sh --skills-only  # skip the tools and packs, skills only
+  ./install.sh --no-deps      # do not create the validators' Python environment
   ./install.sh --dry-run      # show what would happen, change nothing
   ./install.sh --force        # overwrite existing skills without prompting
   ./install.sh --uninstall    # remove the skills, the tools, and the packs
   ./install.sh --help         # show this help
-
-The validators need two packages: pip install pyyaml jsonschema
 EOF
 }
 
@@ -41,11 +43,13 @@ DRY_RUN=0
 FORCE=0
 UNINSTALL=0
 SKILLS_ONLY=0
+NO_DEPS=0
 
 for arg in "$@"; do
   case "$arg" in
     --project)        SCOPE="project"; ROOT="$(pwd)/.claude" ;;
     --skills-only)    SKILLS_ONLY=1 ;;
+    --no-deps)        NO_DEPS=1 ;;
     --dry-run)        DRY_RUN=1 ;;
     --force)          FORCE=1 ;;
     --uninstall)      UNINSTALL=1 ;;
@@ -59,6 +63,7 @@ TOOLS_TARGET="${ROOT}/shotkit-tools"
 PACKS_TARGET="${ROOT}/shotkit-brand-packs"
 
 SKILLS=(
+  "shotkit"
   "brand-lock-extractor"
   "storyboard-architect"
   "visual-prompt-forge"
@@ -83,7 +88,7 @@ copy_tree() {
   if command -v rsync >/dev/null 2>&1; then
     run rsync -a \
       --exclude '.DS_Store' --exclude 'Thumbs.db' \
-      --exclude '__pycache__' --exclude '*.pyc' \
+      --exclude '__pycache__' --exclude '*.pyc' --exclude '.venv' \
       "${src}/" "${dst}/"
   else
     run cp -R "${src}" "${dst}"
@@ -188,6 +193,10 @@ if [[ "$SKILLS_ONLY" != "1" ]]; then
     fi
     copy_tree "${TOOLS_DIR}" "${TOOLS_TARGET}"
     write_version "${TOOLS_TARGET}/VERSION"
+    # One finished run with frames, so `sk board --example` has something to show.
+    if [[ -d "${SCRIPT_DIR}/examples/harbor-roast" ]]; then
+      copy_tree "${SCRIPT_DIR}/examples/harbor-roast" "${TOOLS_TARGET}/example"
+    fi
   fi
 
   # storyboard-architect's documented fallback is to copy brand-packs/_template.md when
@@ -206,23 +215,25 @@ if [[ "$SKILLS_ONLY" != "1" ]]; then
   fi
 fi
 
+if [[ "$SKILLS_ONLY" != "1" && "$NO_DEPS" != "1" && "$DRY_RUN" != "1" && -x "${TOOLS_TARGET}/sk" ]]; then
+  echo ""
+  # A failure here is not a failed install: the board needs none of this, and the
+  # validators set the environment up themselves the first time they run.
+  "${TOOLS_TARGET}/sk" setup || true
+fi
+
 echo ""
-echo "Done. Restart your Claude Code session to pick up the new skills."
+echo "Done. Shotkit is installed."
+echo ""
+echo "  1. Restart Claude Code, in the folder where you want the files."
+echo "  2. Type a brief:"
+echo ""
+echo "       /shotkit 30-second launch video for <your company>, 9:16"
+echo ""
+echo "  It plans the shots, writes the prompts and opens the board in your browser."
 if [[ "$SKILLS_ONLY" != "1" ]]; then
   echo ""
-  echo "The validators need two packages:"
-  echo "  pip install pyyaml jsonschema"
-  echo ""
-  echo "Brand packs, including the blank template, are at:"
-  echo "  ${PACKS_TARGET}/"
-  echo ""
-  echo "Then, from the folder that holds a project's output/ directory:"
-  echo "  python ${TOOLS_TARGET}/validate_shots.py output/"
-  echo "  python ${TOOLS_TARGET}/validate_provenance.py output/ --require-accept"
-  echo ""
-  echo "To check the install itself:"
-  echo "  ${TOOLS_TARGET}/check.sh --quiet"
+  echo "  See what a finished run looks like:   ${TOOLS_TARGET}/sk board --example"
+  echo "  Check this install:                   ${TOOLS_TARGET}/sk doctor"
 fi
-echo ""
-echo 'Try: "30-second founder explainer for your-brand. Pain-reframe-promise structure."'
 echo ""

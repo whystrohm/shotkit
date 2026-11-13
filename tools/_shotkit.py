@@ -34,6 +34,7 @@ BRAND_PACKS_DIR = REPO_ROOT / ("shotkit-brand-packs" if INSTALLED else "brand-pa
 # ~/.claude/skills/ also holds every other skill the user has, so any tool that walks
 # skills/ walks these five and nothing else.
 SHOTKIT_SKILLS = (
+    "shotkit",
     "brand-lock-extractor",
     "storyboard-architect",
     "visual-prompt-forge",

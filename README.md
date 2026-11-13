@@ -11,7 +11,42 @@ git clone https://github.com/whystrohm/shotkit.git
 cd shotkit && ./install.sh
 ```
 
-That installs all five skills into `~/.claude/skills/`. Restart your Claude Code session and they're live.
+Restart Claude Code and type a brief:
+
+```
+/shotkit 30-second launch video for Harbor Roast, 9:16
+```
+
+Shotkit plans the shots, writes the prompts and opens the board in your browser. There is
+nothing else to set up. The installer makes a private Python environment for the
+validators, so `pip` and your system Python are left alone.
+
+![The Shotkit board: a timeline, a contact sheet of every shot with its frame and verdict, and the next step](docs/images/board.jpg)
+
+## The board
+
+One page for the whole run. It is a single HTML file in your output folder, it works
+offline, and nothing is uploaded.
+
+- **Every shot at once.** A contact sheet and a timeline with shots, on-screen text and
+  voiceover on separate tracks.
+- **Prompts with a copy button.** One tab per generator. Press `C` to copy the open one.
+- **The critic's verdict on each frame**, with what is working, what is not and the fix.
+  Earlier rounds stay one click away.
+- **Copy for LLM.** The whole storyboard, one shot or the brand lock as Markdown, ready
+  to paste into another model.
+- **The next step, as a line to paste into Claude.**
+- **Files checked against `run.json`.** A file that changed after the run is flagged.
+- **Live mode.** `sk board output/ --serve` reloads as files change. Drop a frame on a
+  shot and it is saved to the right folder under the right name.
+
+![One shot open on the board: the frame, its spec, the on-screen text and the Flux prompt with a copy button](docs/images/board-shot.jpg)
+
+See a finished run before you make one:
+
+```bash
+~/.claude/shotkit-tools/sk board --example
+```
 
 ![shotkit demo: a brief is typed in, then the brand lock, shots.json, the storyboard and the generated frames with the critic's verdicts](docs/images/demo.gif)
 
@@ -46,8 +81,9 @@ output/
 │   ├── seedance.txt           # Motion: multi-shot sequences
 │   └── hailuo.txt             # Motion: budget iteration
 ├── frames/round-1/            # Your generated frames
+├── board.html                 # The board. Where you work. Opens by itself.
 ├── critiques/round-1/         # One verdict per shot, hashing what it reviewed
-└── preview.html               # Single file. Shareable. Printable. Brand-aware.
+└── preview.html               # The page you send a client. Printable. Brand-aware.
 ```
 
 Files. Not panels. Not a SaaS dashboard. Files an editor, agency, or developer can act on without asking follow-up questions.
@@ -58,10 +94,11 @@ prompt that produced round 1's frames.
 
 ---
 
-## The five skills
+## The skills
 
 | Skill | What it does |
 |---|---|
+| `shotkit` | One command. Runs the others in order and opens the board. Type `/shotkit <brief>` |
 | `brand-lock-extractor` | Brand assets (URL / PDF / screenshots) → validate-ready `brand-lock.md` |
 | `storyboard-architect` | Brief → structured storyboard (`storyboard.md` + `shots.json`) |
 | `visual-prompt-forge` | Shot data → model-specific prompts for 10 generators (6 stills, 4 motion) |
@@ -129,8 +166,8 @@ The complete loop, idea to revised image:
    `shots.json` has a critique and every latest verdict is ACCEPT.
 
 ```bash
-python ~/.claude/shotkit-tools/validate_provenance.py output/ --require-accept || echo "work remains"
-# from a repo clone: python tools/validate_provenance.py output/ --require-accept
+~/.claude/shotkit-tools/sk validate_provenance.py output/ --require-accept || echo "work remains"
+# from a repo clone: tools/sk validate_provenance.py output/ --require-accept
 ```
 
 Files at every step. See [`docs/the-qa-loop.md`](docs/the-qa-loop.md) for the full loop and
@@ -270,12 +307,12 @@ PRs welcome for:
 Open an issue first for anything that changes the file schemas. Run the checks locally before opening a PR:
 
 ```bash
-pip install pyyaml jsonschema
-./tools/check.sh
+tools/sk check
 ```
 
-After an install, `~/.claude/shotkit-tools/check.sh --quiet` runs the same checks against the
-installed copy.
+`sk` supplies the two Python packages the validators need. After an install,
+`~/.claude/shotkit-tools/sk check --quiet` runs the same checks against the installed copy,
+and `sk doctor` says what is installed.
 
 That is the same entry point CI runs, so green locally means green on the PR. It covers
 frontmatter, schemas, capability-to-adapter parity, brand-locks, storyboard instances, the

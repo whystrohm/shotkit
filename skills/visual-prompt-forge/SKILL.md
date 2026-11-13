@@ -28,8 +28,8 @@ If the user wants to build a storyboard from scratch (no shots.json yet), use `s
 After `./install.sh`, the validators and helpers are in `~/.claude/shotkit-tools/` and the
 brand packs are in `~/.claude/shotkit-brand-packs/`. A `--project` install puts both
 under `./.claude/` instead. From a repo clone they are `tools/` and `brand-packs/`. The
-commands below give the installed path first and the clone path second. The tools need
-`pip install pyyaml jsonschema`.
+commands below give the installed path first and the clone path second. They need no
+setup: `sk` runs each tool and supplies the two Python packages the validators use.
 
 ## What you produce
 
@@ -81,9 +81,9 @@ You need:
 Validate before composing:
 
 ```bash
-python ~/.claude/shotkit-tools/validate_shots.py output/
+~/.claude/shotkit-tools/sk validate_shots.py output/
 # from a repo clone:
-# python tools/validate_shots.py output/
+# tools/sk validate_shots.py output/
 ```
 
 If the brand-lock is missing or `shots.json` does not validate, stop and tell the user.
@@ -194,11 +194,11 @@ Tell the user where the files are. Offer the next step:
 For paste-into-generator workflows, the user can pipe individual shots to the clipboard with the bundled helper:
 
 ```bash
-python ~/.claude/shotkit-tools/copy-prompt.py output/prompts/round-1/midjourney.txt
-python ~/.claude/shotkit-tools/copy-prompt.py output/prompts/round-2/revised-midjourney.txt --shot shot_03
+~/.claude/shotkit-tools/sk copy-prompt.py output/prompts/round-1/midjourney.txt
+~/.claude/shotkit-tools/sk copy-prompt.py output/prompts/round-2/revised-midjourney.txt --shot shot_03
 # from a repo clone:
-# python tools/copy-prompt.py output/prompts/round-1/midjourney.txt
-# python tools/copy-prompt.py output/prompts/round-2/revised-midjourney.txt --shot shot_03
+# tools/sk copy-prompt.py output/prompts/round-1/midjourney.txt
+# tools/sk copy-prompt.py output/prompts/round-2/revised-midjourney.txt --shot shot_03
 ```
 
 This is optional. The `.txt` files are also directly readable, and the user can copy any block by hand. The helper exists for the case where the operator is bouncing between the terminal and a generator UI repeatedly.
@@ -309,9 +309,9 @@ The validator checks the override text for that shot and skips the series anchor
 This rule is enforced now, not trusted:
 
 ```bash
-python ~/.claude/shotkit-tools/validate_prompts.py output/
+~/.claude/shotkit-tools/sk validate_prompts.py output/
 # from a repo clone:
-# python tools/validate_prompts.py output/
+# tools/sk validate_prompts.py output/
 ```
 
 Paraphrasing an anchor reads as good writing, which is why this rule needs a check rather
@@ -348,16 +348,29 @@ One file per generator. Read these on demand, only for the generators being targ
 | `adapters/seedance.md` | Seedance 2.0 | Motion video, multi-shot sequences |
 | `adapters/hailuo.md` | Hailuo 02 Pro | Motion video, budget iteration |
 
+## Keep the board current
+
+After every pass, re-render the board so the user sees the result without opening files:
+
+```bash
+~/.claude/shotkit-tools/sk board output/
+# from a repo clone:
+# tools/sk board output/
+```
+
+A live board (`sk board output/ --serve`) reloads by itself. If no board is open yet,
+add `--open`.
+
 ## Quality bar
 
 Run the validator. Do not eyeball this list.
 
 ```bash
-python ~/.claude/shotkit-tools/validate_prompts.py output/
-python ~/.claude/shotkit-tools/copy-prompt.py output/prompts/round-1/flux.txt --list
+~/.claude/shotkit-tools/sk validate_prompts.py output/
+~/.claude/shotkit-tools/sk copy-prompt.py output/prompts/round-1/flux.txt --list
 # from a repo clone:
-# python tools/validate_prompts.py output/
-# python tools/copy-prompt.py output/prompts/round-1/flux.txt --list
+# tools/sk validate_prompts.py output/
+# tools/sk copy-prompt.py output/prompts/round-1/flux.txt --list
 ```
 
 `validate_prompts.py` checks the mechanical half:

@@ -1,0 +1,99 @@
+{
+  "version": "1.2",
+  "project": {
+    "title": "Harbor Roast: Fog Line Fall Roast",
+    "duration_s": 15,
+    "aspect": "9:16",
+    "framework": "hero-trilogy",
+    "seed": 41207
+  },
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "series_lock": {
+    "character": "roaster seen only as hands or from behind, charcoal wool sweater",
+    "environment": "small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows",
+    "lighting": "cool fog daylight from windows camera-left, warm practicals behind, deep shadows",
+    "color_grade": "warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain"
+  },
+  "shots": [
+    {
+      "id": "shot_01",
+      "beat": "world",
+      "start": 0.0,
+      "end": 3.5,
+      "framing": "CU",
+      "angle": "eye-level",
+      "motion": "static",
+      "depth_of_field": "shallow",
+      "subject": "one plain stoneware cup of black coffee on the walnut sill of a fogged window, cup in the lower-right third, grey fog in the glass filling the upper two-thirds, no person in frame",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": "text_01",
+      "vo": null,
+      "rationale": "The first frame has to say the season changed before a thumb swipes, so it opens on fog in the glass and one cup; the cup sits low-right so the hook line owns the empty upper frame."
+    },
+    {
+      "id": "shot_02",
+      "beat": "hero",
+      "start": 3.5,
+      "end": 6.5,
+      "framing": "MS",
+      "angle": "low",
+      "motion": "push",
+      "depth_of_field": "shallow",
+      "subject": "the drum roaster door open and dark beans pouring into the round perforated cooling tray, the stirring arm turning, a thin plume of roast smoke, gloved hands at the tray edge lower-left, the sight glass glowing as the single accent, upper third clear",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": "text_02",
+      "vo": null,
+      "rationale": "The roast arrives as an action, beans dropping out of the drum, which is the moment the brand's motion rule says a cut should land on; the low angle and slow push make one machine in a small room read as the hero."
+    },
+    {
+      "id": "shot_03",
+      "beat": "hero",
+      "start": 6.5,
+      "end": 9.5,
+      "framing": "ECU",
+      "angle": "overhead",
+      "motion": "static",
+      "depth_of_field": "shallow",
+      "subject": "freshly roasted dark beans heaped in the perforated steel cooling tray, a faint oil sheen on some beans, the stirring arm blade crossing the lower-right, beans filling the lower two-thirds and falling off into shadow in the upper third",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": "text_03",
+      "vo": null,
+      "rationale": "The taste line needs something to sit on that is only the coffee, so this is the one frame with no room and no hands; the beans fall into shadow at the top to give the tasting notes a dark field."
+    },
+    {
+      "id": "shot_04",
+      "beat": "transformation",
+      "start": 9.5,
+      "end": 12.0,
+      "framing": "MCU",
+      "angle": "eye-level",
+      "motion": "static",
+      "depth_of_field": "shallow",
+      "subject": "roaster seen from behind at the fogged window, holding a plain stoneware cup in both hands at chest height, back of the head and shoulders soft, figure in the lower-right, upper-left open",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": "text_04",
+      "vo": null,
+      "rationale": "The payoff is the first cup of the new roast, shown from behind so the brand never shows a face selling the coffee; it returns to the fogged window from shot_01 so the film closes the loop it opened."
+    },
+    {
+      "id": "shot_05",
+      "beat": "transformation",
+      "start": 12.0,
+      "end": 15.0,
+      "framing": "CU",
+      "angle": "eye-level",
+      "motion": "static",
+      "depth_of_field": "shallow",
+      "subject": "one plain unprinted kraft paper coffee bag with a folded top standing on the walnut counter beside a small stoneware cup, both in the lower third, the dark roastery soft behind, upper two-thirds dark and clear",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": ["text_05", "text_06"],
+      "vo": null,
+      "rationale": "The CTA needs the thing you can buy, a bag, held still for three seconds as the timing rules ask at 15s; the bag is unprinted so the name and the call to order are composited in brand type, never generated."
+    }
+  ]
+}

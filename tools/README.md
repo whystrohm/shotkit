@@ -5,11 +5,19 @@ without invoking Claude.
 
 ## Requirements
 
+Python 3. Run the tools through `sk` and there is nothing to install:
+
 ```bash
-pip install pyyaml jsonschema
+tools/sk board output/ --open     # the board
+tools/sk validate output/         # every check a storyboard has to pass
+tools/sk check                    # every check in this repo
+tools/sk doctor                   # what is installed
 ```
 
-Standard library otherwise. No pandas, no numpy.
+`board.py`, `shots-to-html.py` and `copy-prompt.py` use the standard library only. The
+validators also need `pyyaml` and `jsonschema`. `sk` puts those in a private environment
+at `tools/.venv` the first time a validator runs. To run a validator directly instead,
+use any Python that has the two packages.
 
 ## Where the tools are
 
@@ -52,8 +60,8 @@ same folder are not checked. In a repo clone, a directory under `skills/` that i
 of the five is an error, because `install.sh` would skip it.
 
 ```bash
-python tools/validate_skills.py
-python tools/validate_skills.py --selftest
+tools/sk validate_skills.py
+tools/sk validate_skills.py --selftest
 ```
 
 ### `validate_contracts.py`
@@ -64,9 +72,9 @@ passes it. `--against <repo>` checks that repo's `contracts/` copies are byte-id
 install there is no `contracts/` folder, so it reports a skip.
 
 ```bash
-python tools/validate_contracts.py
-python tools/validate_contracts.py --against ../whystrohm-voice-extract
-python tools/validate_contracts.py --selftest
+tools/sk validate_contracts.py
+tools/sk validate_contracts.py --against ../whystrohm-voice-extract
+tools/sk validate_contracts.py --selftest
 ```
 
 ### `validate_schemas.py`
@@ -75,8 +83,8 @@ Checks every `*.schema.json` file in the five shotkit skills is itself valid JSO
 (Draft 2020-12) and carries `$id`, `title`, and `description`.
 
 ```bash
-python tools/validate_schemas.py
-python tools/validate_schemas.py --selftest
+tools/sk validate_schemas.py
+tools/sk validate_schemas.py --selftest
 ```
 
 It validates schemas, not instances. For instances, see `validate_shots.py`.
@@ -94,8 +102,8 @@ Checks the generator capability matrix
 - warns when the matrix or an entry is past its 120-day freshness window
 
 ```bash
-python tools/validate_capabilities.py
-python tools/validate_capabilities.py --selftest
+tools/sk validate_capabilities.py
+tools/sk validate_capabilities.py --selftest
 ```
 
 The prose checks keep the matrix and the adapter files in step, so the rule that the JSON
@@ -108,11 +116,11 @@ the five roles the HTML preview maps onto CSS variables, and that its fonts are 
 backticked form the tools read.
 
 ```bash
-python tools/validate_brand_lock.py brand-packs/whystrohm.md
-python tools/validate_brand_lock.py --require-configured brand-packs/whystrohm.md
-python tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
-python tools/validate_brand_lock.py --snapshots     # every snapshot in the five skills
-python tools/validate_brand_lock.py --selftest
+tools/sk validate_brand_lock.py brand-packs/whystrohm.md
+tools/sk validate_brand_lock.py --require-configured brand-packs/whystrohm.md
+tools/sk validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
+tools/sk validate_brand_lock.py --snapshots     # every snapshot in the five skills
+tools/sk validate_brand_lock.py --selftest
 ```
 
 A brand-pack may be an unfilled template; that is what a template is. A snapshot may not, and
@@ -132,10 +140,10 @@ reachable from some shot, overlay timing inside its shot window, and every overl
 present in the brand-lock palette.
 
 ```bash
-python tools/validate_shots.py output/
-python tools/validate_shots.py path/to/shots.json
-python tools/validate_shots.py --examples     # every bundled example
-python tools/validate_shots.py --selftest
+tools/sk validate_shots.py output/
+tools/sk validate_shots.py path/to/shots.json
+tools/sk validate_shots.py --examples     # every bundled example
+tools/sk validate_shots.py --selftest
 ```
 
 Warnings cover the judgement calls: overlay copy repeated in a shot subject, a raw hex in a
@@ -150,10 +158,10 @@ rules: no on-screen text copy inside a prompt, and `environment` / `lighting` /
 `color_grade` appearing verbatim.
 
 ```bash
-python tools/validate_prompts.py output/
-python tools/validate_prompts.py output/prompts/round-1/flux.txt
-python tools/validate_prompts.py --examples
-python tools/validate_prompts.py --selftest
+tools/sk validate_prompts.py output/
+tools/sk validate_prompts.py output/prompts/round-1/flux.txt
+tools/sk validate_prompts.py --examples
+tools/sk validate_prompts.py --selftest
 ```
 
 The verbatim check is the reason this file exists. Series consistency depends on the
@@ -182,10 +190,10 @@ The provenance rules, from schema version `1.1`: a hash without its path is not 
 to be identified, and a named generator has to exist in the capability matrix.
 
 ```bash
-python tools/validate_critique.py output/critiques/round-1/shot_03.critique.json
-python tools/validate_critique.py output/          # every critique in the tree
-python tools/validate_critique.py --examples
-python tools/validate_critique.py --selftest
+tools/sk validate_critique.py output/critiques/round-1/shot_03.critique.json
+tools/sk validate_critique.py output/          # every critique in the tree
+tools/sk validate_critique.py --examples
+tools/sk validate_critique.py --selftest
 ```
 
 Version `1.0` critiques still pass, with a warning: they carry a verdict and no way to tie it
@@ -197,10 +205,10 @@ Walks an output tree and recomputes every recorded hash. This is the tool that a
 this verdict still describe the file it reviewed."
 
 ```bash
-python tools/validate_provenance.py output/
-python tools/validate_provenance.py output/ --require-accept
-python tools/validate_provenance.py output/ --json
-python tools/validate_provenance.py --selftest
+tools/sk validate_provenance.py output/
+tools/sk validate_provenance.py output/ --require-accept
+tools/sk validate_provenance.py output/ --json
+tools/sk validate_provenance.py --selftest
 ```
 
 It catches, with a selftest for each:
@@ -223,12 +231,12 @@ selftest for an unreviewed tree, a partly reviewed tree, and an all-ACCEPT tree.
 Renders an output folder into a single `preview.html`.
 
 ```bash
-python tools/shots-to-html.py output/
-python tools/shots-to-html.py output/ --inline-images
-python tools/shots-to-html.py output/ --out review.html
-python tools/shots-to-html.py output/ --rendered-at 2026-07-30T00:00:00Z
-python tools/shots-to-html.py output/ --no-web-fonts
-python tools/shots-to-html.py --selftest
+tools/sk shots-to-html.py output/
+tools/sk shots-to-html.py output/ --inline-images
+tools/sk shots-to-html.py output/ --out review.html
+tools/sk shots-to-html.py output/ --rendered-at 2026-07-30T00:00:00Z
+tools/sk shots-to-html.py output/ --no-web-fonts
+tools/sk shots-to-html.py --selftest
 ```
 
 Fonts come from the brand-lock. A value such as `Archivo Bold 700 wdth 80` is split into a
@@ -256,10 +264,10 @@ Pipes one shot's prompt to the clipboard so you can paste into a generator UI wi
 through the file.
 
 ```bash
-python tools/copy-prompt.py output/prompts/round-1/flux.txt
-python tools/copy-prompt.py output/prompts/round-2/revised-flux.txt --shot shot_02
-python tools/copy-prompt.py output/prompts/round-1/flux.txt --list
-python tools/copy-prompt.py --selftest
+tools/sk copy-prompt.py output/prompts/round-1/flux.txt
+tools/sk copy-prompt.py output/prompts/round-2/revised-flux.txt --shot shot_02
+tools/sk copy-prompt.py output/prompts/round-1/flux.txt --list
+tools/sk copy-prompt.py --selftest
 ```
 
 Reads both file shapes the forge writes. Comment lines inside a shot block are annotations and

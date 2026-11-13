@@ -1,0 +1,37 @@
+# Storyboard: Harbor Roast: Fog Line Fall Roast
+# Generator: nano-banana
+# Model: Gemini 3.1 Flash Image
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Run: 20260926T134000Z-f493afad
+# Round: 1
+
+# shot_01, world, 0.0-3.5s, CU eye-level static
+# params: aspectRatio=9:16, n=1, ref=none, model=gemini-3.1-flash-image
+Close-up at eye level of one plain matte stoneware cup of black coffee resting on the walnut sill of a fogged window, a faint wisp of real steam rising. No person in frame. Composition: rule-of-thirds, cup in the lower-right third, upper two-thirds fogged glass left empty for overlay. Small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Cool fog daylight from windows camera-left, warm practicals behind, deep shadows. 80mm lens at f/2.8, shallow depth of field, the fog behind soft. Warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Quiet early-morning working roastery, warm not cozy, matte not glossy. No text, labels, logos, faces, latte art or second amber object.
+# variant: Reference: [the generated image]. Modify the image to {your one change}.
+# variant: Preserve the composition, the small dockside roastery, the lighting direction and the grade. Change {target} only.
+
+# shot_02, hero, 3.5-6.5s, MS low push
+# params: aspectRatio=9:16, n=1, ref=none, model=gemini-3.1-flash-image
+Medium shot from a low angle. The roaster door is open and dark beans pour into a round perforated steel cooling tray as the stirring arm turns. Leather-gloved hands rest at the tray edge lower-left. The round sight glass glows as the only amber element. Character: roaster seen only as hands or from behind, charcoal wool sweater. Composition: rule-of-thirds, action in lower two-thirds, upper third clear for overlay. Small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Cool fog daylight from windows camera-left, warm practicals behind, deep shadows. 35mm lens at f/2.8, shallow depth of field, focus on the pouring beans. Warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Quiet early-morning working roastery, warm not cozy, matte not glossy. No text, labels, logos, faces, latte art or second amber object.
+# variant: Reference: [the generated image]. Modify the image to {your one change}.
+# variant: Preserve the composition, the small dockside roastery, the lighting direction and the grade. Change {target} only.
+
+# shot_03, hero, 6.5-9.5s, ECU overhead static
+# params: aspectRatio=9:16, n=1, ref=none, model=gemini-3.1-flash-image
+Extreme close-up looking straight down at freshly roasted dark coffee beans heaped in a perforated steel cooling tray, a faint oil sheen on some beans, the stirring blade crossing the lower-right corner, one small amber reflection on the steel. Composition: beans fill the lower two-thirds, upper third falls to shadow for overlay. Small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Cool fog daylight from windows camera-left, warm practicals behind, deep shadows. 100mm macro lens at f/4, shallow depth of field, a few beans in crisp focus. Warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Quiet early-morning working roastery, warm not cozy, matte not glossy. No text, labels, logos, faces, latte art or second amber object.
+# variant: Reference: [the generated image]. Modify the image to {your one change}.
+# variant: Preserve the composition, the small dockside roastery, the lighting direction and the grade. Change {target} only.
+
+# shot_04, transformation, 9.5-12.0s, MCU eye-level static
+# params: aspectRatio=9:16, n=1, ref=none, model=gemini-3.1-flash-image
+Medium close-up at eye level from directly behind a figure at a fogged window, holding a plain stoneware cup in both hands at chest height. The face is never seen. Character: roaster seen only as hands or from behind, charcoal wool sweater. Composition: figure in the lower-right third, upper-left open for overlay. Small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Cool fog daylight from windows camera-left, warm practicals behind, deep shadows. 85mm lens at f/2, shallow depth of field, the window soft. Warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Quiet early-morning working roastery, warm not cozy, matte not glossy. No text, labels, logos, faces, latte art or second amber object.
+# variant: Reference: [the generated image]. Modify the image to {your one change}.
+# variant: Preserve the composition, the small dockside roastery, the lighting direction and the grade. Change {target} only.
+
+# shot_05, transformation, 12.0-15.0s, CU eye-level static
+# params: aspectRatio=9:16, n=1, ref=none, model=gemini-3.1-flash-image
+Close-up at eye level of one plain unprinted kraft paper coffee bag with a folded top standing on the walnut counter beside a small stoneware cup, the bag blank on every side. One warm practical glows amber far behind. Composition: both objects in the lower third, upper two-thirds dark and clear for overlay. Small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Cool fog daylight from windows camera-left, warm practicals behind, deep shadows. 65mm lens at f/2.8, shallow depth of field, background falling to soft dark. Warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Quiet early-morning working roastery, warm not cozy, matte not glossy. No text, labels, logos, faces, latte art or second amber object.
+# variant: Reference: [the generated image]. Modify the image to {your one change}.
+# variant: Preserve the composition, the small dockside roastery, the lighting direction and the grade. Change {target} only.

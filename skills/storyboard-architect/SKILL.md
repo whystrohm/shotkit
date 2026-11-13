@@ -46,8 +46,8 @@ If the user asks for image prompts or HTML preview, hand off to `visual-prompt-f
 After `./install.sh`, the validators and helpers are in `~/.claude/shotkit-tools/` and the
 brand packs are in `~/.claude/shotkit-brand-packs/`. A `--project` install puts both
 under `./.claude/` instead. From a repo clone they are `tools/` and `brand-packs/`. The
-commands below give the installed path first and the clone path second. The tools need
-`pip install pyyaml jsonschema`.
+commands below give the installed path first and the clone path second. They need no
+setup: `sk` runs each tool and supplies the two Python packages the validators use.
 
 ## Inputs
 
@@ -59,10 +59,24 @@ You need these. If any are missing, ask before drafting.
 | Total duration | Yes | Ask |
 | Aspect ratio | Yes | Ask (16:9, 9:16, 1:1) |
 | Beat framework | No | Suggest based on brief |
-| Brand-lock file path | No | Use `~/.claude/shotkit-brand-packs/_template.md` (clone: `brand-packs/_template.md`) and flag the gap |
+| Brand-lock file path | No | Use `~/.claude/shotkit-brand-packs/_starter.md` (clone: `brand-packs/_starter.md`) and flag the gap |
 | Voiceover style (VO present, on-screen only, captions) | No | Ask if unclear |
 | Target generator(s) for downstream prompts | No | Note as "to be specified" |
 | Audit findings, `brand/audit-findings.json` from whystrohm-audit | No | Skip Step 1b |
+
+## Reading budget
+
+This file carries what a normal run needs: the fields, the vocabularies and the file
+shapes. Do not read the references, the templates and the examples up front. That costs
+the user minutes before the first file is written.
+
+- Always read: the brand-lock.
+- Read when the decision needs it: `references/beat-frameworks.md` for a framework you
+  do not know cold, `references/timing-rules.md` when the brief and the length disagree,
+  `references/on-screen-text.md` when you are unsure a line belongs on screen.
+- Read when the validator says so: the schemas in `templates/`. Its messages name the
+  field and the rule, so fix from the message first.
+- Read last, if at all: the examples.
 
 ## Workflow
 
@@ -80,7 +94,16 @@ If a brand-lock file path is provided, read it first. Extract:
 - Voice tone
 - Aspect-ratio preferences
 
-If no brand-lock is provided, copy `~/.claude/shotkit-brand-packs/_template.md` (from a clone, `brand-packs/_template.md`) into the output as `brand-lock.snapshot.md` with a note: `# UNCONFIGURED, using template defaults. Recommend providing a real brand-lock for production work.`
+If no brand-lock is provided, copy `~/.claude/shotkit-brand-packs/_starter.md` (from a
+clone, `brand-packs/_starter.md`) into the output as `brand-lock.snapshot.md`. The
+starter is a neutral, filled-in lock, so the snapshot passes its check and the overlays
+have real colours to use. Set `brand_lock_configured: false` in `run.json`, and tell the
+user the run used the starter brand and how to replace it: ask for a brand lock from
+their site, or fill in `_template.md`.
+
+Do not snapshot `_template.md`. It is blank on purpose, and a blank palette fails the
+snapshot check. Do not invent a palette for a real company either: an invented brand
+lock looks like a decision the company made.
 
 ### Step 1b. Read the audit findings, if there are any
 
@@ -194,9 +217,9 @@ unconfigured run. After an install, a pack path is
 `validate_brand_lock.py --snapshot <path>` checks both lines. Run it:
 
 ```bash
-python ~/.claude/shotkit-tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
+~/.claude/shotkit-tools/sk validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
 # from a repo clone:
-# python tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
+# tools/sk validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
 ```
 
 ### Step 9. Write run.json
@@ -234,11 +257,14 @@ Leave `rounds` empty. Everything in `run.json` except `rounds` is written once a
 
 ### `storyboard.md`
 
-Use the template at `templates/storyboard.md.tpl`. Read it before writing.
+One heading per section, in this order: the brief as given, the assumptions you made,
+the framework and why, the series lock, then one block per shot (id, beat, time,
+camera, subject, on-screen text, VO, rationale), then the full VO script if there is
+one. `templates/storyboard.md.tpl` has the exact layout if you want it.
 
 ### `shots.json`
 
-Must validate against `templates/shots.schema.json`. Read it before writing. The structure is:
+Must validate against `templates/shots.schema.json`. The structure is:
 
 ```json
 {
@@ -277,20 +303,43 @@ Write `1.2` for new storyboards. `1.0` and `1.1` files stay valid; the array for
 
 ### `text-overlays.json`
 
-Must validate against `templates/text-overlays.schema.json`. Read it before writing.
+Must validate against `templates/text-overlays.schema.json`. The structure is:
+
+```json
+{
+  "version": "1.0",
+  "overlays": [
+    {
+      "id": "text_01",
+      "shot_id": "shot_01",
+      "content": "Your content feels random.",
+      "font": "Inter Black 900",
+      "position": "lower-third",
+      "size": "display",
+      "weight": "black",
+      "color": "#F3F2EE",
+      "enter": { "at": 0.4, "animation": "hard-cut" },
+      "exit": { "at": 2.0, "animation": "hard-cut" }
+    }
+  ]
+}
+```
+
+`enter.at` and `exit.at` are seconds from the start of the film, not of the shot, and
+both sit inside the shot's window.
 
 ## Quality bar
 
 Run the validator. Do not eyeball this list.
 
 ```bash
-python ~/.claude/shotkit-tools/validate_shots.py output/
-python ~/.claude/shotkit-tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
-python ~/.claude/shotkit-tools/validate_provenance.py output/
+~/.claude/shotkit-tools/sk validate_shots.py output/
+~/.claude/shotkit-tools/sk validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
+~/.claude/shotkit-tools/sk validate_provenance.py output/
 # from a repo clone:
-# python tools/validate_shots.py output/
-# python tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
-# python tools/validate_provenance.py output/
+# tools/sk validate_shots.py output/
+# tools/sk validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
+# tools/sk validate_provenance.py output/
 ```
 
 `validate_shots.py` checks every mechanical rule, because a checkbox is a rule enforced by
@@ -343,10 +392,21 @@ hashes, per-round prompts and frames, and one critique per shot per round.
 
 ## Handoff
 
-After producing the five files, tell the user what's in `output/` and offer the obvious next steps:
+After the five files validate, put them on screen. Render the board and open it, without
+waiting to be asked:
 
-- "Want image prompts? I'll run `visual-prompt-forge` on `shots.json`."
-- "Want a shareable HTML preview? I'll run `storyboard-html-preview`."
-- "Want to QA a generated image against this storyboard? I'll run `visual-asset-critic`."
+```bash
+~/.claude/shotkit-tools/sk board output/ --open
+# from a repo clone:
+# tools/sk board output/ --open
+```
 
-Don't run those on your own. The user picks.
+The board shows every shot on a timeline and a contact sheet, and names the next step.
+Then tell the user, in a few lines: what is in `output/`, what you assumed, and that the
+board is open. Offer the next steps:
+
+- "Want image prompts? Name your generator and I'll run `visual-prompt-forge`."
+- "Have frames already? I'll check them with `visual-asset-critic`."
+- "Need a page to send a client? I'll render `preview.html`."
+
+Writing prompts and checking frames wait for the user's word. Opening the board does not.

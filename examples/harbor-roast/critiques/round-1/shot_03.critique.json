@@ -1,0 +1,45 @@
+{
+  "version": "1.1",
+  "run_id": "20260926T134000Z-f493afad",
+  "round": 1,
+  "created_at": "2026-09-26T13:43:25Z",
+  "shot_id": "shot_03",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "ef551b6769ba53b9c2f1ef0db8202a2e358c9e4ab8f518a01c619aee4c65a1e8",
+  "image_ref": "frames/round-1/shot_03.png",
+  "image_sha256": "3f5e2d5ffcf59b2f43efdca247784ac9a6c68fdc8b5c3c220600aa41cecab1ed",
+  "prompt_ref": "prompts/round-1/flux.txt",
+  "prompt_sha256": "ad25994106809dd21bf7a48874a1ad2daf045dc6b3c0f64f977eca5a86c1aab4",
+  "generator": "flux",
+  "model_version": "2 Pro",
+  "seed": 41207,
+  "verdict": "REVISE",
+  "confidence": "HIGH",
+  "working": [
+    "Freshly roasted beans with a light oil sheen heaped in a perforated steel tray, stirring arm crossing toward the lower-right.",
+    "Walnut counter and the black drum roaster match the environment anchor."
+  ],
+  "issues": [
+    {
+      "layer": "Shot Spec",
+      "severity": "major",
+      "note": "Spec is an ECU looking straight down. The frame is a high-angle medium shot of the whole tray with the roaster and the window behind it, so it repeats shot_02 instead of cutting in.",
+      "fix_type": "prompt-level",
+      "fix": "Open the prompt with 'Top-down flat lay, camera directly overhead and parallel to the tray, frame filled edge to edge with beans' and add 'no roaster, no window, no counter visible'."
+    },
+    {
+      "layer": "Composition",
+      "severity": "major",
+      "note": "The upper third is a bright fogged window and the roaster, not shadow, so cream text_03 has no dark field to sit on.",
+      "fix_type": "prompt-level",
+      "fix": "Add 'light falls off toward the top edge so the upper third of the frame is near-black beans in shadow'."
+    },
+    {
+      "layer": "Brand Lock",
+      "severity": "minor",
+      "note": "Two amber points: the sight glass and a small indicator light at its lower left.",
+      "fix_type": "post-level",
+      "fix": "Resolved by the reframe; if it persists, desaturate the second point."
+    }
+  ]
+}

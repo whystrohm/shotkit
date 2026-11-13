@@ -1,0 +1,46 @@
+{
+  "version": "1.1",
+  "run_id": "20260926T134000Z-f493afad",
+  "round": 2,
+  "created_at": "2026-09-26T15:21:07Z",
+  "shot_id": "shot_04",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "ef551b6769ba53b9c2f1ef0db8202a2e358c9e4ab8f518a01c619aee4c65a1e8",
+  "image_ref": "frames/round-2/shot_04.png",
+  "image_sha256": "597c506bc6b4ef1f8377a2f3a3b3376bd3d5518a821f73e59d00ce093ddc388b",
+  "prompt_ref": "prompts/round-2/revised-flux.txt",
+  "prompt_sha256": "a90cdad8c6d952cf924454b68737c19d918c9d983ac44c0e4a074a0463f154b5",
+  "generator": "flux",
+  "model_version": "2 Pro",
+  "seed": 41207,
+  "verdict": "REVISE",
+  "confidence": "HIGH",
+  "working": [
+    "Camera sits behind the figure at shoulder height, charcoal knit sweater, plain stoneware cup held in both hands at chest height.",
+    "The upper-left is fogged glass with nothing in it (mean about RGB 185,186,186), so text_04 has open space.",
+    "The drum roaster and one warm wall practical hold the environment and lighting anchors."
+  ],
+  "issues": [
+    {
+      "layer": "Brand Lock",
+      "severity": "major",
+      "note": "The face rule still fails. At full resolution the whole ear is visible, with the edge of the cheek and beard stubble along the jaw. The head is turned toward the roaster, not fully away. This is the round-1 failure, reduced but not cleared.",
+      "fix_type": "prompt-level",
+      "fix": "Take the head out of frame: 'Camera high behind the figure, frame cut at the top of the shoulders so the head is out of frame; only shoulders, arms and the cup show.'"
+    },
+    {
+      "layer": "Brand Lock",
+      "severity": "minor",
+      "note": "A pale rectangular plate on the roaster reads as a label shape. It carries no legible characters.",
+      "fix_type": "post-level",
+      "fix": "Clone the plate to flat black steel in the edit."
+    },
+    {
+      "layer": "Composition",
+      "severity": "minor",
+      "note": "The figure fills the right two-thirds and the lower half, not the lower-right third.",
+      "fix_type": "post-level",
+      "fix": "Accept. The upper-left stays open for text_04."
+    }
+  ]
+}

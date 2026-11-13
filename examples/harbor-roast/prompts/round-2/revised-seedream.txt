@@ -1,0 +1,19 @@
+# Storyboard: Harbor Roast: Fog Line Fall Roast
+# Generator: seedream
+# Model: 4.5
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Run: 20260926T134000Z-f493afad
+# Round: 2
+# Revision of round 1. Shots not listed here are accounted for in run.json.
+
+# shot_03, hero, 6.5-9.5s, ECU overhead static, revision (was REVISE)
+# fix [Shot Spec, major]: high-angle medium shot of the whole tray -> top-down flat lay, camera directly overhead, beans edge to edge, roaster, window and counter excluded
+# fix [Composition, major]: added light falloff so the upper third is near-black beans in shadow for text_03
+# params: aspect_ratio=9:16, seed=41207, guidance=4.5, steps=28, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+top-down flat lay, camera directly overhead, frame filled edge to edge with dark roasted beans, faint oil sheen, stirring blade lower-right, small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows, cool fog daylight from windows camera-left, warm practicals behind, deep shadows, warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain, beans edge to edge, light falling off so the upper third is near-black shadow for overlay, quiet working roastery, matte, photorealistic
+
+# shot_04, transformation, 9.5-12.0s, MCU eye-level static, revision (was REVISE)
+# fix [Brand Lock, major]: three-quarter rear view showed ear, cheek and beard -> camera directly behind at shoulder height, head turned fully away, no ear, cheek or beard in frame
+# params: aspect_ratio=9:16, seed=41207, guidance=4.5, steps=28, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+medium close-up, camera directly behind, figure at fogged window holding stoneware cup, head turned fully away, roaster seen only as hands or from behind, charcoal wool sweater, small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows, cool fog daylight from windows camera-left, warm practicals behind, deep shadows, warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain, figure in the lower-right third, upper-left open for overlay, quiet working roastery, matte, photorealistic

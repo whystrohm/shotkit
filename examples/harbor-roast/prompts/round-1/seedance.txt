@@ -1,0 +1,24 @@
+# Storyboard: Harbor Roast: Fog Line Fall Roast
+# Generator: seedance
+# Model: 2.0
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Run: 20260926T134000Z-f493afad
+# Round: 1
+
+# shot_01, world, 0.0-3.5s, CU eye-level static
+# params: model=Seedance 2.0, duration=5s, aspect_ratio=9:16, shots=1, start_image=frames/round-1/shot_01.png
+Shot 1: static camera, locked off, eye level, close-up, plain matte stoneware cup of black coffee on walnut window sill, faint wisp of real steam; over the shot a faint wisp of steam rises from the cup and grey fog drifts slowly past the glass. Setting: small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Lighting: cool fog daylight from windows camera-left, warm practicals behind, deep shadows. Grade: warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Composition: rule-of-thirds, cup in the lower-right third, upper two-thirds fogged glass left empty for overlay. No text, labels, logos, faces, latte art or second amber object.
+
+# shot_02, hero, 3.5-9.5s, multi-shot sequence
+# params: model=Seedance 2.0, aspect_ratio=9:16, shots=2, start_image=frames/round-1/shot_02.png
+# covers: shot_03
+Shot 1: camera dollies forward slowly at a steady pace from a low angle, medium shot, low angle, roaster door open, beans pouring into perforated cooling tray, gloved hands. Shot 2: static camera, locked off, looking straight down, extreme close-up, overhead top-down, freshly roasted dark beans heaped in perforated steel cooling tray, faint oil sheen, stirring arm blade lower-right. Consistent subject throughout: roaster seen only as hands or from behind, charcoal wool sweater. Setting: small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Lighting: cool fog daylight from windows camera-left, warm practicals behind, deep shadows. Grade: warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Composition: rule-of-thirds, action in lower two-thirds, upper third clear for overlay. No text, labels, logos, faces, latte art or second amber object.
+
+# shot_04, transformation, 9.5-12.0s, MCU eye-level static
+# params: model=Seedance 2.0, duration=5s, aspect_ratio=9:16, shots=1, start_image=frames/round-1/shot_04.png
+Shot 1: static camera, locked off, eye level, behind the subject, medium close-up from behind, figure at fogged window holding plain stoneware cup at chest height; over the shot the roaster lifts the cup slightly toward the glass and the fog drifts past outside. Consistent subject throughout: roaster seen only as hands or from behind, charcoal wool sweater. Setting: small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Lighting: cool fog daylight from windows camera-left, warm practicals behind, deep shadows. Grade: warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Composition: figure in the lower-right third, upper-left open for overlay. No text, labels, logos, faces, latte art or second amber object.
+
+# shot_05, transformation, 12.0-15.0s, CU eye-level static
+# params: model=Seedance 2.0, duration=5s, aspect_ratio=9:16, shots=1, start_image=frames/round-1/shot_05.png
+Shot 1: static camera, locked off, eye level, close-up, plain unprinted kraft paper coffee bag with folded top standing on walnut counter beside small stoneware cup; nothing moves except a faint wisp of steam from the cup; the frame holds still for the call to order. Setting: small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Lighting: cool fog daylight from windows camera-left, warm practicals behind, deep shadows. Grade: warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Composition: both objects in the lower third, upper two-thirds dark and clear for overlay. No text, labels, logos, faces, latte art or second amber object.

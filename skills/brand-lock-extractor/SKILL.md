@@ -16,8 +16,8 @@ This skill extracts. It does not invent. Every value is sampled from a real asse
 After `./install.sh`, the validators and helpers are in `~/.claude/shotkit-tools/` and the
 brand packs are in `~/.claude/shotkit-brand-packs/`. A `--project` install puts both
 under `./.claude/` instead. From a repo clone they are `tools/` and `brand-packs/`. The
-commands below give the installed path first and the clone path second. The tools need
-`pip install pyyaml jsonschema`.
+commands below give the installed path first and the clone path second. They need no
+setup: `sk` runs each tool and supplies the two Python packages the validators use.
 
 ## When to use
 
@@ -93,7 +93,7 @@ Before you present it, confirm the file would pass validation:
 
 Then hand off:
 
-> "Here is your brand-lock. I sampled the palette and type from your assets and flagged N values that need your eyes (see Extraction notes). Save it next to your other brand packs, confirm the flagged values, and run `python ~/.claude/shotkit-tools/validate_brand_lock.py --require-configured path/to/file.md` to verify (from a clone: `python tools/validate_brand_lock.py --require-configured path/to/file.md`). Then: `'30-second explainer. Use brand-packs/your-brand.md as the brand lock.'`"
+> "Here is your brand-lock. I sampled the palette and type from your assets and flagged N values that need your eyes (see Extraction notes). Save it next to your other brand packs, confirm the flagged values, and run `~/.claude/shotkit-tools/sk validate_brand_lock.py --require-configured path/to/file.md` to verify (from a clone: `tools/sk validate_brand_lock.py --require-configured path/to/file.md`). Then: `'30-second explainer. Use brand-packs/your-brand.md as the brand lock.'`"
 
 ## Hard rules
 

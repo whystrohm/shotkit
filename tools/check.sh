@@ -10,7 +10,8 @@
 # clone the packs are in brand-packs/; after an install they are in shotkit-brand-packs/
 # next to shotkit-tools/.
 #
-# Requires: pip install pyyaml jsonschema
+# Requires pyyaml and jsonschema. `tools/sk check` supplies them; so does
+# pip install pyyaml jsonschema into the Python named by $PYTHON.
 
 set -uo pipefail
 
@@ -88,6 +89,10 @@ run "brand-lock: packs"              "$TOOLS/validate_brand_lock.py" \
   skills/brand-lock-extractor/examples/brand-lock.md
 run "brand-lock: flagship pack"      "$TOOLS/validate_brand_lock.py" --require-configured \
   "$PACKS/whystrohm.md"
+# The pack a brief with no brand falls back to. It has to be a real, filled-in lock,
+# because a snapshot of it must pass the snapshot check.
+run "brand-lock: starter pack"       "$TOOLS/validate_brand_lock.py" --require-configured \
+  "$PACKS/_starter.md"
 run "brand-lock: snapshots"          "$TOOLS/validate_brand_lock.py" --snapshots
 
 # Storyboard instances, the rules JSON Schema cannot express
@@ -114,6 +119,7 @@ run "contracts: schemas and examples" "$TOOLS/validate_contracts.py"
 
 # Tools that ship as part of the workflow
 run "preview renderer: selftest"     "$TOOLS/shots-to-html.py" --selftest
+run "board: selftest"                "$TOOLS/board.py" --selftest
 run "prompt helper: selftest"        "$TOOLS/copy-prompt.py" --selftest
 
 echo "─────────────────────────────────────────"

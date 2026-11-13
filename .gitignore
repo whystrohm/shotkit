@@ -35,3 +35,6 @@ evals/iteration-*/
 output/
 generated/
 
+
+# The board is rendered on demand, never committed
+board.html

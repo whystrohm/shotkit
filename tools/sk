@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+# sk: one way to run every shotkit tool, with no Python setup on the user's side.
+#
+#   sk board output/ --open      the board, opened in a browser
+#   sk board output/ --serve     a live board on localhost
+#   sk preview output/           the client preview page
+#   sk validate output/          every check a finished storyboard has to pass
+#   sk copy <prompts-file>       copy one prompt to the clipboard
+#   sk check                     check the install itself
+#   sk doctor                    say what is installed and what is missing
+#   sk setup                     make the private Python environment the checks use
+#   sk <tool>.py [args]          run any tool in this folder by name
+#
+# The board, the preview and the prompt copier need Python 3 and nothing else. The
+# validators need pyyaml and jsonschema. Those go into a private environment in this
+# folder (.venv), so nothing is installed into the system Python and a Homebrew Python
+# that refuses `pip install` is not a problem.
+
+set -uo pipefail
+TOOLS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VENV="${TOOLS}/.venv"
+
+base_python() {
+  if [[ -n "${PYTHON:-}" ]]; then echo "$PYTHON"; return; fi
+  for candidate in python3 python; do
+    if command -v "$candidate" >/dev/null 2>&1; then echo "$candidate"; return; fi
+  done
+  echo ""
+}
+
+have_deps() { "$1" -c 'import yaml, jsonschema' >/dev/null 2>&1; }
+
+setup() {
+  local py; py="$(base_python)"
+  if [[ -z "$py" ]]; then
+    echo "shotkit: Python 3 was not found. Install it from https://www.python.org/downloads/ and run this again." >&2
+    return 1
+  fi
+  if have_deps "$py"; then return 0; fi
+  if [[ -x "${VENV}/bin/python" ]] && have_deps "${VENV}/bin/python"; then return 0; fi
+  echo "shotkit: setting up the checks (one time, about ten seconds)" >&2
+  if ! "$py" -m venv "$VENV" >/dev/null 2>&1; then
+    echo "shotkit: could not create ${VENV}. The board still works. The checks need: pyyaml jsonschema" >&2
+    return 1
+  fi
+  if ! "${VENV}/bin/python" -m pip install --quiet --disable-pip-version-check pyyaml jsonschema >/dev/null 2>&1; then
+    echo "shotkit: could not download pyyaml and jsonschema (no network?). The board still works. Run this again when online: ${TOOLS}/sk setup" >&2
+    return 1
+  fi
+  return 0
+}
+
+# The Python to run a tool with. Validators get one that has the two packages.
+python_for() {
+  local need_deps="$1" py; py="$(base_python)"
+  if [[ "$need_deps" == "0" ]]; then
+    if [[ -x "${VENV}/bin/python" ]]; then echo "${VENV}/bin/python"; else echo "$py"; fi
+    return
+  fi
+  if [[ -x "${VENV}/bin/python" ]] && have_deps "${VENV}/bin/python"; then echo "${VENV}/bin/python"; return; fi
+  if [[ -n "$py" ]] && have_deps "$py"; then echo "$py"; return; fi
+  if setup; then
+    if [[ -x "${VENV}/bin/python" ]]; then echo "${VENV}/bin/python"; else echo "$py"; fi
+    return
+  fi
+  echo ""
+}
+
+run_tool() {
+  local need_deps="$1" script="$2"; shift 2
+  local py; py="$(python_for "$need_deps")"
+  if [[ -z "$py" ]]; then
+    [[ "$need_deps" == "0" ]] && echo "shotkit: Python 3 was not found." >&2
+    return 1
+  fi
+  "$py" "${TOOLS}/${script}" "$@"
+}
+
+cmd="${1:-help}"
+[[ $# -gt 0 ]] && shift
+
+case "$cmd" in
+  board)    run_tool 0 board.py "$@" ;;
+  preview)  run_tool 0 shots-to-html.py "$@" ;;
+  copy)     run_tool 0 copy-prompt.py "$@" ;;
+  setup)    setup && echo "shotkit: the checks are ready." ;;
+  check)
+    py="$(python_for 1)"; [[ -z "$py" ]] && exit 1
+    PYTHON="$py" "${TOOLS}/check.sh" "$@" ;;
+  validate)
+    out="${1:-output/}"; status=0
+    run_tool 1 validate_shots.py "$out" || status=1
+    if [[ -f "${out%/}/brand-lock.snapshot.md" ]]; then
+      run_tool 1 validate_brand_lock.py --snapshot "${out%/}/brand-lock.snapshot.md" || status=1
+    fi
+    if [[ -f "${out%/}/run.json" ]]; then
+      run_tool 1 validate_provenance.py "$out" "${@:2}" || status=1
+    fi
+    if compgen -G "${out%/}/prompts/round-*/*.txt" >/dev/null; then
+      run_tool 1 validate_prompts.py "$out" || status=1
+    fi
+    exit $status ;;
+  doctor)
+    py="$(base_python)"
+    echo "shotkit $(head -n 1 "${TOOLS}/VERSION" 2>/dev/null || head -n 1 "${TOOLS}/../VERSION" 2>/dev/null || echo "version unknown")"
+    echo "  tools    ${TOOLS}"
+    if [[ -n "$py" ]]; then echo "  python   $("$py" --version 2>&1) ($(command -v "$py"))"; else echo "  python   NOT FOUND. The board and the checks both need Python 3."; fi
+    if [[ -x "${VENV}/bin/python" ]] && have_deps "${VENV}/bin/python"; then echo "  checks   ready (private environment)"
+    elif [[ -n "$py" ]] && have_deps "$py"; then echo "  checks   ready (system Python has pyyaml and jsonschema)"
+    else echo "  checks   not set up yet. They set themselves up the first time they run, or run: ${TOOLS}/sk setup"; fi
+    skills="$(dirname "$TOOLS")/skills"
+    for name in shotkit storyboard-architect visual-prompt-forge visual-asset-critic storyboard-html-preview brand-lock-extractor; do
+      if [[ -f "${skills}/${name}/SKILL.md" ]]; then echo "  skill    ${name}"; else echo "  skill    ${name} MISSING"; fi
+    done ;;
+  *.py)
+    case "$cmd" in
+      board.py|shots-to-html.py|copy-prompt.py) run_tool 0 "$cmd" "$@" ;;
+      *) run_tool 1 "$cmd" "$@" ;;
+    esac ;;
+  help|-h|--help) sed -n '2,13p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  *) echo "shotkit: unknown command '$cmd'. Try: sk help" >&2; exit 2 ;;
+esac

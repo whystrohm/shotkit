@@ -24,8 +24,8 @@ Trigger when the user:
 After `./install.sh`, the validators and helpers are in `~/.claude/shotkit-tools/` and the
 brand packs are in `~/.claude/shotkit-brand-packs/`. A `--project` install puts both
 under `./.claude/` instead. From a repo clone they are `tools/` and `brand-packs/`. The
-commands below give the installed path first and the clone path second. The tools need
-`pip install pyyaml jsonschema`.
+commands below give the installed path first and the clone path second. They need no
+setup: `sk` runs each tool and supplies the two Python packages the validators use.
 
 ## What you produce
 
@@ -203,18 +203,18 @@ Pick the markdown `## Verdict` by this same rule.
 Writing a schema-valid critique is not the same as passing the gate. Run it:
 
 ```bash
-python ~/.claude/shotkit-tools/validate_critique.py output/critiques/round-1/shot_03.critique.json
+~/.claude/shotkit-tools/sk validate_critique.py output/critiques/round-1/shot_03.critique.json
 # from a repo clone:
-# python tools/validate_critique.py output/critiques/round-1/shot_03.critique.json
+# tools/sk validate_critique.py output/critiques/round-1/shot_03.critique.json
 ```
 
 Or check the whole tree at once, which also recomputes every hash against the files on
 disk:
 
 ```bash
-python ~/.claude/shotkit-tools/validate_provenance.py output/
+~/.claude/shotkit-tools/sk validate_provenance.py output/
 # from a repo clone:
-# python tools/validate_provenance.py output/
+# tools/sk validate_provenance.py output/
 ```
 
 This step is not optional and it is not someone else's job. A critique that says `ACCEPT`
@@ -274,6 +274,19 @@ Generation is one stage in a pipeline. If the image is 80% right and the gap is 
 >
 > ## Confidence
 > HIGH
+
+## Keep the board current
+
+After every pass, re-render the board so the user sees the result without opening files:
+
+```bash
+~/.claude/shotkit-tools/sk board output/
+# from a repo clone:
+# tools/sk board output/
+```
+
+A live board (`sk board output/ --serve`) reloads by itself. If no board is open yet,
+add `--open`.
 
 ## Handoff
 

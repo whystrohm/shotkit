@@ -1,0 +1,116 @@
+{
+  "version": "1.0",
+  "overlays": [
+    {
+      "id": "text_01",
+      "shot_id": "shot_01",
+      "content": "The fall roast is here.",
+      "font": "Fraunces SemiBold 600",
+      "size": "display",
+      "weight": "semibold",
+      "color": "#F2E8DA",
+      "position": "upper-third",
+      "enter": {
+        "at": 0.3,
+        "animation": "hard-cut"
+      },
+      "exit": {
+        "at": 3.4,
+        "animation": "hard-cut"
+      }
+    },
+    {
+      "id": "text_02",
+      "shot_id": "shot_02",
+      "content": "Fog Line. Roasted this week.",
+      "font": "Fraunces SemiBold 600",
+      "size": "headline",
+      "weight": "semibold",
+      "color": "#F2E8DA",
+      "position": "upper-third",
+      "enter": {
+        "at": 3.6,
+        "animation": "fade-in"
+      },
+      "exit": {
+        "at": 6.4,
+        "animation": "fade-out"
+      }
+    },
+    {
+      "id": "text_03",
+      "shot_id": "shot_03",
+      "content": "Dark cocoa, fig, cedar.",
+      "font": "Fraunces SemiBold 600",
+      "size": "headline",
+      "weight": "semibold",
+      "color": "#F2E8DA",
+      "position": "upper-third",
+      "enter": {
+        "at": 6.6,
+        "animation": "fade-in"
+      },
+      "exit": {
+        "at": 9.4,
+        "animation": "fade-out"
+      }
+    },
+    {
+      "id": "text_04",
+      "shot_id": "shot_04",
+      "content": "One batch a day, all season.",
+      "font": "Fraunces SemiBold 600",
+      "size": "headline",
+      "weight": "semibold",
+      "color": "#F2E8DA",
+      "position": "upper-third",
+      "enter": {
+        "at": 9.55,
+        "animation": "fade-in"
+      },
+      "exit": {
+        "at": 12.0,
+        "animation": "fade-out"
+      }
+    },
+    {
+      "id": "text_05",
+      "shot_id": "shot_05",
+      "content": "Limited run. Order in the shop.",
+      "font": "Fraunces SemiBold 600",
+      "size": "headline",
+      "weight": "semibold",
+      "color": "#F2E8DA",
+      "position": "upper-third",
+      "enter": {
+        "at": 12.1,
+        "animation": "slide-up"
+      },
+      "exit": {
+        "at": 15.0,
+        "animation": "hard-cut"
+      }
+    },
+    {
+      "id": "text_06",
+      "shot_id": "shot_05",
+      "content": "Harbor Roast",
+      "font": "Work Sans Regular 400",
+      "size": "body",
+      "weight": "regular",
+      "color": "#9C8B78",
+      "position": {
+        "x": 50,
+        "y": 36
+      },
+      "enter": {
+        "at": 13.0,
+        "animation": "fade-in"
+      },
+      "exit": {
+        "at": 15.0,
+        "animation": "hard-cut"
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+# Storyboard: Harbor Roast: Fog Line Fall Roast
+# Generator: ideogram
+# Model: v3
+# Aspect: 9:16
+# Brand-lock: brand-lock.snapshot.md
+# Run: 20260926T134000Z-f493afad
+# Round: 1
+
+# shot_01, world, 0.0-3.5s, CU eye-level static
+# params: aspect_ratio=9:16, model=V_3, magic_prompt=OFF, style_type=REALISTIC, seed=41207, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+Close-up at eye level of one plain matte stoneware cup of black coffee resting on the walnut sill of a fogged window, a faint wisp of real steam rising. No person in frame. Setting: small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Lighting: cool fog daylight from windows camera-left, warm practicals behind, deep shadows. Grade: warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Composition: rule-of-thirds, cup in the lower-right third, upper two-thirds fogged glass left empty for overlay, clean negative space.
+
+# shot_02, hero, 3.5-6.5s, MS low push
+# params: aspect_ratio=9:16, model=V_3, magic_prompt=OFF, style_type=REALISTIC, seed=41207, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+Medium shot from a low angle. The roaster door is open and dark beans pour into a round perforated steel cooling tray as the stirring arm turns. Leather-gloved hands rest at the tray edge lower-left. The round sight glass glows as the only amber element. Character: roaster seen only as hands or from behind, charcoal wool sweater. Setting: small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Lighting: cool fog daylight from windows camera-left, warm practicals behind, deep shadows. Grade: warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Composition: rule-of-thirds, action in lower two-thirds, upper third clear for overlay, clean negative space.
+
+# shot_03, hero, 6.5-9.5s, ECU overhead static
+# params: aspect_ratio=9:16, model=V_3, magic_prompt=OFF, style_type=REALISTIC, seed=41207, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+Extreme close-up looking straight down at freshly roasted dark coffee beans heaped in a perforated steel cooling tray, a faint oil sheen on some beans, the stirring blade crossing the lower-right corner, one small amber reflection on the steel. Setting: small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Lighting: cool fog daylight from windows camera-left, warm practicals behind, deep shadows. Grade: warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Composition: beans fill the lower two-thirds, upper third falls to shadow for overlay, clean negative space.
+
+# shot_04, transformation, 9.5-12.0s, MCU eye-level static
+# params: aspect_ratio=9:16, model=V_3, magic_prompt=OFF, style_type=REALISTIC, seed=41207, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+Medium close-up at eye level from directly behind a figure at a fogged window, holding a plain stoneware cup in both hands at chest height. The face is never seen. Character: roaster seen only as hands or from behind, charcoal wool sweater. Setting: small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Lighting: cool fog daylight from windows camera-left, warm practicals behind, deep shadows. Grade: warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Composition: figure in the lower-right third, upper-left open for overlay, clean negative space.
+
+# shot_05, transformation, 12.0-15.0s, CU eye-level static
+# params: aspect_ratio=9:16, model=V_3, magic_prompt=OFF, style_type=REALISTIC, seed=41207, negative_prompt=text, letters, labels, logos, faces, latte art, drawn steam swirls, bright white backdrop, a second amber object
+Close-up at eye level of one plain unprinted kraft paper coffee bag with a folded top standing on the walnut counter beside a small stoneware cup, the bag blank on every side. One warm practical glows amber far behind. Setting: small dockside roastery, oiled walnut counter, black steel drum roaster, fogged windows. Lighting: cool fog daylight from windows camera-left, warm practicals behind, deep shadows. Grade: warm dark grade, ground #1C1510, cream #F2E8DA, one #D9822B amber accent, fine grain. Dutch Golden Age still-life light, medium-format film. Composition: both objects in the lower third, upper two-thirds dark and clear for overlay, clean negative space.

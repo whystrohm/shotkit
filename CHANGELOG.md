@@ -4,6 +4,47 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-11-13
+
+A first run now ends with a page open in the browser instead of five files and a chat
+reply. One command runs the whole pipeline, and nothing has to be set up by hand.
+
+### Added
+
+- **The board.** `tools/board.py` renders `output/board.html`: a contact sheet and a
+  timeline of every shot, the newest frame for each, the critic's verdicts with their
+  fixes, every prompt with a copy button, the brand lock, and each file checked against
+  the hash in `run.json`. It needs Python 3 and nothing else. `--open` opens it,
+  `--serve` runs a live board that reloads as files change and saves a frame dropped on
+  a shot to `frames/round-N/`, and `--example` opens a bundled finished run.
+- **Copy for LLM.** The board copies the whole storyboard, one shot or the brand lock as
+  Markdown.
+- **`/shotkit`.** A sixth skill that runs the others in order from one line of brief,
+  fills gaps with stated defaults and opens the board.
+- **`tools/sk`.** One launcher for every tool: `sk board`, `sk preview`, `sk validate`,
+  `sk copy`, `sk check`, `sk doctor`. It finds Python itself and gives the validators a
+  private environment, so there is no `pip install` step.
+- **A starter brand pack**, `brand-packs/_starter.md`, for briefs that name no brand.
+- **A bundled finished run**, `examples/harbor-roast/`, with frames.
+
+### Fixed
+
+- The installer told users to run `pip install pyyaml jsonschema`, which fails on a
+  Homebrew Python, and printed commands that start with `python`, which a stock Mac does
+  not have. It now sets the validators up itself and prints `sk` commands.
+- A brief with no brand was told to snapshot the blank template, which the snapshot
+  check rejects. It now uses the starter pack and marks the run
+  `brand_lock_configured: false`.
+- `storyboard-architect` read every reference, template and example before writing a
+  file. It now reads them only when a decision or a validator message calls for it.
+- `storyboard-architect` ended in chat. It now opens the board when its files validate.
+
+### Changed
+
+- Every documented command uses `sk` in place of `python <tool>.py`. The tools still run
+  directly with any Python that has `pyyaml` and `jsonschema`.
+- `visual-prompt-forge` and `visual-asset-critic` re-render the board after each pass.
+
 ## [3.1.0] - 2026-09-26
 
 The installed tools line up with every `SKILL.md`, the preview renders in the brand's own
