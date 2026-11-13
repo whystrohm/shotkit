@@ -222,7 +222,12 @@ What it gives you is raw material and a plan, not a finished video:
   sound, every size a campaign needs, and posting.
 
 The second list is what WhyStrohm does as a service. Every video is built from the same
-plan, so the hundredth one matches the first: [whystrohm.com](https://whystrohm.com).
+plan, so the hundredth one matches the first. Ask about the full system at
+[hello@whystrohm.com](mailto:hello@whystrohm.com) or [whystrohm.com](https://whystrohm.com).
+
+**Bring your own key.** Shotkit ships with no keys and calls nothing until you connect
+your own fal.ai key. That key stays in your environment or a `.env` file git ignores.
+The repo's checks fail if a key is ever committed.
 
 To hand the files to your own editor instead, `shots.json` and `text-overlays.json`
 carry every shot, length and line of text. See

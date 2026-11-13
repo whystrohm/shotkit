@@ -19,6 +19,10 @@ Shotkit can now make the frames and the clips, on fal.ai with your own key.
 - **Clips on the board.** A shot's clip plays under its frame.
 - The README demo now shows the 3.2.0 flow on the live board.
 
+- **A secrets check.** `tools/validate_no_secrets.py` fails the build if a key, a
+  token or a `.env` file is in the repo. `.env.example` shows where a key goes, and the
+  live board never serves a hidden file.
+
 ### Fixed
 
 - Type over a frame is scaled to fit and is never clipped, has a soft field behind it,

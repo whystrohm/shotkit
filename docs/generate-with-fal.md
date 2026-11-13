@@ -130,4 +130,15 @@ You get frames and clips that match the plan: raw material, and a fast way to se
 idea before anyone films or edits. You do not get a finished video. The clips are not
 cut together, the on-screen text is not set on them, and nothing is graded or scored.
 Finishing is editing work. WhyStrohm does that as a service, to the same plan, in your
-brand: [whystrohm.com](https://whystrohm.com).
+brand. Write to [hello@whystrohm.com](mailto:hello@whystrohm.com) or see
+[whystrohm.com](https://whystrohm.com).
+
+## Keep the key out of git
+
+- `.env` is in Shotkit's `.gitignore`. Add it to your project's too. `.env.example`
+  shows the one line the file needs.
+- Never paste a key into a chat, a prompt file or a brand lock.
+- `tools/sk validate_no_secrets.py <folder>` scans a folder for keys before you share
+  or commit it. It prints at most the first four characters of anything it finds.
+- If a key was ever committed or shared, delete it at fal.ai/dashboard/keys and make a
+  new one. Removing it from the file is not enough.

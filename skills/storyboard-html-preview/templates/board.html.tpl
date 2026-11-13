@@ -588,7 +588,7 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     app.appendChild(el("footer", { class: "foot" },
       el("span", { text: "Run " + D.run.id + " started " + D.run.created_at + ". Board rendered " + D.rendered_at + "." }),
       el("span", null, el("kbd", { text: "←" }), " ", el("kbd", { text: "→" }), " move  ", el("kbd", { text: "C" }), " copy prompt  ", el("kbd", { text: "Esc" }), " close"),
-      el("span", null, "Made with ", el("a", { href: "https://github.com/whystrohm/shotkit", text: "Shotkit" }))));
+      el("span", null, "Made with ", el("a", { href: "https://github.com/whystrohm/shotkit", text: "Shotkit" }), ". For the finished video: ", el("a", { href: "mailto:hello@whystrohm.com", text: "hello@whystrohm.com" }))));
   }
 
   function timeline() {

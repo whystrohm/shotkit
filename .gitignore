@@ -27,9 +27,12 @@ build/
 *-workspace/
 evals/iteration-*/
 
-# Local environment
+# Local environment. Keys live here and never in git.
 .env
-.env.local
+.env.*
+!.env.example
+*.pem
+generations.jsonl
 
 # Generated example outputs (kept by hand, not by run)
 output/

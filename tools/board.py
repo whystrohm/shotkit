@@ -790,7 +790,8 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
                 self.send(200, tree_stamp(root).encode(), "text/plain")
                 return
             target = (root / unquote(url.path).lstrip("/")).resolve()
-            if root not in target.parents or not target.is_file():
+            hidden = any(part.startswith(".") for part in target.relative_to(root).parts) if root in target.parents else True
+            if hidden or not target.is_file():
                 self.send(404, b"not found", "text/plain")
                 return
             ext = target.suffix.lstrip(".").lower()
