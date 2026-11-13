@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Docs and quickstart
+    url: https://whystrohm.com/shotkit/docs/quickstart
+    about: Install, first run and the board, step by step.
+  - name: The finished video, as a service
+    url: https://whystrohm.com/apply
+    about: Shotkit plans the work. WhyStrohm edits and delivers it. Or write to hello@whystrohm.com.
+  - name: Report a security problem
+    url: https://github.com/whystrohm/shotkit/blob/main/SECURITY.md
+    about: Please do not open a public issue for these.

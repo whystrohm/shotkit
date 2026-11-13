@@ -1,10 +1,29 @@
-# shotkit
+<h1 align="center">Shotkit</h1>
 
-![shotkit](docs/images/social-preview.png)
+<p align="center"><strong>Plan a video in Claude Code.</strong><br>
+One line of brief becomes a board with every shot planned, prompted and checked.</p>
 
-**From a brief to an on-brand storyboard, with prompts for every generator and every frame checked.**
+<p align="center">
+  <a href="https://github.com/whystrohm/shotkit/actions/workflows/validate-skills.yml"><img alt="Checks" src="https://github.com/whystrohm/shotkit/actions/workflows/validate-skills.yml/badge.svg"></a>
+  <a href="https://github.com/whystrohm/shotkit/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/whystrohm/shotkit?label=release&color=FF5A2B"></a>
+  <a href="LICENSE"><img alt="Apache 2.0" src="https://img.shields.io/badge/licence-Apache%202.0-informational"></a>
+  <a href="https://github.com/whystrohm/shotkit/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/whystrohm/shotkit?style=flat&color=informational"></a>
+</p>
 
-Five Claude Skills that turn a creative brief into a production-grade storyboard with model-specific image prompts, on-screen text specs, an HTML preview, and a versioned audit trail, plus a brand-lock extractor that onboards a brand from its existing assets. Built by [WhyStrohm](https://whystrohm.com). Apache 2.0.
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#the-board">The board</a> ·
+  <a href="docs/generate-with-fal.md">Frames and clips</a> ·
+  <a href="https://whystrohm.com/shotkit/docs/quickstart">Quickstart</a> ·
+  <a href="https://whystrohm.com/shotkit/examples/harbor-roast/board.html">A live board</a>
+</p>
+
+![Shotkit demo: a brief is typed, the board opens with the plan, then prompts, frames and the critic's verdicts land, one shot is revised and passes](docs/images/demo.gif)
+
+Six Claude skills and a set of small tools, built by [WhyStrohm](https://whystrohm.com).
+Free and open source under Apache 2.0. Nothing ships with a key.
+
+## Install
 
 ```bash
 git clone https://github.com/whystrohm/shotkit.git
@@ -50,8 +69,6 @@ See a finished run before you make one:
 ```bash
 ~/.claude/shotkit-tools/sk board --example
 ```
-
-![Shotkit demo: a brief is typed, the board opens with the plan, then prompts, frames and the critic's verdicts land, one shot is revised and passes](docs/images/demo.gif)
 
 The loop is the live board replaying one real Shotkit run in stages: the brief, the plan,
 the prompts, the frames, the critic's verdicts, then a second round for the shots that came

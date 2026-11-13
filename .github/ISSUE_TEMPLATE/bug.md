@@ -10,6 +10,9 @@ labels: bug
 - [ ] visual-prompt-forge
 - [ ] visual-asset-critic
 - [ ] storyboard-html-preview
+- [ ] shotkit (the one command)
+- [ ] the board
+- [ ] sk generate (fal.ai)
 - [ ] install.sh / docs / other
 
 **Environment**
