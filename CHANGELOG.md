@@ -136,7 +136,7 @@ and the exact checkout on line 2.
 - The v0.1.0 explainer videos and the `shotkit-explainer` example storyboard. The README links
   the install film on whystrohm.com.
 - `AUDIT-v2.md` and `.archive/`, internal notes.
-- `remotion/`, the source of the old demo media. The new demo media is rendered from
+- The source folder of the old demo media. The new demo media is rendered from
   WhyStrohm's own film source, and only the rendered files ship here.
 
 ## [3.0.0] - 2026-07-30
@@ -345,7 +345,7 @@ The QA loop closes: the critic now emits a machine-readable verdict, the prompt-
 - Adapter `.md` files now defer to `_capabilities.json` for numeric limits, the JSON owns the numbers, the prose owns the how-to-prompt guidance. Conflicts resolve to the JSON.
 - `install.sh` hardened: array-based execution instead of `eval`, errors to stderr, added `--help`.
 - CI runs the two new validators, including the critique-gate selftest.
-- Regenerated `docs/images/social-preview.png` from a new versioned `SocialPreview` Remotion composition (it was a sourceless baked PNG). The card now reads v2.0.0 and reflects what shipped: `critique.json`, the revise loop (CRITIQUE to FORGE), and brand-lock-extractor feeding the brand-lock bar. The demo.gif and explainer videos are unchanged.
+- Regenerated `docs/images/social-preview.png` from a new versioned source file (it was a sourceless baked PNG). The card now reads v2.0.0 and reflects what shipped: `critique.json`, the revise loop (CRITIQUE to FORGE), and brand-lock-extractor feeding the brand-lock bar. The demo.gif and explainer videos are unchanged.
 
 ### Removed
 
