@@ -6,13 +6,13 @@ Claude Code 的 AI 分镜技能包。一句需求，或者一个装着你自己�
 
 <p align="center"><a href="README.md">English</a> · <strong>简体中文</strong></p>
 
-![Shotkit 演示：输入一句需求，看板打开，每个镜头依次得到规划、提示词、画面和检查结果](docs/images/demo.webp)
+![Shotkit 演示：输入一句需求，看板打开，七个镜头依次得到规划、提示词、画面和检查结果，两个镜头被退回重做，最后播放成片](docs/images/demo.webp)
 
 三个已完成的案例，点击图片打开在线看板。
 
-| 咖啡烘焙 · 9:16 | 电工服务 · 16:9 | 工作室发布 · 16:9 |
+| Media Tsunami · 16:9 | 咖啡烘焙 · 9:16 | 电工服务 · 16:9 |
 |---|---|---|
-| [![Harbor Roast 看板](docs/images/example-harbor-roast.jpg)](https://whystrohm.com/shotkit/examples/harbor-roast/board.html) | [![Ridgeline Electric 看板](docs/images/example-ridgeline-electric.jpg)](https://whystrohm.com/shotkit/examples/ridgeline-electric/board.html) | [![WhyStrohm 发布看板](docs/images/example-whystrohm-launch.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-launch/board.html) |
+| [![Media Tsunami 看板](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![Harbor Roast 看板](docs/images/example-harbor-roast.jpg)](https://whystrohm.com/shotkit/examples/harbor-roast/board.html) | [![Ridgeline Electric 看板](docs/images/example-ridgeline-electric.jpg)](https://whystrohm.com/shotkit/examples/ridgeline-electric/board.html) |
 
 六个 Claude 技能加一组小工具，由 [WhyStrohm](https://whystrohm.com) 开发。
 Apache 2.0 开源，免费。仓库里不带任何密钥。

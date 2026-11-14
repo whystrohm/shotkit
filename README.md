@@ -20,16 +20,16 @@ becomes a board with every shot planned, prompted and checked.</p>
   <a href="docs/own-media.md">Your own footage</a> ·
   <a href="docs/generate-with-fal.md">Frames and clips</a> ·
   <a href="https://whystrohm.com/shotkit/docs/quickstart">Quickstart</a> ·
-  <a href="https://whystrohm.com/shotkit/examples/harbor-roast/board.html">A live board</a>
+  <a href="https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html">A live board</a>
 </p>
 
-![Shotkit demo: a brief is typed, the board opens with every shot planned, then prompts, frames and the check on each frame land, one shot is fixed, and real frames from three brands appear with their on-screen text](docs/images/demo.webp)
+![Shotkit demo: a brief is typed, the board opens with seven shots planned, then prompts, frames and the check on each frame land, two shots are sent back and fixed, and the finished film plays](docs/images/demo.webp)
 
 Three finished runs. Each picture opens the live board.
 
-| Coffee roaster · 9:16 | Electrician · 16:9 | Studio launch · 16:9 |
+| Media Tsunami · 16:9 | Coffee roaster · 9:16 | Electrician · 16:9 |
 |---|---|---|
-| [![The Harbor Roast board](docs/images/example-harbor-roast.jpg)](https://whystrohm.com/shotkit/examples/harbor-roast/board.html) | [![The Ridgeline Electric board](docs/images/example-ridgeline-electric.jpg)](https://whystrohm.com/shotkit/examples/ridgeline-electric/board.html) | [![The WhyStrohm launch board](docs/images/example-whystrohm-launch.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-launch/board.html) |
+| [![The Media Tsunami board](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![The Harbor Roast board](docs/images/example-harbor-roast.jpg)](https://whystrohm.com/shotkit/examples/harbor-roast/board.html) | [![The Ridgeline Electric board](docs/images/example-ridgeline-electric.jpg)](https://whystrohm.com/shotkit/examples/ridgeline-electric/board.html) |
 
 Six Claude skills and a set of small tools, built by [WhyStrohm](https://whystrohm.com).
 Free and open source under Apache 2.0. Nothing ships with a key.
@@ -125,9 +125,9 @@ See a finished run before you make one:
 ~/.claude/shotkit-tools/sk board --example
 ```
 
-The demo at the top is the live board replaying one real Shotkit run in stages, then real
-frames from three runs (an electrician, a studio launch, a coffee roaster) with their
-on-screen text set over them. A silent MP4 is at
+The demo at the top is the live board replaying one real Shotkit run in stages: the
+Media Tsunami film, planned in seven shots, with two frames sent back and redone. It ends
+on the film that plan became. A silent MP4 is at
 [`docs/images/demo.mp4`](docs/images/demo.mp4).
 
 ---
