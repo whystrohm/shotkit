@@ -27,9 +27,9 @@ becomes a board with every shot planned, prompted and checked.</p>
 
 Three finished runs. Each picture opens the live board.
 
-| Media Tsunami · 16:9 | Coffee roaster · 9:16 | Electrician · 16:9 |
+| Media Tsunami · 16:9 | Roofing company · 16:9 | Coffee roaster · 9:16 |
 |---|---|---|
-| [![The Media Tsunami board](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![The Harbor Roast board](docs/images/example-harbor-roast.jpg)](https://whystrohm.com/shotkit/examples/harbor-roast/board.html) | [![The Ridgeline Electric board](docs/images/example-ridgeline-electric.jpg)](https://whystrohm.com/shotkit/examples/ridgeline-electric/board.html) |
+| [![The Media Tsunami board](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![The Kestrel Roofing board](docs/images/example-kestrel-roofing.jpg)](https://whystrohm.com/shotkit/examples/kestrel-roofing/board.html) | [![The Harbor Roast board](docs/images/example-harbor-roast.jpg)](https://whystrohm.com/shotkit/examples/harbor-roast/board.html) |
 
 Six Claude skills and a set of small tools, built by [WhyStrohm](https://whystrohm.com).
 Free and open source under Apache 2.0. Nothing ships with a key.
