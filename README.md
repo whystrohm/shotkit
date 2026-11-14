@@ -18,7 +18,7 @@ One line of brief becomes a board with every shot planned, prompted and checked.
   <a href="https://whystrohm.com/shotkit/examples/harbor-roast/board.html">A live board</a>
 </p>
 
-![Shotkit demo: a brief is typed, the board opens with the plan, then prompts, frames and the critic's verdicts land, one shot is revised and passes](docs/images/demo.gif)
+![Shotkit demo: a brief is typed, the board opens with the plan, then prompts, frames and the critic's verdicts land, one shot is revised and passes](docs/images/demo.webp)
 
 Six Claude skills and a set of small tools, built by [WhyStrohm](https://whystrohm.com).
 Free and open source under Apache 2.0. Nothing ships with a key.
@@ -79,7 +79,7 @@ back. The frames are the ones that run produced. A silent MP4 of the same loop i
 
 ## What it does
 
-You describe a video. The kit produces a complete pre-production package:
+You describe a video. Shotkit writes one folder:
 
 ```
 output/
@@ -88,17 +88,7 @@ output/
 ├── shots.json                 # Schema-validated, machine-readable
 ├── text-overlays.json         # On-screen text + timing
 ├── brand-lock.snapshot.md     # Frozen brand state at generation time
-├── prompts/round-1/           # Per-generator prompts, copy-paste ready
-│   ├── midjourney.txt
-│   ├── flux.txt
-│   ├── ideogram.txt
-│   ├── gpt-image.txt
-│   ├── nano-banana.txt
-│   ├── seedream.txt
-│   ├── kling.txt              # Motion video (default)
-│   ├── veo.txt                # Motion: dialogue/lipsync + native audio
-│   ├── seedance.txt           # Motion: multi-shot sequences
-│   └── hailuo.txt             # Motion: budget iteration
+├── prompts/round-1/           # One file per generator: flux.txt, kling.txt and eight more
 ├── frames/round-1/            # The frames: yours, or made with `sk generate`
 ├── clips/round-1/             # Video clips, one per shot, if you make them
 ├── board.html                 # The board. Where you work. Opens by itself.
@@ -106,11 +96,8 @@ output/
 └── preview.html               # The page you send a client. Printable. Brand-aware.
 ```
 
-Files. Not panels. Not a SaaS dashboard. Files an editor, agency, or developer can act on without asking follow-up questions.
-
-Everything is addressed by round and shot, so no two writes land on the same path. Two people
-can work one project without overwriting each other's verdicts, and round 2 never destroys the
-prompt that produced round 1's frames.
+Plain files an editor, an agency or a developer can act on. Nothing is uploaded and there is
+no account. Everything is filed by round and shot, so round 2 never overwrites round 1.
 
 ---
 
@@ -126,101 +113,6 @@ prompt that produced round 1's frames.
 | `storyboard-html-preview` | Storyboard files → single-file shareable HTML |
 
 They work alone. They work better together, the critic writes a machine-readable verdict the prompt-forge can act on, so generate → critique → revise → re-critique runs as a closed loop. See [`docs/the-qa-loop.md`](docs/the-qa-loop.md). They work in **Claude Code**, **Claude.ai**, and the **Claude API**.
-
----
-
-## Why this exists
-
-Every storyboard tool on the market is a SaaS app with a UI you log into. You upload a brief, you get illustrated panels, you export. The output never leaves the platform.
-
-That's not how serious teams work. Serious teams want:
-
-- **Files**, not cloud-locked panels
-- **Audit trail**, not vibes. Every shot has rationale, every prompt is reproducible, every brand parameter is versioned.
-- **Brand lock**, not "AI reads your URL". Explicit brand parameters that compose deterministically across every shot.
-- **Model agnosticism**. Prompts adapt to whichever image generator you're using this month.
-- **No vendor lock-in**. Markdown, JSON, HTML. Open formats only.
-
-shotkit is the pre-production method WhyStrohm uses on its own work. We're publishing the methodology because the methodology isn't the moat. The operator is.
-
-Read more in [`docs/why-this-exists.md`](docs/why-this-exists.md).
-
----
-
-## Why this isn't another storyboard tool
-
-The category isn't empty. It's full of tools that solve the wrong half.
-
-- **Provenance you can check, not just claim.** Every run freezes brand state and records a content hash for every input, prompt, and reviewed frame. Six months later you can answer "what brand version was this built against" and *prove* the files have not moved since, because `validate_provenance.py` recomputes the hashes. A frame regenerated after its review fails that check instead of passing quietly on a stale ACCEPT.
-- **Ten generators, one spec.** The same shot data adapts to six stills generators (Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream) and four motion-video models (Kling, Veo, Seedance, Hailuo). Every other storyboard skill on GitHub locks to one generator family.
-- **Files, not panels.** The output is structured Markdown and JSON an editor, motion designer, or developer can act on. No dashboard, no export step, no platform.
-- **Methodology over pipeline.** The plan, the prompts and the checks are the product. Generation is optional and uses your own key. Generator APIs churn monthly, the methodology stays stable. The pipeline lives where it belongs, in the operator's tooling.
-
----
-
-## 60-second example
-
-Drop this into a Claude Code session with the skills installed:
-
-> *"30-second founder explainer for WhyStrohm. We help founder-led brands build content infrastructure instead of running content like a hobby. Pain-reframe-promise. Use `brand-packs/whystrohm.md` as the brand lock. Aspect 9:16."*
-
-Claude produces the full `output/` set. Open `output/preview.html` in any browser. Print it. Share it. Hand it to an editor.
-
-A complete worked example lives at [`skills/storyboard-architect/examples/30s-pain-proof-promise/`](skills/storyboard-architect/examples/30s-pain-proof-promise/). Clone the repo and open `preview.html` in that folder to see what the deliverable looks like.
-
----
-
-## Round-trip workflow
-
-The complete loop, idea to revised image:
-
-1. **Brief** describes the video.
-2. **`storyboard-architect`** produces `run.json`, `storyboard.md`, `shots.json`, `text-overlays.json`, `brand-lock.snapshot.md`.
-3. **`visual-prompt-forge`** writes a prompt file per generator under `output/prompts/round-1/`.
-4. **`tools/copy-prompt.py`** pipes one shot's prompt to the clipboard. Paste into the generator UI.
-5. **The generator** returns an image. It goes in `output/frames/round-1/shot_NN.png`.
-6. **`visual-asset-critic`** scores the frame against the shot spec and brand-lock, writing `critiques/round-1/shot_NN.critique.json` with the hash of the frame, the prompt, and the brand-lock it judged.
-7. **`tools/validate_provenance.py`** re-checks every hash and reports which shots are still open.
-8. On REVISE, **`visual-prompt-forge` revision mode** re-emits prompts for only those shots into `round-2/`. On REJECT, it stops and asks: a REJECT means no fix path exists.
-9. Repeat from 5 until `--require-accept` exits 0. It exits 0 only when every shot in
-   `shots.json` has a critique and every latest verdict is ACCEPT.
-
-```bash
-~/.claude/shotkit-tools/sk validate_provenance.py output/ --require-accept || echo "work remains"
-# from a repo clone: tools/sk validate_provenance.py output/ --require-accept
-```
-
-Files at every step. See [`docs/the-qa-loop.md`](docs/the-qa-loop.md) for the full loop and
-[`skills/visual-asset-critic/examples/worked-run/`](skills/visual-asset-critic/examples/worked-run/)
-for a worked two-round example: every file and hash in place, with stand-in frames.
-
----
-
-## The methodology
-
-Four ideas. None negotiable.
-
-**1. Five-layer prompt anatomy.** Every image prompt is composed from locked layers: Brand Lock, Series Lock, Shot Spec, Text Layer, Generator Adapter. Change a brand color once. Every prompt updates. See [`docs/the-five-layer-prompt.md`](docs/the-five-layer-prompt.md).
-
-**2. Versioned brand state, pinned by hash.** Every run snapshots the brand-lock it was built against and records its SHA-256 in `run.json`. Brand changes later? The snapshot stays frozen, and if someone overwrites it, the hash mismatch says so. A filename alone never proved anything, which is the whole reason the hashes are there. See [`docs/audit-trail-pattern.md`](docs/audit-trail-pattern.md).
-
-**3. Text never gets baked into images.** On-screen copy is a separate layer with its own timing, font, and animation spec. Always composited after generation. AI text rendering is not production-ready in 2026; treat text as a separate compositing pass.
-
-**4. Per-shot rationale.** Every shot has a `rationale` field. Why this beat. Why this duration. Why this framing. Why this on-screen text. Decisions are logged so they can be challenged.
-
----
-
-## Brand packs
-
-A brand pack is a single Markdown file that locks palette, typography, voice, and visual rules for a project. Three live in this repo:
-
-- [`brand-packs/_template.md`](brand-packs/_template.md). Empty starter.
-- [`brand-packs/whystrohm.md`](brand-packs/whystrohm.md). Flagship example, the real WhyStrohm brand: dark ground, one accent, Archivo and IBM Plex Mono.
-- [`brand-packs/examples/saas-clean.md`](brand-packs/examples/saas-clean.md). Neutral B2B SaaS reference.
-
-Roll your own from the template. Or generate one from a site, a brand book or screenshots with the `brand-lock-extractor` skill in this repo.
-
-See [`brand-packs/README.md`](brand-packs/README.md) for the full pattern.
 
 ---
 
@@ -253,92 +145,25 @@ carry every shot, length and line of text. See
 
 ---
 
-## Companion tools
+## Docs
 
-shotkit is part of a broader WhyStrohm open-source ecosystem of brand-infrastructure tools:
-
-- [media-tsunami](https://github.com/whystrohm/media-tsunami)
-  brand voice extraction. Writes a CLAUDE.md and a
-  brand-config.json from a site.
-- [whystrohm-audit](https://github.com/whystrohm/whystrohm-audit)
-  content audit against a 5-layer framework.
-- [whystrohm-voice-extract](https://github.com/whystrohm/whystrohm-voice-extract)
-  structured voice profile from any URL.
-- [whystrohm-voice-scorer](https://github.com/whystrohm/whystrohm-voice-scorer)
-  voice drift between site and social content.
-- [digital-twin](https://github.com/whystrohm/digital-twin-of-yourself)
-  personal voice as system prompt.
-- [ritual](https://github.com/whystrohm/ritual)
-  drafts a Claude Code routine from your own work history.
-
-The voice tools and shotkit work side by side. A voice profile from media-tsunami or
-whystrohm-voice-extract is a good source for a brand-lock's voice rules. The brand-lock file
-itself comes from `brand-lock-extractor` or the template.
-
-The skills connect through shared file formats in a `brand/` folder in your project, not through
-one big repo. This repo holds the canonical schemas in [`contracts/`](contracts/):
-`brand/voice-profile.json` (voice-extract writes it, voice-scorer reads it),
-`brand/audit-findings.json` (whystrohm-audit writes it, `storyboard-architect` can take it as
-a brief input) and `brand/foundrkit.rules.json` (foundrkit-lint builds it from the brand folder
-and lints against it).
-
-For the operated version of the full pipeline, see [whystrohm.com](https://whystrohm.com).
-
----
-
-## Compatibility
-
-- **Claude.ai** (web, mobile, desktop). All five skills via `.skill` zip uploads. See [`docs/claude-ai-workflow.md`](docs/claude-ai-workflow.md).
-- **Claude Code** (CLI). Primary target. Drop the repo and run `./install.sh`. See [`docs/claude-code-workflow.md`](docs/claude-code-workflow.md).
-- **Claude API**. All five skills via Skills API.
-- **Other agents** that support the SKILL.md open standard (Codex, Cursor, Gemini CLI, Antigravity, Windsurf) should work, not officially tested.
-
-Built for current Claude models (Opus, Sonnet).
-
----
-
-## Roadmap
-
-v3.0.0 makes the audit trail checkable: content hashes on every input and reviewed frame, an
-output tree addressed by round and shot so concurrent work cannot overwrite itself, and
-validators that run against a real project instead of only against the repo. See the
-[changelog](CHANGELOG.md). Still on the roadmap:
-
-- **PDF + PPTX exporters**. Siblings to `storyboard-html-preview` for client review and agency handoff.
-- **Approval log**. `run.json` records what was built and reviewed, not who signed it off. Approver identity and timestamp is the missing link for regulated handoffs.
-- **Duration rescale workflow**. Change a project from :30 to :60 and have the timing redistribute correctly across the beat framework.
-- **Worked examples for the motion adapters**. `one-shot-all-adapters/` covers the six stills generators plus Kling; Veo, Seedance, and Hailuo have prompt examples in their adapter files but no side-by-side entry.
-- **A CLI or MCP surface**, so the pipeline runs outside Claude-skill hosts.
-
-If any of these are blocking for you, open an issue. Real use cases jump the queue.
+| | |
+|---|---|
+| [Quickstart](https://whystrohm.com/shotkit/docs/quickstart) | A first run, in six steps |
+| [Frames and clips with fal.ai](docs/generate-with-fal.md) | Connect your key, pick a model |
+| [The check and revise loop](docs/the-qa-loop.md) | How a frame is sent back and fixed |
+| [Brand locks](docs/brand-lock-anatomy.md) | What a brand lock holds, and how to make one |
+| [The audit trail](docs/audit-trail-pattern.md) | What `run.json` pins, and how to prove it |
+| [Background and reference](docs/background.md) | Why it exists, the method, brand packs, roadmap |
+| [Changelog](CHANGELOG.md) | What changed in each release |
 
 ---
 
 ## Contributing
 
-PRs welcome for:
-
-- New generator adapters (`skills/visual-prompt-forge/adapters/`)
-- New beat frameworks (`skills/storyboard-architect/references/beat-frameworks.md`)
-- Brand pack examples (`brand-packs/examples/`)
-
-Open an issue first for anything that changes the file schemas. Run the checks locally before opening a PR:
-
-```bash
-tools/sk check
-```
-
-`sk` supplies the two Python packages the validators need. After an install,
-`~/.claude/shotkit-tools/sk check --quiet` runs the same checks against the installed copy,
-and `sk doctor` says what is installed.
-
-That is the same entry point CI runs, so green locally means green on the PR. It covers
-frontmatter, schemas, capability-to-adapter parity, brand-locks, storyboard instances, the
-critique gate, the provenance chain, and both shipped tools.
-
-New checks need a `--selftest` that constructs a failing fixture and proves the check catches
-it. A validator nobody can see fail is a validator nobody should trust. See
-[`tools/README.md`](tools/README.md).
+Pull requests are welcome: a generator adapter, a beat framework, a brand pack, or a fix
+with a test. Run `tools/sk check` first. See [CONTRIBUTING.md](CONTRIBUTING.md) and
+[SECURITY.md](SECURITY.md).
 
 ---
 
@@ -352,9 +177,5 @@ The Apache License 2.0 covers the code and documentation in this repository. It 
 
 ## Who built this
 
-[Yuri Strohm](https://whystrohm.com), founder of WhyStrohm.
-
-If you want the version where this is wired into a programmatic video pipeline and publishing: [whystrohm.com](https://whystrohm.com).
-
-- GitHub: [@whystrohm](https://github.com/whystrohm)
-- Web: [whystrohm.com](https://whystrohm.com)
+[WhyStrohm](https://whystrohm.com). For the finished video, write to
+[hello@whystrohm.com](mailto:hello@whystrohm.com).

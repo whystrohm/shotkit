@@ -17,7 +17,9 @@ Shotkit can now make the frames and the clips, on fal.ai with your own key.
   change. Every request is logged to `generations.jsonl` with its fal request id.
   Python 3 only. Guide: `docs/generate-with-fal.md`.
 - **Clips on the board.** A shot's clip plays under its frame.
-- The README demo now shows the 3.2.0 flow on the live board.
+- The README demo is an animated piece: the live board in a staged window, replaying a
+  real run. The README itself is half its old length; the background moved to
+  `docs/background.md`.
 
 - **A secrets check.** `tools/validate_no_secrets.py` fails the build if a key, a
   token or a `.env` file is in the repo. `.env.example` shows where a key goes, and the
