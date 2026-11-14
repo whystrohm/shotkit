@@ -18,6 +18,8 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 - **A media tray on the board.** Every file, what Claude saw in it, and the shot it is
   on. On a live board, drop photos and clips anywhere on the page to add them. A live
   board now starts on an empty folder.
+- **Installs as a Claude Code plugin.** `/plugin install shotkit --marketplace whystrohm/shotkit`.
+  The plugin carries the tools, so nothing else is needed.
 - The live board plays MOV, M4V and WebM clips as well as MP4, and answers a video
   player's range requests so a long clip can be scrubbed.
 

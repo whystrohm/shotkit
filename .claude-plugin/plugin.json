@@ -1,0 +1,14 @@
+{
+  "name": "shotkit",
+  "description": "Plan a video in Claude Code. One line of brief, or a folder of your own footage, becomes a board with every shot planned, prompted and checked.",
+  "version": "3.3.0",
+  "author": {
+    "name": "WhyStrohm",
+    "email": "hello@whystrohm.com",
+    "url": "https://whystrohm.com"
+  },
+  "homepage": "https://whystrohm.com/shotkit",
+  "repository": "https://github.com/whystrohm/shotkit",
+  "license": "Apache-2.0",
+  "keywords": ["storyboard", "video", "pre-production", "shot-list", "prompts", "fal-ai", "brand"]
+}

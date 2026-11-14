@@ -1,0 +1,19 @@
+{
+  "name": "shotkit",
+  "owner": {
+    "name": "WhyStrohm",
+    "email": "hello@whystrohm.com"
+  },
+  "metadata": {
+    "description": "Shotkit: plan a video in Claude Code.",
+    "version": "3.3.0"
+  },
+  "plugins": [
+    {
+      "name": "shotkit",
+      "source": "./",
+      "description": "Plan a video in Claude Code. One line of brief, or a folder of your own footage, becomes a board with every shot planned, prompted and checked.",
+      "version": "3.3.0"
+    }
+  ]
+}

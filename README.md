@@ -1,7 +1,10 @@
 <h1 align="center">Shotkit</h1>
 
-<p align="center"><strong>Plan a video in Claude Code.</strong><br>
-One line of brief becomes a board with every shot planned, prompted and checked.</p>
+<p align="center"><strong>Plan the whole video before you generate a single frame.</strong><br>
+An AI storyboard skill for Claude Code. One line of brief, or a folder of your own footage,<br>
+becomes a board with every shot planned, prompted and checked.</p>
+
+<p align="center"><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a></p>
 
 <p align="center">
   <a href="https://github.com/whystrohm/shotkit/actions/workflows/validate-skills.yml"><img alt="Checks" src="https://github.com/whystrohm/shotkit/actions/workflows/validate-skills.yml/badge.svg"></a>
@@ -12,7 +15,9 @@ One line of brief becomes a board with every shot planned, prompted and checked.
 
 <p align="center">
   <a href="#install">Install</a> ·
+  <a href="#why">Why</a> ·
   <a href="#the-board">The board</a> ·
+  <a href="docs/own-media.md">Your own footage</a> ·
   <a href="docs/generate-with-fal.md">Frames and clips</a> ·
   <a href="https://whystrohm.com/shotkit/docs/quickstart">Quickstart</a> ·
   <a href="https://whystrohm.com/shotkit/examples/harbor-roast/board.html">A live board</a>
@@ -20,25 +25,64 @@ One line of brief becomes a board with every shot planned, prompted and checked.
 
 ![Shotkit demo: a brief is typed, the board opens with every shot planned, then prompts, frames and the check on each frame land, one shot is fixed, and real frames from three brands appear with their on-screen text](docs/images/demo.webp)
 
+Three finished runs. Each picture opens the live board.
+
+| Coffee roaster · 9:16 | Electrician · 16:9 | Studio launch · 16:9 |
+|---|---|---|
+| [![The Harbor Roast board](docs/images/example-harbor-roast.jpg)](https://whystrohm.com/shotkit/examples/harbor-roast/board.html) | [![The Ridgeline Electric board](docs/images/example-ridgeline-electric.jpg)](https://whystrohm.com/shotkit/examples/ridgeline-electric/board.html) | [![The WhyStrohm launch board](docs/images/example-whystrohm-launch.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-launch/board.html) |
+
 Six Claude skills and a set of small tools, built by [WhyStrohm](https://whystrohm.com).
 Free and open source under Apache 2.0. Nothing ships with a key.
 
+## Why
+
+An image or video generator makes one clip at a time. A 30-second video is eight shots
+that have to agree: the same person, the same room, the same light, the same brand, and
+text that fits the picture. Prompted one at a time, shot five does not match shot two,
+the brand colour drifts, and nobody looks at a frame until it is in the edit.
+
+Shotkit does the part that comes before generation:
+
+- **Plans every shot** against a story framework: length, framing, motion and on-screen text.
+- **Locks what must not change.** One character, place, light and grade for the whole
+  video, and your brand's colours and type, pinned by hash.
+- **Writes a prompt per shot** for ten image and video generators, each in that model's
+  own format.
+- **Checks every frame** against its shot and the brand, and says what to fix. Only that
+  shot is redone.
+- **Uses your own footage first.** Point it at a folder of photos and clips. It looks at
+  each one, places it, and marks only what is missing for a generator to fill.
+- **Puts it all on one board** that opens in your browser, with copy buttons for any model.
+
+It is not a video generator and it is not an editor. It is the plan the two of them need.
+
 ## Install
+
+In Claude Code:
+
+```
+/plugin install shotkit --marketplace whystrohm/shotkit
+```
+
+Then type a brief:
+
+```
+/shotkit:shotkit 30-second launch video for Harbor Roast, 9:16
+```
+
+That needs Claude Code 2.1.275 or later. On an older version, run
+`/plugin marketplace add whystrohm/shotkit` and then `/plugin install shotkit@shotkit`.
+
+Or use the installer, which also gives you the shorter `/shotkit` command:
 
 ```bash
 git clone https://github.com/whystrohm/shotkit.git
 cd shotkit && ./install.sh
 ```
 
-Restart Claude Code and type a brief:
-
-```
-/shotkit 30-second launch video for Harbor Roast, 9:16
-```
-
-Shotkit plans the shots, writes the prompts and opens the board in your browser. There is
-nothing else to set up. The installer makes a private Python environment for the
-validators, so `pip` and your system Python are left alone.
+Either way, Shotkit plans the shots, writes the prompts and opens the board in your
+browser. There is nothing else to set up. The checks make their own private Python
+environment, so `pip` and your system Python are left alone.
 
 ![The Shotkit board: a timeline, a contact sheet of every shot with its frame and verdict, and the next step](docs/images/board.jpg)
 

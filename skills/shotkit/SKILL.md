@@ -21,10 +21,22 @@ type a brief and a browser tab opens with every shot on it.
 
 ## Where the tools are
 
-`~/.claude/shotkit-tools/sk` after `./install.sh`. A `--project` install puts it at
-`./.claude/shotkit-tools/sk`, and a repo clone has it at `tools/sk`. Use whichever exists,
-and write it as `SK` below. It needs no setup: the checks make their own Python
-environment the first time they run.
+Use the first of these that exists, and write it as `SK` below:
+
+| Installed how | `SK` | Brand packs |
+|---|---|---|
+| `./install.sh` | `~/.claude/shotkit-tools/sk` | `~/.claude/shotkit-brand-packs/` |
+| `./install.sh --project` | `./.claude/shotkit-tools/sk` | `./.claude/shotkit-brand-packs/` |
+| As a plugin, or from a clone | `tools/sk`, two folders above this skill's own folder | `brand-packs/`, beside `tools/` |
+
+Where another Shotkit skill writes `~/.claude/shotkit-tools/sk` or
+`~/.claude/shotkit-brand-packs/`, use the row that matches this install.
+
+If none exists, the skills were copied without the tools. Tell the user, and offer to run
+`git clone https://github.com/whystrohm/shotkit.git && cd shotkit && ./install.sh`.
+
+`SK` needs no setup: the checks make their own Python environment the first time they
+run.
 
 ## Steps
 
