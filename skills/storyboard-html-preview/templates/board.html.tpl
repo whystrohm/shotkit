@@ -187,6 +187,7 @@ body[data-safe="on"] .safe, body[data-safe-peek] .frame[data-moving] .safe { dis
 .ov[data-case="upper"] .ov__t { text-transform: uppercase; letter-spacing: calc(var(--ls) + .045em); }
 .ov__t { display: block; }
 .ov__l { display: block; text-wrap: balance; }
+.ov__t[data-rows] .ov__l { white-space: nowrap; }
 /* The words that carry the line. They keep the line's colour and get a bar in the accent
    under them, which reads over any picture. On a flat dark frame an overlay can ask for
    the words themselves to take the accent colour instead. */
@@ -535,7 +536,10 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     if (treat === "lockup") { node.appendChild(document.createTextNode(text)); return node; }
     if (o.kicker) node.appendChild(el("span", { class: "ov__k", text: o.kicker }));
     var body = el("span", { class: "ov__t" });
-    lines(text).forEach(function (line) {
+    var rows = lines(text);
+    // Sentences set one per line stay on one line each; the group is scaled until they fit.
+    if (rows.length > 1) body.setAttribute("data-rows", "");
+    rows.forEach(function (line) {
       var row = el("span", { class: "ov__l" }), at = o.emphasis ? line.indexOf(o.emphasis) : -1;
       if (at < 0) row.textContent = line;
       else { row.appendChild(document.createTextNode(line.slice(0, at))); row.appendChild(el("em", { text: o.emphasis })); row.appendChild(document.createTextNode(line.slice(at + o.emphasis.length))); }
@@ -566,7 +570,9 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
       var maxH = H * (pos === "center" || pos === "custom" ? .56 : pos === "left-third" || pos === "right-third" ? .8 : .36);
       var maxW = pos === "custom" ? W * .86 : g.clientWidth;
       // A word that cannot break (a web address) makes the group wider than its column, so it is scaled until it fits.
-      while (scale > .3 && (g.scrollWidth > maxW + 1 || g.offsetHeight > maxH)) { scale -= .05; g.style.setProperty("--s", scale.toFixed(2)); }
+      var rows = g.querySelectorAll(".ov__l, .ov[data-treat='lockup']");
+      var wide = function () { for (var i = 0; i < rows.length; i++) if (rows[i].scrollWidth > rows[i].clientWidth + 1) return true; return g.scrollWidth > maxW + 1; };
+      while (scale > .3 && (wide() || g.offsetHeight > maxH)) { scale -= .05; g.style.setProperty("--s", scale.toFixed(2)); }
     });
   }
   var pending = [];
