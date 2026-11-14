@@ -188,6 +188,9 @@ def build_input(schema: dict, prompt: str, aspect: str, params: dict, frame: Pat
             body[end_key] = data_url(end_frame)
         if "duration" in props:
             body["duration"] = pick_duration(props["duration"], seconds)
+        # A clip is a silent picture. A model that can add sound bills more for it.
+        if "generate_audio" in props:
+            body["generate_audio"] = False
     return body
 
 
