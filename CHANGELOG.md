@@ -4,6 +4,23 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Added
+
+- **Start from your own photos and clips.** `sk media scan <folder> --out output/` lists
+  every photo and clip, with thumbnails Claude looks at one by one before it plans.
+  The plan puts each file on the shot it fits, marks what is missing as a gap, and
+  `sk media place` copies each file to its shot. Originals are never moved or changed.
+  Guide: `docs/own-media.md`.
+- **Gaps and bridges.** A shot can say `source: generate`, with the reason. With a
+  `start` and an `end` shot it is a bridge: `sk generate` sends the last frame of one
+  shot and the first frame of the next to a video model that takes an end frame.
+  Shots on your own media are never generated.
+- **A media tray on the board.** Every file, what Claude saw in it, and the shot it is
+  on. On a live board, drop photos and clips anywhere on the page to add them. A live
+  board now starts on an empty folder.
+- The live board plays MOV, M4V and WebM clips as well as MP4, and answers a video
+  player's range requests so a long clip can be scrubbed.
+
 ## [3.3.0] - 2026-11-13
 
 Shotkit can now make the frames and the clips, on fal.ai with your own key.

@@ -132,6 +132,35 @@
             ]
           },
           "rationale": { "type": "string", "minLength": 1 },
+          "source": {
+            "description": "Optional. Where this shot's picture comes from when the run starts from the user's own photos and clips. Absent means the usual route: a prompt, then a frame. Read by tools/media.py, tools/board.py and tools/generate.py.",
+            "oneOf": [
+              {
+                "type": "object",
+                "required": ["type", "media"],
+                "additionalProperties": false,
+                "properties": {
+                  "type": { "const": "own" },
+                  "media": { "type": "string", "pattern": "^m[0-9]{2,4}$", "description": "The id of a photo or clip in media/media.json." },
+                  "in": { "type": "number", "minimum": 0, "description": "For a clip: the second the shot starts on." },
+                  "out": { "type": "number", "exclusiveMinimum": 0, "description": "For a clip: the second the shot ends on." }
+                }
+              },
+              {
+                "type": "object",
+                "required": ["type", "why"],
+                "additionalProperties": false,
+                "properties": {
+                  "type": { "const": "generate" },
+                  "why": { "type": "string", "minLength": 1, "description": "What the user's media does not show, in one sentence." },
+                  "model": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "description": "The generator recommended for this gap. Must match an id in visual-prompt-forge/adapters/_capabilities.json." },
+                  "start": { "type": "string", "pattern": "^shot_[0-9]{2,3}$", "description": "For a bridge: the shot whose last frame this clip starts on." },
+                  "end": { "type": "string", "pattern": "^shot_[0-9]{2,3}$", "description": "For a bridge: the shot whose first frame this clip ends on." }
+                },
+                "dependentRequired": { "start": ["end"], "end": ["start"] }
+              }
+            ]
+          },
           "assets": {
             "type": "object",
             "description": "Optional. Frames associated with this shot. Read by tools/shots-to-html.py and tools/validate_provenance.py; both fall back to the frames/round-N/{shot_id}.{ext} path convention when this block is absent. Added in 1.1, given content hashes and critique back-references in 1.2.",

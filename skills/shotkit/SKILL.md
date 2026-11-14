@@ -1,6 +1,6 @@
 ---
 name: shotkit
-description: Run the whole Shotkit pipeline from one line of brief and open the board. Use when the user types /shotkit, or asks to "plan a video", "storyboard this and show me", "make a shot plan with prompts", or wants a storyboard, the prompts for their image or video generator and one page to see it all on. Plans the shots, writes the prompts, renders the board and opens it in a browser. For one step only, such as prompts for an existing shots.json or a check of one frame, use that step's own skill.
+description: Run the whole Shotkit pipeline from one line of brief and open the board. Use when the user types /shotkit, or asks to "plan a video", "storyboard this and show me", "make a shot plan with prompts", or wants a storyboard, the prompts for their image or video generator and one page to see it all on. Also use when the user points at a folder of their own photos and clips, or says "use my footage", "make a video from these", "what can we make from this shoot". Plans the shots, writes the prompts, renders the board and opens it in a browser. For one step only, such as prompts for an existing shots.json or a check of one frame, use that step's own skill.
 ---
 
 # Shotkit
@@ -112,6 +112,58 @@ Keep it short. The board carries the detail.
   Say the three ways: paste each prompt into a generator, drop frames on the live board,
   or say "make the frames on fal" to have Shotkit make them with their fal key.
 
+## Starting from the user's own photos and clips
+
+Use this route when the brief names a folder, when files were dropped on the board
+(`output/media/media.json` exists), or when the user says the footage is theirs. The
+plan is built around what they have. A generator only fills what is missing.
+
+1. **List it.**
+   ```bash
+   SK media scan <their folder> --out output/
+   ```
+   Their files are never moved or changed. Each one gets an id (`m01`, `m02`) and a
+   thumbnail in `output/media/thumbs/`. A clip gets three: first, middle and last frame.
+2. **Look at every file.** Read each thumbnail with the Read tool. Do not plan from file
+   names. For each item write one or two plain sentences into its `note` in
+   `output/media/media.json`: what is in it, where the subject sits, what in it is
+   usable and what is not (soft focus, a logo, a face, shake, bad light). For a clip say
+   which seconds are the good ones. Describe only what you can see.
+3. **Plan around it.** Follow `storyboard-architect`, with these additions in
+   `shots.json`:
+   - A shot that uses their media: `"source": {"type": "own", "media": "m03"}`. For a
+     clip add `"in"` and `"out"` in seconds, cut to the shot's length.
+   - Put the strongest picture where the framework needs it most, usually the first shot
+     and the payoff. Not every file has to be used. Leave weak ones out.
+   - A shot the story needs and the folder does not have:
+     `"source": {"type": "generate", "why": "<what is missing>", "model": "flux"}`.
+     Keep gaps few. Each one costs the user money or a reshoot.
+   - Two of their shots that do not cut together (a jump in place, scale or light): add
+     a short bridge between them,
+     `"source": {"type": "generate", "why": "...", "model": "kling", "start": "shot_03", "end": "shot_05"}`.
+     The clip starts on the last frame of `start` and ends on the first frame of `end`.
+   - Write each `subject` from what the picture shows, so the check has something true
+     to compare with.
+   - Take the series lock (place, light, grade) from their footage, not from the brand
+     pack's defaults, so generated shots match what was shot.
+4. **Place it and open the board.**
+   ```bash
+   SK media place output/
+   SK validate output/
+   SK board output/ --serve --open
+   ```
+5. **Write prompts for the gaps only.** Follow `visual-prompt-forge` for shots whose
+   source is `generate`. For a gap, describe the missing picture in the look of the
+   user's footage. For a bridge, write a motion prompt: how the camera or the subject
+   gets from the first picture to the second, and nothing that is in neither.
+6. **Report.** How many of their files were used and on which shots, which were left out
+   and why in a few words, and the gaps with the reason for each. The next step is the
+   one on the board: fill the gaps. Offer the three ways: shoot it, make it in their own
+   generator, or `SK generate` with their fal key. The cost rule below applies.
+
+If the folder is empty or holds nothing Shotkit can read, say so and stop. Do not plan a
+generated video and call it theirs.
+
 ## Later turns
 
 The user comes back with frames, or asks for changes. Do the step and refresh the board
@@ -124,6 +176,8 @@ every time, without being asked:
 | "add Midjourney", or names another generator | `visual-prompt-forge` for that generator, then `SK board output/` |
 | "make the frames", "generate", names fal | See "Making frames and clips" below |
 | "make the clips", "animate these" | `SK generate output/ --model kling`, same rule |
+| "use my photos", names a folder, or files were dropped on the board | See "Starting from the user's own photos and clips" |
+| "fill the gaps", "make the bridges" | `SK generate output/ --model flux` for stills, `--model kling` for bridges, same rule. Shots on the user's own media are skipped. |
 | "open the board" | `SK board output/ --open` |
 | "send this to the client" | `SK preview output/`, and give them `output/preview.html` |
 
@@ -155,6 +209,8 @@ models, and `--model <fal id> --prompts <generator>` sends that generator's prom
 
 - The board opens without the user asking. That is the point of this skill.
 - Never claim a frame exists that is not on disk.
+- Never move, rename, edit or delete the user's own media. Shotkit works on copies.
+- Never describe a photo or clip you have not looked at.
 - Never spend the user's money without a yes. A generation run costs them on fal.
 - Never put a fact, a number, a price or a customer on screen that the brief did not give.
 - Never overwrite a finished run.

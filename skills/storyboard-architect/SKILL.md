@@ -301,6 +301,12 @@ Must validate against `templates/shots.schema.json`. The structure is:
 Write `1.2` for new storyboards. `1.0` and `1.1` files stay valid; the array form of
 `on_screen_text` and the hashed `assets` block need `1.2`.
 
+A shot may also carry a `source`, when the run starts from the user's own photos and
+clips. `{"type": "own", "media": "m03", "in": 0.5, "out": 3.5}` puts their file on the
+shot. `{"type": "generate", "why": "...", "model": "flux"}` marks a gap. Adding `"start"`
+and `"end"` shot ids makes it a bridge clip between two of their shots. The `shotkit`
+skill says when to use each. Leave `source` out for an ordinary generated storyboard.
+
 ### `text-overlays.json`
 
 Must validate against `templates/text-overlays.schema.json`. The structure is:

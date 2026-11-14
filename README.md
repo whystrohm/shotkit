@@ -89,6 +89,7 @@ output/
 ├── text-overlays.json         # On-screen text + timing
 ├── brand-lock.snapshot.md     # Frozen brand state at generation time
 ├── prompts/round-1/           # One file per generator: flux.txt, kling.txt and eight more
+├── media/                     # Your own photos and clips, listed, if you start from them
 ├── frames/round-1/            # The frames: yours, or made with `sk generate`
 ├── clips/round-1/             # Video clips, one per shot, if you make them
 ├── board.html                 # The board. Where you work. Opens by itself.
@@ -98,6 +99,18 @@ output/
 
 Plain files an editor, an agency or a developer can act on. Nothing is uploaded and there is
 no account. Everything is filed by round and shot, so round 2 never overwrites round 1.
+
+### Start from footage you already have
+
+```
+/shotkit a 30-second video from the photos and clips in ~/Desktop/shoot, 9:16
+```
+
+Claude looks at every photo and clip, puts each one on the shot it fits, and marks what
+is missing. A generator fills only the gaps, and a bridge clip can join two of your
+shots that do not cut together. Or start a live board on an empty folder and drop the
+files on the page. Your originals are never moved or changed.
+See [Start from your own photos and clips](docs/own-media.md).
 
 ---
 
@@ -150,6 +163,7 @@ carry every shot, length and line of text. See
 | | |
 |---|---|
 | [Quickstart](https://whystrohm.com/shotkit/docs/quickstart) | A first run, in six steps |
+| [Start from your own photos and clips](docs/own-media.md) | Scan a folder, place each file, fill the gaps |
 | [Frames and clips with fal.ai](docs/generate-with-fal.md) | Connect your key, pick a model |
 | [The check and revise loop](docs/the-qa-loop.md) | How a frame is sent back and fixed |
 | [Brand locks](docs/brand-lock-anatomy.md) | What a brand lock holds, and how to make one |

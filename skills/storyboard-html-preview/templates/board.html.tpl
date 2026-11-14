@@ -172,7 +172,7 @@ body[data-text="off"] .ov { opacity: 0; }
 .frame[data-over] .drop { display: grid; }
 
 /* Sections */
-.sec { padding: 34px var(--gut) 0; }
+.sec { padding: 34px var(--gut) 0; scroll-margin-top: 110px; }
 .sec > h2 { font: 620 14px/1 var(--sans); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
 .sec > h2 small { font: 400 11.5px/1 var(--mono); color: var(--dim); }
 .grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
@@ -219,6 +219,34 @@ body[data-open] { overflow: hidden; }
 .panel__body { flex: 1; overflow-y: auto; display: grid; grid-template-columns: var(--pc, minmax(0, 340px)) minmax(0, 1fr); align-items: start; }
 .pv { position: sticky; top: 0; padding: 16px; }
 .pv .frame { border-radius: 8px; border: 1px solid var(--line2); }
+.media { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.mi { border: 1px solid var(--line); border-radius: var(--r); background: var(--p1); overflow: hidden; display: flex; flex-direction: column; }
+.mi[data-unused] { opacity: .62; }
+.mi__pic { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #000; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 1px; }
+.mi__pic img { width: 100%; height: 100%; min-width: 0; object-fit: contain; display: block; }
+.mi__pic[data-n="3"] img { object-fit: cover; }
+.mi__pic .tag { position: absolute; left: 8px; top: 8px; background: rgba(8,9,11,.8); backdrop-filter: blur(6px); }
+.mi__pic time { position: absolute; right: 8px; bottom: 8px; padding: 3px 6px; border-radius: 4px; background: rgba(8,9,11,.8); font: 500 10.5px/1 var(--mono); color: var(--ink); }
+.mi__b { padding: 10px 11px 12px; display: grid; gap: 7px; }
+.mi__h { display: flex; gap: 8px; align-items: baseline; font: 600 12px/1.2 var(--mono); }
+.mi__h span { flex: 1; min-width: 0; color: var(--mut); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mi__h small { color: var(--dim); font: 400 10.5px/1 var(--mono); white-space: nowrap; }
+.mi__n { font-size: 12.5px; line-height: 1.45; color: var(--ink); }
+.mi__n[data-none] { color: var(--dim); }
+.mi__w { display: flex; gap: 5px; flex-wrap: wrap; }
+.mi__w button.tag { cursor: pointer; }
+.dropz { border: 1.5px dashed var(--line2); border-radius: var(--r); padding: 26px 20px; text-align: center; color: var(--mut); font-size: 13.5px; line-height: 1.5; margin-bottom: 12px; transition: border-color .15s, background .15s, color .15s; }
+.dropz b { display: block; color: var(--ink); font: 620 15.5px/1.3 var(--sans); margin-bottom: 5px; }
+.dropz .btn { margin-top: 13px; }
+.dropz[data-small] { padding: 16px 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 16px; }
+.dropz[data-small] b { margin: 0; font-size: 14px; } .dropz[data-small] .btn { margin: 0; } .dropz[data-small] .up { margin: 0; flex-basis: 100%; min-height: 0; }
+.dropz p { max-width: 520px; margin: 0 auto; }
+body[data-drag] .dropz { border-color: var(--acc); background: rgba(255,90,43,.1); color: var(--ink); }
+.up { margin-top: 10px; font: 500 11.5px/1.5 var(--mono); color: var(--mut); min-height: 1.5em; }
+.srcb { display: grid; gap: 6px; padding: 11px 13px; border: 1px solid var(--line2); border-radius: 8px; background: var(--p2); font-size: 13px; line-height: 1.45; }
+.srcb .lab { display: flex; align-items: center; gap: 8px; }
+.srcb .lab i { width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
+.srcb p { color: var(--mut); }
 .vid { margin-top: 12px; }
 .vid video { display: block; width: 100%; border-radius: 8px; border: 1px solid var(--line2); background: #000; aspect-ratio: var(--ar); }
 .vid .lab { display: block; margin-bottom: 7px; }
@@ -466,6 +494,67 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
   var pending = [];
   function fitLater(box) { pending.push(box); requestAnimationFrame(function () { var list = pending; pending = []; list.forEach(fit); }); }
   function fitAll() { document.querySelectorAll(".frame").forEach(fit); }
+  function srcTag(s) {
+    if (!s.source) return null;
+    if (s.source.type === "own") return el("span", { class: "tag tag--r", title: "Your own media" + (s.source.media ? ", " + s.source.media : ""), text: "Yours" });
+    return el("span", { class: "tag tag--r", title: s.source.why || "A gap to fill with a generator", text: s.source.start && s.source.end ? "Bridge" : s.frames.length ? "Made" : "To make" });
+  }
+  function mediaById(id) { var m = D.media.items; for (var i = 0; i < m.length; i++) if (m[i].id === id) return m[i]; return null; }
+  function sourceBlock(s) {
+    var src = s.source; if (!src) return null;
+    if (src.type === "own") {
+      var m = mediaById(src.media), cut = src.in != null && src.out != null ? fmt(src.in) + " to " + fmt(src.out) + "s of it" : null;
+      return el("div", { class: "srcb", style: "--c:var(--accept)" }, el("div", { class: "lab" }, el("i"), "Your " + (m && m.kind === "clip" ? "clip" : "photo") + " · " + (src.media || "")),
+        el("div", { text: (m && m.name ? m.name : "not in the media list") + (cut ? " · " + cut : "") }), m && m.note ? el("p", { text: m.note }) : null);
+    }
+    var bridge = src.start && src.end;
+    return el("div", { class: "srcb", style: "--c:var(--revise)" }, el("div", { class: "lab" }, el("i"), bridge ? "Bridge to make" : "Gap to make" + (src.model ? " · " + src.model : "")),
+      src.why ? el("div", { text: src.why }) : null,
+      bridge ? el("p", { text: "The clip starts on the last frame of " + src.start + " and ends on the first frame of " + src.end + ", so the cut between them disappears." }) : null);
+  }
+  var upQueue = [], upBusy = false, upLine = null;
+  function upload(files) {
+    for (var i = 0; i < files.length; i++) upQueue.push(files[i]);
+    if (!upBusy) nextUp(0, 0);
+  }
+  function nextUp(done, failed) {
+    var file = upQueue.shift();
+    if (!file) { upBusy = false; if (upLine) upLine.textContent = done + " added" + (failed ? ", " + failed + " refused" : "") + ". Ask Claude to look at them and plan."; return; }
+    upBusy = true; if (upLine) upLine.textContent = "Adding " + file.name + " (" + bytes(file.size) + ")" + (upQueue.length ? ", " + upQueue.length + " to go" : "");
+    fetch("/__media?name=" + encodeURIComponent(file.name), { method: "POST", headers: { "Content-Type": file.type || "application/octet-stream" }, body: file })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (r) { if (!r.ok) toast(file.name + ": " + (r.j.error || "could not be added"), true); nextUp(done + (r.ok ? 1 : 0), failed + (r.ok ? 0 : 1)); })
+      .catch(function () { toast("The live board is not running any more", true); upQueue = []; upBusy = false; });
+  }
+  function mediaSection() {
+    var items = D.media.items; if (!items.length && !D.live) return null;
+    var used = items.filter(function (m) { return m.shots.length; }).length, seen = items.filter(function (m) { return m.note; }).length;
+    var sec = el("section", { class: "sec", id: "media" }, el("h2", null, "Your media",
+      el("small", { text: items.length ? items.length + (items.length === 1 ? " file · " : " files · ") + seen + " looked at · " + used + " on a shot" : "nothing added yet" })));
+    if (D.live) {
+      var input = el("input", { type: "file", multiple: true, accept: "image/*,video/*", hidden: true });
+      input.addEventListener("change", function () { if (input.files.length) upload(input.files); input.value = ""; });
+      upLine = el("div", { class: "up", role: "status" });
+      sec.appendChild(el("div", { class: "dropz", "data-small": items.length ? true : null }, el("b", { text: items.length ? "Drop more photos and clips anywhere on this page" : "Drop photos and clips anywhere on this page" }),
+        items.length ? null : el("p", { text: "They are saved to media/inbox/ in this folder and listed here. Nothing leaves this computer." }),
+        el("button", { class: "btn", type: "button", onclick: function () { input.click(); } }, "Choose files"), input, upLine));
+    }
+    if (items.length) sec.appendChild(el("div", { class: "media" }, items.map(function (m) {
+      var meta = [m.width && m.height ? m.width + "×" + m.height : null, m.aspect].filter(Boolean).join(" · ");
+      return el("article", { class: "mi", "data-unused": m.shots.length || !D.shots.length ? null : true },
+        el("div", { class: "mi__pic", "data-n": String(m.thumbs.length) },
+          m.thumbs.map(function (t) { return el("img", { src: t, alt: "", loading: "lazy", decoding: "async" }); }),
+          el("span", { class: "tag tag--r", text: m.kind === "clip" ? "Clip" : "Photo" }),
+          m.duration_s ? el("time", { text: fmt(m.duration_s) + "s" }) : null),
+        el("div", { class: "mi__b" },
+          el("div", { class: "mi__h" }, el("b", { text: m.id }), el("span", { text: m.name || "", title: m.name || "" }), el("small", { text: meta })),
+          el("div", { class: "mi__n", "data-none": m.note ? null : true, text: m.note || "Not looked at yet." }),
+          el("div", { class: "mi__w" }, m.shots.length ? m.shots.map(function (id) {
+            return byId(id) ? el("button", { class: "tag", type: "button", style: "--c:var(--accept)", onclick: function () { open(id); } }, el("i"), id.replace("shot_", "Shot ")) : null; })
+            : D.shots.length ? el("span", { class: "tag tag--r", text: "Not used" }) : null)));
+    })));
+    return sec;
+  }
   function wireDrop(box, s) {
     box.addEventListener("dragover", function (e) { e.preventDefault(); box.setAttribute("data-over", ""); });
     box.addEventListener("dragleave", function () { box.removeAttribute("data-over"); });
@@ -512,18 +601,26 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
         el("div", { class: "lab", text: "Storyboard" + (D.shotkit_version ? " · Shotkit " + D.shotkit_version : "") }),
         el("h1", { text: D.project.title }),
         el("div", { class: "facts" },
-          el("span", null, el("b", { text: D.project.duration_s + "s" }), " length"),
-          el("span", null, el("b", { text: D.project.aspect }), " aspect"),
+          D.project.duration_s ? el("span", null, el("b", { text: D.project.duration_s + "s" }), " length") : null,
+          D.shots.length ? el("span", null, el("b", { text: D.project.aspect }), " aspect") : null,
           el("span", null, el("b", { text: String(D.shots.length) }), " shots"),
+          D.media.items.length ? el("span", null, el("b", { text: String(D.media.items.length) }), " of your own files") : null,
           D.project.framework ? el("span", null, el("b", { text: D.project.framework }), " framework") : null,
-          el("span", null, "run ", el("b", { text: D.run.id })))),
+          D.shots.length ? el("span", null, "run ", el("b", { text: D.run.id })) : null)),
       next);
 
     var stats = el("section", { class: "stats", "aria-label": "Progress" },
       stat("Planned", D.shots.length, "var(--ink)"), stat("Prompted", prompted, "var(--mut)"),
       stat("Framed", framed, "var(--check)"), stat("Accepted", counts.accept, "var(--accept)"));
 
-    app.appendChild(bar); app.appendChild(head); app.appendChild(stats);
+    app.appendChild(bar); app.appendChild(head);
+    if (!D.shots.length) {
+      if (D.warnings.length) app.appendChild(el("ul", { class: "note" }, D.warnings.map(function (w) { return el("li", { text: w }); })));
+      var only = mediaSection(); if (only) app.appendChild(only);
+      app.appendChild(el("footer", { class: "foot" }, el("span", { text: "Shotkit. The plan for a video." })));
+      return;
+    }
+    app.appendChild(stats);
     if (D.warnings.length) app.appendChild(el("ul", { class: "note" }, D.warnings.map(function (w) { return el("li", { text: w }); })));
     app.appendChild(timeline());
 
@@ -544,12 +641,13 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
         el("div", { class: "card__state" }, el("span", { class: "tag", style: "--c:" + STATUS[s.status].color }, el("i"), STATUS[s.status].label),
           s.frames.length > 1 ? el("span", { class: "tag tag--r", title: "Round " + s.frames[s.frames.length - 1].round, text: "R" + s.frames[s.frames.length - 1].round }) : null,
           s.clips && s.clips.length ? el("span", { class: "tag tag--r", title: "This shot has a clip", text: "Clip" }) : null,
-          ),
+          srcTag(s)),
         el("div", { class: "card__meta" }, el("b", { text: s.n }), el("span", { text: s.beat || "" }), el("time", { text: fmt(s.start) + " to " + fmt(s.end) + "s" })),
         el("div", { class: "card__sub", text: s.subject || "" }));
       cards[s.id] = card; sheet.appendChild(card);
     });
     app.appendChild(sheet);
+    var mine = mediaSection(); if (mine) app.appendChild(mine);
 
     var L = D.series_lock;
     app.appendChild(el("section", { class: "sec" }, el("h2", null, "Series lock", el("small", { text: "true for every shot" })),
@@ -701,11 +799,12 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     if (s.clips && s.clips.length) {
       var c = s.clips[s.clips.length - 1];
       pv.appendChild(el("div", { class: "vid" }, el("span", { class: "lab", text: "Clip · round " + c.round }),
-        el("video", { src: c.src, controls: true, loop: true, muted: true, playsinline: true, preload: "metadata" })));
+        el("video", { src: c.src + (s.source && s.source.in != null && s.source.out != null ? "#t=" + s.source.in + "," + s.source.out : ""), controls: true, loop: true, muted: true, playsinline: true, preload: "metadata" })));
     }
 
     // right: the detail
     var pd = el("div", { class: "pd" });
+    var sb = sourceBlock(s); if (sb) pd.appendChild(el("div", { class: "blk" }, sb));
     pd.appendChild(el("div", { class: "blk" },
       el("div", { class: "spec" }, [["Framing", s.framing], ["Angle", s.angle], ["Motion", s.motion], ["DOF", s.depth_of_field]].filter(function (x) { return x[1]; }).map(function (x) { return el("span", null, el("small", { text: x[0] }), x[1]); })),
       el("p", { class: "lead", text: s.subject || "" }),
@@ -772,8 +871,19 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
   var refit; window.addEventListener("resize", function () { clearTimeout(refit); refit = setTimeout(fitAll, 120); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
   panel.addEventListener("transitionend", fitAll);
-  window.addEventListener("dragover", function (e) { e.preventDefault(); });
-  window.addEventListener("drop", function (e) { e.preventDefault(); });
+  var dragOff;
+  window.addEventListener("dragover", function (e) {
+    e.preventDefault();
+    if (D.live) { document.body.setAttribute("data-drag", ""); clearTimeout(dragOff); dragOff = setTimeout(function () { document.body.removeAttribute("data-drag"); }, 180); }
+  });
+  // A file dropped on a shot's frame is that shot's frame. Anywhere else, it joins the media.
+  window.addEventListener("drop", function (e) {
+    e.preventDefault(); document.body.removeAttribute("data-drag");
+    if (D.live && e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+      upload(e.dataTransfer.files);
+      var tray = document.getElementById("media"); if (tray) tray.scrollIntoView({ block: "nearest" });
+    }
+  });
 
   if (D.live) {
     // A reload should feel like an update, not a new page: no entrance, same scroll.
@@ -793,7 +903,7 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     var stamp = null;
     setInterval(function () {
       fetch("/__stamp", { cache: "no-store" }).then(function (r) { return r.text(); }).then(function (t) {
-        if (stamp === null) stamp = t; else if (t !== stamp) location.reload();
+        if (stamp === null) stamp = t; else if (t !== stamp && !upBusy) location.reload();
       }).catch(function () {});
     }, 1500);
   }

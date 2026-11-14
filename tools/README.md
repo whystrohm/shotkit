@@ -226,6 +226,24 @@ selftest for an unreviewed tree, a partly reviewed tree, and an all-ACCEPT tree.
 
 ## Rendering
 
+### `media.py`
+
+Starts a storyboard from photos and clips the user already has. Standard library only;
+`ffmpeg` and `ffprobe` are used when installed, and are what reads a clip.
+
+```bash
+tools/sk media scan ~/Desktop/shoot --out output/   # list every file, make thumbnails
+tools/sk media list output/                         # what was found, what Claude saw, where it went
+tools/sk media place output/                        # copy each file to the shot the plan gave it
+tools/sk media --selftest
+```
+
+`scan` never moves or changes a file. Scanning again adds only new files and keeps ids
+and notes. `place` reads each shot's `source` in `shots.json`, copies a photo to
+`frames/round-1/` and a clip to `clips/round-1/` with its first frame beside it, and
+never replaces a frame the critic has reviewed. See
+[Start from your own photos and clips](../docs/own-media.md).
+
 ### `shots-to-html.py`
 
 Renders an output folder into a single `preview.html`.

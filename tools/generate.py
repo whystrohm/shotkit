@@ -70,6 +70,8 @@ EXT_MIME = {"png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg", "webp
 
 # The names fal models use for the picture a video starts from, most common first.
 START_IMAGE_KEYS = ("start_image_url", "image_url", "first_frame_url", "first_frame_image", "image")
+# The names fal models use for the picture a video ends on.
+END_IMAGE_KEYS = ("tail_image_url", "end_image_url", "last_frame_url", "last_frame_image", "end_image")
 # project aspect -> fal's named image sizes, for models that take image_size.
 IMAGE_SIZES = {
     "16:9": "landscape_16_9", "9:16": "portrait_16_9", "1:1": "square_hd",
@@ -145,8 +147,13 @@ def is_video(schema: dict) -> bool:
     return any(key in schema["properties"] for key in START_IMAGE_KEYS)
 
 
+def data_url(frame: Path) -> str:
+    mime = EXT_MIME.get(frame.suffix.lstrip(".").lower(), "image/png")
+    return f"data:{mime};base64," + base64.b64encode(frame.read_bytes()).decode("ascii")
+
+
 def build_input(schema: dict, prompt: str, aspect: str, params: dict, frame: Path | None,
-                seconds: float) -> dict:
+                seconds: float, end_frame: Path | None = None) -> dict:
     """Fill the inputs this model accepts. Anything it does not list is left out."""
     props = schema["properties"]
     body: dict = {}
@@ -175,8 +182,10 @@ def build_input(schema: dict, prompt: str, aspect: str, params: dict, frame: Pat
     if start_key:
         if frame is None:
             raise Stop("this is a video model and the shot has no frame to start from")
-        mime = EXT_MIME.get(frame.suffix.lstrip(".").lower(), "image/png")
-        body[start_key] = f"data:{mime};base64," + base64.b64encode(frame.read_bytes()).decode("ascii")
+        body[start_key] = data_url(frame)
+        end_key = next((k for k in END_IMAGE_KEYS if k in props), None)
+        if end_frame is not None and end_key:
+            body[end_key] = data_url(end_frame)
         if "duration" in props:
             body["duration"] = pick_duration(props["duration"], seconds)
     return body
@@ -299,7 +308,7 @@ def parse_params(text: str) -> dict:
 
 
 def existing(out_dir: Path, kind: str, round_no: int, shot_id: str) -> Path | None:
-    exts = IMAGE_EXTS if kind == "frames" else ("mp4",)
+    exts = IMAGE_EXTS if kind == "frames" else ("mp4", "mov", "m4v", "webm")
     for ext in exts:
         path = out_dir / kind / f"round-{round_no}" / f"{shot_id}.{ext}"
         if path.exists():
@@ -313,6 +322,16 @@ def newest_frame(out_dir: Path, shot_id: str) -> Path | None:
         if path:
             return path
     return None
+
+
+def bridge_frame(out_dir: Path, shot_id: str, last: bool) -> Path | None:
+    """The frame a bridge starts or ends on: a clip's last frame if one was kept, else the shot's frame."""
+    if not SHOT_ID_RE.match(shot_id):
+        return None
+    kept = out_dir / "media" / "ends" / f"{shot_id}.jpg"
+    if last and kept.exists():
+        return kept
+    return newest_frame(out_dir, shot_id)
 
 
 def load_models() -> dict:
@@ -364,6 +383,18 @@ def plan(out_dir: Path, model: str, prompts_from: str | None, only: set[str] | N
             skipped.append((shot_id, f"already has {have.relative_to(out_dir)}"))
             continue
         frame = newest_frame(out_dir, shot_id) if video else None
+        end_frame = None
+        source = shot.get("source") if isinstance(shot.get("source"), dict) else {}
+        if not video and source.get("type") == "own":
+            skipped.append((shot_id, "uses your own media"))
+            continue
+        if video and source.get("type") == "generate" and source.get("start") and source.get("end"):
+            # A bridge: it starts where one shot ends and ends where the next begins.
+            frame = bridge_frame(out_dir, str(source["start"]), last=True) or frame
+            end_frame = bridge_frame(out_dir, str(source["end"]), last=False)
+            if end_frame is not None and not any(k in schema["properties"] for k in END_IMAGE_KEYS):
+                skipped.append((shot_id, f"{endpoint} takes no end frame, so it cannot bridge two shots. Use one that does."))
+                continue
         if video and frame is None:
             skipped.append((shot_id, "no frame to start the clip from"))
             continue
@@ -371,9 +402,9 @@ def plan(out_dir: Path, model: str, prompts_from: str | None, only: set[str] | N
         jobs.append({
             "shot": shot_id, "round": round_no, "prompt_file": entry["file"],
             "prompt": entry["body"], "params": entry["params"], "frame": frame,
-            "seconds": seconds,
+            "end_frame": end_frame, "seconds": seconds,
             "dest": out_dir / kind / f"round-{round_no}" / shot_id,
-            "input": build_input(schema, entry["body"], aspect, entry["params"], frame, seconds),
+            "input": build_input(schema, entry["body"], aspect, entry["params"], frame, seconds, end_frame),
         })
     return {"endpoint": endpoint, "generator": generator, "video": video, "kind": kind,
             "aspect": aspect, "jobs": jobs, "skipped": skipped}
@@ -383,6 +414,8 @@ def describe(job: dict) -> str:
     shown = {k: v for k, v in job["input"].items() if k != "prompt" and not str(v).startswith("data:")}
     if job["frame"] is not None:
         shown["from"] = job["frame"].name
+    if job.get("end_frame") is not None:
+        shown["to"] = job["end_frame"].name
     return ", ".join(f"{k}={v}" for k, v in shown.items())
 
 
@@ -474,7 +507,7 @@ def selftest() -> int:
                 video = "video" in self.path
                 props = {"prompt": {"type": "string"}}
                 if video:
-                    props.update({"start_image_url": {"type": "string"},
+                    props.update({"start_image_url": {"type": "string"}, "tail_image_url": {"type": "string"},
                                   "duration": {"type": "string", "enum": ["3", "5", "10"]}})
                 else:
                     props.update({"image_size": {"anyOf": [{"enum": ["portrait_16_9", "landscape_16_9"]}]},
@@ -561,6 +594,22 @@ def selftest() -> int:
             checks.append(("and gets the shortest length that covers the shot", sent.get("duration") == "5"))
             execute(run, clips, "test-key", workers=1)
             checks.append(("saves the clip beside the frames", (run / "clips/round-2/shot_02.mp4").exists()))
+
+            # your own media, and a bridge between two shots
+            doc = json.loads((run / "shots.json").read_text())
+            by_id = {s["id"]: s for s in doc["shots"]}
+            by_id["shot_01"]["source"] = {"type": "own", "media": "m01"}
+            by_id["shot_02"]["source"] = {"type": "generate", "why": "joins the two", "start": "shot_01", "end": "shot_01"}
+            (run / "shots.json").write_text(json.dumps(doc))
+            (run / "media/ends").mkdir(parents=True)
+            (run / "media/ends/shot_01.jpg").write_bytes(b"\xff\xd8last")
+            (run / "frames/round-1/shot_01.png").unlink()
+            own = plan(run, "test/image", "flux", {"shot_01"}, replace=True)
+            checks.append(("a shot on your own media is never generated", not own["jobs"] and "your own media" in own["skipped"][0][1]))
+            (run / "frames/round-1/shot_01.png").write_bytes(png)
+            bridge = plan(run, "test/video", "flux", {"shot_02"}, replace=True)["jobs"][0]["input"]
+            checks.append(("a bridge starts on the last frame of one shot", bridge.get("start_image_url", "").startswith("data:image/jpeg;base64,")))
+            checks.append(("and ends on the first frame of the next", bridge.get("tail_image_url", "").startswith("data:image/png;base64,")))
 
             unknown = None
             try:

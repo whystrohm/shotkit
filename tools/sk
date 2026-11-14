@@ -4,6 +4,8 @@
 #   sk board output/ --open      the board, opened in a browser
 #   sk board output/ --serve     a live board on localhost
 #   sk generate output/ --model flux   make the frames on fal.ai with your key
+#   sk media scan <folder> --out output/   start from your own photos and clips
+#   sk media place output/       put each of them on the shot the plan gave it
 #   sk preview output/           the client preview page
 #   sk validate output/          every check a finished storyboard has to pass
 #   sk copy <prompts-file>       copy one prompt to the clipboard
@@ -83,6 +85,7 @@ cmd="${1:-help}"
 case "$cmd" in
   board)    run_tool 0 board.py "$@" ;;
   generate) run_tool 0 generate.py "$@" ;;
+  media)    run_tool 0 media.py "$@" ;;
   preview)  run_tool 0 shots-to-html.py "$@" ;;
   copy)     run_tool 0 copy-prompt.py "$@" ;;
   setup)    setup && echo "shotkit: the checks are ready." ;;
@@ -116,9 +119,9 @@ case "$cmd" in
     done ;;
   *.py)
     case "$cmd" in
-      board.py|generate.py|shots-to-html.py|copy-prompt.py) run_tool 0 "$cmd" "$@" ;;
+      board.py|generate.py|media.py|shots-to-html.py|copy-prompt.py) run_tool 0 "$cmd" "$@" ;;
       *) run_tool 1 "$cmd" "$@" ;;
     esac ;;
-  help|-h|--help) sed -n '2,14p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  help|-h|--help) sed -n '2,16p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) echo "shotkit: unknown command '$cmd'. Try: sk help" >&2; exit 2 ;;
 esac

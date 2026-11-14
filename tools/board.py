@@ -68,6 +68,9 @@ FILE_HEADER = re.compile(r"^#\s*([A-Za-z][A-Za-z -]*?):\s*(.+)$")
 _UNSAFE_FAMILY_CHARS = re.compile(r"[^A-Za-z0-9 _-]")
 
 MIME = {"png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg", "webp": "image/webp"}
+CLIP_EXTS = ("mp4", "mov", "m4v", "webm")
+CLIP_MIME = {"mp4": "video/mp4", "m4v": "video/mp4", "mov": "video/quicktime", "webm": "video/webm"}
+MAX_MEDIA_BYTES = 2 * 1024 * 1024 * 1024
 MAX_FRAME_BYTES = 40 * 1024 * 1024
 
 # What the board counts as the files of a run, in the order it lists them.
@@ -247,11 +250,61 @@ def read_clips(out_dir: Path, shot_id: str) -> list[dict]:
     """Every clip on disk for a shot, oldest round first. Clips are never inlined."""
     clips: list[dict] = []
     for round_no, directory in round_dirs(out_dir, "clips"):
-        path = directory / f"{shot_id}.mp4"
-        if path.exists():
-            rel = str(path.relative_to(out_dir))
-            clips.append({"round": round_no, "path": rel, "src": rel, "bytes": path.stat().st_size})
+        for ext in CLIP_EXTS:
+            path = directory / f"{shot_id}.{ext}"
+            if path.exists():
+                rel = str(path.relative_to(out_dir))
+                clips.append({"round": round_no, "path": rel, "src": rel, "bytes": path.stat().st_size})
+                break
     return clips
+
+
+def read_source(raw) -> dict | None:
+    """
+    Where a shot's picture comes from, when the plan says so.
+
+    own       a photo or clip the user brought, by its id in media/media.json
+    generate  a gap to fill with a generator, with the reason and, for a bridge
+              between two shots, the shots it starts on and ends on
+    """
+    if not isinstance(raw, dict) or raw.get("type") not in ("own", "generate"):
+        return None
+    source = {"type": raw["type"]}
+    for key in ("media", "why", "model", "start", "end"):
+        if isinstance(raw.get(key), str) and raw[key].strip():
+            source[key] = raw[key].strip()
+    for key in ("in", "out"):
+        if isinstance(raw.get(key), (int, float)) and not isinstance(raw.get(key), bool):
+            source[key] = float(raw[key])
+    return source
+
+
+def read_media(out_dir: Path, inline: bool) -> dict:
+    """The user's own photos and clips, as media/media.json lists them."""
+    doc, err = load_json(out_dir / "media" / "media.json")
+    if err or not isinstance(doc, dict):
+        return {"items": [], "sources": []}
+    items = []
+    for raw in doc.get("items") or []:
+        if not isinstance(raw, dict) or not isinstance(raw.get("id"), str):
+            continue
+        thumbs = []
+        for rel in raw.get("thumbs") or []:
+            path = (out_dir / str(rel)).resolve()
+            if out_dir.resolve() not in path.parents or not path.is_file():
+                continue
+            if inline:
+                thumbs.append("data:image/jpeg;base64," + base64.b64encode(path.read_bytes()).decode("ascii"))
+            else:
+                thumbs.append(str(rel))
+        items.append({
+            "id": raw["id"], "name": raw.get("name"), "kind": raw.get("kind"),
+            "width": raw.get("width"), "height": raw.get("height"), "aspect": raw.get("aspect"),
+            "duration_s": raw.get("duration_s"), "bytes": raw.get("bytes"),
+            "note": raw.get("note"), "shots": [s for s in raw.get("shots") or [] if isinstance(s, str)],
+            "thumbs": thumbs,
+        })
+    return {"items": items, "sources": [s for s in doc.get("sources") or [] if isinstance(s, str)]}
 
 
 def frame_entry(out_dir: Path, path: Path, round_no: int, inline: bool) -> dict:
@@ -375,8 +428,10 @@ def shot_status(shot: dict) -> str:
     """
     frames, critiques = shot["frames"], shot["critiques"]
     if not frames:
+        if shot.get("clips"):
+            return "check"  # a bridge is a clip with no still of its own
         return "frame" if shot["prompts"] else "plan"
-    newest = frames[-1]["round"]
+    newest = frames[-1]["round"] if frames else shot["clips"][-1]["round"]
     reviewed = [c for c in critiques if c["round"] == newest]
     if not reviewed:
         return "check"
@@ -390,8 +445,27 @@ def count(n: int, word: str = "shot") -> str:
     return f"{n} {word}" if n == 1 else f"{n} {word}s"
 
 
-def next_step(shots: list[dict], generators: list[str], rounds: int) -> dict:
+def next_step(shots: list[dict], generators: list[str], rounds: int, media: list[dict] | None = None) -> dict:
     """What to do next, and the line to type in Claude to do it."""
+    media = media or []
+    if not shots:
+        if not media:
+            return {
+                "title": "Add your photos and clips",
+                "body": "Drop them on this page, or point Shotkit at a folder. Nothing is "
+                        "uploaded anywhere: the files stay on this computer.",
+                "say": "/shotkit a 30-second video from the photos and clips in ~/Desktop/shoot",
+            }
+        unseen = [m["id"] for m in media if not m.get("note")]
+        return {
+            "title": "Plan from this media",
+            "body": f"{count(len(media), 'file')} listed"
+                    + (f", {len(unseen)} not looked at yet" if unseen else ", all looked at")
+                    + ". Claude looks at each one, plans the shots around what is there, and "
+                      "marks the gaps a generator can fill.",
+            "say": "/shotkit plan a 30-second video from the media in output/, 9:16",
+        }
+    gaps = [s["id"] for s in shots if (s.get("source") or {}).get("type") == "generate" and not s["frames"]]
     by = {}
     for shot in shots:
         by.setdefault(shot["status"], []).append(shot["id"])
@@ -406,6 +480,17 @@ def next_step(shots: list[dict], generators: list[str], rounds: int) -> dict:
             "body": f"{len(by['plan'])} of {count(total)} have no prompt yet. Name the "
                     "generator you use and Shotkit writes one prompt per shot for it.",
             "say": "Write Flux and Kling prompts for output/shots.json, then update the board.",
+        }
+    if by.get("frame") and gaps and set(by["frame"]) <= set(gaps):
+        return {
+            "title": "Fill the gaps",
+            "body": f"Your own media covers the rest. {count(len(gaps))} still "
+                    f"{'needs' if len(gaps) == 1 else 'need'} a picture: {', '.join(gaps)}. "
+                    "Each has a prompt. Make them in your generator, shoot them, or let "
+                    "Shotkit make them with your fal.ai key.",
+            "say": ("Make the bridge clips with Kling on fal, then update the board."
+                    if all(s["source"].get("start") and s["source"].get("end") for s in shots if s["id"] in gaps)
+                    else "Fill the gaps with Flux on fal, then update the board."),
         }
     if by.get("frame"):
         target = f"frames/round-{max(rounds, 1)}/"
@@ -515,6 +600,13 @@ def shot_markdown(shot: dict, heading: str = "##") -> list[str]:
             f"{overlay['size']}, in at {overlay['enter_at']}s, out at {overlay['exit_at']}s)"
         )
     lines.append(f"- Why: {shot['rationale']}")
+    source = shot.get("source")
+    if source and source["type"] == "own":
+        cut = f", {source['in']}s to {source['out']}s" if "in" in source and "out" in source else ""
+        lines.append(f"- Picture: the user's own media {source.get('media', '')}{cut}")
+    elif source:
+        bridge = f" It starts on {source['start']} and ends on {source['end']}." if "start" in source and "end" in source else ""
+        lines.append(f"- Picture: to be generated. {source.get('why', '')}{bridge}".rstrip())
     if shot["critiques"]:
         last = shot["critiques"][-1]
         lines.append(f"- Latest check: {last['verdict']}, round {last['round']}")
@@ -531,9 +623,13 @@ def shot_markdown(shot: dict, heading: str = "##") -> list[str]:
 def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = None,
           live: bool = False, web_fonts: bool = True) -> tuple[dict, list[str]]:
     warnings: list[str] = []
+    media = read_media(out_dir, inline_images)
     shots_doc, err = load_json(out_dir / "shots.json")
     if err or not isinstance(shots_doc, dict):
-        raise SystemExit(f"ERROR: {err or 'shots.json is not an object'}")
+        if (out_dir / "shots.json").exists() or not (live or media["items"]):
+            raise SystemExit(f"ERROR: {err or 'shots.json is not an object'}")
+        # No plan yet: a board that only holds the photos and clips to plan from.
+        shots_doc = {"project": {"title": "New storyboard"}, "shots": []}
 
     overlays_doc, ov_err = load_json(out_dir / "text-overlays.json")
     overlays_by_id = {}
@@ -543,13 +639,14 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
     run_doc, run_err = load_json(out_dir / "run.json")
     if run_err or not isinstance(run_doc, dict):
         run_doc = {}
-        warnings.append("no run.json in this folder, so the board cannot check the files against it")
+        if shots_doc.get("shots"):
+            warnings.append("no run.json in this folder, so the board cannot check the files against it")
 
     project = shots_doc.get("project") or {}
     brand_ref = shots_doc.get("brand_lock_ref") or "brand-lock.snapshot.md"
     brand = read_brand(out_dir / brand_ref)
     brand["ref"] = brand_ref
-    if not brand["found"]:
+    if not brand["found"] and shots_doc.get("shots"):
         warnings.append(f"brand lock {brand_ref} is missing")
 
     prompts_by_shot, generators_seen = read_prompts(out_dir)
@@ -623,6 +720,7 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
             "clips": read_clips(out_dir, shot_id),
             "critiques": critiques_by_shot.get(shot_id, []),
             "prompts": prompts_by_shot.get(shot_id, {}),
+            "source": read_source(raw.get("source")),
         }
         shot["status"] = shot_status(shot)
         shots.append(shot)
@@ -664,11 +762,12 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
         "brand": brand,
         "generators": generators,
         "shots": shots,
+        "media": media,
         "files": files,
         "warnings": warnings,
         "font_links": font_links(overlay_families) if web_fonts else [],
     }
-    data["next"] = next_step(shots, [g["id"] for g in generators], rounds)
+    data["next"] = next_step(shots, [g["id"] for g in generators], rounds, media["items"])
     data["markdown"] = storyboard_markdown(data)
     return (data, warnings)
 
@@ -798,12 +897,81 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
             kind = MIME.get(ext) or {
                 "json": "application/json", "md": "text/plain; charset=utf-8",
                 "txt": "text/plain; charset=utf-8", "html": "text/html; charset=utf-8",
-                "mp4": "video/mp4", "jsonl": "text/plain; charset=utf-8",
+                "jsonl": "text/plain; charset=utf-8", **CLIP_MIME,
             }.get(ext, "application/octet-stream")
-            self.send(200, target.read_bytes(), kind)
+            self.send_file(target, kind)
+
+        def send_file(self, target: Path, kind: str) -> None:
+            """A file, or the byte range of it a video player asked for."""
+            size = target.stat().st_size
+            start, end = 0, size - 1
+            ranged = re.match(r"bytes=(\d*)-(\d*)$", self.headers.get("Range") or "")
+            if ranged and size:
+                first, last = ranged.groups()
+                if first:
+                    start, end = int(first), min(int(last), size - 1) if last else size - 1
+                elif last:
+                    start = max(size - int(last), 0)
+                if start > end or start >= size:
+                    self.send_response(416)
+                    self.send_header("Content-Range", f"bytes */{size}")
+                    self.end_headers()
+                    return
+            self.send_response(206 if ranged and size else 200)
+            self.send_header("Content-Type", kind)
+            self.send_header("Content-Length", str(end - start + 1 if size else 0))
+            self.send_header("Accept-Ranges", "bytes")
+            if ranged and size:
+                self.send_header("Content-Range", f"bytes {start}-{end}/{size}")
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            with target.open("rb") as fh:
+                fh.seek(start)
+                left = end - start + 1 if size else 0
+                while left > 0:
+                    block = fh.read(min(1 << 20, left))
+                    if not block:
+                        break
+                    try:
+                        self.wfile.write(block)
+                    except (BrokenPipeError, ConnectionResetError):
+                        return
+                    left -= len(block)
+
+        def take_media(self, url) -> None:
+            """Save a dropped photo or clip to media/inbox/ and list it."""
+            import media as media_tool
+
+            name = (parse_qs(url.query).get("name") or [""])[0]
+            length = int(self.headers.get("Content-Length") or 0)
+            dest = media_tool.inbox_path(root, name)
+            if dest is None:
+                self.send(415, b'{"error":"use a photo (PNG, JPEG, WebP, HEIC, TIFF) or a clip (MP4, MOV, M4V, WebM)"}', "application/json")
+                return
+            if length <= 0 or length > MAX_MEDIA_BYTES:
+                self.send(413, b'{"error":"the file is empty or over 2 GB"}', "application/json")
+                return
+            left = length
+            with dest.open("wb") as fh:
+                while left > 0:
+                    block = self.rfile.read(min(1 << 20, left))
+                    if not block:
+                        break
+                    fh.write(block)
+                    left -= len(block)
+            if left:
+                dest.unlink(missing_ok=True)
+                self.send(400, b'{"error":"the upload stopped part way"}', "application/json")
+                return
+            _, new = media_tool.scan(dest.parent, root)
+            listed = new[0]["id"] if new else "already listed"
+            self.send(200, json.dumps({"saved": str(dest.relative_to(root)), "id": listed}).encode(), "application/json")
 
         def do_POST(self):
             url = urlparse(self.path)
+            if url.path == "/__media" and self.local():
+                self.take_media(url)
+                return
             if url.path != "/__frame" or not self.local():
                 self.send(403, b'{"error":"refused"}', "application/json")
                 return
@@ -855,6 +1023,33 @@ def selftest() -> int:
     html_a = render(data)
     html_b = render(build(worked, rendered_at=pinned)[0])
     by_id = {s["id"]: s for s in data["shots"]}
+
+    # a run that starts from the user's own photos and clips
+    own_tmp = Path(tempfile.mkdtemp())
+    own_dir = own_tmp / "own"
+    (own_dir / "media" / "thumbs").mkdir(parents=True)
+    (own_dir / "media" / "thumbs" / "m01.jpg").write_bytes(b"\xff\xd8x")
+    (own_dir / "media" / "media.json").write_text(json.dumps({"items": [
+        {"id": "m01", "name": "a.jpg", "kind": "photo", "thumbs": ["media/thumbs/m01.jpg"], "note": "the shop front", "shots": ["shot_01"]},
+        {"id": "m02", "name": "b.mov", "kind": "clip", "thumbs": ["../../outside.jpg"], "note": None, "shots": []},
+    ]}))
+    own_empty, _ = build(own_dir, rendered_at=pinned)
+    (own_dir / "shots.json").write_text(json.dumps({"project": {"title": "Own", "duration_s": 6, "aspect": "9:16"}, "shots": [
+        {"id": "shot_01", "beat": "world", "start": 0, "end": 3, "subject": "front", "rationale": "r", "source": {"type": "own", "media": "m01"}},
+        {"id": "shot_02", "beat": "hero", "start": 3, "end": 6, "subject": "join", "rationale": "r",
+         "source": {"type": "generate", "why": "joins the two", "start": "shot_01", "end": "shot_03"}},
+        {"id": "shot_03", "beat": "close", "start": 6, "end": 9, "subject": "gap", "rationale": "r", "source": {"type": "generate", "why": "nothing shows it"}},
+    ]}))
+    (own_dir / "frames" / "round-1").mkdir(parents=True)
+    (own_dir / "frames" / "round-1" / "shot_01.jpg").write_bytes(b"\xff\xd8x")
+    (own_dir / "clips" / "round-1").mkdir(parents=True)
+    (own_dir / "clips" / "round-1" / "shot_02.mov").write_bytes(b"x")
+    (own_dir / "prompts" / "round-1").mkdir(parents=True)
+    (own_dir / "prompts" / "round-1" / "flux.txt").write_text("# shot_03 close\nA picture.\n")
+    own, _ = build(own_dir, rendered_at=pinned)
+    own_by = {s["id"]: s for s in own["shots"]}
+    (own_tmp / "nothing").mkdir()
+    live_empty, _ = build(own_tmp / "nothing", live=True)
 
     with tempfile.TemporaryDirectory() as tmp:
         bare = Path(tmp) / "bare"
@@ -913,8 +1108,17 @@ def selftest() -> int:
         ("only images are saved", wrong_type[0] == 415),
         ("a dropped frame is saved to the shot's round", fresh == (200, {"saved": "frames/round-2/shot_02.jpg"})),
         ("carries no unfilled placeholder", "__TITLE__" not in html_a and "/*__DATA__*/" not in html_a),
+        ("a folder with only your media builds a board", own_empty["shots"] == [] and len(own_empty["media"]["items"]) == 2),
+        ("and its next step is to plan from it", own_empty["next"]["title"] == "Plan from this media"),
+        ("a shot says when its picture is your own", own_by["shot_01"]["source"] == {"type": "own", "media": "m01"}),
+        ("a gap is the next step once your media is placed", own["next"]["title"] == "Fill the gaps"),
+        ("a bridge with a clip and no still counts as made", own_by["shot_02"]["status"] == "check"),
+        ("the Markdown copy says which shots are yours", "the user's own media m01" in own["markdown"]),
+        ("a thumbnail path cannot leave the folder", own["media"]["items"][1]["thumbs"] == []),
+        ("an empty folder still serves a live board", live_empty["next"]["title"] == "Add your photos and clips"),
     ]
     ok = True
+    shutil.rmtree(own_tmp, ignore_errors=True)
     for label, passed in checks:
         print(f"  {'ok  ' if passed else 'FAIL'}  selftest: {label}")
         ok = ok and passed
@@ -948,8 +1152,16 @@ def main() -> int:
         p.error("output_dir is required unless --selftest is given")
     out_dir: Path = args.output_dir
     if not (out_dir / "shots.json").exists():
-        print(f"ERROR: shots.json not found in {out_dir}")
-        return 1
+        has_media = (out_dir / "media" / "media.json").exists()
+        if args.serve and not has_media:
+            # Nothing here yet: a live board to drop photos and clips on.
+            out_dir.mkdir(parents=True, exist_ok=True)
+            print(f"  no plan in {out_dir} yet. Drop your photos and clips on the page.")
+            return serve(out_dir, args.port, args.open)
+        if not has_media:
+            print(f"ERROR: shots.json not found in {out_dir}. To start from your own "
+                  f"photos and clips: sk board {out_dir} --serve --open")
+            return 1
 
     data, warnings = build(
         out_dir, inline_images=args.inline_images, rendered_at=args.rendered_at,
@@ -963,7 +1175,8 @@ def main() -> int:
     counts = {}
     for shot in data["shots"]:
         counts[shot["status"]] = counts.get(shot["status"], 0) + 1
-    print("  " + ", ".join(f"{n} {k}" for k, n in counts.items()) + f". Next: {data['next']['title']}.")
+    summary = ", ".join(f"{n} {k}" for k, n in counts.items()) or f"{len(data['media']['items'])} of your own files, no plan yet"
+    print(f"  {summary}. Next: {data['next']['title']}.")
     if args.serve:
         return serve(out_dir, args.port, args.open)
     if args.open:

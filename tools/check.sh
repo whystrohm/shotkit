@@ -121,6 +121,7 @@ run "contracts: schemas and examples" "$TOOLS/validate_contracts.py"
 run "preview renderer: selftest"     "$TOOLS/shots-to-html.py" --selftest
 run "board: selftest"                "$TOOLS/board.py" --selftest
 run "generate: selftest"             "$TOOLS/generate.py" --selftest
+run "media: selftest"                "$TOOLS/media.py" --selftest
 
 # Bring your own key: none may ever be committed
 run "secrets: selftest"              "$TOOLS/validate_no_secrets.py" --selftest
