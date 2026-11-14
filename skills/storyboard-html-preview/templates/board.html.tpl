@@ -166,7 +166,7 @@ body[data-text="off"] .ov { opacity: 0; }
 .tag i { width: 5px; height: 5px; border-radius: 50%; background: var(--c); }
 .tag--r { color: var(--mut); border-color: var(--line2); padding: 0 6px; }
 .card__state { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 11px 0; }
-.card__state time { margin-left: auto; color: var(--dim); font: 400 11px/1 var(--mono); white-space: nowrap; }
+.card__meta time { color: var(--dim); font: 400 11px/1 var(--mono); white-space: nowrap; }
 .frame[data-flip] .ph { background-color: var(--ph-ink, #F3F2EE); color: var(--ph-bg, #0F1114); }
 .drop { position: absolute; inset: 6px; z-index: 3; border: 1.5px dashed var(--acc); border-radius: 7px; background: rgba(255,90,43,.14); display: none; place-items: center; font: 600 12px/1.3 var(--sans); text-align: center; padding: 10px; }
 .frame[data-over] .drop { display: grid; }
@@ -544,8 +544,8 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
         el("div", { class: "card__state" }, el("span", { class: "tag", style: "--c:" + STATUS[s.status].color }, el("i"), STATUS[s.status].label),
           s.frames.length > 1 ? el("span", { class: "tag tag--r", title: "Round " + s.frames[s.frames.length - 1].round, text: "R" + s.frames[s.frames.length - 1].round }) : null,
           s.clips && s.clips.length ? el("span", { class: "tag tag--r", title: "This shot has a clip", text: "Clip" }) : null,
-          el("time", { text: fmt(s.start) + " to " + fmt(s.end) + "s" })),
-        el("div", { class: "card__meta" }, el("b", { text: s.n }), el("span", { text: s.beat || "" })),
+          ),
+        el("div", { class: "card__meta" }, el("b", { text: s.n }), el("span", { text: s.beat || "" }), el("time", { text: fmt(s.start) + " to " + fmt(s.end) + "s" })),
         el("div", { class: "card__sub", text: s.subject || "" }));
       cards[s.id] = card; sheet.appendChild(card);
     });
