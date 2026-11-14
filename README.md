@@ -18,7 +18,7 @@ One line of brief becomes a board with every shot planned, prompted and checked.
   <a href="https://whystrohm.com/shotkit/examples/harbor-roast/board.html">A live board</a>
 </p>
 
-![Shotkit demo: a brief is typed, the board opens with the plan, then prompts, frames and the critic's verdicts land, one shot is revised and passes](docs/images/demo.webp)
+![Shotkit demo: a brief is typed, the board opens with every shot planned, then prompts, frames and the check on each frame land, one shot is fixed, and real frames from three brands appear with their on-screen text](docs/images/demo.webp)
 
 Six Claude skills and a set of small tools, built by [WhyStrohm](https://whystrohm.com).
 Free and open source under Apache 2.0. Nothing ships with a key.
@@ -70,9 +70,9 @@ See a finished run before you make one:
 ~/.claude/shotkit-tools/sk board --example
 ```
 
-The loop is the live board replaying one real Shotkit run in stages: the brief, the plan,
-the prompts, the frames, the critic's verdicts, then a second round for the shots that came
-back. The frames are the ones that run produced. A silent MP4 of the same loop is at
+The demo at the top is the live board replaying one real Shotkit run in stages, then real
+frames from three runs (an electrician, a studio launch, a coffee roaster) with their
+on-screen text set over them. A silent MP4 is at
 [`docs/images/demo.mp4`](docs/images/demo.mp4).
 
 ---
