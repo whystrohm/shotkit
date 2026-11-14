@@ -83,9 +83,11 @@
       </div>
       {{/if}}
 
-      {{#each overlays}}
+      {{#each overlay_groups}}
       <div class="sb-overlay sb-overlay-{{position_class}}">
-        <span class="sb-overlay-text" style="font-family: {{font_css}}; font-weight: {{weight_css}};{{#if stretch_css}} font-stretch: {{stretch_css}};{{/if}} color: {{color}};">{{content}}</span>
+        {{#each overlays}}
+        <span class="sb-overlay-text sb-size-{{size}} sb-treat-{{treatment}}{{#if em_color}} sb-em-color{{/if}}{{#if ink_dark}} sb-ink-dark{{/if}}{{#if upper}} sb-upper{{/if}}" style="font-family: {{font_css}}; font-weight: {{weight_css}};{{#if stretch_css}} font-stretch: {{stretch_css}};{{/if}} color: {{color}}; --sb-acc: {{accent}};{{#if plate}} --sb-plate: {{plate}};{{/if}}">{{#if kicker}}<span class="sb-ok">{{kicker}}</span>{{/if}}{{{text_html}}}</span>
+        {{/each}}
       </div>
       {{/each}}
     </div>

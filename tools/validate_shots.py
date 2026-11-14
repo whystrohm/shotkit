@@ -243,6 +243,15 @@ def check_brand_alignment(
                 f"brand-lock palette"
             )
 
+    for overlay in overlays:
+        for key in ("accent", "plate"):
+            value = overlay.get(key)
+            if isinstance(value, str) and value.lower() not in allowed:
+                errors.append(
+                    f"brand: overlay {overlay.get('id')} {key} {value} is not in the "
+                    f"brand-lock palette"
+                )
+
     fonts = {v.lower() for v in parse_typography(brand_lock_text).values() if v}
     if fonts:
         for overlay in overlays:
@@ -263,6 +272,55 @@ def check_brand_alignment(
                 f"colors belong in series_lock and the brand-lock"
             )
 
+    return errors, warnings
+
+
+# The most words a line can carry at each size and still be read in its window.
+WORD_LIMITS = {"display": 6, "headline": 9, "body": 16, "caption": 12}
+
+
+def check_safe_zones(overlays: list[dict], aspect: str | None) -> list[str]:
+    """Type placed by hand where a phone app draws its own buttons over a vertical video."""
+    if aspect not in ("9:16", "4:5", "3:4", "2:3"):
+        return []
+    warnings = []
+    for overlay in overlays:
+        position = overlay.get("position")
+        if not isinstance(position, dict):
+            continue
+        x, y = position.get("x"), position.get("y")
+        if isinstance(y, (int, float)) and (y < 14 or y > 77):
+            warnings.append(f"safe zone: overlay {overlay.get('id')} sits at y{y}%, under an app's top bar or caption area on a vertical video; keep it between 14% and 77%")
+        if isinstance(x, (int, float)) and x > 80:
+            warnings.append(f"safe zone: overlay {overlay.get('id')} sits at x{x}%, under an app's buttons on the right of a vertical video; keep it under 80%")
+    return warnings
+
+
+def check_type(overlays: list[dict]) -> tuple[list[str], list[str]]:
+    """Type treatment that cannot render as written, and lines too long for their size."""
+    errors: list[str] = []
+    warnings: list[str] = []
+    for overlay in overlays:
+        oid, content = overlay.get("id"), overlay.get("content")
+        if not isinstance(content, str):
+            continue
+        emphasis = overlay.get("emphasis")
+        if isinstance(emphasis, str) and emphasis not in content:
+            errors.append(f"type: overlay {oid} emphasis '{emphasis}' is not in its content, so nothing would be marked")
+        if overlay.get("emphasis_style") and not emphasis:
+            errors.append(f"type: overlay {oid} sets emphasis_style with no emphasis")
+        if overlay.get("plate") and overlay.get("treatment") != "plate":
+            errors.append(f"type: overlay {oid} sets a plate colour without treatment plate")
+        if overlay.get("treatment") == "lockup" and (overlay.get("kicker") or overlay.get("emphasis")):
+            errors.append(f"type: overlay {oid} is a lockup, which takes no kicker or emphasis")
+        words = len(content.split())
+        limit = WORD_LIMITS.get(overlay.get("size"))
+        if limit and words > limit:
+            warnings.append(f"type: overlay {oid} has {words} words at {overlay.get('size')} size; over {limit} it shrinks to fit and is hard to read")
+        if overlay.get("case") == "upper" and words > 4:
+            warnings.append(f"type: overlay {oid} sets {words} words in capitals; keep capitals to four words or fewer")
+        if overlay.get("treatment") == "lockup" and words > 4:
+            warnings.append(f"type: overlay {oid} is a lockup with {words} words; a lockup is a name, not a sentence")
     return errors, warnings
 
 
@@ -385,6 +443,10 @@ def validate_set(shots_path: Path) -> tuple[list[str], list[str]]:
     errors += b_err
     warnings += b_warn
 
+    warnings += check_safe_zones(overlays, (shots_data.get("project") or {}).get("aspect"))
+    ty_err, ty_warn = check_type(overlays)
+    errors += ty_err
+    warnings += ty_warn
     warnings += check_text_leak(shots, overlays)
     errors += check_assets(shots, capability_ids())
 

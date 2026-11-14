@@ -292,6 +292,68 @@ def position_class(position) -> str:
     return "center"
 
 
+def overlay_groups(overlays: list[dict]) -> list[dict]:
+    """Overlays on the same side of the frame, together, so they stack and never overlap."""
+    groups: dict[str, list[dict]] = {}
+    for overlay in overlays:
+        groups.setdefault(overlay["position_class"], []).append(overlay)
+    return [{"position_class": name, "overlays": items} for name, items in groups.items()]
+
+
+_SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
+_HEX6 = re.compile(r"#[0-9A-Fa-f]{6}")
+
+
+def _is_dark(color) -> bool:
+    """True when type in this colour is dark, so it needs a light field behind it."""
+    if not _HEX6.fullmatch(str(color or "")):
+        return False
+    r, g, b = (int(str(color)[i:i + 2], 16) / 255 for i in (1, 3, 5))
+    lin = [c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4 for c in (r, g, b)]
+    return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2] < 0.4
+
+
+def overlay_lines(content: str) -> list[str]:
+    """Two or three short sentences each get their own line; anything else is one block."""
+    parts = [part for part in _SENTENCE_END.split(content) if part]
+    if len(parts) < 2 or len(parts) > 3 or any(len(part) > 26 for part in parts):
+        return [content]
+    return parts
+
+
+def overlay_markup(overlay: dict, brand_accent: str) -> dict:
+    """
+    The type treatment on an overlay, as markup and classes the template drops in.
+
+    The board draws the same treatment in the browser. Both follow
+    templates/text-overlays.schema.json, so the page a client gets matches the board.
+    """
+    content = overlay.get("content") if isinstance(overlay.get("content"), str) else ""
+    treatment = overlay.get("treatment") if overlay.get("treatment") in ("plain", "plate", "lockup") else "plain"
+    emphasis = overlay.get("emphasis") if isinstance(overlay.get("emphasis"), str) else ""
+    rows = []
+    for line in ([content] if treatment == "lockup" else overlay_lines(content)):
+        at = line.find(emphasis) if emphasis and treatment != "lockup" else -1
+        if at < 0:
+            inner = escape(line)
+        else:
+            inner = f"{escape(line[:at])}<em>{escape(emphasis)}</em>{escape(line[at + len(emphasis):])}"
+        rows.append(f'<span class="sb-ol">{inner}</span>')
+    accent = overlay.get("accent") if _HEX6.fullmatch(str(overlay.get("accent") or "")) else brand_accent
+    plate = overlay.get("plate") if _HEX6.fullmatch(str(overlay.get("plate") or "")) else None
+    kicker = overlay.get("kicker") if isinstance(overlay.get("kicker"), str) and treatment != "lockup" else None
+    return {
+        "text_html": "".join(rows),
+        "kicker": kicker.strip()[:48] if kicker and kicker.strip() else None,
+        "treatment": treatment,
+        "em_color": overlay.get("emphasis_style") == "color",
+        "ink_dark": _is_dark(overlay.get("color")),
+        "upper": overlay.get("case") == "upper",
+        "accent": accent,
+        "plate": plate,
+    }
+
+
 def position_label(position) -> str:
     if isinstance(position, dict):
         return f"x{position.get('x')}% y{position.get('y')}%"
@@ -383,6 +445,7 @@ def build_context(out_dir: Path, args) -> tuple[dict, list[str]]:
                     "enter_animation": (overlay.get("enter") or {}).get("animation"),
                     "exit_at": (overlay.get("exit") or {}).get("at"),
                     "exit_animation": (overlay.get("exit") or {}).get("animation"),
+                    **overlay_markup(overlay, brand["accent"]),
                 }
             )
 
@@ -406,6 +469,7 @@ def build_context(out_dir: Path, args) -> tuple[dict, list[str]]:
                 "has_no_image": image_path is None,
                 "image_path": image_path,
                 "overlays": overlays,
+                "overlay_groups": overlay_groups(overlays),
                 "has_overlays": bool(overlays),
                 "has_verdict": verdict is not None,
                 "verdict": (verdict or {}).get("verdict"),

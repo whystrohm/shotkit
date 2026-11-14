@@ -52,7 +52,14 @@ Shotkit does the part that comes before generation:
   shot is redone.
 - **Uses your own footage first.** Point it at a folder of photos and clips. It looks at
   each one, places it, and marks only what is missing for a generator to fill.
+- **Sets the type like the brand would.** The words that carry each line are marked in
+  the brand's accent, the brand name is set as a lockup, and on a vertical video the
+  type stays clear of the app's own buttons.
 - **Puts it all on one board** that opens in your browser, with copy buttons for any model.
+
+**It runs on your computer.** The plan, the board, the checks and your footage never
+leave it. The only thing that goes out is a generation request, and only when you ask
+for one with your own key.
 
 It is not a video generator and it is not an editor. It is the plan the two of them need.
 
@@ -101,7 +108,11 @@ offline, and nothing is uploaded.
 - **The next step, as a line to paste into Claude.**
 - **Files checked against `run.json`.** A file that changed after the run is flagged.
 - **Live mode.** `sk board output/ --serve` reloads as files change. Drop a frame on a
-  shot and it is saved to the right folder under the right name.
+  shot and it is saved to the right folder under the right name. Drag the text on a shot
+  to move it; it stays inside the safe zone and the new position is saved.
+- **Safe zones.** One switch shows the parts of a vertical video an app covers.
+- **A page for the client, before anything is shot.** `preview.html` is the same plan
+  as a clean, brand-aware page. The board's **PDF** button opens it ready to print.
 - **Frames and clips, if you want them.** With your own fal.ai key, `sk generate` makes
   the stills and the video clips and files them. See
   [`docs/generate-with-fal.md`](docs/generate-with-fal.md).

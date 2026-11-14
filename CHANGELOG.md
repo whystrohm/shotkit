@@ -18,6 +18,22 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 - **A media tray on the board.** Every file, what Claude saw in it, and the shot it is
   on. On a live board, drop photos and clips anywhere on the page to add them. A live
   board now starts on an empty folder.
+- **Type that looks like the brand's.** Overlays take an `emphasis` (the words that carry
+  the line, marked with a bar or set in the accent), a `kicker`, a `lockup` treatment
+  for the brand name, a `plate` for busy frames and `case`. Short sentences break one
+  per line. Overlays on the same side of a frame now stack and can no longer overlap.
+  The board and the client preview draw the same thing.
+- **Safe zones.** On a vertical frame the named positions keep type clear of an app's
+  top bar, caption area and buttons. A switch on the board shows those areas, and
+  `validate_shots.py` warns when a custom position falls in one.
+- **Move the text.** On a live board, drag the text on an open shot. It is held inside
+  the safe zone and the position is saved to `text-overlays.json`.
+- **PDF.** The board's PDF button opens the client preview ready to print.
+- **Hooks and a language pass.** `references/hooks-and-language.md` gives the planner
+  six hook patterns and an eight-question pass over every line. `validate_shots.py`
+  warns when a line is too long for its size.
+- **Type pairings.** `brand-packs/type-pairings.md`: ten free pairings by what the
+  brand is, for a brand with no typeface.
 - **Installs as a Claude Code plugin.** `/plugin install shotkit --marketplace whystrohm/shotkit`.
   The plugin carries the tools, so nothing else is needed.
 - The live board plays MOV, M4V and WebM clips as well as MP4, and answers a video

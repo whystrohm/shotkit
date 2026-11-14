@@ -266,26 +266,65 @@ h1, h2, h3 {
   letter-spacing: 0.08em;
 }
 
-/* On-screen text overlay preview (rendered over the frame) */
+/* On-screen text over the frame. Overlays on the same side share one group, so they
+   stack with a set gap. The board draws the same treatment; both follow
+   text-overlays.schema.json. Sizes are in cqw, the frame's own width. */
+.sb-shot-frame { container-type: inline-size; }
 .sb-overlay {
   position: absolute;
-  left: 0; right: 0;
-  padding: 0 16px;
+  left: 7%; right: 7%;
+  display: flex; flex-direction: column; gap: 2.4cqw;
   pointer-events: none;
 }
 
-.sb-overlay-center        { top: 50%; transform: translateY(-50%); text-align: center; }
-.sb-overlay-lower-third   { bottom: 12%; text-align: center; }
-.sb-overlay-upper-third   { top: 12%; text-align: center; }
-.sb-overlay-left-third    { top: 50%; transform: translateY(-50%); text-align: left; }
-.sb-overlay-right-third   { top: 50%; transform: translateY(-50%); text-align: right; }
+.sb-overlay-center        { top: 50%; transform: translateY(-50%); align-items: center; text-align: center; }
+.sb-overlay-lower-third   { bottom: 8%; align-items: center; text-align: center; flex-direction: column-reverse; }
+.sb-overlay-upper-third   { top: 8%; align-items: center; text-align: center; }
+.sb-overlay-left-third    { top: 50%; transform: translateY(-50%); right: auto; left: 6.5%; width: 39%; align-items: flex-start; text-align: left; }
+.sb-overlay-right-third   { top: 50%; transform: translateY(-50%); left: auto; right: 6.5%; width: 39%; align-items: flex-end; text-align: right; }
 
 .sb-overlay-text {
-  display: inline-block;
-  font-size: clamp(14px, 2.2vw, 22px);
-  line-height: 1.1;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  display: block;
+  max-width: 100%;
+  font-size: 6.4cqw;
+  line-height: 1.04;
+  letter-spacing: -0.024em;
+  font-kerning: normal;
+  text-shadow: 0 0 1px rgba(0,0,0,0.55), 0 2px 22px rgba(0,0,0,0.6), 0 0 54px rgba(0,0,0,0.45);
 }
+.sb-ink-dark { text-shadow: 0 0 1px rgba(255,255,255,0.5), 0 2px 22px rgba(255,255,255,0.55), 0 0 54px rgba(255,255,255,0.4); }
+.sb-size-display { font-size: 8.4cqw; line-height: 0.98; letter-spacing: -0.032em; }
+.sb-size-body    { font-size: 4.2cqw; line-height: 1.22; letter-spacing: -0.008em; }
+.sb-size-caption { font-size: 3.2cqw; line-height: 1.25; letter-spacing: 0; }
+.sb-overlay-left-third .sb-overlay-text, .sb-overlay-right-third .sb-overlay-text { font-size: 5.4cqw; }
+.sb-overlay-left-third .sb-size-display, .sb-overlay-right-third .sb-size-display { font-size: 6.8cqw; }
+.sb-overlay-left-third .sb-size-body, .sb-overlay-right-third .sb-size-body { font-size: 3.7cqw; }
+.sb-ol { display: block; text-wrap: balance; }
+.sb-upper .sb-ol { text-transform: uppercase; letter-spacing: 0.02em; }
+.sb-overlay-text em {
+  font-style: normal;
+  background: linear-gradient(transparent 64%, var(--sb-acc) 64%, var(--sb-acc) 93%, transparent 93%);
+  padding: 0 0.07em; margin: 0 -0.07em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+.sb-em-color em { background: none; color: var(--sb-acc); padding: 0; margin: 0; }
+.sb-ok {
+  display: inline-flex; align-items: center; gap: 0.9em;
+  margin-bottom: 1.15em;
+  font-size: max(2.3cqw, 7px); line-height: 1; letter-spacing: 0.15em;
+  text-transform: uppercase; font-weight: 600; white-space: nowrap;
+}
+.sb-ok::before { content: ""; width: 2.1em; height: max(0.14em, 1.5px); background: var(--sb-acc); flex: none; }
+.sb-treat-lockup {
+  display: inline-flex; align-items: center; gap: 0.85em;
+  font-size: max(2.6cqw, 7px) !important; line-height: 1; letter-spacing: 0.16em;
+  text-transform: uppercase; white-space: nowrap;
+}
+.sb-treat-lockup::before { content: ""; width: 0.78em; height: 0.78em; background: var(--sb-acc); flex: none; }
+.sb-treat-plate { text-shadow: none; }
+.sb-treat-plate .sb-ol { display: table; margin: 0 auto 0.14em; padding: 0.16em 0.42em 0.2em; background: var(--sb-plate, #000); text-wrap: wrap; }
+.sb-overlay-left-third .sb-treat-plate .sb-ol { margin-left: 0; }
+.sb-overlay-right-third .sb-treat-plate .sb-ol { margin-right: 0; }
 
 /* ─── Shot body ─── */
 

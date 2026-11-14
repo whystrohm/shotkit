@@ -15,7 +15,7 @@
     "shots_ref": "shots.json",
     "shots_sha256": "19cd0e71ddc24e2cf5368f0d04895f4dd558ba9a950b78855b3290ec8d41b6c5",
     "text_overlays_ref": "text-overlays.json",
-    "text_overlays_sha256": "9b47c8f678a26a1ccc61bc9221869b40cd2a98cd13128755d2f0230d6be39c80",
+    "text_overlays_sha256": "6d3bbef266820baa78ea5d73d2c0c5af2eae39205043eb77aa4e4981028e7692",
     "brand_lock_ref": "brand-lock.snapshot.md",
     "brand_lock_sha256": "ef551b6769ba53b9c2f1ef0db8202a2e358c9e4ab8f518a01c619aee4c65a1e8",
     "brand_lock_source": "brand/harbor-roast.md",

@@ -101,3 +101,66 @@ In `text-overlays.json`:
 ```
 
 Document this in rationale: "text persists across shot 3-4 to give 4.8s read-time for 16-word reframe."
+
+## Type treatment
+
+A line set in one weight and one colour over a photo reads as a caption. These optional
+fields in `text-overlays.json` make it read as the brand's own. Use them on purpose and
+sparingly: one accent element per frame.
+
+| Field | What it does | Use it when |
+|---|---|---|
+| `emphasis` | Marks the words that carry the line. Copy them exactly from `content`. | Almost every headline has two or three words doing the work. Mark those, never the whole line. |
+| `emphasis_style` | `bar` (default) keeps the words' colour and puts a bar in the accent under them. `color` sets the words in the accent. | `bar` reads over any picture. Use `color` only where the frame behind the type is dark and flat. |
+| `kicker` | A small label in spaced capitals above the line, after a short rule in the accent. | To name the brand, the product or the step once, early. A fact from the brief. Never a slogan. |
+| `treatment: "lockup"` | Sets a brand or product name as small spaced capitals after a square in the accent. | The sign-off on the last shot. Put it on the same side as the call to action so the two stack. |
+| `treatment: "plate"` + `plate` | Sets each line on a solid plate in a palette colour. | The frame behind the type is busy or bright and the subject cannot move. |
+| `case: "upper"` | Capitals with wider spacing. | Four words or fewer. |
+| `accent` | The colour of the rule, the bar and the lockup mark. | Leave it out. It defaults to the palette's accent. |
+
+### How lines break
+
+Two or three short sentences are set one per line: "New panel. Neat wiring. Permit
+handled." becomes three lines. Write to that. A line of two short sentences reads better
+than one long one, and the last sentence is usually the one to mark.
+
+### How long a line can be
+
+| Size | Words | Above that |
+|---|---|---|
+| `display` | 6 | The type shrinks to fit and stops being a headline |
+| `headline` | 9 | Same |
+| `body` | 16 | Split it across two shots |
+| `caption` | 12 | It is a paragraph, and nobody reads a paragraph in a video |
+
+`validate_shots.py` warns past these.
+
+### Where type goes
+
+- Put type where the picture is quiet: a wall, sky, a dark table, out-of-focus ground.
+  Say in the shot's `subject` which part of the frame is left clear, so the generator
+  and the check both know.
+- A side third is a narrow column. Keep lines there to four or five words.
+- Never put type over a face, a hand doing the work, or a product.
+- Two overlays on the same side stack by themselves. Two on different sides compete:
+  one of them should go.
+
+## Safe zones
+
+A vertical video plays inside an app that draws its own buttons over it. On a 9:16 frame
+keep type out of:
+
+- the top 12% (account name, search),
+- the bottom 21% (caption, sound, progress bar),
+- the right 13% (like, comment and share buttons).
+
+The named positions already stay clear: on a vertical frame `upper-third` starts 14%
+down, `lower-third` ends 23% up, and both stop short of the right edge. A custom
+`{x, y}` position is yours to keep safe, and `validate_shots.py` warns when it is not.
+
+The same applies to the picture. Do not put a face, a product or the hand doing the work
+in those bands. Say so in the shot's `subject`: "bag in the centre, clear of the lower
+fifth".
+
+On a 16:9 frame keep type inside a 5% margin. The board's **Safe zones** switch draws
+both.

@@ -106,6 +106,7 @@ ul, ol { list-style: none; }
 .chip i { width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--wait)); }
 .chip small { font: 400 11px/1 var(--mono); opacity: .65; }
 .sw { display: inline-flex; align-items: center; gap: 8px; color: var(--mut); font-size: 12px; }
+.sws { display: flex; gap: 16px; margin-left: auto; } .sws .sw { margin-left: 0; }
 .sw i { width: 28px; height: 16px; border-radius: 9px; background: var(--p3); border: 1px solid var(--line2); position: relative; transition: background .15s; }
 .sw i::after { content: ""; position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--mut); transition: transform .18s, background .15s; }
 .sw[aria-pressed="true"] i { background: color-mix(in srgb, var(--acc) 35%, var(--p3)); border-color: var(--acc); }
@@ -138,30 +139,82 @@ body[data-quiet] .meter i { transition: none; }
     var(--ph-bg, #0F1114); }
 .ph b { display: none; }
 .ph span { position: absolute; left: 10px; top: 11px; font: 500 clamp(8px, 2.6cqw, 10.5px)/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
-.ov { position: absolute; left: 7%; right: 7%; display: flex; justify-content: center; text-align: center; pointer-events: none; transition: opacity .2s; }
-.ov span { display: block; max-width: 100%; line-height: 1.1; letter-spacing: -.01em; text-wrap: balance; overflow-wrap: break-word;
-  text-shadow: 0 0 1px rgba(0,0,0,.5), 0 1px 3px rgba(0,0,0,.55), 0 4px 22px rgba(0,0,0,.5); }
-.ov[data-ink="dark"] span { text-shadow: 0 0 1px rgba(255,255,255,.5), 0 1px 3px rgba(255,255,255,.5), 0 4px 22px rgba(255,255,255,.45); }
-.frame[data-empty] .ov span { text-shadow: none; }
+/* Type over a frame. Overlays on the same side of the frame share one group, so they
+   stack with a set gap and can never sit on top of each other. Sizes are in cqw, the
+   frame's own width, and --s is the scale fit() settles on. */
+.ovg { position: absolute; display: flex; flex-direction: column; gap: 2.4cqw; pointer-events: none; transition: opacity .2s; --s: 1; }
+.ovg[data-pos="upper-third"] { top: 8%; left: 7%; right: 7%; align-items: center; text-align: center; }
+.ovg[data-pos="lower-third"] { bottom: 8%; left: 7%; right: 7%; align-items: center; text-align: center; flex-direction: column-reverse; }
+.ovg[data-pos="center"] { top: 50%; left: 7%; right: 7%; transform: translateY(-50%); align-items: center; text-align: center; }
+.ovg[data-pos="left-third"] { top: 50%; left: 6.5%; width: 39%; transform: translateY(-50%); align-items: flex-start; text-align: left; }
+.ovg[data-pos="right-third"] { top: 50%; right: 6.5%; width: 39%; transform: translateY(-50%); align-items: flex-end; text-align: right; }
+.ovg[data-pos="custom"] { transform: translate(-50%, -50%); width: max-content; max-width: 86%; align-items: center; text-align: center; }
+.ov { max-width: 100%; font-size: calc(var(--fs) * var(--s)); line-height: var(--lh); letter-spacing: var(--ls); font-kerning: normal; font-optical-sizing: auto; text-rendering: geometricPrecision;
+  text-shadow: 0 1px 2px rgba(0,0,0,.34), 0 2px 20px rgba(0,0,0,.38); }
+.ov[data-ink="dark"] { text-shadow: 0 0 1px rgba(255,255,255,.4), 0 2px 18px rgba(255,255,255,.4); }
+.frame[data-empty] .ov, .ov[data-treat="plate"] { text-shadow: none; }
+.ov[data-size="display"] { --fs: 9.4cqw; --lh: .98; --ls: -.032em; }
+.ov[data-size="headline"] { --fs: 7cqw; --lh: 1.03; --ls: -.024em; }
+.ov[data-size="body"] { --fs: 4.4cqw; --lh: 1.22; --ls: -.008em; }
+.ov[data-size="caption"] { --fs: 3.3cqw; --lh: 1.25; --ls: 0em; }
+.ovg[data-pos="left-third"] .ov[data-size="display"], .ovg[data-pos="right-third"] .ov[data-size="display"] { --fs: 7.4cqw; }
+.ovg[data-pos="left-third"] .ov[data-size="headline"], .ovg[data-pos="right-third"] .ov[data-size="headline"] { --fs: 5.9cqw; }
+.ovg[data-pos="left-third"] .ov[data-size="body"], .ovg[data-pos="right-third"] .ov[data-size="body"] { --fs: 3.9cqw; }
+.frame[data-tall] .ov[data-size="display"] { --fs: 11.4cqw; } .frame[data-tall] .ov[data-size="headline"] { --fs: 8.8cqw; }
+.frame[data-tall] .ov[data-size="body"] { --fs: 5.4cqw; } .frame[data-tall] .ov[data-size="caption"] { --fs: 4cqw; }
+.frame[data-tall] .ov__k { font-size: max(calc(3cqw * var(--s)), 6.5px); } .frame[data-tall] .ov[data-treat="lockup"] { --fs: 3.3cqw; }
+/* A vertical video plays under an app's own buttons. Type stays clear of the top bar,
+   the caption area at the bottom and the column of buttons on the right. */
+.frame[data-tall] .ovg[data-pos="upper-third"] { top: 14%; left: 8%; right: 15%; }
+.frame[data-tall] .ovg[data-pos="lower-third"] { bottom: 23%; left: 8%; right: 15%; }
+.frame[data-tall] .ovg[data-pos="center"] { left: 8%; right: 15%; }
+.frame[data-tall] .ovg[data-pos="right-third"] { right: 15%; }
+.frame[data-tall] .field[data-pos="upper-third"] { background: linear-gradient(180deg, rgba(var(--f), .6), rgba(var(--f), .58) 30%, rgba(var(--f), .24) 44%, transparent 58%); }
+.frame[data-tall] .field[data-pos="lower-third"] { background: linear-gradient(0deg, rgba(var(--f), .6), rgba(var(--f), .58) 36%, rgba(var(--f), .24) 50%, transparent 62%); }
+/* The areas an app covers, shown on request. */
+.safe { position: absolute; inset: 0; pointer-events: none; display: none; z-index: 2; }
+body[data-safe="on"] .safe, body[data-safe-peek] .frame[data-moving] .safe { display: block; }
+.frame[data-move] .ov { pointer-events: auto; cursor: grab; touch-action: none; }
+.frame[data-move] .ov:hover { outline: 1px dashed rgba(255,255,255,.55); outline-offset: 6px; }
+.frame[data-moving] .ov { cursor: grabbing; }
+.hint { margin-top: 9px; font: 400 11.5px/1.45 var(--mono); color: var(--dim); }
+.safe i { position: absolute; background: repeating-linear-gradient(135deg, rgba(255,90,43,.34) 0 5px, rgba(255,90,43,.1) 5px 10px); outline: 1px solid rgba(255,90,43,.6); outline-offset: -1px; }
+.safe[data-kind="tall"] i:nth-child(1) { left: 0; right: 0; top: 0; height: 12%; }
+.safe[data-kind="tall"] i:nth-child(2) { left: 0; right: 0; bottom: 0; height: 21%; }
+.safe[data-kind="tall"] i:nth-child(3) { right: 0; top: 12%; bottom: 21%; width: 13%; }
+.safe[data-kind="wide"] i { inset: 5%; background: none; outline: 1px dashed rgba(255,90,43,.7); }
+.safe[data-kind="wide"] i:nth-child(n+2) { display: none; }
+.ov[data-case="upper"] .ov__t { text-transform: uppercase; letter-spacing: calc(var(--ls) + .045em); }
+.ov__t { display: block; }
+.ov__l { display: block; text-wrap: balance; }
+/* The words that carry the line. They keep the line's colour and get a bar in the accent
+   under them, which reads over any picture. On a flat dark frame an overlay can ask for
+   the words themselves to take the accent colour instead. */
+.ov em { font-style: normal; }
+.ov[data-em="color"] em { color: var(--acc-o); }
+.ov:not([data-em="color"]) em { background: linear-gradient(transparent 64%, var(--acc-o) 64%, var(--acc-o) 93%, transparent 93%); padding: 0 .07em; margin: 0 -.07em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+/* A small label above the line, led by a short rule in the accent. */
+.ov__k { display: inline-flex; align-items: center; gap: .9em; margin-bottom: 1.15em; font-size: max(calc(2.35cqw * var(--s)), 6.5px); line-height: 1; letter-spacing: .15em; text-transform: uppercase; font-weight: 600; opacity: .92; white-space: nowrap; }
+.ov__k::before { content: ""; width: 2.1em; height: max(.14em, 1.5px); background: var(--acc-o); flex: none; }
+.ovg[data-pos="right-third"] .ov__k { flex-direction: row-reverse; }
+/* A brand name set as a lockup: small, spaced capitals after a square in the accent. */
+.ov[data-treat="lockup"] { --fs: 2.7cqw; --lh: 1; --ls: .16em; text-transform: uppercase; display: inline-flex; align-items: center; gap: .85em; white-space: nowrap; }
+.ov[data-treat="lockup"]::before { content: ""; width: .78em; height: .78em; background: var(--acc-o); flex: none; }
+.ovg[data-pos="left-third"] .ov[data-treat="lockup"], .ovg[data-pos="right-third"] .ov[data-treat="lockup"] { --fs: 2.4cqw; margin-top: 1.2cqw; }
+/* Type on a solid plate in a brand colour, for a frame too busy to carry type alone. */
+.ov[data-treat="plate"] .ov__l { display: table; margin: 0 auto .14em; padding: .16em .42em .2em; background: var(--plate); text-wrap: wrap; }
+.ovg[data-pos="left-third"] .ov[data-treat="plate"] .ov__l { margin-left: 0; }
+.ovg[data-pos="right-third"] .ov[data-treat="plate"] .ov__l { margin-right: 0; }
 /* A soft field behind each line of type, on the side of the frame the type sits on.
    It is drawn by the board, not baked into the frame, and goes away with the text. */
 .field { position: absolute; inset: 0; pointer-events: none; transition: opacity .2s; }
-.field[data-pos="upper-third"] { background: linear-gradient(180deg, rgba(var(--f), .5), rgba(var(--f), .22) 26%, transparent 46%); }
-.field[data-pos="lower-third"] { background: linear-gradient(0deg, rgba(var(--f), .55), rgba(var(--f), .24) 26%, transparent 46%); }
+.field[data-pos="upper-third"] { background: linear-gradient(180deg, rgba(var(--f), .66), rgba(var(--f), .44) 18%, rgba(var(--f), .16) 34%, transparent 48%); }
+.field[data-pos="lower-third"] { background: linear-gradient(0deg, rgba(var(--f), .66), rgba(var(--f), .44) 18%, rgba(var(--f), .16) 34%, transparent 48%); }
 .field[data-pos="center"] { background: radial-gradient(75% 34% at 50% 50%, rgba(var(--f), .42), transparent 100%); }
 .field[data-pos="left-third"] { background: linear-gradient(90deg, rgba(var(--f), .5), rgba(var(--f), .2) 34%, transparent 58%); }
 .field[data-pos="right-third"] { background: linear-gradient(270deg, rgba(var(--f), .5), rgba(var(--f), .2) 34%, transparent 58%); }
 body[data-text="off"] .field { opacity: 0; }
-.ov[data-pos="center"] { top: 50%; transform: translateY(-50%); }
-.ov[data-pos="lower-third"] { bottom: 9%; }
-.ov[data-pos="upper-third"] { top: 9%; }
-.ov[data-stack="1"][data-pos="lower-third"] { bottom: calc(9% + var(--below, 0px)); }
-.ov[data-stack="1"][data-pos="upper-third"] { top: calc(9% + var(--below, 0px)); }
-.ov[data-pos="left-third"] { top: 50%; transform: translateY(-50%); right: 52%; justify-content: flex-start; text-align: left; }
-.ov[data-pos="right-third"] { top: 50%; transform: translateY(-50%); left: 52%; justify-content: flex-end; text-align: right; }
-.ov[data-size="display"] span { font-size: 9.5cqw; } .ov[data-size="headline"] span { font-size: 7.2cqw; }
-.ov[data-size="body"] span { font-size: 4.6cqw; } .ov[data-size="caption"] span { font-size: 3.6cqw; }
-body[data-text="off"] .ov { opacity: 0; }
+body[data-text="off"] .ovg { opacity: 0; }
 .tag { display: inline-flex; flex: none; align-items: center; gap: 6px; height: 21px; padding: 0 8px; border-radius: 5px; background: var(--p2); font: 600 9.5px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--c); border: 1px solid color-mix(in srgb, var(--c) 40%, transparent); }
 .tag i { width: 5px; height: 5px; border-radius: 50%; background: var(--c); }
 .tag--r { color: var(--mut); border-color: var(--line2); padding: 0 6px; }
@@ -427,45 +480,75 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
 
   var ar = (D.project.aspect || "16:9").split(":"), ratio = (+ar[0] || 16) / (+ar[1] || 9);
   document.documentElement.style.setProperty("--ar", (+ar[0] || 16) + " / " + (+ar[1] || 9));
-  var phBg = 0.006;
+  var phBg = 0.006, brandAccent = "";
   (D.brand.palette || []).forEach(function (p) {
     var role = String(p.role).toLowerCase();
     if (role.indexOf("background") === 0) { document.documentElement.style.setProperty("--ph-bg", safeColor(p.hex)); phBg = luminance(p.hex); }
     if (role === "ink") document.documentElement.style.setProperty("--ph-ink", safeColor(p.hex));
+    if (role.indexOf("accent") === 0 && !brandAccent) brandAccent = safeColor(p.hex);
   });
+  if (!brandAccent) brandAccent = "#FF5A2B";
 
   function frameNode(s, f, opts) {
     opts = opts || {};
-    var box = el("div", { class: "frame" });
+    var box = el("div", { class: "frame", "data-tall": ratio < 0.8 ? true : null });
     if (f) box.appendChild(el("img", { src: f.src, alt: s.id + ", " + s.beat + ", round " + f.round, loading: opts.eager ? "eager" : "lazy", decoding: "async" }));
     else { box.setAttribute("data-empty", ""); box.appendChild(el("div", { class: "ph" }, el("b", { text: s.n }), el("span", { text: [s.framing, s.angle, s.motion].filter(Boolean).join(" · ") }))); }
-    var seen = {}, stacked = {};
+    var seen = {};
     s.overlays.forEach(function (o) {
+      if (o.treatment === "plate" || o.treatment === "lockup") return;
       var pos = o.xy ? "custom" : o.position, dark = luminance(o.color) < 0.4;
       // One field per side of the frame, and only over a real frame. Light type gets a
       // dark field and dark type a light one.
       if (f && !o.xy && !seen[pos]) { seen[pos] = 1; box.appendChild(el("div", { class: "field", "data-pos": pos, style: "--f:" + (dark ? "255,255,255" : "0,0,0") })); }
     });
-    s.overlays.forEach(function (o) {
-      var pos = o.xy ? "custom" : o.position;
-      var style = "color:" + safeColor(o.color) + ";font-weight:" + (+o.weight || 700) + ";" + (o.family ? "font-family:'" + o.family.replace(/[^A-Za-z0-9 _-]/g, "") + "'," + "var(--sans);" : "");
-      var wrap = el("div", { class: "ov", "data-pos": pos, "data-size": o.size || "headline", "data-ink": luminance(o.color) < 0.4 ? "dark" : "light" }, el("span", { style: style, text: o.content }));
-      if (o.xy) wrap.setAttribute("style", "left:" + (+o.xy.x || 50) + "%;top:" + (+o.xy.y || 50) + "%;right:auto;transform:translate(-50%,-50%)");
-      // A second line on the same side sits clear of the first instead of on top of it.
-      if (stacked[pos]) wrap.setAttribute("data-stack", "1");
-      stacked[pos] = (stacked[pos] || []).concat(wrap);
-      box.appendChild(wrap);
+    var groups = {};
+    s.overlays.forEach(function (o, i) {
+      var pos = o.xy ? "custom" : o.position, key = o.xy ? "custom" + i : pos, g = groups[key];
+      if (!g) {
+        g = groups[key] = el("div", { class: "ovg", "data-pos": pos });
+        if (o.xy) g.setAttribute("style", "left:" + (+o.xy.x || 50) + "%;top:" + (+o.xy.y || 50) + "%");
+        box.appendChild(g);
+      }
+      g.appendChild(overlayNode(o));
     });
     // With no frame, type that would vanish into the brand's ground is shown on the
     // brand's ink colour instead, which is the kind of field it was written for.
     if (!f && s.overlays.some(function (o) { return contrast(luminance(o.color), phBg) < 2.2; })) box.setAttribute("data-flip", "");
-    box._stacks = stacked;
+    if (opts.move) wireMove(box);
+    box.appendChild(el("div", { class: "safe", "data-kind": ratio < 0.8 ? "tall" : "wide" }, el("i"), el("i"), el("i")));
     fitLater(box);
     if (D.live) {
       box.appendChild(el("div", { class: "drop", text: "Drop the frame for " + s.id }));
       wireDrop(box, s);
     }
     return box;
+  }
+  // One overlay: an optional label, then the line, broken where its sentences end.
+  function overlayNode(o) {
+    var ink = luminance(o.color) < 0.4 ? "dark" : "light", treat = o.treatment || "plain";
+    var style = "color:" + safeColor(o.color) + ";font-weight:" + (+o.weight || 700) + ";--acc-o:" + safeColor(o.accent || brandAccent) + ";"
+      + (o.family ? "font-family:'" + o.family.replace(/[^A-Za-z0-9 _-]/g, "") + "'," + "var(--sans);" : "")
+      + (treat === "plate" ? "--plate:" + safeColor(o.plate || (ink === "dark" ? "#FFFFFF" : "#000000")) + ";" : "");
+    var node = el("div", { class: "ov", "data-id": o.id, "data-size": o.size || "headline", "data-ink": ink, "data-treat": treat, "data-case": o["case"] || null, "data-em": o.emphasis_style === "color" ? "color" : null, style: style });
+    var text = String(o.content == null ? "" : o.content);
+    if (treat === "lockup") { node.appendChild(document.createTextNode(text)); return node; }
+    if (o.kicker) node.appendChild(el("span", { class: "ov__k", text: o.kicker }));
+    var body = el("span", { class: "ov__t" });
+    lines(text).forEach(function (line) {
+      var row = el("span", { class: "ov__l" }), at = o.emphasis ? line.indexOf(o.emphasis) : -1;
+      if (at < 0) row.textContent = line;
+      else { row.appendChild(document.createTextNode(line.slice(0, at))); row.appendChild(el("em", { text: o.emphasis })); row.appendChild(document.createTextNode(line.slice(at + o.emphasis.length))); }
+      body.appendChild(row);
+    });
+    node.appendChild(body);
+    return node;
+  }
+  // Two or three short sentences each get their own line. Anything else wraps as one block.
+  function lines(text) {
+    var parts = text.split(/(?<=[.!?])\s+/).filter(Boolean);
+    if (parts.length < 2 || parts.length > 3 || parts.some(function (x) { return x.length > 26; })) return [text];
+    return parts;
   }
   function contrast(a, b) { return (Math.max(a, b) + .05) / (Math.min(a, b) + .05); }
   function luminance(hex) {
@@ -477,18 +560,13 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
   // fits its side of the frame, and stacked lines are spaced by their real height.
   function fit(box) {
     var W = box.clientWidth, H = box.clientHeight; if (!W || !H) return;
-    box.querySelectorAll(".ov").forEach(function (wrap) {
-      var span = wrap.firstChild, pos = wrap.getAttribute("data-pos"), scale = 1;
-      span.style.fontSize = "";
-      var base = parseFloat(getComputedStyle(span).fontSize);
-      var maxH = H * (pos === "center" || pos === "custom" ? .5 : pos === "left-third" || pos === "right-third" ? .7 : .3);
-      var maxW = pos === "custom" ? W * .86 : wrap.clientWidth;
-      while (scale > .45 && (span.scrollWidth > maxW + 1 || span.offsetHeight > maxH)) { scale -= .05; span.style.fontSize = (base * scale) + "px"; }
-    });
-    var stacks = box._stacks || {};
-    Object.keys(stacks).forEach(function (pos) {
-      var below = 0;
-      stacks[pos].forEach(function (wrap, i) { if (i) wrap.style.setProperty("--below", below + "px"); below += wrap.offsetHeight + H * .025; });
+    box.querySelectorAll(".ovg").forEach(function (g) {
+      var pos = g.getAttribute("data-pos"), scale = 1;
+      g.style.setProperty("--s", "1");
+      var maxH = H * (pos === "center" || pos === "custom" ? .56 : pos === "left-third" || pos === "right-third" ? .8 : .36);
+      var maxW = pos === "custom" ? W * .86 : g.clientWidth;
+      // A word that cannot break (a web address) makes the group wider than its column, so it is scaled until it fits.
+      while (scale > .3 && (g.scrollWidth > maxW + 1 || g.offsetHeight > maxH)) { scale -= .05; g.style.setProperty("--s", scale.toFixed(2)); }
     });
   }
   var pending = [];
@@ -555,6 +633,39 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     })));
     return sec;
   }
+  // On a live board the text on the open shot can be dragged. Where it is dropped is
+  // saved as that overlay's position, held inside the area an app leaves clear.
+  function wireMove(box) {
+    box.setAttribute("data-move", "");
+    box.addEventListener("pointerdown", function (e) {
+      var ov = e.target.closest ? e.target.closest(".ov") : null; if (!ov || !box.contains(ov)) return;
+      e.preventDefault();
+      var g = ov.parentNode, fr = box.getBoundingClientRect(), r0 = ov.getBoundingClientRect(), x0 = e.clientX, y0 = e.clientY, moved = false;
+      var tall = box.hasAttribute("data-tall"), L = tall ? .06 : .05, R = tall ? .87 : .95, T = tall ? .12 : .05, B = tall ? .79 : .95;
+      function at(ev) {
+        var cx = r0.left + r0.width / 2 + (ev.clientX - x0) - fr.left, cy = r0.top + r0.height / 2 + (ev.clientY - y0) - fr.top;
+        cx = Math.max(fr.width * L + r0.width / 2, Math.min(fr.width * R - r0.width / 2, cx));
+        cy = Math.max(fr.height * T + r0.height / 2, Math.min(fr.height * B - r0.height / 2, cy));
+        return { x: cx, y: cy };
+      }
+      function move(ev) {
+        if (!moved && Math.abs(ev.clientX - x0) + Math.abs(ev.clientY - y0) < 4) return;
+        moved = true; box.setAttribute("data-moving", ""); document.body.setAttribute("data-safe-peek", "");
+        var p = at(ev); ov.style.transform = "translate(" + (p.x - (r0.left + r0.width / 2 - fr.left)) + "px," + (p.y - (r0.top + r0.height / 2 - fr.top)) + "px)";
+      }
+      function up(ev) {
+        window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up);
+        box.removeAttribute("data-moving"); document.body.removeAttribute("data-safe-peek");
+        if (!moved) return;
+        var p = at(ev), pos = { x: Math.round(p.x / fr.width * 1000) / 10, y: Math.round(p.y / fr.height * 1000) / 10 };
+        fetch("/__overlay?id=" + encodeURIComponent(ov.getAttribute("data-id")), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ position: pos }) })
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (r) { if (r.ok) toast("Moved. Saved to text-overlays.json"); else { ov.style.transform = ""; toast(r.j.error || "Could not save that", true); } })
+          .catch(function () { ov.style.transform = ""; toast("The live board is not running any more", true); });
+      }
+      window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
+    });
+  }
   function wireDrop(box, s) {
     box.addEventListener("dragover", function (e) { e.preventDefault(); box.setAttribute("data-over", ""); });
     box.addEventListener("dragleave", function () { box.removeAttribute("data-over"); });
@@ -590,6 +701,7 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
       el("div", { class: "mark" }, el("i"), "shotkit", el("span", { text: "board" })),
       el("div", { class: "bar__title", text: D.project.title }),
       el("span", { class: "pill hide-s", "data-live": D.live ? true : null }, el("b"), D.live ? "Live" : "Rendered " + D.rendered_at.replace("T", " ").replace("Z", " UTC")),
+      D.shots.length && (D.live || D.has_preview) ? el("a", { class: "btn hide-s", href: D.live ? "/__preview?print=1" : "preview.html", target: "_blank", rel: "noopener", title: "Opens the client preview. Print it, and choose Save as PDF." }, "PDF") : null,
       copyBtn("Copy for LLM", function () { return D.markdown; }, "btn--pri", "Storyboard copied as Markdown"));
 
     var n = D.next;
@@ -632,7 +744,9 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     });
     var textSw = el("button", { class: "sw", type: "button", "aria-pressed": "true", onclick: function () {
       var on = textSw.getAttribute("aria-pressed") !== "true"; textSw.setAttribute("aria-pressed", String(on)); document.body.setAttribute("data-text", on ? "on" : "off"); } }, el("i"), "Text on frames");
-    app.appendChild(el("div", { class: "tools" }, el("h2", { text: "Shots" }), chips, textSw));
+    var safeSw = el("button", { class: "sw", type: "button", "aria-pressed": "false", title: ratio < 0.8 ? "The parts of a vertical video an app covers with its own buttons" : "The margin a title should stay inside", onclick: function () {
+      var on = safeSw.getAttribute("aria-pressed") !== "true"; safeSw.setAttribute("aria-pressed", String(on)); document.body.setAttribute("data-safe", on ? "on" : "off"); } }, el("i"), "Safe zones");
+    app.appendChild(el("div", { class: "tools" }, el("h2", { text: "Shots" }), chips, el("div", { class: "sws" }, safeSw, textSw)));
 
     var sheet = el("section", { class: "sheet", id: "sheet", style: "--min:" + (ratio < 0.8 ? 190 : ratio < 1.2 ? 230 : 300) + "px" });
     D.shots.forEach(function (s, i) {
@@ -778,8 +892,9 @@ kbd { font: 500 10px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     var shown = s.frames.length ? s.frames[s.frames.length - 1] : null;
     var pv = el("div", { class: "pv" });
     var holder = el("div"); pv.appendChild(holder);
-    function showFrame(f) { shown = f; holder.textContent = ""; holder.appendChild(frameNode(s, f, { eager: true })); }
+    function showFrame(f) { shown = f; holder.textContent = ""; holder.appendChild(frameNode(s, f, { eager: true, move: D.live && s.overlays.length > 0 })); }
     showFrame(shown);
+    if (D.live && s.overlays.length) pv.appendChild(el("div", { class: "hint", text: "Drag the text to move it. It stays inside the safe zone and is saved to text-overlays.json." }));
     if (s.frames.length > 1) {
       var rounds = el("div", { class: "rounds" });
       s.frames.forEach(function (f) {

@@ -185,6 +185,18 @@ Every piece of on-screen text becomes an entry in `text-overlays.json`. Never ba
 - `enter`, `{ at: seconds, animation: fade-in | slide-up | slide-down | type-on | hard-cut }`
 - `exit`, `{ at: seconds, animation: fade-out | slide-up | slide-down | hard-cut }`
 
+Then set the type and check the words:
+
+- **Type treatment.** Mark the two or three words that carry each headline with
+  `emphasis`, name the brand once with a `kicker` or a `lockup`, and use a `plate` where
+  the frame is busy. The fields and when to use each are in
+  `references/on-screen-text.md`, under "Type treatment".
+- **The language pass.** Before you write the file, run every line through
+  `references/hooks-and-language.md`: a first line that is a hook and not a slogan,
+  specific words, one idea per line, nothing the brief did not give.
+- **A brand with no typeface.** Pick a pairing from the brand packs folder's
+  `type-pairings.md` and write it into the brand lock. Do not default to Inter.
+
 Enter and exit have different animation vocabularies, and `templates/text-overlays.schema.json`
 is the authority on both. A shot may carry more than one overlay; list every id in that
 shot's `on_screen_text` array, or the extra overlays render nowhere.

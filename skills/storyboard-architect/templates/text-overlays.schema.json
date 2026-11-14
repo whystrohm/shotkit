@@ -56,6 +56,39 @@
             "pattern": "^#[0-9A-Fa-f]{6}$",
             "description": "Hex value. Must come from brand-lock palette."
           },
+          "kicker": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 48,
+            "description": "Optional. A short label set small above the line, in spaced capitals after a rule in the accent. A fact from the brief: a product name, a place, a step. Never a slogan."
+          },
+          "emphasis": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Optional. The words that carry the line, copied exactly from content."
+          },
+          "emphasis_style": {
+            "enum": ["bar", "color"],
+            "description": "Optional. bar (the default): the words keep their colour and get a bar in the accent under them, which reads over any picture. color: the words take the accent colour. Use color only where the frame behind the type is dark and flat."
+          },
+          "accent": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$",
+            "description": "Optional. The accent for the rule, the emphasis and the lockup mark. Must come from the brand-lock palette. Defaults to the palette's accent."
+          },
+          "treatment": {
+            "enum": ["plain", "plate", "lockup"],
+            "description": "Optional. plain: type on a soft field (the default). plate: type on a solid plate, for a frame too busy to carry type alone. lockup: a brand or product name as small spaced capitals after a square in the accent."
+          },
+          "plate": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$",
+            "description": "Optional, with treatment plate. The plate's colour. Must come from the brand-lock palette."
+          },
+          "case": {
+            "enum": ["sentence", "upper"],
+            "description": "Optional. upper sets the line in capitals with wider spacing. Use it for three words or fewer."
+          },
           "position": {
             "oneOf": [
               {

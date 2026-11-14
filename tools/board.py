@@ -42,6 +42,7 @@ from _shotkit import (
     PALETTE_ROW_RE,
     REPO_ROOT,
     SHOT_ID_RE,
+    TEXT_ID_RE,
     as_overlay_ids,
     capability_map,
     is_unconfigured,
@@ -348,6 +349,29 @@ def read_brand(path: Path) -> dict:
         "unconfigured": is_unconfigured(text),
         "markdown": text,
     }
+
+
+def overlay_style(overlay: dict) -> dict:
+    """The optional type treatment on an overlay, kept only where it is usable."""
+    style: dict = {}
+    content = overlay.get("content") if isinstance(overlay.get("content"), str) else ""
+    kicker = overlay.get("kicker")
+    if isinstance(kicker, str) and kicker.strip():
+        style["kicker"] = kicker.strip()[:48]
+    emphasis = overlay.get("emphasis")
+    if isinstance(emphasis, str) and emphasis and emphasis in content:
+        style["emphasis"] = emphasis
+    for key in ("accent", "plate"):
+        value = overlay.get(key)
+        if isinstance(value, str) and re.fullmatch(r"#[0-9A-Fa-f]{6}", value):
+            style[key] = value
+    if overlay.get("treatment") in ("plain", "plate", "lockup"):
+        style["treatment"] = overlay["treatment"]
+    if overlay.get("case") in ("sentence", "upper"):
+        style["case"] = overlay["case"]
+    if overlay.get("emphasis_style") in ("bar", "color"):
+        style["emphasis_style"] = overlay["emphasis_style"]
+    return style
 
 
 def css_family(value: str | None) -> str | None:
@@ -700,6 +724,7 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
                     "enter_animation": (overlay.get("enter") or {}).get("animation"),
                     "exit_at": (overlay.get("exit") or {}).get("at"),
                     "exit_animation": (overlay.get("exit") or {}).get("animation"),
+                    **overlay_style(overlay),
                 }
             )
         shot = {
@@ -757,6 +782,7 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
         },
         "rendered_at": rendered_at or iso_instant(),
         "live": live,
+        "has_preview": (out_dir / "preview.html").exists(),
         "rounds": rounds,
         "series_lock": shots_doc.get("series_lock") or {},
         "brand": brand,
@@ -854,6 +880,60 @@ def save_frame(out_dir: Path, shot_id: str, content_type: str, body: bytes) -> t
     return (200, {"saved": str(path.relative_to(out_dir))})
 
 
+NAMED_POSITIONS = ("center", "lower-third", "upper-third", "left-third", "right-third")
+
+
+def move_overlay(out_dir: Path, overlay_id: str, position) -> tuple[int, dict]:
+    """
+    Save where an overlay was dragged to on the live board.
+
+    Only the position changes. run.json's hash of text-overlays.json is brought up to
+    date, because the board made the edit and would otherwise report its own change.
+    """
+    if not TEXT_ID_RE.match(overlay_id or ""):
+        return (400, {"error": "not an overlay id"})
+    if isinstance(position, dict):
+        x, y = position.get("x"), position.get("y")
+        numeric = all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in (x, y))
+        if not numeric or not (0 <= x <= 100 and 0 <= y <= 100):
+            return (400, {"error": "x and y must be numbers from 0 to 100"})
+        position = {"x": round(float(x), 1), "y": round(float(y), 1)}
+    elif position not in NAMED_POSITIONS:
+        return (400, {"error": "not a position"})
+    path = out_dir / "text-overlays.json"
+    doc, err = load_json(path)
+    if err or not isinstance(doc, dict):
+        return (404, {"error": "text-overlays.json is not readable"})
+    target = next((o for o in doc.get("overlays") or [] if isinstance(o, dict) and o.get("id") == overlay_id), None)
+    if target is None:
+        return (404, {"error": f"{overlay_id} is not in text-overlays.json"})
+    target["position"] = position
+    path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    run_path = out_dir / "run.json"
+    run_doc, run_err = load_json(run_path)
+    if not run_err and isinstance(run_doc, dict) and isinstance(run_doc.get("inputs"), dict) \
+            and run_doc["inputs"].get("text_overlays_sha256"):
+        run_doc["inputs"]["text_overlays_sha256"] = sha256_file(path)
+        run_path.write_text(json.dumps(run_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return (200, {"saved": overlay_id, "position": position})
+
+
+def client_preview(out_dir: Path, auto_print: bool) -> str:
+    """The client preview page for this folder, built now, for printing to PDF."""
+    import importlib.util
+    from types import SimpleNamespace
+
+    spec = importlib.util.spec_from_file_location("shots_to_html", Path(__file__).with_name("shots-to-html.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    args = SimpleNamespace(inline_images=False, rendered_at=None, no_web_fonts=False, out="preview.html")
+    context, _ = module.build_context(out_dir, args)
+    page = module.render(module.read_template("preview.html.tpl"), context)
+    if auto_print:
+        page = page.replace("</body>", "<script>addEventListener('load',function(){setTimeout(function(){print()},500)})</script></body>", 1)
+    return page
+
+
 def serve(out_dir: Path, port: int, open_browser: bool) -> int:
     from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
     from urllib.parse import parse_qs, unquote, urlparse
@@ -884,6 +964,13 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
             if url.path in ("/", "/board.html"):
                 data, _ = build(root, live=True)
                 self.send(200, render(data).encode("utf-8"), "text/html; charset=utf-8")
+                return
+            if url.path == "/__preview":
+                if not (root / "shots.json").exists():
+                    self.send(404, b"no plan yet", "text/plain")
+                    return
+                page = client_preview(root, "print" in parse_qs(url.query))
+                self.send(200, page.encode("utf-8"), "text/html; charset=utf-8")
                 return
             if url.path == "/__stamp":
                 self.send(200, tree_stamp(root).encode(), "text/plain")
@@ -971,6 +1058,15 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
             url = urlparse(self.path)
             if url.path == "/__media" and self.local():
                 self.take_media(url)
+                return
+            if url.path == "/__overlay" and self.local():
+                length = int(self.headers.get("Content-Length") or 0)
+                try:
+                    body = json.loads(self.rfile.read(min(length, 4096)) or b"{}")
+                except ValueError:
+                    body = {}
+                status, payload = move_overlay(root, (parse_qs(url.query).get("id") or [""])[0], body.get("position") if isinstance(body, dict) else None)
+                self.send(status, json.dumps(payload).encode(), "application/json")
                 return
             if url.path != "/__frame" or not self.local():
                 self.send(403, b'{"error":"refused"}', "application/json")

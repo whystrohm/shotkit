@@ -17,7 +17,9 @@
       "exit": {
         "at": 3.4,
         "animation": "hard-cut"
-      }
+      },
+      "kicker": "Harbor Roast",
+      "emphasis": "fall roast"
     },
     {
       "id": "text_02",
@@ -35,7 +37,8 @@
       "exit": {
         "at": 6.4,
         "animation": "fade-out"
-      }
+      },
+      "emphasis": "Fog Line."
     },
     {
       "id": "text_03",
@@ -53,7 +56,8 @@
       "exit": {
         "at": 9.4,
         "animation": "fade-out"
-      }
+      },
+      "kicker": "Tasting notes"
     },
     {
       "id": "text_04",
@@ -71,7 +75,8 @@
       "exit": {
         "at": 12.0,
         "animation": "fade-out"
-      }
+      },
+      "emphasis": "One batch"
     },
     {
       "id": "text_05",
@@ -89,20 +94,18 @@
       "exit": {
         "at": 15.0,
         "animation": "hard-cut"
-      }
+      },
+      "emphasis": "Order in the shop."
     },
     {
       "id": "text_06",
       "shot_id": "shot_05",
       "content": "Harbor Roast",
       "font": "Work Sans Regular 400",
-      "size": "body",
-      "weight": "regular",
-      "color": "#9C8B78",
-      "position": {
-        "x": 50,
-        "y": 36
-      },
+      "size": "caption",
+      "weight": "medium",
+      "color": "#F2E8DA",
+      "position": "upper-third",
       "enter": {
         "at": 13.0,
         "animation": "fade-in"
@@ -110,7 +113,8 @@
       "exit": {
         "at": 15.0,
         "animation": "hard-cut"
-      }
+      },
+      "treatment": "lockup"
     }
   ]
 }
