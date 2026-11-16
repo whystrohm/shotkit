@@ -125,9 +125,9 @@ See a finished run before you make one:
 ~/.claude/shotkit-tools/sk board --example
 ```
 
-The demo at the top is the live board replaying one real Shotkit run in stages: the
-Media Tsunami film, planned in seven shots, with two frames sent back and redone. It ends
-on the film that plan became. A silent MP4 is at
+The demo at the top is a 10-second cut of the live board replaying one real Shotkit run:
+the Media Tsunami film, planned in seven shots, checked, then the film that plan became.
+The full 37-second version, with two frames sent back and redone, is a silent MP4 at
 [`docs/images/demo.mp4`](docs/images/demo.mp4).
 
 ---
