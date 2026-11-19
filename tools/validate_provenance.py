@@ -72,6 +72,12 @@ class Report:
         self.output_dir = output_dir
         self.errors: list[str] = []
         self.warnings: list[str] = []
+        # True when a reviewed frame may be absent, as in an example that ships web-size
+        # copies in place of the files the critic hashed. A frame that is present and
+        # does not match its hash is an error either way.
+        self.frames_optional = False
+        # One line per approval a person recorded with approve.py.
+        self.approvals: list[str] = []
         self.shots: dict[str, dict] = {}
         # Every shot id in shots.json, in file order. Empty when shots.json is unreadable.
         self.shot_ids: list[str] = []
@@ -90,17 +96,24 @@ class Report:
             "shots": self.shots,
             "shot_ids": self.shot_ids,
             "unreviewed": unreviewed(self),
+            "approvals": self.approvals,
         }
 
 
 def _check_hash(
-    report: Report, label: str, rel: str | None, expected: str | None
+    report: Report, label: str, rel: str | None, expected: str | None,
+    optional: bool = False,
 ) -> None:
     """Compare a recorded hash against the file currently on disk."""
     if not rel or not expected:
         return
     path = report.output_dir / rel
     if not path.exists():
+        if optional:
+            report.warnings.append(
+                f"{label}: the reviewed file '{rel}' is not in this folder, so its hash was not checked"
+            )
+            return
         report.errors.append(f"{label}: '{rel}' is referenced but missing on disk")
         return
     actual = sha256_file(path)
@@ -293,7 +306,8 @@ def check_critiques(report: Report, run_doc: dict | None) -> None:
             else:
                 seen[key] = rel
 
-        _check_hash(report, f"{rel} image", data.get("image_ref"), data.get("image_sha256"))
+        _check_hash(report, f"{rel} image", data.get("image_ref"), data.get("image_sha256"),
+                    optional=report.frames_optional)
         _check_hash(report, f"{rel} prompt", data.get("prompt_ref"), data.get("prompt_sha256"))
         _check_hash(
             report,
@@ -361,8 +375,23 @@ def check_coverage(report: Report, run_doc: dict | None) -> None:
             )
 
 
-def validate_tree(output_dir: Path) -> Report:
+def check_approvals(report: Report) -> None:
+    """A person's approval, from approve.py. Malformed is an error. One that no longer
+    holds is a warning: the files are intact, but what was approved has changed since."""
+    from approve import status  # here, because approve.py reads this module
+
+    docs, errors = status(report.output_dir)
+    report.errors.extend(errors)
+    for doc in docs:
+        line = f"{doc['what']} approved by {doc['by']} at {doc['at']}"
+        report.approvals.append(line + ("" if doc["holds"] else f" (no longer holds: {doc['why']})"))
+        if not doc["holds"]:
+            report.warnings.append(f"{doc['_ref']}: this approval no longer holds: {doc['why']}")
+
+
+def validate_tree(output_dir: Path, frames_optional: bool = False, with_approvals: bool = True) -> Report:
     report = Report(output_dir)
+    report.frames_optional = frames_optional
     if not output_dir.is_dir():
         report.errors.append(f"not a directory: {output_dir}")
         return report
@@ -370,6 +399,8 @@ def validate_tree(output_dir: Path) -> Report:
     check_critiques(report, run_doc)
     check_coverage(report, run_doc)
     _finalize_hash_failures(report)
+    if with_approvals and (output_dir / "approvals").is_dir():
+        check_approvals(report)
     return report
 
 
@@ -464,6 +495,29 @@ def selftest() -> int:
             print(f"  FAIL  selftest: unreviewed frame was not caught, got: {report.errors}")
             ok = False
 
+    # brief_sources is optional. When it is there, every tag is one of the three.
+    with tempfile.TemporaryDirectory() as tmp:
+        scratch = Path(tmp) / "run"
+        shutil.copytree(WORKED_RUN, scratch)
+        run_path = scratch / "run.json"
+        run_doc = json.loads(run_path.read_text())
+        run_doc["brief_sources"] = {"duration": "given", "aspect": "suggested", "brand_lock": "to_confirm"}
+        run_path.write_text(json.dumps(run_doc))
+        report = validate_tree(scratch)
+        if not report.errors:
+            print("  ok    selftest: a run.json with brief_sources passes")
+        else:
+            print(f"  FAIL  selftest: a valid brief_sources was rejected, got: {report.errors}")
+            ok = False
+        run_doc["brief_sources"]["aspect"] = "guessed"
+        run_path.write_text(json.dumps(run_doc))
+        report = validate_tree(scratch)
+        if any("brief_sources/aspect" in e for e in report.errors):
+            print("  ok    selftest: an unknown brief_sources tag is caught")
+        else:
+            print(f"  FAIL  selftest: a bad brief_sources tag was not caught, got: {report.errors}")
+            ok = False
+
     # A legacy tree keeps its critique at the output root. validate_critique.py and
     # shots-to-html.py both read it, so this tool has to as well: reporting a shot as
     # unreviewed while the preview shows its verdict badge is the exact kind of
@@ -525,6 +579,28 @@ def selftest() -> int:
             print(f"  FAIL  selftest: expected only shot_02 outstanding, got {outstanding(report)}")
             ok = False
 
+    # A reviewed frame that is not in the folder. By default that is an error. With
+    # --frames-optional it is a warning, and a frame that is present but edited still fails.
+    with tempfile.TemporaryDirectory() as tmp:
+        scratch = Path(tmp) / "run"
+        shutil.copytree(WORKED_RUN, scratch)
+        gone = scratch / "frames" / "round-1" / "shot_01.png"
+        gone.unlink()
+        strict = validate_tree(scratch)
+        loose = validate_tree(scratch, frames_optional=True)
+        if strict.errors and not loose.errors and any("not in this folder" in w for w in loose.warnings):
+            print("  ok    selftest: a missing reviewed frame is an error, or a warning with --frames-optional")
+        else:
+            print(f"  FAIL  selftest: missing frame: strict={strict.errors} loose={loose.errors}")
+            ok = False
+        edited = scratch / "frames" / "round-1" / "shot_02.png"
+        edited.write_bytes(edited.read_bytes() + b"x")
+        if validate_tree(scratch, frames_optional=True).errors:
+            print("  ok    selftest: --frames-optional still fails a frame that is present and edited")
+        else:
+            print("  FAIL  selftest: --frames-optional let an edited frame through")
+            ok = False
+
     # The all-ACCEPT worked run passes the full gate.
     if _exit_code([clean], require_accept=True) == 0:
         print("  ok    selftest: an all-ACCEPT tree passes --require-accept")
@@ -550,6 +626,7 @@ def main() -> int:
     if not args:
         print("Usage: python tools/validate_provenance.py <output-dir> [...]")
         print("       python tools/validate_provenance.py <output-dir> --require-accept")
+        print("       python tools/validate_provenance.py <output-dir> --frames-optional")
         print("       python tools/validate_provenance.py --examples")
         print("       python tools/validate_provenance.py --selftest")
         return 2
@@ -568,7 +645,8 @@ def main() -> int:
         print("ERROR: no output directory given")
         return 2
 
-    reports = [validate_tree(t) for t in targets]
+    frames_optional = "--frames-optional" in args
+    reports = [validate_tree(t, frames_optional) for t in targets]
 
     if as_json:
         print(json.dumps([r.as_dict() for r in reports], indent=2))
@@ -605,6 +683,10 @@ def main() -> int:
                     f"        {shot_id}: {verdict} "
                     f"(round {entry.get('latest_round', '?')})"
                 )
+            for line in report.approvals:
+                print(f"        {line}")
+            if not report.approvals:
+                print("        no approval by a person is recorded")
         print()
 
     failed = any(r.errors for r in reports)

@@ -1,5 +1,8 @@
 # Brand Lock: {{BRAND_NAME}}
 
+> Most people should not fill this in by hand. Ask Claude to "write a brand lock from
+> <your site>" and the `brand-lock-extractor` skill writes this file for you. This
+> template is the manual route.
 > Replace placeholders. Delete this blockquote when you're done.
 > Every field below feeds into the storyboard pipeline. Be specific.
 

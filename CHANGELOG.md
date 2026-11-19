@@ -4,7 +4,52 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.5.0] - 2026-11-19
+
 ### Added
+
+- **Export.** `sk export output/` writes three files to `output/export/`: one image per
+  shot with its on-screen text on it (the plan's size, and 4:5 for a tall plan, plus a
+  zip), a PowerPoint deck with one slide per shot and real, editable text, and a rough
+  cut that plays the shots in order with the text at its planned times. A live board
+  has an **Export** button that makes each one and downloads it. Guide: `docs/export.md`.
+- **One renderer for all of it.** The board draws one shot alone at
+  `board.html?still=shot_01`. The export tool photographs that page, so a still, a slide
+  and the rough cut carry the type the board shows.
+- **A new bundled example.** `examples/brightdock`: a 20-second launch video for a
+  fictional software product, made from the team's own screens. Six shots, all accepted.
+  `sk board --example` opens it. Harbor Roast stays as the example with generated frames.
+- **A deck from a plan alone.** With no frames yet, each slide shows the planned text on
+  the brand's ground, so a concept can be presented before anything is generated.
+- **`sk doctor` says what export can make** on this computer: which browser it found, and
+  whether `ffmpeg` is there.
+- **`extrabold`** as an on-screen text weight (800), between `bold` and `black`.
+
+### Fixed
+
+- **Type shrank to its smallest size on a large frame.** The bar under an emphasised
+  phrase runs a little past its row, and the fit check counted that as too wide. On a
+  small card it was under a pixel. In the open-shot panel it was not, so emphasised lines
+  were drawn at 30% size there.
+- **A check on your own photo could not pass.** A critique had to name a prompt to be
+  HIGH confidence, and a supplied picture has none. A critique now names the picture
+  with `media_ref`, and the prompt, generator and seed stay null.
+
+### Changed
+
+- The board's next step for a finished run points to Export.
+- The README opens on install and three briefs to try. The pitch and the examples follow.
+- The README demo is a new 12-second cut with a title for each step. The MP4 is 3.6 MB,
+  down from 11.6 MB.
+
+## [3.4.0] - 2026-11-19
+
+### Added
+
+- **A person's approval.** `sk approve output/ --by "Name"` records who approved the plan,
+  when, and what, by hash. `--what frames` does the same for the accepted frames. Each
+  approval is a new file in `output/approvals/`. `sk validate` and the board say when one
+  no longer holds. It is a record, not a signature.
 
 - **Start from your own photos and clips.** `sk media scan <folder> --out output/` lists
   every photo and clip, with thumbnails Claude looks at one by one before it plans.
@@ -38,6 +83,66 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
   The plugin carries the tools, so nothing else is needed.
 - The live board plays MOV, M4V and WebM clips as well as MP4, and answers a video
   player's range requests so a long clip can be scrubbed.
+- **Sound in the plan.** `shots.json` takes an optional `project.audio`: a music mood,
+  sound that runs under the film, and `clips_have_sound`. A shot can carry its own
+  `sfx`. It is intent for the edit. Shotkit writes no audio files. Spoken lines stay in
+  `vo` and on-screen text stays in `text-overlays.json`. Files without these fields are
+  unchanged.
+- **Where each part of the brief came from.** `run.json` takes an optional
+  `brief_sources` map. Each item is tagged `given`, `suggested` or `to_confirm`, so you
+  can see what you said, what Shotkit chose and what still needs a yes. The reply lists
+  the last two.
+
+### Changed
+
+- **Point it at your site.** That is now the documented way to get a brand lock: put a
+  site address, a brand book PDF or screenshots in the brief and `brand-lock-extractor`
+  writes it. `_starter.md` is still used when a brief names no brand. `_template.md` is
+  the manual route.
+- `sk generate` keeps clips silent unless the plan sets `clips_have_sound` or the run is
+  given `--sound`. Before this there was no way to ask for sound. `--sound` is for after
+  the plan is written: `shots.json` is pinned by hash, so it is not edited to switch
+  sound on.
+- **The README says what leaves your computer.** Shotkit has no server and the tools
+  send nothing. Claude receives what it reads, including thumbnails of your footage. A
+  generation request goes to fal.ai only when you ask for one.
+- The README no longer says Shotkit is not a video generator. It plans the shots and can
+  make the frames and clips with your own key. It does not cut the film.
+
+### Fixed
+
+- **One install and one command on the README's first screen.** The plugin install and
+  `/shotkit:shotkit` lead. The installer and the older-version steps sit under "Other
+  ways to install". The "see a finished run" command no longer points at a path a plugin
+  install does not create.
+- **The docs agree on six skills.** Several files still said five, and one said four.
+  `docs/claude-code-workflow.md` now covers the plugin and lists `shotkit` in its check.
+- **The board's file list is closed by default.** It opens by itself when a file has
+  changed or is missing. A frame or critique that `run.json` does not hash reads "Not
+  tracked" in place of "Not pinned".
+- **No type on the board is smaller than 11px.** That includes the framing label on a
+  shot with no frame yet, which was 8px on a narrow card.
+- **The open-shot panel keeps its Close button on a phone.** Under 520px the "Copy shot
+  for LLM" button is hidden so Previous, Next and Close stay on screen.
+- **The Harbor Roast example is checked on every change.** `validate_provenance.py` takes
+  `--frames-optional`: a reviewed frame that is not in the folder is a warning, and a
+  frame that is present but edited is still an error. The example ships JPEG copies of
+  its frames, so it is checked with that flag.
+- The docs no longer say a clip with sound always costs more. That is the model's rule.
+- **On a phone** the board keeps each shot's subject line, and the timeline shows that it
+  scrolls.
+- The board's wordmark reads "Shotkit", and the version line says which Shotkit planned
+  the run.
+- The README says what the board does offline: it opens, and type falls back to system
+  fonts.
+- The roadmap no longer lists the PDF and the command line, which exist.
+- **No sales message on what you make.** The board's footer no longer carries a contact
+  line, and the client preview no longer names WhyStrohm.
+- The board's selftest checks that the page's script parses, when `node` is installed.
+
+### Removed
+
+- `docs/assistant-feedback-direction.md`, an internal planning note.
 
 ## [3.3.0] - 2026-11-13
 

@@ -5,7 +5,12 @@
     "duration_s": 15,
     "aspect": "9:16",
     "framework": "hero-trilogy",
-    "seed": 41207
+    "seed": 41207,
+    "audio": {
+      "music": "slow, sparse acoustic guitar, unhurried, added in the edit",
+      "sfx": "quiet roastery room tone, the drum turning, low",
+      "clips_have_sound": false
+    }
   },
   "brand_lock_ref": "brand-lock.snapshot.md",
   "series_lock": {
@@ -45,6 +50,7 @@
       "lighting_ref": "series_lock.lighting",
       "on_screen_text": "text_02",
       "vo": null,
+      "sfx": "beans dropping into the steel cooling tray",
       "rationale": "The roast arrives as an action, beans dropping out of the drum, which is the moment the brand's motion rule says a cut should land on; the low angle and slow push make one machine in a small room read as the hero."
     },
     {

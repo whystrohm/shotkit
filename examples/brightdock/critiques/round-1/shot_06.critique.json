@@ -1,0 +1,25 @@
+{
+  "version": "1.1",
+  "run_id": "20261119T120000Z-5d3a9c1e",
+  "round": 1,
+  "created_at": "2026-11-19T12:08:00Z",
+  "shot_id": "shot_06",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "ba77fc4c98394ebc6470bc7de5f520744e18b702463d1a4ba3c312d2a7bfe48c",
+  "image_ref": "frames/round-1/shot_06.png",
+  "image_sha256": "07236a58c2016b9b0814cdac52522c70dd1ad0863bc85a47dc4bd7d71f999205",
+  "media_ref": "m06",
+  "prompt_ref": null,
+  "prompt_sha256": null,
+  "generator": null,
+  "model_version": null,
+  "seed": null,
+  "verdict": "ACCEPT",
+  "confidence": "HIGH",
+  "working": [
+    "The mark and the name are centred with nothing else in frame.",
+    "The upper 40 percent is empty for text_06 and the lower 30 percent is empty for the address.",
+    "The lime square is the single accent, as the lock asks."
+  ],
+  "issues": []
+}

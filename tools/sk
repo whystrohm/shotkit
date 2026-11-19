@@ -9,6 +9,8 @@
 #   sk preview output/           the client preview page
 #   sk validate output/          every check a finished storyboard has to pass
 #   sk copy <prompts-file>       copy one prompt to the clipboard
+#   sk approve output/ --by "Name"   record that a person approved the plan
+#   sk export output/            stills for a carousel, a PowerPoint deck, a rough cut
 #   sk check                     check the install itself
 #   sk doctor                    say what is installed and what is missing
 #   sk setup                     make the private Python environment the checks use
@@ -88,6 +90,8 @@ case "$cmd" in
   media)    run_tool 0 media.py "$@" ;;
   preview)  run_tool 0 shots-to-html.py "$@" ;;
   copy)     run_tool 0 copy-prompt.py "$@" ;;
+  approve)  run_tool 1 approve.py "$@" ;;
+  export)   run_tool 0 export.py "$@" ;;
   setup)    setup && echo "shotkit: the checks are ready." ;;
   check)
     py="$(python_for 1)"; [[ -z "$py" ]] && exit 1
@@ -113,15 +117,20 @@ case "$cmd" in
     if [[ -x "${VENV}/bin/python" ]] && have_deps "${VENV}/bin/python"; then echo "  checks   ready (private environment)"
     elif [[ -n "$py" ]] && have_deps "$py"; then echo "  checks   ready (system Python has pyyaml and jsonschema)"
     else echo "  checks   not set up yet. They set themselves up the first time they run, or run: ${TOOLS}/sk setup"; fi
+    browser="$("${py:-python3}" -c "import sys; sys.path.insert(0, '${TOOLS}'); import export; print(export.find_browser() or '')" 2>/dev/null)"
+    if [[ -n "$browser" ]]; then echo "  browser  ${browser} (export can make stills and put text on the rough cut)"
+    else echo "  browser  none found. Export needs Chrome, Edge, Brave or Chromium for stills. The deck works without one."; fi
+    if command -v ffmpeg >/dev/null 2>&1; then echo "  ffmpeg   $(command -v ffmpeg) (export can make the rough cut)"
+    else echo "  ffmpeg   not found. Export needs it for the rough cut, and clips need it for thumbnails."; fi
     skills="$(dirname "$TOOLS")/skills"
     for name in shotkit storyboard-architect visual-prompt-forge visual-asset-critic storyboard-html-preview brand-lock-extractor; do
       if [[ -f "${skills}/${name}/SKILL.md" ]]; then echo "  skill    ${name}"; else echo "  skill    ${name} MISSING"; fi
     done ;;
   *.py)
     case "$cmd" in
-      board.py|generate.py|media.py|shots-to-html.py|copy-prompt.py) run_tool 0 "$cmd" "$@" ;;
+      board.py|generate.py|media.py|shots-to-html.py|copy-prompt.py|export.py) run_tool 0 "$cmd" "$@" ;;
       *) run_tool 1 "$cmd" "$@" ;;
     esac ;;
-  help|-h|--help) sed -n '2,16p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  help|-h|--help) sed -n '2,17p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) echo "shotkit: unknown command '$cmd'. Try: sk help" >&2; exit 2 ;;
 esac

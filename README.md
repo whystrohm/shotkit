@@ -18,18 +18,83 @@ becomes a board with every shot planned, prompted and checked.</p>
   <a href="#why">Why</a> ·
   <a href="#the-board">The board</a> ·
   <a href="docs/own-media.md">Your own footage</a> ·
+  <a href="docs/export.md">Export</a> ·
   <a href="docs/generate-with-fal.md">Frames and clips</a> ·
   <a href="https://whystrohm.com/shotkit/docs/quickstart">Quickstart</a> ·
   <a href="https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html">A live board</a>
 </p>
 
-![Shotkit demo: a brief is typed, the board opens with seven shots planned, then prompts, frames and the check on each frame land, two shots are sent back and fixed, and the finished film plays](docs/images/demo.webp)
+![Shotkit demo: type one line in Claude Code, every shot is planned, every frame is checked against the shot and the brand, then the frames and clips are made](docs/images/demo.webp)
 
-Three finished runs. Each picture opens the live board.
+## Install
 
-| Media Tsunami · 16:9 | Roofing company · 16:9 | Coffee roaster · 9:16 |
+In Claude Code:
+
+```
+/plugin install shotkit --marketplace whystrohm/shotkit
+```
+
+Then type a brief:
+
+```
+/shotkit:shotkit 30-second launch video for Harbor Roast, 9:16
+```
+
+Shotkit plans the shots, writes the prompts and opens the board in your browser. There
+is nothing else to set up. The checks make their own private Python environment, so
+`pip` and your system Python are left alone.
+
+Three briefs to try:
+
+```
+/shotkit:shotkit 20-second launch video for our app from the screenshots in ~/Desktop/screens, 9:16
+/shotkit:shotkit 30-second ad for https://example.com, 9:16, no voiceover
+/shotkit:shotkit 60-second founder explainer, 16:9, with voiceover
+```
+
+Then ask for what you need next: "write the Kling prompts", "check the frames",
+"export the stills", "export the deck".
+
+<details>
+<summary>Other ways to install</summary>
+
+The one-line plugin install needs Claude Code 2.1.275 or later. On an older version, run
+`/plugin marketplace add whystrohm/shotkit` and then `/plugin install shotkit@shotkit`.
+
+Without the plugin system, use the installer:
+
+```bash
+git clone https://github.com/whystrohm/shotkit.git
+cd shotkit && ./install.sh
+```
+
+Installed this way, the command is `/shotkit` in place of `/shotkit:shotkit`.
+
+</details>
+
+### Your brand
+
+Point it at your site:
+
+```
+/shotkit:shotkit 30-second launch video for https://example.com, 9:16
+```
+
+Shotkit reads the site and writes the brand lock: the colours, the type and the voice.
+Each value is marked with where it came from, and a guess is flagged for you to confirm.
+A brand book PDF or screenshots work the same way. You do not fill in a table.
+
+With no brand in the brief, a first run uses a neutral starter brand and says so.
+Writing a lock by hand from `brand-packs/_template.md` is the manual route, for when you
+want to set every value yourself. See [`brand-packs/README.md`](brand-packs/README.md).
+
+## Examples
+
+Three finished runs. The first two pictures open a live board. The third is in this repo: `tools/sk board --example`.
+
+| Media Tsunami · 16:9 | Roofing company · 16:9 | Software launch · 9:16 |
 |---|---|---|
-| [![The Media Tsunami board](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![The Kestrel Roofing board](docs/images/example-kestrel-roofing.jpg)](https://whystrohm.com/shotkit/examples/kestrel-roofing/board.html) | [![The Harbor Roast board](docs/images/example-harbor-roast.jpg)](https://whystrohm.com/shotkit/examples/harbor-roast/board.html) |
+| [![The Media Tsunami board](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![The Kestrel Roofing board](docs/images/example-kestrel-roofing.jpg)](https://whystrohm.com/shotkit/examples/kestrel-roofing/board.html) | [![The Brightdock board](docs/images/example-brightdock.jpg)](examples/brightdock) |
 
 Six Claude skills and a set of small tools, built by [WhyStrohm](https://whystrohm.com).
 Free and open source under Apache 2.0. Nothing ships with a key.
@@ -56,47 +121,26 @@ Shotkit does the part that comes before generation:
   the brand's accent, the brand name is set as a lockup, and on a vertical video the
   type stays clear of the app's own buttons.
 - **Puts it all on one board** that opens in your browser, with copy buttons for any model.
+- **Hands you files to use.** Carousel stills with the text on them, a PowerPoint deck
+  and a rough-cut video, from one button.
 
-**It runs on your computer.** The plan, the board, the checks and your footage never
-leave it. The only thing that goes out is a generation request, and only when you ask
-for one with your own key.
+**Your files stay on your computer.** Shotkit has no server and no account. The board,
+the checks and the tools run locally and send nothing anywhere. Claude does the planning
+and the review, so Claude receives what it reads: your brief, your brand source and the
+thumbnails of any footage and frames it looks at, on the same terms as the rest of your
+Claude use. A generation request goes to fal.ai only when you ask for one with your own
+key.
 
-It is not a video generator and it is not an editor. It is the plan the two of them need.
-
-## Install
-
-In Claude Code:
-
-```
-/plugin install shotkit --marketplace whystrohm/shotkit
-```
-
-Then type a brief:
-
-```
-/shotkit:shotkit 30-second launch video for Harbor Roast, 9:16
-```
-
-That needs Claude Code 2.1.275 or later. On an older version, run
-`/plugin marketplace add whystrohm/shotkit` and then `/plugin install shotkit@shotkit`.
-
-Or use the installer, which also gives you the shorter `/shotkit` command:
-
-```bash
-git clone https://github.com/whystrohm/shotkit.git
-cd shotkit && ./install.sh
-```
-
-Either way, Shotkit plans the shots, writes the prompts and opens the board in your
-browser. There is nothing else to set up. The checks make their own private Python
-environment, so `pip` and your system Python are left alone.
+Shotkit plans the shots, and with your own key it can make the frames and clips. It
+gives you a rough cut. It does not make the finished edit.
 
 ![The Shotkit board: a timeline, a contact sheet of every shot with its frame and verdict, and the next step](docs/images/board.jpg)
 
 ## The board
 
-One page for the whole run. It is a single HTML file in your output folder, it works
-offline, and nothing is uploaded.
+One page for the whole run. It is a single HTML file in your output folder, it opens
+offline, and nothing is uploaded. Online, it loads the brand's typefaces from Google
+Fonts. Offline, type falls back to your system fonts.
 
 - **Every shot at once.** A contact sheet and a timeline with shots, on-screen text and
   voiceover on separate tracks.
@@ -113,22 +157,30 @@ offline, and nothing is uploaded.
 - **Safe zones.** One switch shows the parts of a vertical video an app covers.
 - **A page for the client, before anything is shot.** `preview.html` is the same plan
   as a clean, brand-aware page. The board's **PDF** button opens it ready to print.
+- **Export.** Carousel stills with the text on them, a PowerPoint deck and a rough-cut
+  video, from one button. See [`docs/export.md`](docs/export.md).
 - **Frames and clips, if you want them.** With your own fal.ai key, `sk generate` makes
   the stills and the video clips and files them. See
   [`docs/generate-with-fal.md`](docs/generate-with-fal.md).
 
 ![One shot open on the board: the frame, its spec, the on-screen text and the Flux prompt with a copy button](docs/images/board-shot.jpg)
 
-See a finished run before you make one:
+See a finished run before you make one. Build the bundled example from a clone, then
+export it:
 
 ```bash
-~/.claude/shotkit-tools/sk board --example
+tools/sk board --example
+tools/sk export examples/brightdock
 ```
 
-The demo at the top is a 10-second cut of the live board replaying one real Shotkit run:
-the Media Tsunami film, planned in seven shots, checked, then the film that plan became.
-The full 37-second version, with two frames sent back and redone, is a silent MP4 at
-[`docs/images/demo.mp4`](docs/images/demo.mp4).
+![Six carousel stills at 4:5 above two slides of the deck, all from the bundled example](docs/images/export.jpg)
+
+The stills, the deck and the rough cut are drawn by the board's own page, so they carry
+the type you see on the board.
+
+The demo at the top is 12 seconds of the live board replaying one real Shotkit run: the
+Media Tsunami film, planned in seven shots, checked, then the film that plan became. The
+same cut is a silent MP4 at [`docs/images/demo.mp4`](docs/images/demo.mp4).
 
 ---
 
@@ -149,16 +201,18 @@ output/
 ├── clips/round-1/             # Video clips, one per shot, if you make them
 ├── board.html                 # The board. Where you work. Opens by itself.
 ├── critiques/round-1/         # One verdict per shot, hashing what it reviewed
+├── approvals/                 # A person's yes, if you record one with `sk approve`
+├── export/                    # Stills, a deck and a rough cut, if you make them with `sk export`
 └── preview.html               # The page you send a client. Printable. Brand-aware.
 ```
 
-Plain files an editor, an agency or a developer can act on. Nothing is uploaded and there is
-no account. Everything is filed by round and shot, so round 2 never overwrites round 1.
+Plain files an editor, an agency or a developer can act on. Shotkit has no server and no
+account. Everything is filed by round and shot, so round 2 never overwrites round 1.
 
 ### Start from footage you already have
 
 ```
-/shotkit a 30-second video from the photos and clips in ~/Desktop/shoot, 9:16
+/shotkit:shotkit a 30-second video from the photos and clips in ~/Desktop/shoot, 9:16
 ```
 
 Claude looks at every photo and clip, puts each one on the shot it fits, and marks what
@@ -173,7 +227,7 @@ See [Start from your own photos and clips](docs/own-media.md).
 
 | Skill | What it does |
 |---|---|
-| `shotkit` | One command. Runs the others in order and opens the board. Type `/shotkit <brief>` |
+| `shotkit` | One command. Runs the others in order and opens the board. Type `/shotkit:shotkit <brief>` |
 | `brand-lock-extractor` | Brand assets (URL / PDF / screenshots) → validate-ready `brand-lock.md` |
 | `storyboard-architect` | Brief → structured storyboard (`storyboard.md` + `shots.json`) |
 | `visual-prompt-forge` | Shot data → model-specific prompts for 10 generators (6 stills, 4 motion) |
@@ -184,23 +238,34 @@ They work alone. They work better together, the critic writes a machine-readable
 
 ---
 
-## Concepts fast. Finished video is a service.
+## What you get, and what you do not
 
-Shotkit is for getting from an idea to something you can look at, quickly and many times
-over. A marketing team can put ten concepts on ten boards in an afternoon, each with a
-shot plan, on-screen copy, frames and short clips, all in the brand.
-
-What it gives you is raw material and a plan, not a finished video:
+Shotkit gets you from an idea to something you can look at, quickly and many times over.
+A marketing team can put ten concepts on ten boards in an afternoon.
 
 - **In Shotkit.** The plan, the prompts, the checks, the board. With your own
   [fal.ai](https://fal.ai) key, the frames and clips too:
-  [`docs/generate-with-fal.md`](docs/generate-with-fal.md).
-- **Not in Shotkit.** The edit. Cutting the shots to time, setting the type, grading,
-  sound, every size a campaign needs, and posting.
+  [`docs/generate-with-fal.md`](docs/generate-with-fal.md). And three files to take
+  away: carousel stills, a deck and a rough cut: [`docs/export.md`](docs/export.md).
+- **Not in Shotkit.** The finished edit. Motion on the type, transitions, grading, a
+  sound mix, every size a campaign needs, and posting. The rough cut is hard cuts with
+  the text on, for judging the plan.
 
-The second list is what WhyStrohm does as a service. Every video is built from the same
-plan, so the hundredth one matches the first. Ask about the full system at
-[hello@whystrohm.com](mailto:hello@whystrohm.com) or [whystrohm.com](https://whystrohm.com).
+The board and the client page carry no sales message. WhyStrohm, which builds Shotkit,
+does the edit as a paid service: [whystrohm.com](https://whystrohm.com).
+
+### A person's approval
+
+The critic's verdict is a model's review. When a person approves, write that down too:
+
+```bash
+~/.claude/shotkit-tools/sk approve output/ --by "Dana Reyes"                # the plan
+~/.claude/shotkit-tools/sk approve output/ --by "Dana Reyes" --what frames  # the accepted frames
+```
+
+Each approval is a new file in `output/approvals/` that names what was approved, by hash.
+The board and `sk validate` say when one no longer holds because something changed after
+it. The name is whatever was typed, so this is a record and not a signature.
 
 **Bring your own key.** Shotkit ships with no keys and calls nothing until you connect
 your own fal.ai key. That key stays in your environment or a `.env` file git ignores.
@@ -220,6 +285,7 @@ carry every shot, length and line of text. See
 | [Quickstart](https://whystrohm.com/shotkit/docs/quickstart) | A first run, in six steps |
 | [Start from your own photos and clips](docs/own-media.md) | Scan a folder, place each file, fill the gaps |
 | [Frames and clips with fal.ai](docs/generate-with-fal.md) | Connect your key, pick a model |
+| [Export](docs/export.md) | Carousel stills, a deck and a rough cut |
 | [The check and revise loop](docs/the-qa-loop.md) | How a frame is sent back and fixed |
 | [Brand locks](docs/brand-lock-anatomy.md) | What a brand lock holds, and how to make one |
 | [The audit trail](docs/audit-trail-pattern.md) | What `run.json` pins, and how to prove it |
@@ -246,5 +312,4 @@ The Apache License 2.0 covers the code and documentation in this repository. It 
 
 ## Who built this
 
-[WhyStrohm](https://whystrohm.com). For the finished video, write to
-[hello@whystrohm.com](mailto:hello@whystrohm.com).
+[WhyStrohm](https://whystrohm.com). Questions: [hello@whystrohm.com](mailto:hello@whystrohm.com).

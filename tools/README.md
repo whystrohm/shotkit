@@ -119,7 +119,7 @@ backticked form the tools read.
 tools/sk validate_brand_lock.py brand-packs/whystrohm.md
 tools/sk validate_brand_lock.py --require-configured brand-packs/whystrohm.md
 tools/sk validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
-tools/sk validate_brand_lock.py --snapshots     # every snapshot in the five skills
+tools/sk validate_brand_lock.py --snapshots     # every snapshot in the six skills
 tools/sk validate_brand_lock.py --selftest
 ```
 
@@ -294,6 +294,42 @@ line are shown but not copied. `--list` counts each kind by name: params lines, 
 variant lines, covers lines, and other notes.
 
 Pure standard library. `pbcopy` on macOS, `xclip` or `xsel` on Linux, `clip` on Windows.
+
+### `approve.py`
+
+Records that a person approved the plan or the accepted frames. A critique is a model's
+review, and this is the other half.
+
+```bash
+tools/sk approve output/ --by "Dana Reyes"
+tools/sk approve output/ --by "Dana Reyes" --what frames --note "ok to shoot"
+tools/sk approve output/ --list
+tools/sk approve.py --selftest
+```
+
+Each approval is a new file in `output/approvals/` with the hash of `shots.json`, and for
+frames the hash of each shot's latest critique. Nothing else is edited. Frames can be
+approved only when every shot's latest critique is ACCEPT. `validate_provenance.py` and
+the board report an approval that no longer holds. The name is whatever was typed: a
+record, not a signature.
+
+### `export.py`
+
+Turns a run into files to post, present and play. Everything goes to `output/export/`.
+
+```bash
+tools/sk export output/                    # everything this computer can make
+tools/sk export output/ stills --size 4x5  # one image per shot with its text on it
+tools/sk export output/ deck               # storyboard.pptx, one slide per shot
+tools/sk export output/ cut --music a.wav  # rough-cut.mp4
+tools/sk export.py --selftest
+```
+
+The board draws one shot alone at `board.html?still=shot_01`, and the tool photographs
+that page with a browser that has no window, so a still carries the board's own type.
+The deck is written with the standard library and needs nothing. Stills need Chrome,
+Edge, Brave or Chromium (`SHOTKIT_BROWSER` names one somewhere unusual). The cut needs
+`ffmpeg`. Guide: [`docs/export.md`](../docs/export.md).
 
 ## Internal modules
 

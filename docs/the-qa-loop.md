@@ -2,7 +2,7 @@
 
 AI image and video generation has one structural problem: it is non-deterministic, and most teams have no gate between "generated" and "shipped." They generate, glance, accept, and post. Off-brand frames, character drift, six-fingered hands, and wrong framing slip through because the only reviewer is a tired human at the end of a long day.
 
-shotkit's five skills give you the pieces of a review. This document is how they form a **closed loop** that a person, or a pipeline, can run until every shot passes, and how the loop holds up against three things: two people working at once, a frame regenerated without a re-review, and a brand-lock that changes mid-project.
+Shotkit's six skills give you the pieces of a review. This document is how they form a **closed loop** that a person, or a pipeline, can run until every shot passes, and how the loop holds up against three things: two people working at once, a frame regenerated without a re-review, and a brand-lock that changes mid-project.
 
 ## The loop
 

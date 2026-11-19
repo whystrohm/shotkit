@@ -7,7 +7,7 @@ description: Run the whole Shotkit pipeline from one line of brief and open the 
 
 One line of brief in. A plan, prompts and an open board out.
 
-This skill runs the other four in order and puts the result on screen. The user should
+This skill runs the other five in order and puts the result on screen. The user should
 not have to know the skills' names, ask for each step, or go looking for files. They
 type a brief and a browser tab opens with every shot on it.
 
@@ -54,9 +54,15 @@ reply so the user can change it.
 | Aspect | 9:16 when the brief says Reels, Shorts, TikTok, Stories or "vertical"; otherwise 16:9 |
 | Framework | the one `storyboard-architect` would pick for this brief |
 | Voiceover | on-screen text only, unless the brief mentions a speaker or a script |
+| Sound | none planned and clips silent, unless the brief asks for music, sound effects or clips with sound. Then fill `project.audio` as `storyboard-architect` describes |
 | Generators | Flux for stills and Kling for motion |
 
 Ask one question, and only one, when the brief does not say what the video is about.
+
+Record where each item came from in `run.json`, under `brief_sources`, as
+`storyboard-architect` describes: `given` for what the brief or the user's files said,
+`suggested` for every default from the table above, `to_confirm` for anything the user
+has to settle before real work, such as the starter brand.
 
 ### 2. Settle the brand
 
@@ -69,6 +75,11 @@ In this order, first match wins:
 4. None of these: use `~/.claude/shotkit-brand-packs/_starter.md`. Set
    `brand_lock_configured: false` in `run.json`. Do not invent a palette for a real
    company, and do not put the company's name on a palette you made up.
+
+When the run used the starter, say so in your reply and ask for the site address, a
+brand book PDF or screenshots, so `brand-lock-extractor` can write the real lock. Do not
+ask the user to fill in `_template.md`. That is the manual route, for a user who asks to
+set every value by hand.
 
 ### 3. Plan the shots
 
@@ -119,7 +130,9 @@ for when the live board is closed.
 Keep it short. The board carries the detail.
 
 - One line: what was made and where (`output/`, and the board address or path).
-- The defaults you used, as a short list.
+- The defaults you used, as a short list: every item tagged `suggested` in
+  `brief_sources`. Then anything tagged `to_confirm`, as a question the user can answer
+  in one line.
 - The next step, which is the one the board shows: make the frames from the prompts.
   Say the three ways: paste each prompt into a generator, drop frames on the live board,
   or say "make the frames on fal" to have Shotkit make them with their fal key.
@@ -188,6 +201,8 @@ every time, without being asked:
 | "add Midjourney", or names another generator | `visual-prompt-forge` for that generator, then `SK board output/` |
 | "make the frames", "generate", names fal | See "Making frames and clips" below |
 | "make the clips", "animate these" | `SK generate output/ --model kling`, same rule |
+| "I approve", "the client signed off", names who approved | `SK approve output/ --by "<their name>"`, with `--what frames` for the frames, then `SK board output/`. Only when a person says so, and with the name they give. Never approve on your own, and never invent a name |
+| "export", "give me the stills", "a carousel", "a deck", "a PowerPoint", "a rough cut", "something I can play" | `SK export output/ stills`, `deck` or `cut`, or `SK export output/` for all three. Say where the files are (`output/export/`) and repeat what the tool reports as left out or skipped. Stills need Chrome, Edge, Brave or Chromium. The cut needs `ffmpeg`. If one is missing, say which and that the deck still works |
 | "use my photos", names a folder, or files were dropped on the board | See "Starting from the user's own photos and clips" |
 | "fill the gaps", "make the bridges" | `SK generate output/ --model flux` for stills, `--model kling` for bridges, same rule. Shots on the user's own media are skipped. |
 | "open the board" | `SK board output/ --open` |
@@ -207,7 +222,11 @@ it never runs on its own.
    first.
 2. Tell the user how many requests it would send and to which model, and that fal bills
    their account at the price on that model's page. Ask for a yes. Do not state a price
-   yourself.
+   yourself. Clips are made silent unless `project.audio.clips_have_sound` is true in
+   `shots.json`. When it is, the plan shows `generate_audio=True`. Say that the clips
+   will carry sound and that some models bill more for it. If the user asks for sound
+   after the plan is written, add `--sound` to the command. Never edit `shots.json` to
+   switch it on: the file is pinned by hash in `run.json` and the edit fails validation.
 3. On a yes, run it with `--yes`. If it reports no key, tell them: make a key at
    fal.ai/dashboard/keys and put `FAL_KEY=...` in a `.env` file in this folder. Never ask
    them to paste the key into the chat.

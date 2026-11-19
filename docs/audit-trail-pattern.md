@@ -163,10 +163,15 @@ Earlier versions of this document described that link as an optional extension, 
 "the prompt that drove the generation" and "the image that was approved." Both statements
 could not be true. The mechanism is now shipped, so the claim is now safe to make.
 
-**Still not shipped: approval logs.** Who signed off, and when, is not recorded anywhere.
-`accepted: true` on a frame carries a `critique_ref`, so an acceptance traces to a critique,
-but a critique is a review and not a human approval. If you need approver identity, that is
-yours to add.
+**Approvals, from 3.4.0.** A critique is a model's review. It is not a person saying yes.
+`sk approve output/ --by "Name"` records the second thing: who approved, when, and what,
+by hash. Add `--what frames` once every shot is accepted. Each approval is a new file in
+`output/approvals/`, so `run.json` and the pinned plan are not edited. `sk validate` and
+the board say when an approval no longer holds because the plan or a reviewed frame
+changed after it.
+
+The name is whatever was typed. It is a record, not a signature. If you need proof of
+identity, keep that in the system you already use for sign-off.
 
 **Also worth adding: diff outputs.** When a storyboard is revised, a diff against the
 previous version helps stakeholders see what changed without re-reading the spec. Git does

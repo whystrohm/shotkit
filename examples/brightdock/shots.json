@@ -1,0 +1,147 @@
+{
+  "version": "1.2",
+  "project": {
+    "title": "Brightdock: the deploy log your team can read",
+    "duration_s": 20,
+    "aspect": "9:16",
+    "framework": "educational-demo",
+    "seed": null,
+    "audio": {
+      "music": "one steady electronic pulse, about 100 bpm, cuts on the beat, added in the edit",
+      "sfx": "none",
+      "clips_have_sound": false
+    }
+  },
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "series_lock": {
+    "character": "no people on screen; the product's own interface is the subject of every shot",
+    "environment": "Brightdock's dark interface on a near-black ground, one panel per shot in the lower two-thirds, the upper third left empty",
+    "lighting": "flat screen light, a faint lime glow at the top and bottom edges of the frame",
+    "color_grade": "no grade: near-black #0B0D10, off-white #F4F5F0, one lime accent #C8F250; red and amber only as deploy status inside the product"
+  },
+  "shots": [
+    {
+      "id": "shot_01",
+      "beat": "problem",
+      "start": 0,
+      "end": 3.0,
+      "framing": "WS",
+      "angle": "eye-level",
+      "motion": "static",
+      "depth_of_field": "deep",
+      "subject": "a wall of raw deploy log lines in grey monospaced type filling the lower two-thirds, one line marked in red where a health check failed, the lines fading out at the top and bottom",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": "text_01",
+      "vo": null,
+      "rationale": "The opening has to show the problem before it is named: nobody can read this. The one red line gives the eye a place to land, and the empty upper third is where the question goes.",
+      "source": {
+        "type": "own",
+        "media": "m01"
+      }
+    },
+    {
+      "id": "shot_02",
+      "beat": "reveal",
+      "start": 3.0,
+      "end": 6.5,
+      "framing": "MS",
+      "angle": "eye-level",
+      "motion": "static",
+      "depth_of_field": "deep",
+      "subject": "the Brightdock deploy list: a panel headed Deploys with six rows, each a deploy number, what it was, the service, who shipped it and when, a lime dot for live and one amber row that was rolled back",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": "text_02",
+      "vo": null,
+      "rationale": "The cut from the log wall to one tidy list is the whole pitch, so the list arrives on the first hard cut and holds for three and a half seconds, long enough to read two rows.",
+      "source": {
+        "type": "own",
+        "media": "m02"
+      }
+    },
+    {
+      "id": "shot_03",
+      "beat": "walk-through",
+      "start": 6.5,
+      "end": 10.0,
+      "framing": "CU",
+      "angle": "eye-level",
+      "motion": "static",
+      "depth_of_field": "deep",
+      "subject": "one deploy open: the number 214 set very large, the service name beside it, a lime live status, then three changes each with lines added and removed, and who merged it",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": "text_03",
+      "vo": null,
+      "rationale": "Step one of the walk-through: open one deploy. The number is the largest thing in any frame of the film, so the viewer knows where they are without reading.",
+      "source": {
+        "type": "own",
+        "media": "m03"
+      }
+    },
+    {
+      "id": "shot_04",
+      "beat": "walk-through",
+      "start": 10.0,
+      "end": 13.5,
+      "framing": "CU",
+      "angle": "eye-level",
+      "motion": "static",
+      "depth_of_field": "deep",
+      "subject": "a deploy that failed its health check, marked with a red dot, a wide lime button to roll back to the deploy before it with a cursor on it, and under it a line with a tick saying the earlier deploy is live again",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": "text_04",
+      "vo": null,
+      "rationale": "Step two: the thing people buy it for. The button is the one lime element and fills the width of the panel, so the action reads at thumb size.",
+      "source": {
+        "type": "own",
+        "media": "m04"
+      }
+    },
+    {
+      "id": "shot_05",
+      "beat": "walk-through",
+      "start": 13.5,
+      "end": 16.5,
+      "framing": "MS",
+      "angle": "eye-level",
+      "motion": "static",
+      "depth_of_field": "deep",
+      "subject": "three notices stacked and fading back: the newest says deploy 214 is live and who shipped it, the ones behind it say an earlier deploy was rolled back and another went live",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": "text_05",
+      "vo": null,
+      "rationale": "Step three: the rest of the team. Three seconds is enough because the frame is one sentence repeated three times at falling contrast.",
+      "source": {
+        "type": "own",
+        "media": "m05"
+      }
+    },
+    {
+      "id": "shot_06",
+      "beat": "result",
+      "start": 16.5,
+      "end": 20.0,
+      "framing": "MS",
+      "angle": "eye-level",
+      "motion": "static",
+      "depth_of_field": "deep",
+      "subject": "the Brightdock mark, a lime rounded square with three dark bars, centred in the lower half with the product name under it on the near-black ground",
+      "environment_ref": "series_lock.environment",
+      "lighting_ref": "series_lock.lighting",
+      "on_screen_text": [
+        "text_06",
+        "text_07"
+      ],
+      "vo": null,
+      "rationale": "The result is the product named in one line. The mark sits low so the line owns the upper third, and the address is a lockup so it does not compete with it.",
+      "source": {
+        "type": "own",
+        "media": "m06"
+      }
+    }
+  ]
+}

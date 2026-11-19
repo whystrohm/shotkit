@@ -71,7 +71,7 @@ if [[ -n "$missing" ]]; then
   exit 1
 fi
 
-# Structure and schemas, scoped to the five shotkit skills
+# Structure and schemas, scoped to the six shotkit skills
 run "skills: selftest"               "$TOOLS/validate_skills.py" --selftest
 run "skills: frontmatter"            "$TOOLS/validate_skills.py"
 run "schemas: selftest"              "$TOOLS/validate_schemas.py" --selftest
@@ -111,7 +111,20 @@ run "critique: fixtures"             "$TOOLS/validate_critique.py" --examples
 
 # Provenance chain
 run "provenance: selftest"           "$TOOLS/validate_provenance.py" --selftest
+run "approvals: selftest"            "$TOOLS/approve.py" --selftest
 run "provenance: worked run"         "$TOOLS/validate_provenance.py" --examples --require-accept
+# The featured example ships web-size JPEG copies of its frames, so the files the critic
+# hashed are not in the repo. Everything else in its chain is checked here. It is skipped
+# after an install, where the example's folder sits elsewhere.
+if [[ -d examples/brightdock ]]; then
+  run "shots: brightdock example"        "$TOOLS/validate_shots.py" examples/brightdock
+  run "provenance: brightdock example"   "$TOOLS/validate_provenance.py" examples/brightdock
+fi
+if [[ -d examples/harbor-roast ]]; then
+  run "shots: harbor-roast example"      "$TOOLS/validate_shots.py" examples/harbor-roast
+  run "provenance: harbor-roast example" "$TOOLS/validate_provenance.py" examples/harbor-roast --frames-optional
+  run "prompts: harbor-roast example"    "$TOOLS/validate_prompts.py" examples/harbor-roast
+fi
 
 # Shared contracts with the other WhyStrohm skills (skipped after an install)
 run "contracts: selftest"            "$TOOLS/validate_contracts.py" --selftest
@@ -122,6 +135,7 @@ run "preview renderer: selftest"     "$TOOLS/shots-to-html.py" --selftest
 run "board: selftest"                "$TOOLS/board.py" --selftest
 run "generate: selftest"             "$TOOLS/generate.py" --selftest
 run "media: selftest"                "$TOOLS/media.py" --selftest
+run "export: selftest"               "$TOOLS/export.py" --selftest
 
 # Bring your own key: none may ever be committed
 run "secrets: selftest"              "$TOOLS/validate_no_secrets.py" --selftest

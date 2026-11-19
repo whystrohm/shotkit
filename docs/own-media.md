@@ -6,7 +6,7 @@ only the gaps.
 
 ![The board's media tray: four of the user's files, what Claude saw in each, and the shot each one is on](images/own-media.jpg)
 
-*Shown with sample files from the Harbor Roast example.*
+*Shown with sample files. The bundled example, `examples/brightdock`, is a full run made this way.*
 
 ## The short way
 
@@ -28,7 +28,9 @@ No folder ready? Start an empty live board and drop files on it:
 
 Drop photos and clips anywhere on the page, or use **Choose files**. They are saved to
 `output/media/inbox/` and listed under **Your media**. Nothing is uploaded to a server:
-the page talks only to your own computer. Then tell Claude:
+the page talks only to your own computer. When Claude plans from them, it opens the
+thumbnails in `output/media/thumbs/`, so those pictures are part of your Claude session.
+The original files are not sent. Then tell Claude:
 
 ```
 /shotkit plan a 30-second video from the media in output/, 9:16

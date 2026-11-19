@@ -61,6 +61,7 @@ You need these. If any are missing, ask before drafting.
 | Beat framework | No | Suggest based on brief |
 | Brand-lock file path | No | Use `~/.claude/shotkit-brand-packs/_starter.md` (clone: `brand-packs/_starter.md`) and flag the gap |
 | Voiceover style (VO present, on-screen only, captions) | No | Ask if unclear |
+| Sound (music mood, sound effects, whether clips carry sound) | No | Leave `audio` out. Clips are silent and sound is added in the edit |
 | Target generator(s) for downstream prompts | No | Note as "to be specified" |
 | Audit findings, `brand/audit-findings.json` from whystrohm-audit | No | Skip Step 1b |
 
@@ -98,8 +99,10 @@ If no brand-lock is provided, copy `~/.claude/shotkit-brand-packs/_starter.md` (
 clone, `brand-packs/_starter.md`) into the output as `brand-lock.snapshot.md`. The
 starter is a neutral, filled-in lock, so the snapshot passes its check and the overlays
 have real colours to use. Set `brand_lock_configured: false` in `run.json`, and tell the
-user the run used the starter brand and how to replace it: ask for a brand lock from
-their site, or fill in `_template.md`.
+user the run used the starter brand and how to replace it. The default is to give their
+site address, a brand book PDF or screenshots, and `brand-lock-extractor` writes the
+lock. Filling in `_template.md` by hand is the manual route. Offer it only when they
+have nothing to read from or want to set every value themselves.
 
 Do not snapshot `_template.md`. It is blank on purpose, and a blank palette fails the
 snapshot check. Do not invent a palette for a real company either: an invented brand
@@ -164,7 +167,19 @@ failure, not a synonym.
 - `on_screen_text`, null, one text-overlay id, OR an array of ids when a shot carries
   more than one overlay
 - `vo`, voiceover line, or null
+- `sfx`, optional, a sound that belongs to this shot in a few words, or null
 - `rationale`, one sentence explaining *why this shot at this moment*
+
+Sound is its own layer, like text. A spoken line goes in `vo`. A sound goes in `sfx`.
+Neither goes in `subject`, and neither is on-screen text. When the brief asks for music
+or sound, also add the optional `project.audio` block:
+
+- `music`, the mood and pace in a few words, or null
+- `sfx`, sound that runs under the whole film, such as room tone, or null
+- `clips_have_sound`, true only when the user wants generated clips to carry sound.
+  Default false. Some models bill more for sound, so never set it on your own
+
+This is intent for whoever cuts the film. Shotkit writes no audio files.
 
 Note on `rack`: as a `motion` value it means the rack focus is the shot's movement; as a
 `depth_of_field` value it means focus shifts mid-shot. Same word, two fields, two
@@ -180,7 +195,7 @@ Every piece of on-screen text becomes an entry in `text-overlays.json`. Never ba
 - `font`, references brand-lock typography
 - `position`, `center`, `lower-third`, `upper-third`, `left-third`, `right-third`, or `{x, y}` percentages
 - `size`, `display`, `headline`, `body`, `caption`
-- `weight`, `regular` (400), `medium` (500), `semibold` (600), `bold` (700), `black` (900)
+- `weight`, `regular` (400), `medium` (500), `semibold` (600), `bold` (700), `extrabold` (800), `black` (900)
 - `color`, hex (must come from brand-lock palette)
 - `enter`, `{ at: seconds, animation: fade-in | slide-up | slide-down | type-on | hard-cut }`
 - `exit`, `{ at: seconds, animation: fade-out | slide-up | slide-down | hard-cut }`
@@ -251,7 +266,38 @@ These fields are required:
 | `inputs.brand_lock_ref`, `inputs.brand_lock_sha256` | `brand-lock.snapshot.md` and its SHA-256 |
 | `inputs.brand_lock_source` | the pack it was copied from, or `template default` |
 
-Optional: `operator`, `inputs.brand_lock_configured`, `generators`, `rounds`, `meta`.
+Optional: `operator`, `inputs.brand_lock_configured`, `brief_sources`, `generators`,
+`rounds`, `meta`.
+
+`brief_sources` records where each item of the brief came from, so the user can see
+what they said and what you chose. It is a flat map from an item to one of three tags:
+
+| Tag | Meaning |
+|---|---|
+| `given` | It was in the brief, or in a file the user supplied |
+| `suggested` | You chose it, as a default or a proposal. The user can change it |
+| `to_confirm` | You filled it, and the user has to confirm it before real work |
+
+Use these item names: `purpose`, `audience`, `duration`, `aspect`, `framework`,
+`voiceover`, `audio`, `brand_lock`, `generators`. Add another short lower-case name when
+the brief has an item these do not cover.
+
+```json
+"brief_sources": {
+  "purpose": "given",
+  "duration": "given",
+  "aspect": "suggested",
+  "framework": "suggested",
+  "audience": "to_confirm",
+  "brand_lock": "to_confirm"
+}
+```
+
+Tag `brand_lock` as `to_confirm` whenever `brand_lock_configured` is false. Tag it
+`to_confirm` too when the lock came from `brand-lock-extractor` and still has values
+marked `needs confirmation`. Never tag an item `given` that the user did not give. List
+the same items under the assumptions in `storyboard.md`, and name every `suggested` and
+`to_confirm` item in your reply.
 
 ```bash
 head -n 1 ~/.claude/shotkit-tools/VERSION     # from a repo clone: head -n 1 VERSION
@@ -318,6 +364,11 @@ clips. `{"type": "own", "media": "m03", "in": 0.5, "out": 3.5}` puts their file 
 shot. `{"type": "generate", "why": "...", "model": "flux"}` marks a gap. Adding `"start"`
 and `"end"` shot ids makes it a bridge clip between two of their shots. The `shotkit`
 skill says when to use each. Leave `source` out for an ordinary generated storyboard.
+
+Sound is optional too. Under `project`:
+`"audio": {"music": "slow, sparse piano", "sfx": "quiet room tone", "clips_have_sound": false}`.
+On a shot: `"sfx": "a kettle clicks off"`. Leave both out when the brief says nothing
+about sound.
 
 ### `text-overlays.json`
 

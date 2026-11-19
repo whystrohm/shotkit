@@ -194,8 +194,8 @@ if [[ "$SKILLS_ONLY" != "1" ]]; then
     copy_tree "${TOOLS_DIR}" "${TOOLS_TARGET}"
     write_version "${TOOLS_TARGET}/VERSION"
     # One finished run with frames, so `sk board --example` has something to show.
-    if [[ -d "${SCRIPT_DIR}/examples/harbor-roast" ]]; then
-      copy_tree "${SCRIPT_DIR}/examples/harbor-roast" "${TOOLS_TARGET}/example"
+    if [[ -d "${SCRIPT_DIR}/examples/brightdock" ]]; then
+      copy_tree "${SCRIPT_DIR}/examples/brightdock" "${TOOLS_TARGET}/example"
     fi
   fi
 

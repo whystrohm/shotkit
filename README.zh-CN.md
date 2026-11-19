@@ -6,7 +6,7 @@ Claude Code 的 AI 分镜技能包。一句需求，或者一个装着你自己�
 
 <p align="center"><a href="README.md">English</a> · <strong>简体中文</strong></p>
 
-![Shotkit 演示：输入一句需求，看板打开，七个镜头依次得到规划、提示词、画面和检查结果，两个镜头被退回重做，最后播放成片](docs/images/demo.webp)
+![Shotkit 演示：在 Claude Code 里输入一句需求，每个镜头得到规划，每个画面经过检查，然后生成画面和视频片段](docs/images/demo.webp)
 
 三个已完成的案例，点击图片打开在线看板。
 
@@ -33,7 +33,7 @@ Shotkit 做的是生成之前的那一步：
 - **优先用你自己的素材**：指向一个照片和视频的文件夹，它逐个查看、放到合适的镜头上，只把缺的部分留给生成模型。
 - **全部放在一块看板上**：在浏览器里打开，每段内容都能一键复制给任何模型。
 
-它不是视频生成器，也不是剪辑软件。它是这两者都需要的那份计划。
+Shotkit 负责规划镜头，接入你自己的密钥后还能生成画面和片段。它不负责剪辑成片。
 
 ## 安装
 
@@ -62,7 +62,7 @@ cd shotkit && ./install.sh
 ## 从你已有的素材开始
 
 ```
-/shotkit 用 ~/Desktop/shoot 里的照片和视频做一支 30 秒的视频，9:16
+/shotkit:shotkit 用 ~/Desktop/shoot 里的照片和视频做一支 30 秒的视频，9:16
 ```
 
 Claude 会查看每一张照片和每一段视频，把它们放到合适的镜头上，并标出缺少的部分。
@@ -75,11 +75,55 @@ Claude 会查看每一张照片和每一段视频，把它们放到合适的镜�
 密钥只放在你的环境变量或被 git 忽略的 `.env` 文件里。
 不加 `--yes` 不会发送任何请求。详见 [docs/generate-with-fal.md](docs/generate-with-fal.md)（英文）。
 
-## 成片是一项服务
+## 看板
 
-Shotkit 给出的是计划和原始素材，不是成片。剪辑、字幕排版、调色、声音、
-各平台尺寸和发布，是 WhyStrohm 为企业搭建并按月运营的一套系统。
-联系：[hello@whystrohm.com](mailto:hello@whystrohm.com)
+一次运行对应一个页面：输出文件夹里的单个 HTML 文件，可以离线打开，不上传任何内容。
+
+- **一眼看到所有镜头**：缩略图总览和时间线，镜头、屏幕文字、旁白各占一条轨道。
+- **提示词带复制按钮**：每个生成模型一个标签页，按 `C` 复制当前这条。
+- **每一帧的评审结论**：哪里可以、哪里不行、怎么改。之前几轮的结果也都留着。
+- **实时模式**：`sk board output/ --serve` 会随文件变化自动刷新。把画面拖到镜头上即可保存；
+  拖动镜头上的文字可以调整位置，文字不会超出安全区。
+- **安全区**：一个开关，显示竖屏视频里会被应用界面挡住的区域。
+- **给客户看的页面**：`preview.html` 是同一份计划的简洁版本，看板上的 **PDF** 按钮可直接打印。
+- **导出**：`sk export output/` 生成带文字的轮播图片、一份 PowerPoint 和一个粗剪视频。见 [`docs/export.md`](docs/export.md)。
+
+## 六个技能
+
+| 技能 | 作用 |
+|---|---|
+| `shotkit` | 入口。一句需求，从计划做到看板 |
+| `storyboard-architect` | 规划每个镜头，写出 `shots.json` |
+| `visual-prompt-forge` | 为每个镜头、每个生成模型写提示词 |
+| `visual-asset-critic` | 对照镜头和品牌检查每一帧 |
+| `storyboard-html-preview` | 生成看板和客户预览页 |
+| `brand-lock-extractor` | 从网站、PDF 或截图读出品牌的颜色、字体和语气 |
+
+## 数据去哪了
+
+Shotkit 没有服务器，也不需要账号。看板、检查和工具都在你的电脑上运行，不向外发送任何内容。
+规划和评审由 Claude 完成，所以 Claude 会收到它读取的内容：你的需求、品牌资料，
+以及它查看过的素材和画面的缩略图，与你平时使用 Claude 的条款相同。
+只有当你用自己的密钥发起生成时，请求才会发送到 fal.ai。
+
+## 人工确认
+
+评审结论是模型给出的。有人确认之后，把这件事也记下来：
+
+```bash
+~/.claude/shotkit-tools/sk approve output/ --by "姓名"                 # 确认计划
+~/.claude/shotkit-tools/sk approve output/ --by "姓名" --what frames   # 确认已通过的画面
+```
+
+每次确认都是 `output/approvals/` 里的一个新文件，用哈希记录确认的是哪一版。
+之后内容有变，看板和 `sk validate` 会提示这次确认已失效。名字是手动输入的，
+所以这是一条记录，不是签名。
+
+## Shotkit 不做什么
+
+Shotkit 给出的是计划和原始素材，不是成片。剪辑、文字排版、调色、声音、
+各平台尺寸和发布不在其中。开发 Shotkit 的 WhyStrohm 把这部分作为付费服务提供：
+[whystrohm.com](https://whystrohm.com)。
 
 ## 文档
 

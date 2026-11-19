@@ -13,13 +13,24 @@
   },
   "inputs": {
     "shots_ref": "shots.json",
-    "shots_sha256": "19cd0e71ddc24e2cf5368f0d04895f4dd558ba9a950b78855b3290ec8d41b6c5",
+    "shots_sha256": "546e1f9d041347f6cc159d8cd94b87e839fe62f2f78f41f90eea5dc9b5323d6d",
     "text_overlays_ref": "text-overlays.json",
     "text_overlays_sha256": "6d3bbef266820baa78ea5d73d2c0c5af2eae39205043eb77aa4e4981028e7692",
     "brand_lock_ref": "brand-lock.snapshot.md",
     "brand_lock_sha256": "ef551b6769ba53b9c2f1ef0db8202a2e358c9e4ab8f518a01c619aee4c65a1e8",
     "brand_lock_source": "brand/harbor-roast.md",
     "brand_lock_configured": true
+  },
+  "brief_sources": {
+    "purpose": "given",
+    "duration": "given",
+    "aspect": "given",
+    "voiceover": "given",
+    "audience": "suggested",
+    "framework": "suggested",
+    "audio": "suggested",
+    "generators": "suggested",
+    "brand_lock": "to_confirm"
   },
   "generators": [
     {

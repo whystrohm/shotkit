@@ -35,6 +35,7 @@ import sys
 import webbrowser
 from pathlib import Path
 
+from approve import status as approval_status
 from _shotkit import (
     INSTALLED,
     IMAGE_EXTS,
@@ -61,7 +62,7 @@ TEMPLATE = REPO_ROOT / "skills" / "storyboard-html-preview" / "templates" / "boa
 # it before they have made any.
 EXAMPLE_DIR = (
     Path(__file__).resolve().parent / "example" if INSTALLED
-    else REPO_ROOT / "examples" / "harbor-roast"
+    else REPO_ROOT / "examples" / "brightdock"
 )
 
 SHOT_HEADER = re.compile(r"^#\s*(?:revision\s+of\s+)?(shot_\d{2,3})\b(.*)$", re.IGNORECASE)
@@ -560,8 +561,9 @@ def next_step(shots: list[dict], generators: list[str], rounds: int, media: list
         }
     return {
         "title": "Every shot is accepted",
-        "body": f"Each of the {count(total)} has an accepted frame. Send preview.html for review, "
-                "make a clip from each frame, or hand shots.json and text-overlays.json to the edit.",
+        "body": f"Each of the {count(total)} has an accepted frame. Use Export for carousel stills, a deck "
+                "or a rough cut. Or send preview.html for review, or hand shots.json and "
+                "text-overlays.json to the edit.",
         "say": "Render the client preview for output/ and open it.",
     }
 
@@ -780,6 +782,11 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
                 if isinstance(r, dict)
             ],
         },
+        "approvals": [
+            {"by": a["by"], "at": a["at"], "what": a["what"], "note": a.get("note"),
+             "holds": a["holds"], "why": a["why"]}
+            for a in approval_status(out_dir)[0]
+        ],
         "rendered_at": rendered_at or iso_instant(),
         "live": live,
         "has_preview": (out_dir / "preview.html").exists(),
@@ -823,6 +830,9 @@ def tree_stamp(out_dir: Path) -> str:
     """Changes whenever a file the board reads is added, removed or rewritten."""
     parts = []
     for path in sorted(out_dir.rglob("*")):
+        # export/ is what the board made, not what it reads, so it never causes a reload.
+        if path.relative_to(out_dir).parts[0] == "export":
+            continue
         if path.is_file() and path.name not in ("board.html", "preview.html") and not path.name.startswith("."):
             stat = path.stat()
             parts.append(f"{path.relative_to(out_dir)}:{stat.st_size}:{stat.st_mtime_ns}")
@@ -984,7 +994,8 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
             kind = MIME.get(ext) or {
                 "json": "application/json", "md": "text/plain; charset=utf-8",
                 "txt": "text/plain; charset=utf-8", "html": "text/html; charset=utf-8",
-                "jsonl": "text/plain; charset=utf-8", **CLIP_MIME,
+                "jsonl": "text/plain; charset=utf-8", "zip": "application/zip",
+                "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation", **CLIP_MIME,
             }.get(ext, "application/octet-stream")
             self.send_file(target, kind)
 
@@ -1054,10 +1065,31 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
             listed = new[0]["id"] if new else "already listed"
             self.send(200, json.dumps({"saved": str(dest.relative_to(root)), "id": listed}).encode(), "application/json")
 
+        def make_export(self, what: str) -> None:
+            """Make the stills, the deck or the rough cut, and say where to download it."""
+            import export as export_tool
+
+            if what not in export_tool.WHAT:
+                self.send(400, b'{"error":"export stills, deck or cut"}', "application/json")
+                return
+            try:
+                report = export_tool.export(root, [what])
+            except export_tool.Stop as stop:
+                self.send(409, json.dumps({"error": str(stop)}).encode(), "application/json")
+                return
+            made = report[what]
+            path = Path(made.get("archive") or made["file"])
+            payload = {"download": "/" + path.relative_to(root).as_posix(), "name": path.name,
+                       "missing": made.get("missing") or [], "with_text": made.get("with_text", made.get("text", True))}
+            self.send(200, json.dumps(payload).encode(), "application/json")
+
         def do_POST(self):
             url = urlparse(self.path)
             if url.path == "/__media" and self.local():
                 self.take_media(url)
+                return
+            if url.path == "/__export" and self.local():
+                self.make_export((parse_qs(url.query).get("what") or [""])[0])
                 return
             if url.path == "/__overlay" and self.local():
                 length = int(self.headers.get("Content-Length") or 0)
@@ -1108,6 +1140,25 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
 # --------------------------------------------------------------------------
 # Selftest
 # --------------------------------------------------------------------------
+
+def script_parses(page: str) -> bool | None:
+    """Whether the board's script is valid JavaScript. None when node is not installed.
+    A stray bracket in the template leaves a blank page, and nothing else here opens it."""
+    import shutil
+    import subprocess
+    import tempfile
+
+    node = shutil.which("node")
+    if not node:
+        return None
+    blocks = re.findall(r"<script(?![^>]*json)[^>]*>(.*?)</script>", page, re.S)
+    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False, encoding="utf-8") as handle:
+        handle.write(max(blocks, key=len) if blocks else "")
+    try:
+        return subprocess.run([node, "--check", handle.name], capture_output=True).returncode == 0
+    finally:
+        Path(handle.name).unlink(missing_ok=True)
+
 
 def selftest() -> int:
     import shutil
@@ -1176,7 +1227,9 @@ def selftest() -> int:
             handle.write("\n")
         edited_files = {f["path"]: f["state"] for f in build(edited, rendered_at=pinned)[0]["files"]}
 
+    parses = script_parses(html_a)
     checks = [
+        ("the board's script parses" + ("" if parses is not None else " (skipped: node is not installed)"), parses is not False),
         ("two renders with a pinned timestamp are identical", html_a == html_b),
         ("reads every shot", len(data["shots"]) == 2),
         ("a shot accepted in round 1 is accept", by_id["shot_01"]["status"] == "accept"),
