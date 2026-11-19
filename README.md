@@ -178,6 +178,7 @@ output/
 ├── clips/round-1/             # Video clips, one per shot, if you make them
 ├── board.html                 # The board. Where you work. Opens by itself.
 ├── critiques/round-1/         # One verdict per shot, hashing what it reviewed
+├── approvals/                 # A person's yes, if you record one with `sk approve`
 └── preview.html               # The page you send a client. Printable. Brand-aware.
 ```
 
@@ -213,13 +214,10 @@ They work alone. They work better together, the critic writes a machine-readable
 
 ---
 
-## Concepts fast. Finished video is a service.
+## What you get, and what you do not
 
-Shotkit is for getting from an idea to something you can look at, quickly and many times
-over. A marketing team can put ten concepts on ten boards in an afternoon, each with a
-shot plan, on-screen copy, frames and short clips, all in the brand.
-
-What it gives you is raw material and a plan, not a finished video:
+Shotkit gets you from an idea to something you can look at, quickly and many times over.
+A marketing team can put ten concepts on ten boards in an afternoon.
 
 - **In Shotkit.** The plan, the prompts, the checks, the board. With your own
   [fal.ai](https://fal.ai) key, the frames and clips too:
@@ -227,9 +225,21 @@ What it gives you is raw material and a plan, not a finished video:
 - **Not in Shotkit.** The edit. Cutting the shots to time, setting the type, grading,
   sound, every size a campaign needs, and posting.
 
-The second list is what WhyStrohm does as a service. Every video is built from the same
-plan, so the hundredth one matches the first. Ask about the full system at
-[hello@whystrohm.com](mailto:hello@whystrohm.com) or [whystrohm.com](https://whystrohm.com).
+The board and the client page carry no sales message. WhyStrohm, which builds Shotkit,
+does the edit as a paid service: [whystrohm.com](https://whystrohm.com).
+
+### A person's approval
+
+The critic's verdict is a model's review. When a person approves, write that down too:
+
+```bash
+~/.claude/shotkit-tools/sk approve output/ --by "Dana Reyes"                # the plan
+~/.claude/shotkit-tools/sk approve output/ --by "Dana Reyes" --what frames  # the accepted frames
+```
+
+Each approval is a new file in `output/approvals/` that names what was approved, by hash.
+The board and `sk validate` say when one no longer holds because something changed after
+it. The name is whatever was typed, so this is a record and not a signature.
 
 **Bring your own key.** Shotkit ships with no keys and calls nothing until you connect
 your own fal.ai key. That key stays in your environment or a `.env` file git ignores.
@@ -275,5 +285,4 @@ The Apache License 2.0 covers the code and documentation in this repository. It 
 
 ## Who built this
 
-[WhyStrohm](https://whystrohm.com). For the finished video, write to
-[hello@whystrohm.com](mailto:hello@whystrohm.com).
+[WhyStrohm](https://whystrohm.com). Questions: [hello@whystrohm.com](mailto:hello@whystrohm.com).

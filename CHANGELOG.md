@@ -4,7 +4,14 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.4.0] - 2026-11-19
+
 ### Added
+
+- **A person's approval.** `sk approve output/ --by "Name"` records who approved the plan,
+  when, and what, by hash. `--what frames` does the same for the accepted frames. Each
+  approval is a new file in `output/approvals/`. `sk validate` and the board say when one
+  no longer holds. It is a record, not a signature.
 
 - **Start from your own photos and clips.** `sk media scan <folder> --out output/` lists
   every photo and clip, with thumbnails Claude looks at one by one before it plans.
@@ -91,6 +98,13 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 - The README says what the board does offline: it opens, and type falls back to system
   fonts.
 - The roadmap no longer lists the PDF and the command line, which exist.
+- **No sales message on what you make.** The board's footer no longer carries a contact
+  line, and the client preview no longer names WhyStrohm.
+- The board's selftest checks that the page's script parses, when `node` is installed.
+
+### Removed
+
+- `docs/assistant-feedback-direction.md`, an internal planning note.
 
 ## [3.3.0] - 2026-11-13
 

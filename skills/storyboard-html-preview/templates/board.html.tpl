@@ -732,7 +732,11 @@ kbd { font: 500 11px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
           el("span", null, el("b", { text: String(D.shots.length) }), " shots"),
           D.media.items.length ? el("span", null, el("b", { text: String(D.media.items.length) }), " of your own files") : null,
           D.project.framework ? el("span", null, el("b", { text: D.project.framework }), " framework") : null,
-          D.shots.length ? el("span", null, "run ", el("b", { text: D.run.id })) : null)),
+          D.shots.length ? el("span", null, "run ", el("b", { text: D.run.id })) : null),
+        (D.approvals || []).length ? el("div", { class: "facts" }, D.approvals.map(function (a) {
+          return el("span", { title: a.note || "" }, el("b", { text: a.holds ? "Approved" : "Approval no longer holds" }),
+            " " + a.what + ", " + a.by + ", " + String(a.at).slice(0, 10) + (a.holds ? "" : ": " + a.why));
+        })) : null),
       next);
 
     var stats = el("section", { class: "stats", "aria-label": "Progress" },
@@ -816,7 +820,7 @@ kbd { font: 500 11px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
     app.appendChild(el("footer", { class: "foot" },
       el("span", { text: "Run " + D.run.id + " started " + D.run.created_at + ". Board rendered " + D.rendered_at + "." }),
       el("span", null, el("kbd", { text: "←" }), " ", el("kbd", { text: "→" }), " move  ", el("kbd", { text: "C" }), " copy prompt  ", el("kbd", { text: "Esc" }), " close"),
-      el("span", null, "Made with ", el("a", { href: "https://github.com/whystrohm/shotkit", text: "Shotkit" }), ". For the finished video: ", el("a", { href: "mailto:hello@whystrohm.com", text: "hello@whystrohm.com" }))));
+      el("span", null, "Made with ", el("a", { href: "https://github.com/whystrohm/shotkit", text: "Shotkit" }), ".")));
   }
 
   function timeline() {

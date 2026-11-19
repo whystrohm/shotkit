@@ -201,6 +201,7 @@ every time, without being asked:
 | "add Midjourney", or names another generator | `visual-prompt-forge` for that generator, then `SK board output/` |
 | "make the frames", "generate", names fal | See "Making frames and clips" below |
 | "make the clips", "animate these" | `SK generate output/ --model kling`, same rule |
+| "I approve", "the client signed off", names who approved | `SK approve output/ --by "<their name>"`, with `--what frames` for the frames, then `SK board output/`. Only when a person says so, and with the name they give. Never approve on your own, and never invent a name |
 | "use my photos", names a folder, or files were dropped on the board | See "Starting from the user's own photos and clips" |
 | "fill the gaps", "make the bridges" | `SK generate output/ --model flux` for stills, `--model kling` for bridges, same rule. Shots on the user's own media are skipped. |
 | "open the board" | `SK board output/ --open` |

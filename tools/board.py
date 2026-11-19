@@ -35,6 +35,7 @@ import sys
 import webbrowser
 from pathlib import Path
 
+from approve import status as approval_status
 from _shotkit import (
     INSTALLED,
     IMAGE_EXTS,
@@ -780,6 +781,11 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
                 if isinstance(r, dict)
             ],
         },
+        "approvals": [
+            {"by": a["by"], "at": a["at"], "what": a["what"], "note": a.get("note"),
+             "holds": a["holds"], "why": a["why"]}
+            for a in approval_status(out_dir)[0]
+        ],
         "rendered_at": rendered_at or iso_instant(),
         "live": live,
         "has_preview": (out_dir / "preview.html").exists(),
@@ -1109,6 +1115,25 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
 # Selftest
 # --------------------------------------------------------------------------
 
+def script_parses(page: str) -> bool | None:
+    """Whether the board's script is valid JavaScript. None when node is not installed.
+    A stray bracket in the template leaves a blank page, and nothing else here opens it."""
+    import shutil
+    import subprocess
+    import tempfile
+
+    node = shutil.which("node")
+    if not node:
+        return None
+    blocks = re.findall(r"<script(?![^>]*json)[^>]*>(.*?)</script>", page, re.S)
+    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False, encoding="utf-8") as handle:
+        handle.write(max(blocks, key=len) if blocks else "")
+    try:
+        return subprocess.run([node, "--check", handle.name], capture_output=True).returncode == 0
+    finally:
+        Path(handle.name).unlink(missing_ok=True)
+
+
 def selftest() -> int:
     import shutil
     import tempfile
@@ -1176,7 +1201,9 @@ def selftest() -> int:
             handle.write("\n")
         edited_files = {f["path"]: f["state"] for f in build(edited, rendered_at=pinned)[0]["files"]}
 
+    parses = script_parses(html_a)
     checks = [
+        ("the board's script parses" + ("" if parses is not None else " (skipped: node is not installed)"), parses is not False),
         ("two renders with a pinned timestamp are identical", html_a == html_b),
         ("reads every shot", len(data["shots"]) == 2),
         ("a shot accepted in round 1 is accept", by_id["shot_01"]["status"] == "accept"),

@@ -147,7 +147,6 @@
     <div>
       Built against <a href="{{BRAND_LOCK_REF}}"><code>{{BRAND_LOCK_REF}}</code></a>{{#if BRAND_LOCK_SHA_SHORT}} (<code>{{BRAND_LOCK_SHA_SHORT}}</code>){{/if}}.
     </div>
-    <div>Built with <a href="https://github.com/whystrohm/shotkit">shotkit</a> · WhyStrohm</div>
   </div>
   <div class="sb-footer-inner sb-provenance">
     <div>

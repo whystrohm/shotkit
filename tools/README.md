@@ -295,6 +295,24 @@ variant lines, covers lines, and other notes.
 
 Pure standard library. `pbcopy` on macOS, `xclip` or `xsel` on Linux, `clip` on Windows.
 
+### `approve.py`
+
+Records that a person approved the plan or the accepted frames. A critique is a model's
+review, and this is the other half.
+
+```bash
+tools/sk approve output/ --by "Dana Reyes"
+tools/sk approve output/ --by "Dana Reyes" --what frames --note "ok to shoot"
+tools/sk approve output/ --list
+tools/sk approve.py --selftest
+```
+
+Each approval is a new file in `output/approvals/` with the hash of `shots.json`, and for
+frames the hash of each shot's latest critique. Nothing else is edited. Frames can be
+approved only when every shot's latest critique is ACCEPT. `validate_provenance.py` and
+the board report an approval that no longer holds. The name is whatever was typed: a
+record, not a signature.
+
 ## Internal modules
 
 Not entry points. Imported by the tools above.

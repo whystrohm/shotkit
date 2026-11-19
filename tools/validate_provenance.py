@@ -76,6 +76,8 @@ class Report:
         # copies in place of the files the critic hashed. A frame that is present and
         # does not match its hash is an error either way.
         self.frames_optional = False
+        # One line per approval a person recorded with approve.py.
+        self.approvals: list[str] = []
         self.shots: dict[str, dict] = {}
         # Every shot id in shots.json, in file order. Empty when shots.json is unreadable.
         self.shot_ids: list[str] = []
@@ -94,6 +96,7 @@ class Report:
             "shots": self.shots,
             "shot_ids": self.shot_ids,
             "unreviewed": unreviewed(self),
+            "approvals": self.approvals,
         }
 
 
@@ -372,7 +375,21 @@ def check_coverage(report: Report, run_doc: dict | None) -> None:
             )
 
 
-def validate_tree(output_dir: Path, frames_optional: bool = False) -> Report:
+def check_approvals(report: Report) -> None:
+    """A person's approval, from approve.py. Malformed is an error. One that no longer
+    holds is a warning: the files are intact, but what was approved has changed since."""
+    from approve import status  # here, because approve.py reads this module
+
+    docs, errors = status(report.output_dir)
+    report.errors.extend(errors)
+    for doc in docs:
+        line = f"{doc['what']} approved by {doc['by']} at {doc['at']}"
+        report.approvals.append(line + ("" if doc["holds"] else f" (no longer holds: {doc['why']})"))
+        if not doc["holds"]:
+            report.warnings.append(f"{doc['_ref']}: this approval no longer holds: {doc['why']}")
+
+
+def validate_tree(output_dir: Path, frames_optional: bool = False, with_approvals: bool = True) -> Report:
     report = Report(output_dir)
     report.frames_optional = frames_optional
     if not output_dir.is_dir():
@@ -382,6 +399,8 @@ def validate_tree(output_dir: Path, frames_optional: bool = False) -> Report:
     check_critiques(report, run_doc)
     check_coverage(report, run_doc)
     _finalize_hash_failures(report)
+    if with_approvals and (output_dir / "approvals").is_dir():
+        check_approvals(report)
     return report
 
 
@@ -664,6 +683,10 @@ def main() -> int:
                     f"        {shot_id}: {verdict} "
                     f"(round {entry.get('latest_round', '?')})"
                 )
+            for line in report.approvals:
+                print(f"        {line}")
+            if not report.approvals:
+                print("        no approval by a person is recorded")
         print()
 
     failed = any(r.errors for r in reports)
