@@ -94,6 +94,15 @@
         }
       }
     },
+    "brief_sources": {
+      "type": "object",
+      "description": "Optional. Where each item of the brief came from, as the planner recorded it when the run was written. Keys name the item: purpose, audience, duration, aspect, framework, voiceover, audio, brand_lock, generators, or another short name. 'given' means it was in the brief or in a file the user supplied. 'suggested' means the planner chose it, as a default or a proposal. 'to_confirm' means the planner filled it and the user has to confirm it before real work, such as a starter brand or a guessed audience. Written once with the rest of run.json. An item left out has no recorded source.",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["given", "suggested", "to_confirm"]
+      }
+    },
     "generators": {
       "type": "array",
       "description": "Generators targeted by this run, with the model version current at run time. The capability matrix records what is current now; this records what was current then.",

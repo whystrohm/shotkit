@@ -266,7 +266,38 @@ These fields are required:
 | `inputs.brand_lock_ref`, `inputs.brand_lock_sha256` | `brand-lock.snapshot.md` and its SHA-256 |
 | `inputs.brand_lock_source` | the pack it was copied from, or `template default` |
 
-Optional: `operator`, `inputs.brand_lock_configured`, `generators`, `rounds`, `meta`.
+Optional: `operator`, `inputs.brand_lock_configured`, `brief_sources`, `generators`,
+`rounds`, `meta`.
+
+`brief_sources` records where each item of the brief came from, so the user can see
+what they said and what you chose. It is a flat map from an item to one of three tags:
+
+| Tag | Meaning |
+|---|---|
+| `given` | It was in the brief, or in a file the user supplied |
+| `suggested` | You chose it, as a default or a proposal. The user can change it |
+| `to_confirm` | You filled it, and the user has to confirm it before real work |
+
+Use these item names: `purpose`, `audience`, `duration`, `aspect`, `framework`,
+`voiceover`, `audio`, `brand_lock`, `generators`. Add another short lower-case name when
+the brief has an item these do not cover.
+
+```json
+"brief_sources": {
+  "purpose": "given",
+  "duration": "given",
+  "aspect": "suggested",
+  "framework": "suggested",
+  "audience": "to_confirm",
+  "brand_lock": "to_confirm"
+}
+```
+
+Tag `brand_lock` as `to_confirm` whenever `brand_lock_configured` is false. Tag it
+`to_confirm` too when the lock came from `brand-lock-extractor` and still has values
+marked `needs confirmation`. Never tag an item `given` that the user did not give. List
+the same items under the assumptions in `storyboard.md`, and name every `suggested` and
+`to_confirm` item in your reply.
 
 ```bash
 head -n 1 ~/.claude/shotkit-tools/VERSION     # from a repo clone: head -n 1 VERSION

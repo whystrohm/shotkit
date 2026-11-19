@@ -21,6 +21,17 @@
     "brand_lock_source": "brand/harbor-roast.md",
     "brand_lock_configured": true
   },
+  "brief_sources": {
+    "purpose": "given",
+    "duration": "given",
+    "aspect": "given",
+    "voiceover": "given",
+    "audience": "suggested",
+    "framework": "suggested",
+    "audio": "suggested",
+    "generators": "suggested",
+    "brand_lock": "to_confirm"
+  },
   "generators": [
     {
       "id": "midjourney",

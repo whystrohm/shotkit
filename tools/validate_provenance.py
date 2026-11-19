@@ -464,6 +464,29 @@ def selftest() -> int:
             print(f"  FAIL  selftest: unreviewed frame was not caught, got: {report.errors}")
             ok = False
 
+    # brief_sources is optional. When it is there, every tag is one of the three.
+    with tempfile.TemporaryDirectory() as tmp:
+        scratch = Path(tmp) / "run"
+        shutil.copytree(WORKED_RUN, scratch)
+        run_path = scratch / "run.json"
+        run_doc = json.loads(run_path.read_text())
+        run_doc["brief_sources"] = {"duration": "given", "aspect": "suggested", "brand_lock": "to_confirm"}
+        run_path.write_text(json.dumps(run_doc))
+        report = validate_tree(scratch)
+        if not report.errors:
+            print("  ok    selftest: a run.json with brief_sources passes")
+        else:
+            print(f"  FAIL  selftest: a valid brief_sources was rejected, got: {report.errors}")
+            ok = False
+        run_doc["brief_sources"]["aspect"] = "guessed"
+        run_path.write_text(json.dumps(run_doc))
+        report = validate_tree(scratch)
+        if any("brief_sources/aspect" in e for e in report.errors):
+            print("  ok    selftest: an unknown brief_sources tag is caught")
+        else:
+            print(f"  FAIL  selftest: a bad brief_sources tag was not caught, got: {report.errors}")
+            ok = False
+
     # A legacy tree keeps its critique at the output root. validate_critique.py and
     # shots-to-html.py both read it, so this tool has to as well: reporting a shot as
     # unreviewed while the preview shows its verdict badge is the exact kind of

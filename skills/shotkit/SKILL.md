@@ -59,6 +59,11 @@ reply so the user can change it.
 
 Ask one question, and only one, when the brief does not say what the video is about.
 
+Record where each item came from in `run.json`, under `brief_sources`, as
+`storyboard-architect` describes: `given` for what the brief or the user's files said,
+`suggested` for every default from the table above, `to_confirm` for anything the user
+has to settle before real work, such as the starter brand.
+
 ### 2. Settle the brand
 
 In this order, first match wins:
@@ -125,7 +130,9 @@ for when the live board is closed.
 Keep it short. The board carries the detail.
 
 - One line: what was made and where (`output/`, and the board address or path).
-- The defaults you used, as a short list.
+- The defaults you used, as a short list: every item tagged `suggested` in
+  `brief_sources`. Then anything tagged `to_confirm`, as a question the user can answer
+  in one line.
 - The next step, which is the one the board shows: make the frames from the prompts.
   Say the three ways: paste each prompt into a generator, drop frames on the live board,
   or say "make the frames on fal" to have Shotkit make them with their fal key.
