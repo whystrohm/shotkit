@@ -39,6 +39,9 @@ output/
 generated/
 
 
+# The font files a designed frame was set in, fetched once per run
+design/fonts.css
+
 # Exports are made on demand, never committed
 export/
 

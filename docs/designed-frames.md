@@ -100,5 +100,7 @@ A designed frame is reviewed like any other: against the shot and the brand. Its
 names `design/cards.json` as what the frame was made from, by hash, so a card changed
 after the review shows up as a changed file.
 
-Needs Chrome, Edge, Brave or Chromium. The brand's typeface loads from Google Fonts, so
-the first run needs a connection.
+Needs Chrome, Edge, Brave or Chromium. The brand's typeface is fetched from Google Fonts
+on the first draw and kept in `design/fonts.css`, so later draws use the same font files
+and need no connection. With no connection on the first draw, the frames are set in a
+system font and the tool says so.
