@@ -829,6 +829,9 @@ def tree_stamp(out_dir: Path) -> str:
     """Changes whenever a file the board reads is added, removed or rewritten."""
     parts = []
     for path in sorted(out_dir.rglob("*")):
+        # export/ is what the board made, not what it reads, so it never causes a reload.
+        if path.relative_to(out_dir).parts[0] == "export":
+            continue
         if path.is_file() and path.name not in ("board.html", "preview.html") and not path.name.startswith("."):
             stat = path.stat()
             parts.append(f"{path.relative_to(out_dir)}:{stat.st_size}:{stat.st_mtime_ns}")
@@ -990,7 +993,8 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
             kind = MIME.get(ext) or {
                 "json": "application/json", "md": "text/plain; charset=utf-8",
                 "txt": "text/plain; charset=utf-8", "html": "text/html; charset=utf-8",
-                "jsonl": "text/plain; charset=utf-8", **CLIP_MIME,
+                "jsonl": "text/plain; charset=utf-8", "zip": "application/zip",
+                "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation", **CLIP_MIME,
             }.get(ext, "application/octet-stream")
             self.send_file(target, kind)
 
@@ -1060,10 +1064,31 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
             listed = new[0]["id"] if new else "already listed"
             self.send(200, json.dumps({"saved": str(dest.relative_to(root)), "id": listed}).encode(), "application/json")
 
+        def make_export(self, what: str) -> None:
+            """Make the stills, the deck or the rough cut, and say where to download it."""
+            import export as export_tool
+
+            if what not in export_tool.WHAT:
+                self.send(400, b'{"error":"export stills, deck or cut"}', "application/json")
+                return
+            try:
+                report = export_tool.export(root, [what])
+            except export_tool.Stop as stop:
+                self.send(409, json.dumps({"error": str(stop)}).encode(), "application/json")
+                return
+            made = report[what]
+            path = Path(made.get("archive") or made["file"])
+            payload = {"download": "/" + path.relative_to(root).as_posix(), "name": path.name,
+                       "missing": made.get("missing") or [], "with_text": made.get("with_text", made.get("text", True))}
+            self.send(200, json.dumps(payload).encode(), "application/json")
+
         def do_POST(self):
             url = urlparse(self.path)
             if url.path == "/__media" and self.local():
                 self.take_media(url)
+                return
+            if url.path == "/__export" and self.local():
+                self.make_export((parse_qs(url.query).get("what") or [""])[0])
                 return
             if url.path == "/__overlay" and self.local():
                 length = int(self.headers.get("Content-Length") or 0)

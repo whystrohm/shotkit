@@ -374,6 +374,27 @@ kbd { font: 500 11px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
   .panel__bar { gap: 8px; padding: 0 10px; }
   .panel__bar .hide-s { display: none; }
 }
+/* Export menu */
+.pop { position: fixed; top: 58px; right: var(--gut); z-index: 40; width: min(380px, calc(100vw - 2 * var(--gut))); padding: 6px; background: var(--p2); border: 1px solid var(--line2); border-radius: 10px; box-shadow: 0 18px 50px rgba(0,0,0,.55); display: none; }
+.pop[data-open] { display: block; }
+.pop__row { display: flex; align-items: center; gap: 12px; padding: 10px; }
+.pop__row + .pop__row { border-top: 1px solid var(--line); }
+.pop__row div { flex: 1; min-width: 0; }
+.pop__row b { display: block; font: 600 13px/1.2 var(--sans); }
+.pop__row span { display: block; margin-top: 4px; color: var(--mut); font-size: 12px; line-height: 1.4; }
+.pop__row .btn { flex: none; min-width: 64px; justify-content: center; }
+.pop__row .btn[disabled] { opacity: .6; cursor: default; }
+.pop__note { padding: 9px 10px 6px; border-top: 1px solid var(--line); color: var(--mut); font-size: 11.5px; line-height: 1.45; }
+/* One shot and nothing else, at the size of the window. The export tool photographs
+   this, so a still, a deck slide and the rough cut carry the type the board shows. */
+html[data-still] { background: #050607; }
+html[data-still="text"], html[data-still="field"] { background: transparent; }
+html[data-still] body { overflow: hidden; }
+html[data-still] .frame { width: 100vw; height: 100vh; aspect-ratio: auto; }
+html[data-still] .safe, html[data-still] .drop { display: none !important; }
+html[data-still] .ovg, html[data-still] .field { transition: none; }
+html[data-still="text"] .frame, html[data-still="field"] .frame { background: transparent; }
+html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-still="field"] .frame img, html[data-still="field"] .ovg { display: none; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 @media print { .bar, .tools, .panel, .scrim, .toast, .next .say { display: none !important; } html { background: #fff; color: #111; } }
 </style>
@@ -579,7 +600,10 @@ kbd { font: 500 11px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
       var maxW = pos === "custom" ? W * .86 : g.clientWidth;
       // A word that cannot break (a web address) makes the group wider than its column, so it is scaled until it fits.
       var rows = g.querySelectorAll(".ov__l, .ov[data-treat='lockup']");
-      var wide = function () { for (var i = 0; i < rows.length; i++) if (rows[i].scrollWidth > rows[i].clientWidth + 1) return true; return g.scrollWidth > maxW + 1; };
+      // The bar under an emphasised phrase runs a little past its row on purpose. That is
+      // under 1% of the frame's width at any size, so it is not counted as too wide.
+      var slack = 1 + W * .01;
+      var wide = function () { for (var i = 0; i < rows.length; i++) if (rows[i].scrollWidth > rows[i].clientWidth + slack) return true; return g.scrollWidth > maxW + slack; };
       while (scale > .3 && (wide() || g.offsetHeight > maxH)) { scale -= .05; g.style.setProperty("--s", scale.toFixed(2)); }
     });
   }
@@ -710,13 +734,52 @@ kbd { font: 500 11px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
   var filter = "all";
   var cards = {}, segs = {};
 
+  // Export. A live board makes the file and hands it to the browser. A saved board
+  // cannot run anything, so it copies the request to give to Claude.
+  var pop;
+  function togglePop(open) {
+    if (!pop) return;
+    if (open == null) open = !pop.hasAttribute("data-open");
+    if (open) pop.setAttribute("data-open", ""); else pop.removeAttribute("data-open");
+  }
+  function exportMenu() {
+    var tall = ratio < 0.8, size = (D.project.aspect || "16:9");
+    var rows = [
+      ["stills", "Stills", "One image per shot with its text on it, at " + size + (tall ? " and 4:5" : "") + ". Ready to post as a carousel.", "Export the stills for this storyboard."],
+      ["deck", "Deck", "A PowerPoint file with one slide per shot. It also opens in Keynote and Google Slides.", "Export the deck for this storyboard."],
+      ["cut", "Rough cut", "The shots in order as one video, with the text at its planned times.", "Export the rough cut for this storyboard."]
+    ];
+    pop = el("div", { class: "pop", role: "menu", "aria-label": "Export", onclick: function (e) { e.stopPropagation(); } },
+      rows.map(function (r) {
+        var btn = el("button", { class: "btn btn--sm", type: "button" }, D.live ? "Make" : "Copy");
+        btn.addEventListener("click", function () {
+          if (!D.live) { copy(r[3], btn, "Copied. Paste it to Claude."); return; }
+          btn.disabled = true; btn.textContent = "Making";
+          fetch("/__export?what=" + r[0], { method: "POST" })
+            .then(function (res) { return res.json().then(function (j) { return { ok: res.ok, j: j }; }); })
+            .then(function (res) {
+              btn.disabled = false; btn.textContent = "Make";
+              if (!res.ok) { toast(res.j.error || "Could not make that", true); return; }
+              var a = el("a", { href: res.j.download, download: res.j.name }); document.body.appendChild(a); a.click(); a.remove();
+              toast("Saved to export/" + res.j.name + (res.j.missing.length ? ". Left out, no frame yet: " + res.j.missing.join(", ") : ""));
+            })
+            .catch(function () { btn.disabled = false; btn.textContent = "Make"; toast("Could not reach the board", true); });
+        });
+        return el("div", { class: "pop__row" }, el("div", null, el("b", { text: r[1] }), el("span", { text: r[2] })), btn);
+      }),
+      el("div", { class: "pop__note", text: D.live ? "Files are written to the export folder next to shots.json." : "This is a saved board, so it cannot make files itself. Copy a request and paste it to Claude, or run sk export on the folder." }));
+    return pop;
+  }
+
   function build() {
     var bar = el("header", { class: "bar" },
       el("div", { class: "mark" }, el("i"), "Shotkit", el("span", { text: "board" })),
       el("div", { class: "bar__title", text: D.project.title }),
       el("span", { class: "pill hide-s", "data-live": D.live ? true : null }, el("b"), D.live ? "Live" : "Rendered " + D.rendered_at.replace("T", " ").replace("Z", " UTC")),
       D.shots.length && (D.live || D.has_preview) ? el("a", { class: "btn hide-s", href: D.live ? "/__preview?print=1" : "preview.html", target: "_blank", rel: "noopener", title: "Opens the client preview. Print it, and choose Save as PDF." }, "PDF") : null,
+      D.shots.length ? el("button", { class: "btn", type: "button", "aria-haspopup": "true", title: "Stills for a carousel, a PowerPoint deck, a rough cut", onclick: function (e) { e.stopPropagation(); togglePop(); } }, "Export") : null,
       copyBtn("Copy for LLM", function () { return D.markdown; }, "btn--pri", "Storyboard copied as Markdown"));
+    if (D.shots.length) app.appendChild(exportMenu());
 
     var n = D.next;
     var next = el("aside", { class: "next" }, el("div", { class: "lab", text: "Next step" }), el("h2", { text: n.title }), el("p", { text: n.body }),
@@ -991,15 +1054,33 @@ kbd { font: 500 11px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
   }
 
   // ---------- wiring ----------
+  // ?still=shot_01 draws that shot alone. &layer=text leaves only the type and
+  // &layer=field only the shade behind it, both on a clear ground. &only=text_01 keeps
+  // one line and holds the place of the others.
+  function still(id) {
+    var q = location.search, layer = /[?&]layer=(text|field)\b/.exec(q), only = /[?&]only=([A-Za-z0-9_-]+)/.exec(q), s = null;
+    D.shots.forEach(function (x) { if (x.id === id) s = x; });
+    document.documentElement.setAttribute("data-still", layer ? layer[1] : "full");
+    if (!s) return;
+    ratio = window.innerWidth / window.innerHeight;
+    var box = frameNode(s, s.frames.length ? s.frames[s.frames.length - 1] : null, { eager: true });
+    if (only) box.querySelectorAll(".ov").forEach(function (n) { if (n.getAttribute("data-id") !== only[1]) n.style.visibility = "hidden"; });
+    app.appendChild(box);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
+  }
+  var stillOf = /[?&]still=(shot_\d+)\b/.exec(location.search);
+  if (stillOf) { still(stillOf[1]); return; }
+
   build();
   document.getElementById("scrim").addEventListener("click", close);
   document.addEventListener("keydown", function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
-    if (e.key === "Escape") close();
+    if (e.key === "Escape") { togglePop(false); close(); }
     else if (current && (e.key === "ArrowRight" || e.key === "j")) { e.preventDefault(); step(1); }
     else if (current && (e.key === "ArrowLeft" || e.key === "k")) { e.preventDefault(); step(-1); }
     else if (current && (e.key === "c" || e.key === "C")) { var cp = currentPrompt(current); if (cp) copy(cp.p.body, null, genName(cp.gen) + " prompt copied"); }
   });
+  document.addEventListener("click", function () { togglePop(false); });
   if (/^#shot_\d+$/.test(location.hash)) open(location.hash.slice(1), true);
   var refit; window.addEventListener("resize", function () { clearTimeout(refit); refit = setTimeout(fitAll, 120); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
