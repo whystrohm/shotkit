@@ -612,12 +612,15 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
   function fitAll() { document.querySelectorAll(".frame").forEach(fit); }
   function srcTag(s) {
     if (!s.source) return null;
+    if (s.source.type === "design") return el("span", { class: "tag tag--r", title: "Drawn in code from the brand lock. No model was used, and the same card draws the same picture.", text: "Designed" });
     if (s.source.type === "own") return el("span", { class: "tag tag--r", title: "Your own media" + (s.source.media ? ", " + s.source.media : ""), text: "Yours" });
     return el("span", { class: "tag tag--r", title: s.source.why || "A gap to fill with a generator", text: s.source.start && s.source.end ? "Bridge" : s.frames.length ? "Made" : "To make" });
   }
   function mediaById(id) { var m = D.media.items; for (var i = 0; i < m.length; i++) if (m[i].id === id) return m[i]; return null; }
   function sourceBlock(s) {
     var src = s.source; if (!src) return null;
+    if (src.type === "design") return el("div", { class: "srcb", style: "--c:var(--accept)" }, el("div", { class: "lab" }, el("i"), "Designed frame · " + (src.card || "card")),
+      el("div", { text: "Drawn in code from the brand lock." }), el("p", { text: "No model was used. The card is in design/cards.json, and the same card draws the same picture. Change it and run sk design." }));
     if (src.type === "own") {
       var m = mediaById(src.media), cut = src.in != null && src.out != null ? fmt(src.in) + " to " + fmt(src.out) + "s of it" : null;
       return el("div", { class: "srcb", style: "--c:var(--accept)" }, el("div", { class: "lab" }, el("i"), "Your " + (m && m.kind === "clip" ? "clip" : "photo") + " · " + (src.media || "")),
@@ -747,7 +750,8 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
     var rows = [
       ["stills", "Stills", "One image per shot with its text on it, at " + size + (tall ? " and 4:5" : "") + ". Ready to post as a carousel.", "Export the stills for this storyboard."],
       ["deck", "Deck", "A PowerPoint file with one slide per shot. It also opens in Keynote and Google Slides.", "Export the deck for this storyboard."],
-      ["cut", "Rough cut", "The shots in order as one video, with the text at its planned times.", "Export the rough cut for this storyboard."]
+      ["cut", "Rough cut", "The shots in order as one video, with the text at its planned times.", "Export the rough cut for this storyboard."],
+      ["edit", "Shoot and edit files", "A shot list in a crew's words, the on-screen text as subtitles, and an edit decision list for Premiere, Resolve or Final Cut.", "Export the shoot and edit files for this storyboard."]
     ];
     pop = el("div", { class: "pop", role: "menu", "aria-label": "Export", onclick: function (e) { e.stopPropagation(); } },
       rows.map(function (r) {
@@ -1014,7 +1018,7 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
     // prompts
     var pb = el("div", { class: "blk" }), cp2 = currentPrompt(s);
     pb.appendChild(el("h3", null, el("span", { class: "lab", text: "Prompts" })));
-    if (!cp2) pb.appendChild(el("p", { class: "empty", text: s.source && s.source.type === "own" ? "No prompt. This shot is on your own media, so nothing was generated." : "No prompt yet. Ask Claude to write prompts for the generator you use." }));
+    if (!cp2) pb.appendChild(el("p", { class: "empty", text: s.source && s.source.type === "design" ? "No prompt. This frame was drawn in code from the brand lock." : s.source && s.source.type === "own" ? "No prompt. This shot is on your own media, so nothing was generated." : "No prompt yet. Ask Claude to write prompts for the generator you use." }));
     else {
       var tabs = el("div", { class: "tabs", role: "tablist" }), body = el("div");
       Object.keys(s.prompts).forEach(function (g) {

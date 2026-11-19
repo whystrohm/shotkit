@@ -1,6 +1,6 @@
 # Critique: shot_02, round 1
 
-Frame `frames/round-1/shot_02.png` (sha256 `223a7a9feb68`), the team's own screen, judged against `brand-lock.snapshot.md`. No prompt: this picture was supplied, not generated.
+Frame `frames/round-1/shot_02.png` (sha256 `fa53eee15012`), drawn in code from `design/cards.json`, judged against `brand-lock.snapshot.md`. No model made this picture, so there is no generator or seed.
 
 Review method: Viewed the full 1080x1920 frame, then the frame with its on-screen text placed at 9:16 and at 4:5.
 

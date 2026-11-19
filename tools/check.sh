@@ -130,6 +130,7 @@ run "board: selftest"                "$TOOLS/board.py" --selftest
 run "generate: selftest"             "$TOOLS/generate.py" --selftest
 run "media: selftest"                "$TOOLS/media.py" --selftest
 run "export: selftest"               "$TOOLS/export.py" --selftest
+run "design: selftest"               "$TOOLS/design.py" --selftest
 
 # Bring your own key: none may ever be committed
 run "secrets: selftest"              "$TOOLS/validate_no_secrets.py" --selftest

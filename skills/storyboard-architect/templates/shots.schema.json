@@ -4,12 +4,22 @@
   "title": "Shots",
   "description": "Structured shot list for a storyboard. Versioned, audit-friendly, generator-agnostic. Write-once: the QA loop never mutates this file, so its hash in run.json stays valid for the life of the project. Cross-field rules this schema cannot express (end greater than start, shots tiling project.duration_s, on_screen_text resolving into text-overlays.json, overlay colors coming from the brand-lock palette) are enforced by tools/validate_shots.py.",
   "type": "object",
-  "required": ["version", "project", "brand_lock_ref", "series_lock", "shots"],
+  "required": [
+    "version",
+    "project",
+    "brand_lock_ref",
+    "series_lock",
+    "shots"
+  ],
   "additionalProperties": false,
   "properties": {
     "version": {
       "type": "string",
-      "enum": ["1.0", "1.1", "1.2"],
+      "enum": [
+        "1.0",
+        "1.1",
+        "1.2"
+      ],
       "description": "1.1 added optional shot.assets and top-level meta. 1.2 added content hashes and critique back-references to shot.assets.generated, and allows on_screen_text to be an array so a shot can carry more than one overlay. Backward compatible: every valid 1.0 file is a valid 1.2 file."
     },
     "meta": {
@@ -19,19 +29,40 @@
     },
     "project": {
       "type": "object",
-      "required": ["title", "duration_s", "aspect"],
+      "required": [
+        "title",
+        "duration_s",
+        "aspect"
+      ],
       "additionalProperties": false,
       "properties": {
-        "title": { "type": "string", "minLength": 1 },
-        "duration_s": { "type": "number", "exclusiveMinimum": 0 },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duration_s": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
         "aspect": {
           "type": "string",
-          "enum": ["16:9", "9:16", "1:1", "4:5", "21:9"]
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1",
+            "4:5",
+            "21:9"
+          ]
         },
         "seed": {
           "oneOf": [
-            { "type": "null" },
-            { "type": "integer", "minimum": 0 }
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 0
+            }
           ],
           "description": "Optional. One seed for every shot, for generators that take one (Flux, Seedream, Ideogram). Null or absent when the project sets none. See visual-prompt-forge/references/consistency-locks.md."
         },
@@ -46,15 +77,25 @@
           "properties": {
             "music": {
               "oneOf": [
-                { "type": "null" },
-                { "type": "string", "minLength": 1 }
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
               ],
               "description": "The music, as a mood and a pace in a few words. Null for no music."
             },
             "sfx": {
               "oneOf": [
-                { "type": "null" },
-                { "type": "string", "minLength": 1 }
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
               ],
               "description": "Sound that runs under the whole film, such as room tone or ambience. Null for none. A sound that belongs to one shot goes in that shot's sfx."
             },
@@ -74,13 +115,30 @@
     },
     "series_lock": {
       "type": "object",
-      "required": ["character", "environment", "lighting", "color_grade"],
+      "required": [
+        "character",
+        "environment",
+        "lighting",
+        "color_grade"
+      ],
       "additionalProperties": false,
       "properties": {
-        "character": { "type": "string", "minLength": 1 },
-        "environment": { "type": "string", "minLength": 1 },
-        "lighting": { "type": "string", "minLength": 1 },
-        "color_grade": { "type": "string", "minLength": 1 }
+        "character": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environment": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lighting": {
+          "type": "string",
+          "minLength": 1
+        },
+        "color_grade": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "shots": {
@@ -89,9 +147,15 @@
       "items": {
         "type": "object",
         "required": [
-          "id", "beat", "start", "end",
-          "framing", "angle", "motion",
-          "subject", "rationale"
+          "id",
+          "beat",
+          "start",
+          "end",
+          "framing",
+          "angle",
+          "motion",
+          "subject",
+          "rationale"
         ],
         "additionalProperties": false,
         "properties": {
@@ -99,8 +163,14 @@
             "type": "string",
             "pattern": "^shot_[0-9]{2,3}$"
           },
-          "beat": { "type": "string", "minLength": 1 },
-          "start": { "type": "number", "minimum": 0 },
+          "beat": {
+            "type": "string",
+            "minLength": 1
+          },
+          "start": {
+            "type": "number",
+            "minimum": 0
+          },
           "end": {
             "type": "number",
             "exclusiveMinimum": 0,
@@ -108,28 +178,56 @@
           },
           "framing": {
             "type": "string",
-            "enum": ["ECU", "CU", "MCU", "MS", "MLS", "WS", "EWS"]
+            "enum": [
+              "ECU",
+              "CU",
+              "MCU",
+              "MS",
+              "MLS",
+              "WS",
+              "EWS"
+            ]
           },
           "angle": {
             "type": "string",
-            "enum": ["eye-level", "high", "low", "overhead", "dutch"]
+            "enum": [
+              "eye-level",
+              "high",
+              "low",
+              "overhead",
+              "dutch"
+            ]
           },
           "motion": {
             "type": "string",
             "enum": [
-              "static", "push", "pull",
-              "pan-left", "pan-right",
-              "tilt-up", "tilt-down",
-              "handheld", "orbit", "whip", "rack"
+              "static",
+              "push",
+              "pull",
+              "pan-left",
+              "pan-right",
+              "tilt-up",
+              "tilt-down",
+              "handheld",
+              "orbit",
+              "whip",
+              "rack"
             ],
             "description": "Camera movement. 'rack' here means a rack focus used as the shot's motion. The identically named depth_of_field value describes the focus state instead."
           },
           "depth_of_field": {
             "type": "string",
-            "enum": ["shallow", "deep", "rack"],
+            "enum": [
+              "shallow",
+              "deep",
+              "rack"
+            ],
             "description": "Focus behaviour. 'rack' means focus shifts mid-shot."
           },
-          "subject": { "type": "string", "minLength": 1 },
+          "subject": {
+            "type": "string",
+            "minLength": 1
+          },
           "environment_ref": {
             "type": "string",
             "description": "Default 'series_lock.environment'. Override only with reason."
@@ -140,57 +238,150 @@
           },
           "on_screen_text": {
             "oneOf": [
-              { "type": "null" },
-              { "type": "string", "pattern": "^text_[0-9]{2,3}$" },
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "pattern": "^text_[0-9]{2,3}$"
+              },
               {
                 "type": "array",
                 "minItems": 1,
                 "uniqueItems": true,
-                "items": { "type": "string", "pattern": "^text_[0-9]{2,3}$" }
+                "items": {
+                  "type": "string",
+                  "pattern": "^text_[0-9]{2,3}$"
+                }
               }
             ],
             "description": "Overlay id, array of overlay ids for a shot carrying several, or null. Added the array form in 1.2: text-overlays.json has always allowed many overlays per shot, and a single string could not represent that."
           },
           "vo": {
             "oneOf": [
-              { "type": "null" },
-              { "type": "string", "minLength": 1 }
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              }
             ]
           },
           "sfx": {
             "oneOf": [
-              { "type": "null" },
-              { "type": "string", "minLength": 1 }
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              }
             ],
             "description": "Optional. A sound that belongs to this shot, in a few words, or null. Intent only. It is never written into a prompt as on-screen text."
           },
-          "rationale": { "type": "string", "minLength": 1 },
+          "rationale": {
+            "type": "string",
+            "minLength": 1
+          },
           "source": {
-            "description": "Optional. Where this shot's picture comes from when the run starts from the user's own photos and clips. Absent means the usual route: a prompt, then a frame. Read by tools/media.py, tools/board.py and tools/generate.py.",
+            "description": "Optional. Where this shot's picture comes from when it is not the usual route of a prompt, then a frame. 'own' is the user's photo or clip, 'generate' is a gap for a generator, 'design' is a frame drawn in code from the brand lock. Read by tools/media.py, tools/board.py, tools/generate.py and tools/design.py.",
             "oneOf": [
               {
                 "type": "object",
-                "required": ["type", "media"],
+                "required": [
+                  "type",
+                  "media"
+                ],
                 "additionalProperties": false,
                 "properties": {
-                  "type": { "const": "own" },
-                  "media": { "type": "string", "pattern": "^m[0-9]{2,4}$", "description": "The id of a photo or clip in media/media.json." },
-                  "in": { "type": "number", "minimum": 0, "description": "For a clip: the second the shot starts on." },
-                  "out": { "type": "number", "exclusiveMinimum": 0, "description": "For a clip: the second the shot ends on." }
+                  "type": {
+                    "const": "own"
+                  },
+                  "media": {
+                    "type": "string",
+                    "pattern": "^m[0-9]{2,4}$",
+                    "description": "The id of a photo or clip in media/media.json."
+                  },
+                  "in": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "For a clip: the second the shot starts on."
+                  },
+                  "out": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "description": "For a clip: the second the shot ends on."
+                  }
                 }
               },
               {
                 "type": "object",
-                "required": ["type", "why"],
+                "required": [
+                  "type",
+                  "why"
+                ],
                 "additionalProperties": false,
                 "properties": {
-                  "type": { "const": "generate" },
-                  "why": { "type": "string", "minLength": 1, "description": "What the user's media does not show, in one sentence." },
-                  "model": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "description": "The generator recommended for this gap. Must match an id in visual-prompt-forge/adapters/_capabilities.json." },
-                  "start": { "type": "string", "pattern": "^shot_[0-9]{2,3}$", "description": "For a bridge: the shot whose last frame this clip starts on." },
-                  "end": { "type": "string", "pattern": "^shot_[0-9]{2,3}$", "description": "For a bridge: the shot whose first frame this clip ends on." }
+                  "type": {
+                    "const": "generate"
+                  },
+                  "why": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "What the user's media does not show, in one sentence."
+                  },
+                  "model": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9-]*$",
+                    "description": "The generator recommended for this gap. Must match an id in visual-prompt-forge/adapters/_capabilities.json."
+                  },
+                  "start": {
+                    "type": "string",
+                    "pattern": "^shot_[0-9]{2,3}$",
+                    "description": "For a bridge: the shot whose last frame this clip starts on."
+                  },
+                  "end": {
+                    "type": "string",
+                    "pattern": "^shot_[0-9]{2,3}$",
+                    "description": "For a bridge: the shot whose first frame this clip ends on."
+                  }
                 },
-                "dependentRequired": { "start": ["end"], "end": ["start"] }
+                "dependentRequired": {
+                  "start": [
+                    "end"
+                  ],
+                  "end": [
+                    "start"
+                  ]
+                }
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "card"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "const": "design"
+                  },
+                  "card": {
+                    "type": "string",
+                    "enum": [
+                      "lines",
+                      "list",
+                      "detail",
+                      "action",
+                      "notices",
+                      "mark",
+                      "stat",
+                      "quote"
+                    ],
+                    "description": "The kind of card. Its content is in design/cards.json, by shot id."
+                  }
+                }
               }
             ]
           },
@@ -204,15 +395,29 @@
                 "description": "User-supplied images for this shot (skip generation). Paths relative to the output directory root.",
                 "items": {
                   "oneOf": [
-                    { "type": "string", "minLength": 1 },
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    },
                     {
                       "type": "object",
-                      "required": ["path"],
+                      "required": [
+                        "path"
+                      ],
                       "additionalProperties": false,
                       "properties": {
-                        "path": { "type": "string", "minLength": 1 },
-                        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
-                        "note": { "type": "string", "minLength": 1 }
+                        "path": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "sha256": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "note": {
+                          "type": "string",
+                          "minLength": 1
+                        }
                       }
                     }
                   ]
@@ -222,7 +427,9 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "required": ["path"],
+                  "required": [
+                    "path"
+                  ],
                   "additionalProperties": false,
                   "properties": {
                     "path": {
@@ -235,28 +442,49 @@
                       "pattern": "^[0-9a-f]{64}$",
                       "description": "SHA-256 of the frame. Without this, 'accepted' is an assertion about a filename."
                     },
-                    "round": { "type": "integer", "minimum": 1 },
+                    "round": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
                     "generator": {
                       "type": "string",
                       "pattern": "^[a-z0-9][a-z0-9-]*$",
                       "description": "Must match an id in visual-prompt-forge/adapters/_capabilities.json."
                     },
-                    "model_version": { "type": "string", "minLength": 1 },
+                    "model_version": {
+                      "type": "string",
+                      "minLength": 1
+                    },
                     "seed": {
                       "oneOf": [
-                        { "type": "null" },
-                        { "type": "integer" },
-                        { "type": "string", "minLength": 1 }
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        }
                       ]
                     },
-                    "prompt_ref": { "type": "string", "minLength": 1 },
-                    "prompt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+                    "prompt_ref": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "prompt_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
                     "critique_ref": {
                       "type": "string",
                       "minLength": 1,
                       "description": "Path to the critique.json that produced 'accepted'. An accepted frame with no critique_ref is an unsourced approval."
                     },
-                    "accepted": { "type": "boolean" }
+                    "accepted": {
+                      "type": "boolean"
+                    }
                   }
                 }
               }

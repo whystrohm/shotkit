@@ -1,6 +1,8 @@
 # Export: stills, a deck and a rough cut
 
-A finished board is a plan. Export turns it into three files you can use the same day.
+A finished board is a plan. Export turns it into files you can use the same day: stills
+to post, a deck to present, a rough cut to play, and the lists a crew and an editor work
+from.
 
 ![Six carousel stills at 4:5 above two slides of the deck, all from the Brightdock example](images/export.jpg)
 
@@ -24,6 +26,7 @@ sk export output/                 # everything this computer can make
 sk export output/ stills          # only the stills
 sk export output/ deck            # only the deck
 sk export output/ cut --music track.wav
+sk export output/ edit            # the shoot and edit files
 ```
 
 ## What you get
@@ -39,6 +42,19 @@ the brand's ground, so you can present a concept before anything is generated.
 
 Not sure what this computer can make? `sk doctor` says whether it found a browser and
 `ffmpeg`.
+
+## For the crew and the editor
+
+`sk export output/ edit` writes three plain files to `export/edit/`, and `export/edit.zip`:
+
+| File | Who it is for | What is in it |
+|---|---|---|
+| `shot-list.csv` | Whoever shoots it | One row per shot in a crew's words: close-up, eye level, push in, shallow focus. In and out as timecode, what we see, the line on screen, the voice, the sound. |
+| `text.srt` | The editor | Every on-screen line at its planned time, as subtitles. Import it into Premiere, Resolve, Final Cut or CapCut and the text track is already timed. |
+| `cut.edl` | The editor | The cut as an edit decision list (CMX 3600), one event per shot, 30 frames a second, starting at 01:00:00:00. Relink it to the frames and clips and the timeline is laid out. |
+
+The plan stores a shot as `CU`, `eye-level`, `push`. The shot list spells those out,
+because a crew reads "Close-up, eye level, push in" and an editor reads timecode.
 
 Pick other sizes with `--size`: `9x16`, `4x5`, `1x1`, `16x9`, `3x4`, `2x3`. A size that is
 not the plan's own is cropped from the centre of the frame, so check that nothing

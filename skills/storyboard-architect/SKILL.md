@@ -362,8 +362,9 @@ Write `1.2` for new storyboards. `1.0` and `1.1` files stay valid; the array for
 A shot may also carry a `source`, when the run starts from the user's own photos and
 clips. `{"type": "own", "media": "m03", "in": 0.5, "out": 3.5}` puts their file on the
 shot. `{"type": "generate", "why": "...", "model": "flux"}` marks a gap. Adding `"start"`
-and `"end"` shot ids makes it a bridge clip between two of their shots. The `shotkit`
-skill says when to use each. Leave `source` out for an ordinary generated storyboard.
+and `"end"` shot ids makes it a bridge clip between two of their shots. `{"type": "design", "card": "list"}` asks for a frame drawn in code from the brand lock,
+for a shot that shows interface, data or words. The `shotkit` skill says when to use
+each. Leave `source` out for an ordinary generated storyboard.
 
 Sound is optional too. Under `project`:
 `"audio": {"music": "slow, sparse piano", "sfx": "quiet room tone", "clips_have_sound": false}`.

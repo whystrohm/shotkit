@@ -313,6 +313,20 @@ approved only when every shot's latest critique is ACCEPT. `validate_provenance.
 the board report an approval that no longer holds. The name is whatever was typed: a
 record, not a signature.
 
+### `design.py`
+
+Draws frames in code from the brand lock, for shots that show interface, data or words.
+No model is involved, and the same card draws the same picture.
+
+```bash
+tools/sk design output/            # draw every card in output/design/cards.json
+tools/sk design output/ --check    # draw again and compare with design/receipt.json
+tools/sk design --kinds            # the kinds of card and what each takes
+tools/sk design.py --selftest
+```
+
+Guide: [`docs/designed-frames.md`](../docs/designed-frames.md).
+
 ### `export.py`
 
 Turns a run into files to post, present and play. Everything goes to `output/export/`.

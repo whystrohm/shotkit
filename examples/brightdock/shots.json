@@ -36,8 +36,8 @@
       "vo": null,
       "rationale": "The opening has to show the problem before it is named: nobody can read this. The one red line gives the eye a place to land, and the empty upper third is where the question goes.",
       "source": {
-        "type": "own",
-        "media": "m01"
+        "type": "design",
+        "card": "lines"
       }
     },
     {
@@ -56,8 +56,8 @@
       "vo": null,
       "rationale": "The cut from the log wall to one tidy list is the whole pitch, so the list arrives on the first hard cut and holds for three and a half seconds, long enough to read two rows.",
       "source": {
-        "type": "own",
-        "media": "m02"
+        "type": "design",
+        "card": "list"
       }
     },
     {
@@ -76,8 +76,8 @@
       "vo": null,
       "rationale": "Step one of the walk-through: open one deploy. The number is the largest thing in any frame of the film, so the viewer knows where they are without reading.",
       "source": {
-        "type": "own",
-        "media": "m03"
+        "type": "design",
+        "card": "detail"
       }
     },
     {
@@ -96,8 +96,8 @@
       "vo": null,
       "rationale": "Step two: the thing people buy it for. The button is the one lime element and fills the width of the panel, so the action reads at thumb size.",
       "source": {
-        "type": "own",
-        "media": "m04"
+        "type": "design",
+        "card": "action"
       }
     },
     {
@@ -116,8 +116,8 @@
       "vo": null,
       "rationale": "Step three: the rest of the team. Three seconds is enough because the frame is one sentence repeated three times at falling contrast.",
       "source": {
-        "type": "own",
-        "media": "m05"
+        "type": "design",
+        "card": "notices"
       }
     },
     {
@@ -139,8 +139,8 @@
       "vo": null,
       "rationale": "The result is the product named in one line. The mark sits low so the line owns the upper third, and the address is a lockup so it does not compete with it.",
       "source": {
-        "type": "own",
-        "media": "m06"
+        "type": "design",
+        "card": "mark"
       }
     }
   ]

@@ -266,13 +266,14 @@ def read_source(raw) -> dict | None:
     Where a shot's picture comes from, when the plan says so.
 
     own       a photo or clip the user brought, by its id in media/media.json
+    design    a frame drawn in code from the brand lock, by the kind of card
     generate  a gap to fill with a generator, with the reason and, for a bridge
               between two shots, the shots it starts on and ends on
     """
-    if not isinstance(raw, dict) or raw.get("type") not in ("own", "generate"):
+    if not isinstance(raw, dict) or raw.get("type") not in ("own", "generate", "design"):
         return None
     source = {"type": raw["type"]}
-    for key in ("media", "why", "model", "start", "end"):
+    for key in ("media", "why", "model", "start", "end", "card"):
         if isinstance(raw.get(key), str) and raw[key].strip():
             source[key] = raw[key].strip()
     for key in ("in", "out"):
@@ -1070,7 +1071,7 @@ def serve(out_dir: Path, port: int, open_browser: bool) -> int:
             import export as export_tool
 
             if what not in export_tool.WHAT:
-                self.send(400, b'{"error":"export stills, deck or cut"}', "application/json")
+                self.send(400, b'{"error":"export stills, deck, cut or edit"}', "application/json")
                 return
             try:
                 report = export_tool.export(root, [what])

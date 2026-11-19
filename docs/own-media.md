@@ -6,7 +6,7 @@ only the gaps.
 
 ![The board's media tray: the user's files, what Claude saw in each, and the shot each one is on](images/own-media.jpg)
 
-*Shown with sample files. The bundled example, `examples/brightdock`, is a full run made this way.*
+*Shown with sample screens.*
 
 ## The short way
 

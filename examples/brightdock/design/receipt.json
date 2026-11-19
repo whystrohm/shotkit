@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "cards_sha256": "9c9e5b32c531276b1a1e6366df15693c4decf1656c4170eb268a3704fa8da1c2",
+  "brand_lock_sha256": "ba77fc4c98394ebc6470bc7de5f520744e18b702463d1a4ba3c312d2a7bfe48c",
+  "template_sha256": "145595ea3af5546e21ef3a69f41a8b510820cb3e80fd77fd568f7a3a1acd1278",
+  "size": "1080x1920",
+  "frames": {
+    "shot_01": {
+      "kind": "lines",
+      "path": "frames/round-1/shot_01.png",
+      "sha256": "212abd7a2d4e75f4c5af0cc7c035b21222e758abda67944bc3c66d3dc6961c23"
+    },
+    "shot_02": {
+      "kind": "list",
+      "path": "frames/round-1/shot_02.png",
+      "sha256": "fa53eee15012b2b3ee88e55089a041e750c7e9312c97b15dc7a40544c941c80d"
+    },
+    "shot_03": {
+      "kind": "detail",
+      "path": "frames/round-1/shot_03.png",
+      "sha256": "085dfa6a42f8917ce9801e15d37898cd290b8e906d0b88581dea8c49a88c82fe"
+    },
+    "shot_04": {
+      "kind": "action",
+      "path": "frames/round-1/shot_04.png",
+      "sha256": "70277d79d16df866718726a78bf543bf971b1a09a65e7d25dfb7cf62a4b12efd"
+    },
+    "shot_05": {
+      "kind": "notices",
+      "path": "frames/round-1/shot_05.png",
+      "sha256": "33ecb8de3fb33dc7187a94fb6fcf2fcf909db5fe58717fee9c159cdd1f48ef2e"
+    },
+    "shot_06": {
+      "kind": "mark",
+      "path": "frames/round-1/shot_06.png",
+      "sha256": "c661e2cb8c8ed0275434201c8337233298baede80a3f1cc854b7408f5043b028"
+    }
+  }
+}

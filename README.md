@@ -18,13 +18,14 @@ becomes a board with every shot planned, prompted and checked.</p>
   <a href="#why">Why</a> ·
   <a href="#the-board">The board</a> ·
   <a href="docs/own-media.md">Your own footage</a> ·
+  <a href="docs/designed-frames.md">Designed frames</a> ·
   <a href="docs/export.md">Export</a> ·
   <a href="docs/generate-with-fal.md">Frames and clips</a> ·
   <a href="https://whystrohm.com/shotkit/docs/quickstart">Quickstart</a> ·
   <a href="https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html">A live board</a>
 </p>
 
-![Shotkit demo: type one line in Claude Code, every shot is planned, every frame is checked against the shot and the brand, then the frames and clips are made](docs/images/demo.webp)
+![Shotkit demo: type one line in Claude Code, every shot is planned, every frame is checked, the frames and clips are made, screens are drawn in code from the brand, and the stills, deck and rough cut are exported](docs/images/demo.webp)
 
 ## Install
 
@@ -47,7 +48,7 @@ is nothing else to set up. The checks make their own private Python environment,
 Three briefs to try:
 
 ```
-/shotkit:shotkit 20-second launch video for our app from the screenshots in ~/Desktop/screens, 9:16
+/shotkit:shotkit 20-second launch video for our app, 9:16. Draw the product screens, do not generate them.
 /shotkit:shotkit 30-second ad for https://example.com, 9:16, no voiceover
 /shotkit:shotkit 60-second founder explainer, 16:9, with voiceover
 ```
@@ -115,14 +116,17 @@ Shotkit does the part that comes before generation:
   own format.
 - **Checks every frame** against its shot and the brand, and says what to fix. Only that
   shot is redone.
+- **Draws what a generator cannot.** A screen of your product, a number, a quote or a
+  logo card is drawn in code from your brand. No model, and the same picture every time.
 - **Uses your own footage first.** Point it at a folder of photos and clips. It looks at
   each one, places it, and marks only what is missing for a generator to fill.
 - **Sets the type like the brand would.** The words that carry each line are marked in
   the brand's accent, the brand name is set as a lockup, and on a vertical video the
   type stays clear of the app's own buttons.
 - **Puts it all on one board** that opens in your browser, with copy buttons for any model.
-- **Hands you files to use.** Carousel stills with the text on them, a PowerPoint deck
-  and a rough-cut video, from one button.
+- **Hands you files to use.** Carousel stills with the text on them, a PowerPoint deck,
+  a rough-cut video, and a shot list, subtitles and an edit decision list for the crew
+  and the editor.
 
 **Your files stay on your computer.** Shotkit has no server and no account. The board,
 the checks and the tools run locally and send nothing anywhere. Claude does the planning
@@ -157,8 +161,8 @@ Fonts. Offline, type falls back to your system fonts.
 - **Safe zones.** One switch shows the parts of a vertical video an app covers.
 - **A page for the client, before anything is shot.** `preview.html` is the same plan
   as a clean, brand-aware page. The board's **PDF** button opens it ready to print.
-- **Export.** Carousel stills with the text on them, a PowerPoint deck and a rough-cut
-  video, from one button. See [`docs/export.md`](docs/export.md).
+- **Export.** Carousel stills with the text on them, a PowerPoint deck, a rough-cut
+  video, and the shoot and edit files, from one button. See [`docs/export.md`](docs/export.md).
 - **Frames and clips, if you want them.** With your own fal.ai key, `sk generate` makes
   the stills and the video clips and files them. See
   [`docs/generate-with-fal.md`](docs/generate-with-fal.md).
@@ -178,9 +182,10 @@ tools/sk export examples/brightdock
 The stills, the deck and the rough cut are drawn by the board's own page, so they carry
 the type you see on the board.
 
-The demo at the top is 12 seconds of the live board replaying one real Shotkit run: the
-Media Tsunami film, planned in seven shots, checked, then the film that plan became. The
-same cut is a silent MP4 at [`docs/images/demo.mp4`](docs/images/demo.mp4).
+The demo at the top is 18 seconds. The first 12 are the live board replaying one real
+Shotkit run: the Media Tsunami film, planned in seven shots, checked, then the film that
+plan became. The last two beats show designed frames and export from the bundled
+example. The same cut is a silent MP4 at [`docs/images/demo.mp4`](docs/images/demo.mp4).
 
 ---
 
@@ -197,6 +202,7 @@ output/
 ├── brand-lock.snapshot.md     # Frozen brand state at generation time
 ├── prompts/round-1/           # One file per generator: flux.txt, kling.txt and eight more
 ├── media/                     # Your own photos and clips, listed, if you start from them
+├── design/                    # Cards for frames drawn in code, and the receipt, if you use them
 ├── frames/round-1/            # The frames: yours, or made with `sk generate`
 ├── clips/round-1/             # Video clips, one per shot, if you make them
 ├── board.html                 # The board. Where you work. Opens by itself.
@@ -285,7 +291,8 @@ carry every shot, length and line of text. See
 | [Quickstart](https://whystrohm.com/shotkit/docs/quickstart) | A first run, in six steps |
 | [Start from your own photos and clips](docs/own-media.md) | Scan a folder, place each file, fill the gaps |
 | [Frames and clips with fal.ai](docs/generate-with-fal.md) | Connect your key, pick a model |
-| [Export](docs/export.md) | Carousel stills, a deck and a rough cut |
+| [Designed frames](docs/designed-frames.md) | Screens, numbers and quotes drawn in code from your brand |
+| [Export](docs/export.md) | Carousel stills, a deck, a rough cut, and the shoot and edit files |
 | [The check and revise loop](docs/the-qa-loop.md) | How a frame is sent back and fixed |
 | [Brand locks](docs/brand-lock-anatomy.md) | What a brand lock holds, and how to make one |
 | [The audit trail](docs/audit-trail-pattern.md) | What `run.json` pins, and how to prove it |
