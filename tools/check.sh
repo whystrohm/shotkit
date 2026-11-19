@@ -120,12 +120,6 @@ if [[ -d examples/brightdock ]]; then
   run "shots: brightdock example"        "$TOOLS/validate_shots.py" examples/brightdock
   run "provenance: brightdock example"   "$TOOLS/validate_provenance.py" examples/brightdock
 fi
-if [[ -d examples/harbor-roast ]]; then
-  run "shots: harbor-roast example"      "$TOOLS/validate_shots.py" examples/harbor-roast
-  run "provenance: harbor-roast example" "$TOOLS/validate_provenance.py" examples/harbor-roast --frames-optional
-  run "prompts: harbor-roast example"    "$TOOLS/validate_prompts.py" examples/harbor-roast
-fi
-
 # Shared contracts with the other WhyStrohm skills (skipped after an install)
 run "contracts: selftest"            "$TOOLS/validate_contracts.py" --selftest
 run "contracts: schemas and examples" "$TOOLS/validate_contracts.py"

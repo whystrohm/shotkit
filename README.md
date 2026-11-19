@@ -37,7 +37,7 @@ In Claude Code:
 Then type a brief:
 
 ```
-/shotkit:shotkit 30-second launch video for Harbor Roast, 9:16
+/shotkit:shotkit 30-second launch video for our new app, 9:16
 ```
 
 Shotkit plans the shots, writes the prompts and opens the board in your browser. There
