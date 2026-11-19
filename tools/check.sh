@@ -116,6 +116,10 @@ run "provenance: worked run"         "$TOOLS/validate_provenance.py" --examples 
 # The featured example ships web-size JPEG copies of its frames, so the files the critic
 # hashed are not in the repo. Everything else in its chain is checked here. It is skipped
 # after an install, where the example's folder sits elsewhere.
+if [[ -d examples/brightdock ]]; then
+  run "shots: brightdock example"        "$TOOLS/validate_shots.py" examples/brightdock
+  run "provenance: brightdock example"   "$TOOLS/validate_provenance.py" examples/brightdock
+fi
 if [[ -d examples/harbor-roast ]]; then
   run "shots: harbor-roast example"      "$TOOLS/validate_shots.py" examples/harbor-roast
   run "provenance: harbor-roast example" "$TOOLS/validate_provenance.py" examples/harbor-roast --frames-optional

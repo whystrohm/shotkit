@@ -313,6 +313,24 @@ approved only when every shot's latest critique is ACCEPT. `validate_provenance.
 the board report an approval that no longer holds. The name is whatever was typed: a
 record, not a signature.
 
+### `export.py`
+
+Turns a run into files to post, present and play. Everything goes to `output/export/`.
+
+```bash
+tools/sk export output/                    # everything this computer can make
+tools/sk export output/ stills --size 4x5  # one image per shot with its text on it
+tools/sk export output/ deck               # storyboard.pptx, one slide per shot
+tools/sk export output/ cut --music a.wav  # rough-cut.mp4
+tools/sk export.py --selftest
+```
+
+The board draws one shot alone at `board.html?still=shot_01`, and the tool photographs
+that page with a browser that has no window, so a still carries the board's own type.
+The deck is written with the standard library and needs nothing. Stills need Chrome,
+Edge, Brave or Chromium (`SHOTKIT_BROWSER` names one somewhere unusual). The cut needs
+`ffmpeg`. Guide: [`docs/export.md`](../docs/export.md).
+
 ## Internal modules
 
 Not entry points. Imported by the tools above.

@@ -104,10 +104,18 @@ def check_provenance(data: dict, known_generators: set[str]) -> list[str]:
             "provenance: image_ref is null; a verdict that names no image cannot be audited"
         )
 
+    # A picture the user supplied has no prompt to name. It says so with media_ref.
+    supplied = bool(data.get("media_ref"))
+    if supplied and (data.get("prompt_ref") or data.get("generator")):
+        errors.append(
+            "provenance: media_ref says the picture was supplied, so prompt_ref and generator must be null"
+        )
+
     if data.get("confidence") == "HIGH":
+        needed = ("shot_id", "brand_lock_ref") if supplied else ("shot_id", "brand_lock_ref", "prompt_ref")
         missing = [
             key
-            for key in ("shot_id", "brand_lock_ref", "prompt_ref")
+            for key in needed
             if not data.get(key)
         ]
         if missing:
@@ -270,6 +278,16 @@ def _selftest_cases() -> list[tuple[str, dict, bool]]:
             "MEDIUM confidence with no prompt identified passes",
             doc(confidence="MEDIUM", prompt_ref=None, prompt_sha256=None),
             True,
+        ),
+        (
+            "HIGH confidence on the user's own picture needs no prompt",
+            doc(media_ref="m03", prompt_ref=None, prompt_sha256=None, generator=None, model_version=None, seed=None),
+            True,
+        ),
+        (
+            "a supplied picture that also names a generator is rejected",
+            doc(media_ref="m03", prompt_ref=None, prompt_sha256=None),
+            False,
         ),
         (
             "unknown generator id is rejected",

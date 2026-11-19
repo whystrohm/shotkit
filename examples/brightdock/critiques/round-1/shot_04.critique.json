@@ -1,0 +1,33 @@
+{
+  "version": "1.1",
+  "run_id": "20261119T120000Z-5d3a9c1e",
+  "round": 1,
+  "created_at": "2026-11-19T12:06:00Z",
+  "shot_id": "shot_04",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "ba77fc4c98394ebc6470bc7de5f520744e18b702463d1a4ba3c312d2a7bfe48c",
+  "image_ref": "frames/round-1/shot_04.png",
+  "image_sha256": "2b0984d13e0ca80074edb40f83ff11578725de5c1a777caadad170b967cfb654",
+  "media_ref": "m04",
+  "prompt_ref": null,
+  "prompt_sha256": null,
+  "generator": null,
+  "model_version": null,
+  "seed": null,
+  "verdict": "ACCEPT",
+  "confidence": "HIGH",
+  "working": [
+    "The lime button spans the panel and is the only lime element at that size.",
+    "The red dot and the line beside it say what went wrong in six words.",
+    "The cursor sits on the button, so the action is clear without motion."
+  ],
+  "issues": [
+    {
+      "layer": "Shot Spec",
+      "severity": "minor",
+      "note": "The button and the line that says the roll back is done are in one picture. They are two moments.",
+      "fix_type": "post-level",
+      "fix": "In the edit, hold the frame and bring the ticked line in half way through the shot, or leave it."
+    }
+  ]
+}

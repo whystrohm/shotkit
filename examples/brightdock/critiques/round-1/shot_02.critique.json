@@ -1,0 +1,33 @@
+{
+  "version": "1.1",
+  "run_id": "20261119T120000Z-5d3a9c1e",
+  "round": 1,
+  "created_at": "2026-11-19T12:04:00Z",
+  "shot_id": "shot_02",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "ba77fc4c98394ebc6470bc7de5f520744e18b702463d1a4ba3c312d2a7bfe48c",
+  "image_ref": "frames/round-1/shot_02.png",
+  "image_sha256": "223a7a9feb68869b720ab6727d05d13b7b35855d632d97f8ad6ec14976b8e670",
+  "media_ref": "m02",
+  "prompt_ref": null,
+  "prompt_sha256": null,
+  "generator": null,
+  "model_version": null,
+  "seed": null,
+  "verdict": "ACCEPT",
+  "confidence": "HIGH",
+  "working": [
+    "Six rows, each a number, a plain description, the service, a person and a time. Two rows read fully in the time the shot holds.",
+    "Lime dots mark live deploys, and the panel border is the rule colour from the lock.",
+    "The panel starts 40 percent down, so text_02 has the upper third to itself."
+  ],
+  "issues": [
+    {
+      "layer": "Brand Lock",
+      "severity": "minor",
+      "note": "Row 212 carries an amber dot and an amber Rolled back label. Amber is not in the palette.",
+      "fix_type": "post-level",
+      "fix": "Leave it. The lock allows red and amber inside the product as deploy status, and this is that."
+    }
+  ]
+}

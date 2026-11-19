@@ -25,11 +25,11 @@ becomes a board with every shot planned, prompted and checked.</p>
 
 ![Shotkit demo: a brief is typed, the board opens with seven shots planned, then prompts, frames and the check on each frame land, two shots are sent back and fixed, and the finished film plays](docs/images/demo.webp)
 
-Three finished runs. Each picture opens the live board.
+Three finished runs. The first two pictures open a live board. The third is in this repo: `tools/sk board --example`.
 
-| Media Tsunami · 16:9 | Roofing company · 16:9 | Coffee roaster · 9:16 |
+| Media Tsunami · 16:9 | Roofing company · 16:9 | Software launch · 9:16 |
 |---|---|---|
-| [![The Media Tsunami board](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![The Kestrel Roofing board](docs/images/example-kestrel-roofing.jpg)](https://whystrohm.com/shotkit/examples/kestrel-roofing/board.html) | [![The Harbor Roast board](docs/images/example-harbor-roast.jpg)](https://whystrohm.com/shotkit/examples/harbor-roast/board.html) |
+| [![The Media Tsunami board](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![The Kestrel Roofing board](docs/images/example-kestrel-roofing.jpg)](https://whystrohm.com/shotkit/examples/kestrel-roofing/board.html) | [![The Brightdock board](docs/images/example-brightdock.jpg)](examples/brightdock) |
 
 Six Claude skills and a set of small tools, built by [WhyStrohm](https://whystrohm.com).
 Free and open source under Apache 2.0. Nothing ships with a key.
@@ -141,18 +141,26 @@ Fonts. Offline, type falls back to your system fonts.
 - **Safe zones.** One switch shows the parts of a vertical video an app covers.
 - **A page for the client, before anything is shot.** `preview.html` is the same plan
   as a clean, brand-aware page. The board's **PDF** button opens it ready to print.
+- **Export.** Carousel stills with the text on them, a PowerPoint deck and a rough-cut
+  video, from one button. See [`docs/export.md`](docs/export.md).
 - **Frames and clips, if you want them.** With your own fal.ai key, `sk generate` makes
   the stills and the video clips and files them. See
   [`docs/generate-with-fal.md`](docs/generate-with-fal.md).
 
 ![One shot open on the board: the frame, its spec, the on-screen text and the Flux prompt with a copy button](docs/images/board-shot.jpg)
 
-See a finished run before you make one. Open [a live board](https://whystrohm.com/shotkit/examples/harbor-roast/board.html),
-or build the bundled example from a clone:
+See a finished run before you make one. Build the bundled example from a clone, then
+export it:
 
 ```bash
 tools/sk board --example
+tools/sk export examples/brightdock
 ```
+
+![Six carousel stills at 4:5 above two slides of the deck, all from the bundled example](docs/images/export.jpg)
+
+The stills, the deck and the rough cut are drawn by the board's own page, so they carry
+the type you see on the board.
 
 The demo at the top is a 10-second cut of the live board replaying one real Shotkit run:
 the Media Tsunami film, planned in seven shots, checked, then the film that plan became.
@@ -179,6 +187,7 @@ output/
 ├── board.html                 # The board. Where you work. Opens by itself.
 ├── critiques/round-1/         # One verdict per shot, hashing what it reviewed
 ├── approvals/                 # A person's yes, if you record one with `sk approve`
+├── export/                    # Stills, a deck and a rough cut, if you make them with `sk export`
 └── preview.html               # The page you send a client. Printable. Brand-aware.
 ```
 
@@ -221,9 +230,11 @@ A marketing team can put ten concepts on ten boards in an afternoon.
 
 - **In Shotkit.** The plan, the prompts, the checks, the board. With your own
   [fal.ai](https://fal.ai) key, the frames and clips too:
-  [`docs/generate-with-fal.md`](docs/generate-with-fal.md).
-- **Not in Shotkit.** The edit. Cutting the shots to time, setting the type, grading,
-  sound, every size a campaign needs, and posting.
+  [`docs/generate-with-fal.md`](docs/generate-with-fal.md). And three files to take
+  away: carousel stills, a deck and a rough cut: [`docs/export.md`](docs/export.md).
+- **Not in Shotkit.** The finished edit. Motion on the type, transitions, grading, a
+  sound mix, every size a campaign needs, and posting. The rough cut is hard cuts with
+  the text on, for judging the plan.
 
 The board and the client page carry no sales message. WhyStrohm, which builds Shotkit,
 does the edit as a paid service: [whystrohm.com](https://whystrohm.com).

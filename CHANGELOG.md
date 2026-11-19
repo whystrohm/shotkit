@@ -4,6 +4,37 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.5.0] - 2026-11-19
+
+### Added
+
+- **Export.** `sk export output/` writes three files to `output/export/`: one image per
+  shot with its on-screen text on it (the plan's size, and 4:5 for a tall plan, plus a
+  zip), a PowerPoint deck with one slide per shot and real, editable text, and a rough
+  cut that plays the shots in order with the text at its planned times. A live board
+  has an **Export** button that makes each one and downloads it. Guide: `docs/export.md`.
+- **One renderer for all of it.** The board draws one shot alone at
+  `board.html?still=shot_01`. The export tool photographs that page, so a still, a slide
+  and the rough cut carry the type the board shows.
+- **A new bundled example.** `examples/brightdock`: a 20-second launch video for a
+  fictional software product, made from the team's own screens. Six shots, all accepted.
+  `sk board --example` opens it. Harbor Roast stays as the example with generated frames.
+- **`extrabold`** as an on-screen text weight (800), between `bold` and `black`.
+
+### Fixed
+
+- **Type shrank to its smallest size on a large frame.** The bar under an emphasised
+  phrase runs a little past its row, and the fit check counted that as too wide. On a
+  small card it was under a pixel. In the open-shot panel it was not, so emphasised lines
+  were drawn at 30% size there.
+- **A check on your own photo could not pass.** A critique had to name a prompt to be
+  HIGH confidence, and a supplied picture has none. A critique now names the picture
+  with `media_ref`, and the prompt, generator and seed stay null.
+
+### Changed
+
+- The board's next step for a finished run points to Export.
+
 ## [3.4.0] - 2026-11-19
 
 ### Added

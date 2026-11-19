@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "run_id": "20261119T120000Z-5d3a9c1e",
+  "created_at": "2026-11-19T12:00:00Z",
+  "shotkit_version": "3.5.0",
+  "operator": "shotkit example run",
+  "project": {
+    "title": "Brightdock: the deploy log your team can read",
+    "duration_s": 20,
+    "aspect": "9:16",
+    "framework": "educational-demo",
+    "seed": null
+  },
+  "inputs": {
+    "shots_ref": "shots.json",
+    "shots_sha256": "5c071c31f3d7a4c046c85818ad8f16d4256b65be4c93f2d221ddf30baa3ab513",
+    "text_overlays_ref": "text-overlays.json",
+    "text_overlays_sha256": "f57641de614337d9cb16f9b4f64bc93f134244ad6d0ad9a3bb668defded7608e",
+    "brand_lock_ref": "brand-lock.snapshot.md",
+    "brand_lock_sha256": "ba77fc4c98394ebc6470bc7de5f520744e18b702463d1a4ba3c312d2a7bfe48c",
+    "brand_lock_source": "brand/brightdock.md",
+    "brand_lock_configured": true
+  },
+  "brief_sources": {
+    "purpose": "given",
+    "duration": "given",
+    "aspect": "given",
+    "media": "given",
+    "voiceover": "given",
+    "audience": "suggested",
+    "framework": "suggested",
+    "audio": "suggested",
+    "brand_lock": "to_confirm"
+  }
+}

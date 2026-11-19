@@ -159,6 +159,7 @@ them, and hash them:
 | `shot_id` | the shot, or `null` for a standalone image with no storyboard |
 | `image_ref`, `image_sha256` | the frame you reviewed, and its SHA-256 |
 | `prompt_ref`, `prompt_sha256` | the prompt file it came from, and its SHA-256 |
+| `media_ref` | only for the user's own photo or clip: its id in `media/media.json`, for example `m03`. Then `prompt_ref`, `prompt_sha256`, `generator`, `model_version` and `seed` are null, and confidence may still be HIGH |
 | `brand_lock_ref`, `brand_lock_sha256` | the snapshot you judged against, and its SHA-256 |
 | `generator`, `model_version` | the generator id from `_capabilities.json`, and its model version |
 | `seed` | if the generator exposes one, else `null` |

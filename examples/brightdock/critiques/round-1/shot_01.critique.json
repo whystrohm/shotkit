@@ -1,0 +1,33 @@
+{
+  "version": "1.1",
+  "run_id": "20261119T120000Z-5d3a9c1e",
+  "round": 1,
+  "created_at": "2026-11-19T12:03:00Z",
+  "shot_id": "shot_01",
+  "brand_lock_ref": "brand-lock.snapshot.md",
+  "brand_lock_sha256": "ba77fc4c98394ebc6470bc7de5f520744e18b702463d1a4ba3c312d2a7bfe48c",
+  "image_ref": "frames/round-1/shot_01.png",
+  "image_sha256": "6084231b97258add210b25d47a88883b26a813363d10de028cdd98963cab686d",
+  "media_ref": "m01",
+  "prompt_ref": null,
+  "prompt_sha256": null,
+  "generator": null,
+  "model_version": null,
+  "seed": null,
+  "verdict": "ACCEPT",
+  "confidence": "HIGH",
+  "working": [
+    "Grey monospaced log lines fill the lower 60 percent and fade out at both ends, so the frame reads as noise at a glance.",
+    "One red line marks the failed health check and is the only saturated element.",
+    "The upper 37 percent is empty near-black, which is where text_01 sits."
+  ],
+  "issues": [
+    {
+      "layer": "Shot Spec",
+      "severity": "minor",
+      "note": "The log lines are about 30 px tall at 1080 wide. A phone viewer can read the red line and not much else.",
+      "fix_type": "post-level",
+      "fix": "Leave it. The shot is about not being able to read the log."
+    }
+  ]
+}

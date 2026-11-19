@@ -62,7 +62,7 @@ TEMPLATE = REPO_ROOT / "skills" / "storyboard-html-preview" / "templates" / "boa
 # it before they have made any.
 EXAMPLE_DIR = (
     Path(__file__).resolve().parent / "example" if INSTALLED
-    else REPO_ROOT / "examples" / "harbor-roast"
+    else REPO_ROOT / "examples" / "brightdock"
 )
 
 SHOT_HEADER = re.compile(r"^#\s*(?:revision\s+of\s+)?(shot_\d{2,3})\b(.*)$", re.IGNORECASE)
@@ -561,8 +561,9 @@ def next_step(shots: list[dict], generators: list[str], rounds: int, media: list
         }
     return {
         "title": "Every shot is accepted",
-        "body": f"Each of the {count(total)} has an accepted frame. Send preview.html for review, "
-                "make a clip from each frame, or hand shots.json and text-overlays.json to the edit.",
+        "body": f"Each of the {count(total)} has an accepted frame. Use Export for carousel stills, a deck "
+                "or a rough cut. Or send preview.html for review, or hand shots.json and "
+                "text-overlays.json to the edit.",
         "say": "Render the client preview for output/ and open it.",
     }
 

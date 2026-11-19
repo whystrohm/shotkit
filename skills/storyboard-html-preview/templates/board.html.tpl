@@ -1014,7 +1014,7 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
     // prompts
     var pb = el("div", { class: "blk" }), cp2 = currentPrompt(s);
     pb.appendChild(el("h3", null, el("span", { class: "lab", text: "Prompts" })));
-    if (!cp2) pb.appendChild(el("p", { class: "empty", text: "No prompt yet. Ask Claude to write prompts for the generator you use." }));
+    if (!cp2) pb.appendChild(el("p", { class: "empty", text: s.source && s.source.type === "own" ? "No prompt. This shot is on your own media, so nothing was generated." : "No prompt yet. Ask Claude to write prompts for the generator you use." }));
     else {
       var tabs = el("div", { class: "tabs", role: "tablist" }), body = el("div");
       Object.keys(s.prompts).forEach(function (g) {

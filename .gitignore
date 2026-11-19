@@ -39,5 +39,8 @@ output/
 generated/
 
 
+# Exports are made on demand, never committed
+export/
+
 # The board is rendered on demand, never committed
 board.html
