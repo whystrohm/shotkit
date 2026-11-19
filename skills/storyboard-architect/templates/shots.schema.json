@@ -38,6 +38,32 @@
         "framework": {
           "type": "string",
           "description": "Beat framework name. e.g. 'pain-reframe-promise', 'hero-trilogy', 'founder-explainer', 'content-spiral', 'educational-demo', 'custom'"
+        },
+        "audio": {
+          "type": "object",
+          "description": "Optional. What the film should sound like, as intent for whoever cuts it. Shotkit writes no audio files. Absent means no sound is planned and clips are made silent. Spoken lines stay in each shot's vo, and on-screen text stays in text-overlays.json. Read by tools/generate.py.",
+          "additionalProperties": false,
+          "properties": {
+            "music": {
+              "oneOf": [
+                { "type": "null" },
+                { "type": "string", "minLength": 1 }
+              ],
+              "description": "The music, as a mood and a pace in a few words. Null for no music."
+            },
+            "sfx": {
+              "oneOf": [
+                { "type": "null" },
+                { "type": "string", "minLength": 1 }
+              ],
+              "description": "Sound that runs under the whole film, such as room tone or ambience. Null for none. A sound that belongs to one shot goes in that shot's sfx."
+            },
+            "clips_have_sound": {
+              "type": "boolean",
+              "default": false,
+              "description": "True when generated clips should carry sound from the video model. False or absent keeps clips silent, so sound is added in the edit. A model that can add sound bills more for it."
+            }
+          }
         }
       }
     },
@@ -130,6 +156,13 @@
               { "type": "null" },
               { "type": "string", "minLength": 1 }
             ]
+          },
+          "sfx": {
+            "oneOf": [
+              { "type": "null" },
+              { "type": "string", "minLength": 1 }
+            ],
+            "description": "Optional. A sound that belongs to this shot, in a few words, or null. Intent only. It is never written into a prompt as on-screen text."
           },
           "rationale": { "type": "string", "minLength": 1 },
           "source": {

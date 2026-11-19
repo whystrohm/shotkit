@@ -36,6 +36,9 @@ and fills what the model accepts: the prompt, the aspect ratio in whichever form
 model takes it, one image, PNG when offered, the seed from the prompt file, and for a
 video model the shot's frame and its length. A model released next month works without
 a change here.
+
+Sound. A clip is made silent. It carries sound only when shots.json says so with
+project.audio.clips_have_sound, and only on a model that offers it.
 """
 
 from __future__ import annotations
@@ -153,7 +156,7 @@ def data_url(frame: Path) -> str:
 
 
 def build_input(schema: dict, prompt: str, aspect: str, params: dict, frame: Path | None,
-                seconds: float, end_frame: Path | None = None) -> dict:
+                seconds: float, end_frame: Path | None = None, sound: bool = False) -> dict:
     """Fill the inputs this model accepts. Anything it does not list is left out."""
     props = schema["properties"]
     body: dict = {}
@@ -188,9 +191,11 @@ def build_input(schema: dict, prompt: str, aspect: str, params: dict, frame: Pat
             body[end_key] = data_url(end_frame)
         if "duration" in props:
             body["duration"] = pick_duration(props["duration"], seconds)
-        # A clip is a silent picture. A model that can add sound bills more for it.
+        # A clip is a silent picture unless the plan asks for sound, with
+        # project.audio.clips_have_sound in shots.json. A model that can add sound bills
+        # more for it.
         if "generate_audio" in props:
-            body["generate_audio"] = False
+            body["generate_audio"] = sound
     return body
 
 
@@ -365,6 +370,8 @@ def plan(out_dir: Path, model: str, prompts_from: str | None, only: set[str] | N
     video = is_video(schema)
     kind = "clips" if video else "frames"
     aspect = (shots_doc.get("project") or {}).get("aspect") or "16:9"
+    audio = (shots_doc.get("project") or {}).get("audio")
+    sound = isinstance(audio, dict) and audio.get("clips_have_sound") is True
     jobs, skipped = [], []
     for shot in shots_doc.get("shots") or []:
         shot_id = shot.get("id")
@@ -407,7 +414,7 @@ def plan(out_dir: Path, model: str, prompts_from: str | None, only: set[str] | N
             "prompt": entry["body"], "params": entry["params"], "frame": frame,
             "end_frame": end_frame, "seconds": seconds,
             "dest": out_dir / kind / f"round-{round_no}" / shot_id,
-            "input": build_input(schema, entry["body"], aspect, entry["params"], frame, seconds, end_frame),
+            "input": build_input(schema, entry["body"], aspect, entry["params"], frame, seconds, end_frame, sound),
         })
     return {"endpoint": endpoint, "generator": generator, "video": video, "kind": kind,
             "aspect": aspect, "jobs": jobs, "skipped": skipped}
@@ -511,7 +518,8 @@ def selftest() -> int:
                 props = {"prompt": {"type": "string"}}
                 if video:
                     props.update({"start_image_url": {"type": "string"}, "tail_image_url": {"type": "string"},
-                                  "duration": {"type": "string", "enum": ["3", "5", "10"]}})
+                                  "duration": {"type": "string", "enum": ["3", "5", "10"]},
+                                  "generate_audio": {"type": "boolean"}})
                 else:
                     props.update({"image_size": {"anyOf": [{"enum": ["portrait_16_9", "landscape_16_9"]}]},
                                   "num_images": {"type": "integer"}, "seed": {"type": "integer"},
@@ -595,6 +603,7 @@ def selftest() -> int:
             sent = clips["jobs"][0]["input"]
             checks.append(("a video model starts from the shot's frame", str(sent.get("start_image_url", "")).startswith("data:image/png;base64,")))
             checks.append(("and gets the shortest length that covers the shot", sent.get("duration") == "5"))
+            checks.append(("a clip is silent when the plan does not ask for sound", sent.get("generate_audio") is False))
             execute(run, clips, "test-key", workers=1)
             checks.append(("saves the clip beside the frames", (run / "clips/round-2/shot_02.mp4").exists()))
 
@@ -613,6 +622,14 @@ def selftest() -> int:
             bridge = plan(run, "test/video", "flux", {"shot_02"}, replace=True)["jobs"][0]["input"]
             checks.append(("a bridge starts on the last frame of one shot", bridge.get("start_image_url", "").startswith("data:image/jpeg;base64,")))
             checks.append(("and ends on the first frame of the next", bridge.get("tail_image_url", "").startswith("data:image/png;base64,")))
+
+            doc["project"]["audio"] = {"music": None, "sfx": None, "clips_have_sound": True}
+            (run / "shots.json").write_text(json.dumps(doc))
+            loud = plan(run, "test/video", "flux", {"shot_02"}, replace=True)["jobs"][0]["input"]
+            checks.append(("a clip carries sound only when project.audio.clips_have_sound is true",
+                           loud.get("generate_audio") is True))
+            still = plan(run, "test/image", "flux", {"shot_02"}, replace=True)["jobs"]
+            checks.append(("and a still is never asked for sound", bool(still) and "generate_audio" not in still[0]["input"]))
 
             unknown = None
             try:

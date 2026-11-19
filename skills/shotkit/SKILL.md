@@ -54,6 +54,7 @@ reply so the user can change it.
 | Aspect | 9:16 when the brief says Reels, Shorts, TikTok, Stories or "vertical"; otherwise 16:9 |
 | Framework | the one `storyboard-architect` would pick for this brief |
 | Voiceover | on-screen text only, unless the brief mentions a speaker or a script |
+| Sound | none planned and clips silent, unless the brief asks for music, sound effects or clips with sound. Then fill `project.audio` as `storyboard-architect` describes |
 | Generators | Flux for stills and Kling for motion |
 
 Ask one question, and only one, when the brief does not say what the video is about.
@@ -212,7 +213,9 @@ it never runs on its own.
    first.
 2. Tell the user how many requests it would send and to which model, and that fal bills
    their account at the price on that model's page. Ask for a yes. Do not state a price
-   yourself.
+   yourself. Clips are made silent unless `project.audio.clips_have_sound` is true in
+   `shots.json`. When it is, the plan shows `generate_audio=True`. Say that the clips
+   will carry sound and that a model bills more for it.
 3. On a yes, run it with `--yes`. If it reports no key, tell them: make a key at
    fal.ai/dashboard/keys and put `FAL_KEY=...` in a `.env` file in this folder. Never ask
    them to paste the key into the chat.

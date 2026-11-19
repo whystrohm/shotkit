@@ -23,6 +23,8 @@ Visual world: a small roastery by the water at first light. Dark walnut, black s
 
 The brand lock was built by brand-lock-extractor from a written description (`brand/harbor-roast-description.md`); its Extraction notes list the values still waiting on confirmation.
 
+Sound, as intent for the edit: a slow, sparse acoustic guitar and quiet roastery room tone, with the beans dropping into the tray on shot_02. The brief did not ask for sound, so this is a suggestion, and the clips are planned silent.
+
 ## Beat framework: Hero Trilogy
 
 A product launch: the roast is the hero. At 15s World is one shot and Transformation carries the CTA.

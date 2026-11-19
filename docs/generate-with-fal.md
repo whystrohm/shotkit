@@ -74,6 +74,11 @@ A video model starts from a shot's frame, so make and check the stills first.
 Each clip is saved as `output/clips/round-N/shot_NN.mp4` and plays on the board under
 its frame. The clip length is the shortest the model offers that covers the shot.
 
+Clips are made silent, so sound is added in the edit. To have a model that offers sound
+add it, set `"clips_have_sound": true` under `project.audio` in `shots.json`. The plan
+`sk generate` prints then shows `generate_audio=True` for a model that offers sound. A
+model bills more for a clip with sound.
+
 ## Pick the model
 
 `--model` takes a Shotkit generator name or any fal model id.

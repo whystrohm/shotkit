@@ -61,6 +61,7 @@ You need these. If any are missing, ask before drafting.
 | Beat framework | No | Suggest based on brief |
 | Brand-lock file path | No | Use `~/.claude/shotkit-brand-packs/_starter.md` (clone: `brand-packs/_starter.md`) and flag the gap |
 | Voiceover style (VO present, on-screen only, captions) | No | Ask if unclear |
+| Sound (music mood, sound effects, whether clips carry sound) | No | Leave `audio` out. Clips are silent and sound is added in the edit |
 | Target generator(s) for downstream prompts | No | Note as "to be specified" |
 | Audit findings, `brand/audit-findings.json` from whystrohm-audit | No | Skip Step 1b |
 
@@ -166,7 +167,19 @@ failure, not a synonym.
 - `on_screen_text`, null, one text-overlay id, OR an array of ids when a shot carries
   more than one overlay
 - `vo`, voiceover line, or null
+- `sfx`, optional, a sound that belongs to this shot in a few words, or null
 - `rationale`, one sentence explaining *why this shot at this moment*
+
+Sound is its own layer, like text. A spoken line goes in `vo`. A sound goes in `sfx`.
+Neither goes in `subject`, and neither is on-screen text. When the brief asks for music
+or sound, also add the optional `project.audio` block:
+
+- `music`, the mood and pace in a few words, or null
+- `sfx`, sound that runs under the whole film, such as room tone, or null
+- `clips_have_sound`, true only when the user wants generated clips to carry sound.
+  Default false. A model that adds sound bills more, so never set it on your own
+
+This is intent for whoever cuts the film. Shotkit writes no audio files.
 
 Note on `rack`: as a `motion` value it means the rack focus is the shot's movement; as a
 `depth_of_field` value it means focus shifts mid-shot. Same word, two fields, two
@@ -320,6 +333,11 @@ clips. `{"type": "own", "media": "m03", "in": 0.5, "out": 3.5}` puts their file 
 shot. `{"type": "generate", "why": "...", "model": "flux"}` marks a gap. Adding `"start"`
 and `"end"` shot ids makes it a bridge clip between two of their shots. The `shotkit`
 skill says when to use each. Leave `source` out for an ordinary generated storyboard.
+
+Sound is optional too. Under `project`:
+`"audio": {"music": "slow, sparse piano", "sfx": "quiet room tone", "clips_have_sound": false}`.
+On a shot: `"sfx": "a kettle clicks off"`. Leave both out when the brief says nothing
+about sound.
 
 ### `text-overlays.json`
 

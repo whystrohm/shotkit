@@ -68,7 +68,7 @@ This means the same composition can render against different brand-locks. Swap t
 
 ## Audio
 
-`shots.json` doesn't include audio. Most bridge implementations handle audio separately:
+`shots.json` holds no audio files. It can state intent: a spoken line per shot in `vo`, and optionally a music mood and sound effects in `project.audio` and a shot's `sfx`. Most bridge implementations handle the audio itself separately:
 
 - VO comes from a separate `vo.json` or `vo/` directory keyed by `shot_id`
 - Music comes from a single track with start/end timestamps

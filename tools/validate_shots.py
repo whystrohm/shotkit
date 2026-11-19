@@ -603,6 +603,25 @@ def selftest() -> int:
             print(f"  FAIL  selftest: {label}")
             ok = False
 
+    # project.audio and shot.sfx are optional intent. A file without them is unchanged.
+    for label, audio, sfx, should_pass in (
+        ("a project.audio block and a shot sfx are accepted",
+         {"music": "slow, sparse piano", "sfx": None, "clips_have_sound": False}, "a kettle clicks off", True),
+        ("an empty project.audio and a null sfx are accepted", {}, None, True),
+        ("a non-boolean clips_have_sound is rejected", {"clips_have_sound": "yes"}, None, False),
+        ("an unknown key in project.audio is rejected", {"voiceover": "warm"}, None, False),
+        ("an empty shot sfx is rejected", {}, "", False),
+    ):
+        doc = json.loads(json.dumps(base))
+        doc["project"]["audio"] = audio
+        doc["shots"][0]["sfx"] = sfx
+        passed = not list(validator.iter_errors(doc))
+        if passed == should_pass:
+            print(f"  ok    selftest: {label}")
+        else:
+            print(f"  FAIL  selftest: {label}")
+            ok = False
+
     clean, clean_warn = check_timing(
         [
             {"id": "shot_01", "start": 0.0, "end": 2.0},

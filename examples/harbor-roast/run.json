@@ -13,7 +13,7 @@
   },
   "inputs": {
     "shots_ref": "shots.json",
-    "shots_sha256": "19cd0e71ddc24e2cf5368f0d04895f4dd558ba9a950b78855b3290ec8d41b6c5",
+    "shots_sha256": "546e1f9d041347f6cc159d8cd94b87e839fe62f2f78f41f90eea5dc9b5323d6d",
     "text_overlays_ref": "text-overlays.json",
     "text_overlays_sha256": "6d3bbef266820baa78ea5d73d2c0c5af2eae39205043eb77aa4e4981028e7692",
     "brand_lock_ref": "brand-lock.snapshot.md",
