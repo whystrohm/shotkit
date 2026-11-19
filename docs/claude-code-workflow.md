@@ -4,7 +4,15 @@ Claude Code is the primary install target for shotkit. The skills auto-discover,
 
 ## Installing
 
-The repo ships an `install.sh` script that copies all five skills into a Claude Code skills directory.
+The quickest install is the plugin. In Claude Code:
+
+```
+/plugin install shotkit --marketplace whystrohm/shotkit
+```
+
+The plugin carries the skills and the tools, and the command is `/shotkit:shotkit`.
+
+The repo also ships an `install.sh` script that copies all six skills into a Claude Code skills directory. Installed this way, the command is `/shotkit`.
 
 ```bash
 git clone https://github.com/whystrohm/shotkit.git
@@ -13,21 +21,22 @@ cd shotkit
 ./install.sh --project   # project scope: ./.claude/skills/
 ```
 
-After install, restart your Claude Code session. The five skills appear in the available-skills list and trigger on natural-language prompts.
+After install, restart your Claude Code session. The six skills appear in the available-skills list and trigger on natural-language prompts.
 
 To verify install:
 
 ```bash
-ls ~/.claude/skills/ | grep -E "storyboard|visual|brand-lock"
+ls ~/.claude/skills/ | grep -E "shotkit|storyboard|visual|brand-lock"
 # expected:
 #   brand-lock-extractor
+#   shotkit
 #   storyboard-architect
 #   storyboard-html-preview
 #   visual-asset-critic
 #   visual-prompt-forge
 ```
 
-If those five directories are present, you are wired.
+If those six directories are present, you are wired.
 
 ## User scope vs project scope
 
@@ -84,7 +93,7 @@ If the run takes more than one round-trip, the brief was ambiguous. The follow-u
 
 ## Composing with other Claude Code skills
 
-shotkit is designed to compose. The five skills cooperate by file format, not by import. They also compose with other community skills:
+shotkit is designed to compose. The six skills cooperate by file format, not by import. They also compose with other community skills:
 
 - **Brand-voice extractors** (e.g. media-tsunami) give you voice findings to write into a brand-lock's voice rules; `brand-lock-extractor` writes the brand-lock itself
 - **Frontmatter-aware editors** can hand-edit `shots.json` between runs

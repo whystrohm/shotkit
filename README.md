@@ -78,26 +78,33 @@ Then type a brief:
 /shotkit:shotkit 30-second launch video for Harbor Roast, 9:16
 ```
 
-That needs Claude Code 2.1.275 or later. On an older version, run
+Shotkit plans the shots, writes the prompts and opens the board in your browser. There
+is nothing else to set up. The checks make their own private Python environment, so
+`pip` and your system Python are left alone.
+
+<details>
+<summary>Other ways to install</summary>
+
+The one-line plugin install needs Claude Code 2.1.275 or later. On an older version, run
 `/plugin marketplace add whystrohm/shotkit` and then `/plugin install shotkit@shotkit`.
 
-Or use the installer, which also gives you the shorter `/shotkit` command:
+Without the plugin system, use the installer:
 
 ```bash
 git clone https://github.com/whystrohm/shotkit.git
 cd shotkit && ./install.sh
 ```
 
-Either way, Shotkit plans the shots, writes the prompts and opens the board in your
-browser. There is nothing else to set up. The checks make their own private Python
-environment, so `pip` and your system Python are left alone.
+Installed this way, the command is `/shotkit` in place of `/shotkit:shotkit`.
+
+</details>
 
 ### Your brand
 
 Point it at your site:
 
 ```
-/shotkit 30-second launch video for https://example.com, 9:16
+/shotkit:shotkit 30-second launch video for https://example.com, 9:16
 ```
 
 Shotkit reads the site and writes the brand lock: the colours, the type and the voice.
@@ -112,8 +119,9 @@ want to set every value yourself. See [`brand-packs/README.md`](brand-packs/READ
 
 ## The board
 
-One page for the whole run. It is a single HTML file in your output folder, it works
-offline, and nothing is uploaded.
+One page for the whole run. It is a single HTML file in your output folder, it opens
+offline, and nothing is uploaded. Online, it loads the brand's typefaces from Google
+Fonts. Offline, type falls back to your system fonts.
 
 - **Every shot at once.** A contact sheet and a timeline with shots, on-screen text and
   voiceover on separate tracks.
@@ -136,10 +144,11 @@ offline, and nothing is uploaded.
 
 ![One shot open on the board: the frame, its spec, the on-screen text and the Flux prompt with a copy button](docs/images/board-shot.jpg)
 
-See a finished run before you make one:
+See a finished run before you make one. Open [a live board](https://whystrohm.com/shotkit/examples/harbor-roast/board.html),
+or build the bundled example from a clone:
 
 ```bash
-~/.claude/shotkit-tools/sk board --example
+tools/sk board --example
 ```
 
 The demo at the top is a 10-second cut of the live board replaying one real Shotkit run:
@@ -175,7 +184,7 @@ no account. Everything is filed by round and shot, so round 2 never overwrites r
 ### Start from footage you already have
 
 ```
-/shotkit a 30-second video from the photos and clips in ~/Desktop/shoot, 9:16
+/shotkit:shotkit a 30-second video from the photos and clips in ~/Desktop/shoot, 9:16
 ```
 
 Claude looks at every photo and clip, puts each one on the shot it fits, and marks what
@@ -190,7 +199,7 @@ See [Start from your own photos and clips](docs/own-media.md).
 
 | Skill | What it does |
 |---|---|
-| `shotkit` | One command. Runs the others in order and opens the board. Type `/shotkit <brief>` |
+| `shotkit` | One command. Runs the others in order and opens the board. Type `/shotkit:shotkit <brief>` |
 | `brand-lock-extractor` | Brand assets (URL / PDF / screenshots) → validate-ready `brand-lock.md` |
 | `storyboard-architect` | Brief → structured storyboard (`storyboard.md` + `shots.json`) |
 | `visual-prompt-forge` | Shot data → model-specific prompts for 10 generators (6 stills, 4 motion) |

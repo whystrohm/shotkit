@@ -62,7 +62,7 @@ cd shotkit && ./install.sh
 ## 从你已有的素材开始
 
 ```
-/shotkit 用 ~/Desktop/shoot 里的照片和视频做一支 30 秒的视频，9:16
+/shotkit:shotkit 用 ~/Desktop/shoot 里的照片和视频做一支 30 秒的视频，9:16
 ```
 
 Claude 会查看每一张照片和每一段视频，把它们放到合适的镜头上，并标出缺少的部分。
