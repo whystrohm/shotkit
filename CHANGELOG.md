@@ -4,6 +4,11 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Changed
+
+- **A new README demo.** 20 seconds, one real run in the order a user works: type one
+  line, plan, pictures three ways, check, export. The on-screen text shows in every beat.
+
 ## [3.6.0] - 2026-11-19
 
 ### Added
