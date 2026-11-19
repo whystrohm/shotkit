@@ -30,9 +30,9 @@ INSTALLED = TOOLS_DIR.name == "shotkit-tools"
 SKILLS_ROOT = REPO_ROOT / "skills"
 BRAND_PACKS_DIR = REPO_ROOT / ("shotkit-brand-packs" if INSTALLED else "brand-packs")
 
-# The five skills shotkit ships. install.sh installs exactly these. After an install,
+# The six skills shotkit ships. install.sh installs exactly these. After an install,
 # ~/.claude/skills/ also holds every other skill the user has, so any tool that walks
-# skills/ walks these five and nothing else.
+# skills/ walks these six and nothing else.
 SHOTKIT_SKILLS = (
     "shotkit",
     "brand-lock-extractor",

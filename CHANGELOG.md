@@ -59,6 +59,26 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 - The README no longer says Shotkit is not a video generator. It plans the shots and can
   make the frames and clips with your own key. It does not cut the film.
 
+### Fixed
+
+- **One install and one command on the README's first screen.** The plugin install and
+  `/shotkit:shotkit` lead. The installer and the older-version steps sit under "Other
+  ways to install". The "see a finished run" command no longer points at a path a plugin
+  install does not create.
+- **The docs agree on six skills.** Several files still said five, and one said four.
+  `docs/claude-code-workflow.md` now covers the plugin and lists `shotkit` in its check.
+- **The board's file list is closed by default.** It opens by itself when a file has
+  changed or is missing. A frame or critique that `run.json` does not hash reads "Not
+  tracked" in place of "Not pinned".
+- **No type on the board is smaller than 11px.**
+- **On a phone** the board keeps each shot's subject line, and the timeline shows that it
+  scrolls.
+- The board's wordmark reads "Shotkit", and the version line says which Shotkit planned
+  the run.
+- The README says what the board does offline: it opens, and type falls back to system
+  fonts.
+- The roadmap no longer lists the PDF and the command line, which exist.
+
 ## [3.3.0] - 2026-11-13
 
 Shotkit can now make the frames and the clips, on fal.ai with your own key.

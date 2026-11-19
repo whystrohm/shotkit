@@ -119,7 +119,7 @@ backticked form the tools read.
 tools/sk validate_brand_lock.py brand-packs/whystrohm.md
 tools/sk validate_brand_lock.py --require-configured brand-packs/whystrohm.md
 tools/sk validate_brand_lock.py --snapshot output/brand-lock.snapshot.md
-tools/sk validate_brand_lock.py --snapshots     # every snapshot in the five skills
+tools/sk validate_brand_lock.py --snapshots     # every snapshot in the six skills
 tools/sk validate_brand_lock.py --selftest
 ```
 

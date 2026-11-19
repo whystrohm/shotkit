@@ -132,9 +132,9 @@ For the operated version of the full pipeline, see [whystrohm.com](https://whyst
 
 ## Compatibility
 
-- **Claude.ai** (web, mobile, desktop). All five skills via `.skill` zip uploads. See [`docs/claude-ai-workflow.md`](./claude-ai-workflow.md).
+- **Claude.ai** (web, mobile, desktop). All six skills via `.skill` zip uploads. See [`docs/claude-ai-workflow.md`](./claude-ai-workflow.md).
 - **Claude Code** (CLI). Primary target. Drop the repo and run `./install.sh`. See [`docs/claude-code-workflow.md`](./claude-code-workflow.md).
-- **Claude API**. All five skills via Skills API.
+- **Claude API**. All six skills via Skills API.
 - **Other agents** that support the SKILL.md open standard (Codex, Cursor, Gemini CLI, Antigravity, Windsurf) should work, not officially tested.
 
 Built for current Claude models (Opus, Sonnet).
@@ -148,11 +148,11 @@ output tree addressed by round and shot so concurrent work cannot overwrite itse
 validators that run against a real project instead of only against the repo. See the
 [changelog](../CHANGELOG.md). Still on the roadmap:
 
-- **PDF + PPTX exporters**. Siblings to `storyboard-html-preview` for client review and agency handoff.
+- **A PPTX exporter**. A sibling to the client preview, which already prints to PDF, for agency handoff.
 - **Approval log**. `run.json` records what was built and reviewed, not who signed it off. Approver identity and timestamp is the missing link for regulated handoffs.
 - **Duration rescale workflow**. Change a project from :30 to :60 and have the timing redistribute correctly across the beat framework.
 - **Worked examples for the motion adapters**. `one-shot-all-adapters/` covers the six stills generators plus Kling; Veo, Seedance, and Hailuo have prompt examples in their adapter files but no side-by-side entry.
-- **A CLI or MCP surface**, so the pipeline runs outside Claude-skill hosts.
+- **An MCP surface**, so the pipeline runs outside Claude-skill hosts. The `sk` launcher already runs every tool from a terminal.
 
 If any of these are blocking for you, open an issue. Real use cases jump the queue.
 

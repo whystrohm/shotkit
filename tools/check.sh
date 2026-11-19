@@ -71,7 +71,7 @@ if [[ -n "$missing" ]]; then
   exit 1
 fi
 
-# Structure and schemas, scoped to the five shotkit skills
+# Structure and schemas, scoped to the six shotkit skills
 run "skills: selftest"               "$TOOLS/validate_skills.py" --selftest
 run "skills: frontmatter"            "$TOOLS/validate_skills.py"
 run "schemas: selftest"              "$TOOLS/validate_schemas.py" --selftest

@@ -7,7 +7,7 @@ description: Run the whole Shotkit pipeline from one line of brief and open the 
 
 One line of brief in. A plan, prompts and an open board out.
 
-This skill runs the other four in order and puts the result on screen. The user should
+This skill runs the other five in order and puts the result on screen. The user should
 not have to know the skills' names, ask for each step, or go looking for files. They
 type a brief and a browser tab opens with every shot on it.
 
