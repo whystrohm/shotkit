@@ -4,6 +4,11 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Changed
+
+- The README demo is back to the 12-second cut of one run. The two beats added in 3.6.0
+  came from a different example and broke the order.
+
 ## [3.6.0] - 2026-11-19
 
 ### Added
