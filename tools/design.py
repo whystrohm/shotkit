@@ -24,8 +24,9 @@ and the card itself is in output/design/cards.json, by shot id:
 
 The panel is placed where the shot's on-screen text is not. Frames go to
 frames/round-N/, like any other frame, and design/receipt.json records the hash of the
-cards, the brand lock, the template and each picture. Needs Chrome, Edge, Brave or
-Chromium.
+cards, the brand lock, the template and each picture. The brand's typeface is fetched
+once and kept in design/fonts.css, so later draws use the same bytes and need no
+connection. Needs Chrome, Edge, Brave or Chromium.
 """
 
 from __future__ import annotations
@@ -143,11 +144,60 @@ def text_side(out_dir: Path, shot: dict) -> str | None:
     return None
 
 
-def page_html(card: dict, look: dict, text: str | None) -> str:
+FONTS = "design/fonts.css"
+_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
+
+
+def fetch_fonts(body: str) -> str | None:
+    """
+    The brand's body type and the mono face as one stylesheet with the font files inside
+    it. Fetched once, so every later draw uses the same bytes and needs no connection.
+    None when it cannot be fetched.
+    """
+    import base64
+    import re
+    import urllib.request
+
+    url = ("https://fonts.googleapis.com/css2?family=" + body.replace(" ", "+")
+           + ":wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=block")
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": _AGENT}), timeout=12) as res:
+            css = res.read().decode("utf-8")
+        out = []
+        # Latin only. The other alphabets are large and a card can still fall back for them.
+        for label, block in re.findall(r"/\*\s*([a-z-]+)\s*\*/\s*(@font-face\s*{[^}]*})", css):
+            if label not in ("latin", "latin-ext"):
+                continue
+            src = re.search(r"url\((https://[^)]+\.woff2)\)", block)
+            if not src:
+                continue
+            with urllib.request.urlopen(urllib.request.Request(src.group(1), headers={"User-Agent": _AGENT}), timeout=12) as res:
+                data = base64.b64encode(res.read()).decode("ascii")
+            out.append(block.replace(src.group(1), "data:font/woff2;base64," + data))
+        return "\n".join(out) if out else None
+    except Exception:
+        return None
+
+
+def fonts_css(out_dir: Path, body: str, web_fonts: bool = True) -> tuple[str, str]:
+    """(stylesheet, "brand" or "system"). The stylesheet is kept in design/fonts.css."""
+    if not web_fonts:
+        return "", "system"
+    cache = out_dir / FONTS
+    head = f"/* {body} */\n"
+    if cache.is_file() and cache.read_text(encoding="utf-8").startswith(head):
+        return cache.read_text(encoding="utf-8"), "brand"
+    css = fetch_fonts(body)
+    if not css:
+        return "", "system"
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    cache.write_text(head + css, encoding="utf-8")
+    return head + css, "brand"
+
+
+def page_html(card: dict, look: dict, text: str | None, font_css: str = "") -> str:
     data = {"card": card, "colours": look["colours"], "body": look["body"], "text": text}
-    family = look["body"].replace(" ", "+")
-    fonts = (f'<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={family}:wght@400;500;600;700;800'
-             '&family=JetBrains+Mono:wght@400;500;700&display=swap">')
+    fonts = f"<style>{font_css}</style>" if font_css else ""
     # A "</" in a card's words must not close the data element.
     payload = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
     return TEMPLATE.read_text(encoding="utf-8").replace("/*__FONTS__*/", fonts).replace("/*__DATA__*/null", payload)
@@ -197,7 +247,7 @@ def plan(out_dir: Path) -> tuple[dict, dict[str, dict], dict, tuple[int, int]]:
     return shots, cards, look, size
 
 
-def draw(out_dir: Path, browser: str | None = "find", into: Path | None = None) -> dict:
+def draw(out_dir: Path, browser: str | None = "find", into: Path | None = None, web_fonts: bool = True) -> dict:
     """Draw every card. With `into`, the pictures go there and nothing in out_dir changes."""
     out_dir = out_dir.resolve()
     shots, cards, look, size = plan(out_dir)
@@ -205,12 +255,13 @@ def draw(out_dir: Path, browser: str | None = "find", into: Path | None = None) 
     if not browser:
         raise Stop("drawing a frame needs Chrome, Edge, Brave or Chromium on this computer. None was found. "
                    "Set SHOTKIT_BROWSER to the browser's path if it is somewhere unusual.")
+    font_css, font_kind = fonts_css(out_dir, look["body"], web_fonts)
     frames: dict[str, dict] = {}
     with tempfile.TemporaryDirectory() as tmp:
         scratch = Path(tmp)
         for shot_id, card in sorted(cards.items()):
             page = scratch / f"{shot_id}.html"
-            page.write_text(page_html(card, look, text_side(out_dir, shots[shot_id])), encoding="utf-8")
+            page.write_text(page_html(card, look, text_side(out_dir, shots[shot_id]), font_css), encoding="utf-8")
             if into:
                 dest = into / f"{shot_id}.png"
             else:
@@ -227,6 +278,7 @@ def draw(out_dir: Path, browser: str | None = "find", into: Path | None = None) 
         "brand_lock_sha256": look["brand_sha256"],
         "template_sha256": sha256_text(TEMPLATE.read_text(encoding="utf-8")),
         "size": f"{size[0]}x{size[1]}",
+        "fonts": font_kind,
         "frames": frames,
     }
     if not into:
@@ -241,7 +293,10 @@ def check(out_dir: Path) -> tuple[list[str], list[str]]:
     if err or not isinstance(receipt, dict):
         raise Stop(f"nothing to check against: {err or RECEIPT + ' is not an object'}. Run design first.")
     with tempfile.TemporaryDirectory() as tmp:
-        again = draw(out_dir, into=Path(tmp))
+        again = draw(out_dir, into=Path(tmp), web_fonts=receipt.get("fonts") != "system")
+    if again.get("fonts") != receipt.get("fonts", "brand"):
+        raise Stop("the brand's typeface could not be loaded this time, so the pictures cannot be compared. "
+                   "Connect once and run this again.")
     same, changed = [], []
     for shot_id, was in sorted((receipt.get("frames") or {}).items()):
         now = (again["frames"].get(shot_id) or {}).get("sha256")
@@ -284,7 +339,7 @@ def selftest() -> int:
         checks.append(("with no browser it stops with the reason", refused))
         if find_browser():
             try:
-                receipt = draw(run)
+                receipt = draw(run, web_fonts=False)
             except Stop:
                 receipt = None
                 notes.append("the browser here did not answer, so no frame was drawn")
@@ -350,6 +405,8 @@ def main() -> int:
         return 1
     for shot_id, frame in sorted(receipt["frames"].items()):
         print(f"  {shot_id}  {frame['kind']:<8} {frame['path']}")
+    if receipt["fonts"] == "system":
+        print("  note  the brand's typeface could not be fetched, so these are set in a system font. Connect and run this again.")
     print(f"Drew {len(receipt['frames'])} frames at {receipt['size']}. Receipt: {RECEIPT}")
     return 0
 

@@ -4,6 +4,13 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Fixed
+
+- **A designed frame could come out in a different typeface from one draw to the next.**
+  The page loaded the brand's font over the network on every draw, and a slow connection
+  left it in a system font. The font is now fetched once and kept in `design/fonts.css`.
+  The receipt records whether a frame was set in the brand's font.
+
 ### Changed
 
 - **A new README demo.** 20 seconds, one real run in the order a user works: type one
