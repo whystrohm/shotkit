@@ -103,7 +103,8 @@ def brand_look(brand_text: str) -> dict:
 def read_cards(out_dir: Path) -> dict[str, dict]:
     doc, err = load_json(out_dir / CARDS)
     if err or not isinstance(doc, dict) or not isinstance(doc.get("cards"), dict):
-        raise Stop(f"no cards to draw: {err or CARDS + ' needs a \"cards\" object, by shot id'}")
+        why = err or (CARDS + ' needs a "cards" object, by shot id')
+        raise Stop(f"no cards to draw: {why}")
     return doc["cards"]
 
 
