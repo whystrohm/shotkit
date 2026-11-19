@@ -28,7 +28,7 @@ Trigger when the user:
 - Hands over a URL, a PDF, image files, or a written brand description and asks for a brand-lock
 - Has a brand-lock that is half-filled and wants the gaps extracted from assets
 
-If the user has nothing but a vague idea (no assets, no description), they are not extracting, they are authoring. Point them at `~/.claude/shotkit-brand-packs/_template.md` (from a clone, `brand-packs/_template.md`) and help them fill it directly.
+If the user has nothing but a vague idea (no assets, no description), they are not extracting, they are authoring. Ask first for a site address, a PDF, screenshots or a few written lines, since any one of them is enough to extract from. Only when there is none, use the manual route: point them at `~/.claude/shotkit-brand-packs/_template.md` (from a clone, `brand-packs/_template.md`) and help them fill it directly. Until then a storyboard can run on `_starter.md`.
 
 ## Inputs
 

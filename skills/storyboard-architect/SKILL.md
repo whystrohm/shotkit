@@ -98,8 +98,10 @@ If no brand-lock is provided, copy `~/.claude/shotkit-brand-packs/_starter.md` (
 clone, `brand-packs/_starter.md`) into the output as `brand-lock.snapshot.md`. The
 starter is a neutral, filled-in lock, so the snapshot passes its check and the overlays
 have real colours to use. Set `brand_lock_configured: false` in `run.json`, and tell the
-user the run used the starter brand and how to replace it: ask for a brand lock from
-their site, or fill in `_template.md`.
+user the run used the starter brand and how to replace it. The default is to give their
+site address, a brand book PDF or screenshots, and `brand-lock-extractor` writes the
+lock. Filling in `_template.md` by hand is the manual route. Offer it only when they
+have nothing to read from or want to set every value themselves.
 
 Do not snapshot `_template.md`. It is blank on purpose, and a blank palette fails the
 snapshot check. Do not invent a palette for a real company either: an invented brand

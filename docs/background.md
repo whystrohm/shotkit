@@ -87,11 +87,11 @@ Four ideas. None negotiable.
 
 A brand pack is a single Markdown file that locks palette, typography, voice, and visual rules for a project. Three live in this repo:
 
-- [`brand-packs/_template.md`](../brand-packs/_template.md). Empty starter.
+- [`brand-packs/_template.md`](../brand-packs/_template.md). The blank template, for writing a lock by hand.
 - [`brand-packs/whystrohm.md`](../brand-packs/whystrohm.md). Flagship example, the real WhyStrohm brand: dark ground, one accent, Archivo and IBM Plex Mono.
 - [`brand-packs/examples/saas-clean.md`](../brand-packs/examples/saas-clean.md). Neutral B2B SaaS reference.
 
-Roll your own from the template. Or generate one from a site, a brand book or screenshots with the `brand-lock-extractor` skill in this repo.
+Generate yours from a site, a brand book or screenshots with the `brand-lock-extractor` skill in this repo. That is the default. Writing one by hand from the template is the manual route.
 
 See [`brand-packs/README.md`](../brand-packs/README.md) for the full pattern.
 

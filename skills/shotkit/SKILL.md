@@ -70,6 +70,11 @@ In this order, first match wins:
    `brand_lock_configured: false` in `run.json`. Do not invent a palette for a real
    company, and do not put the company's name on a palette you made up.
 
+When the run used the starter, say so in your reply and ask for the site address, a
+brand book PDF or screenshots, so `brand-lock-extractor` can write the real lock. Do not
+ask the user to fill in `_template.md`. That is the manual route, for a user who asks to
+set every value by hand.
+
 ### 3. Plan the shots
 
 Follow `storyboard-architect` and write its five files into `./output/`. If `./output/`

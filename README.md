@@ -92,6 +92,22 @@ Either way, Shotkit plans the shots, writes the prompts and opens the board in y
 browser. There is nothing else to set up. The checks make their own private Python
 environment, so `pip` and your system Python are left alone.
 
+### Your brand
+
+Point it at your site:
+
+```
+/shotkit 30-second launch video for https://example.com, 9:16
+```
+
+Shotkit reads the site and writes the brand lock: the colours, the type and the voice.
+Each value is marked with where it came from, and a guess is flagged for you to confirm.
+A brand book PDF or screenshots work the same way. You do not fill in a table.
+
+With no brand in the brief, a first run uses a neutral starter brand and says so.
+Writing a lock by hand from `brand-packs/_template.md` is the manual route, for when you
+want to set every value yourself. See [`brand-packs/README.md`](brand-packs/README.md).
+
 ![The Shotkit board: a timeline, a contact sheet of every shot with its frame and verdict, and the next step](docs/images/board.jpg)
 
 ## The board
