@@ -61,7 +61,8 @@ Shotkit does the part that comes before generation:
 leave it. The only thing that goes out is a generation request, and only when you ask
 for one with your own key.
 
-It is not a video generator and it is not an editor. It is the plan the two of them need.
+Shotkit plans the shots, and with your own key it can make the frames and clips. It does
+not cut the film.
 
 ## Install
 
