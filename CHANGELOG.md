@@ -38,6 +38,26 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
   The plugin carries the tools, so nothing else is needed.
 - The live board plays MOV, M4V and WebM clips as well as MP4, and answers a video
   player's range requests so a long clip can be scrubbed.
+- **Sound in the plan.** `shots.json` takes an optional `project.audio`: a music mood,
+  sound that runs under the film, and `clips_have_sound`. A shot can carry its own
+  `sfx`. It is intent for the edit. Shotkit writes no audio files. Spoken lines stay in
+  `vo` and on-screen text stays in `text-overlays.json`. Files without these fields are
+  unchanged.
+- **Where each part of the brief came from.** `run.json` takes an optional
+  `brief_sources` map. Each item is tagged `given`, `suggested` or `to_confirm`, so you
+  can see what you said, what Shotkit chose and what still needs a yes. The reply lists
+  the last two.
+
+### Changed
+
+- **Point it at your site.** That is now the documented way to get a brand lock: put a
+  site address, a brand book PDF or screenshots in the brief and `brand-lock-extractor`
+  writes it. `_starter.md` is still used when a brief names no brand. `_template.md` is
+  the manual route.
+- `sk generate` keeps clips silent unless the plan sets `clips_have_sound`. Before this
+  there was no way to ask for sound.
+- The README no longer says Shotkit is not a video generator. It plans the shots and can
+  make the frames and clips with your own key. It does not cut the film.
 
 ## [3.3.0] - 2026-11-13
 
