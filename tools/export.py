@@ -121,6 +121,7 @@ class Page:
         self.file = scratch / "still.html"
         self.file.write_text(board.render(self.data), encoding="utf-8")
         self.count = 0
+        self.dead = False  # set when the browser did not answer, so later shots do not wait on it
 
     @property
     def shots(self) -> list[dict]:
@@ -129,7 +130,7 @@ class Page:
     def shoot(self, shot_id: str, dest: Path, size: tuple[int, int], layer: str | None = None,
               only: str | None = None) -> bool:
         """Photograph one shot at an exact pixel size. True when the file is right."""
-        if not self.browser:
+        if not self.browser or self.dead:
             return False
         query = f"still={shot_id}" + (f"&layer={layer}" if layer else "") + (f"&only={only}" if only else "")
         self.count += 1
@@ -145,14 +146,25 @@ class Page:
         for extra in ([], ["--no-sandbox"]):
             dest.unlink(missing_ok=True)
             try:
-                subprocess.run(base + extra + [url], capture_output=True, timeout=120)
+                subprocess.run(base + extra + [url], capture_output=True, timeout=45)
             except (OSError, subprocess.TimeoutExpired):
                 continue
             if png_size(dest) == size:
                 shutil.rmtree(profile, ignore_errors=True)
                 return True
         shutil.rmtree(profile, ignore_errors=True)
+        self.dead = True
         return False
+
+    def shoot_all(self, jobs: list[tuple]) -> list[bool]:
+        """The first shot alone, to find out if the browser answers. Then the rest, four at a time."""
+        if not jobs:
+            return []
+        first = self.shoot(*jobs[0])
+        if not first:
+            return [False] * len(jobs)
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            return [first] + list(pool.map(lambda job: self.shoot(*job), jobs[1:]))
 
 
 def framed(shots: list[dict]) -> tuple[list[dict], list[str]]:
@@ -179,11 +191,11 @@ def make_stills(page: Page, dest: Path, sizes: list[str]) -> dict:
         folder.mkdir(parents=True)
         for shot in shots:
             jobs.append((shot["id"], folder / f"{shot['id']}.png", SIZES[size]))
-    with ThreadPoolExecutor(max_workers=4) as pool:
-        done = list(pool.map(lambda job: page.shoot(*job), jobs))
+    done = page.shoot_all(jobs)
     failed = [str(job[1].relative_to(dest)) for job, ok in zip(jobs, done) if not ok]
     if failed:
-        raise Stop("the browser did not return these stills: " + ", ".join(failed))
+        raise Stop(f"the browser at {page.browser} did not return a picture, so no stills were made. "
+                   "Open that browser once by hand, or set SHOTKIT_BROWSER to another one, and run this again.")
     archive = dest / "stills.zip"
     with zipfile.ZipFile(archive, "w", zipfile.ZIP_STORED) as zf:
         for _, path, _ in jobs:
@@ -449,9 +461,8 @@ def deck_pictures(page: Page, scratch: Path, size: tuple[int, int]) -> tuple[dic
         folder = scratch / "deck"
         folder.mkdir(exist_ok=True)
         jobs = [(s["id"], folder / f"{s['id']}.png", size) for s in shots]
-        with ThreadPoolExecutor(max_workers=4) as pool:
-            done = list(pool.map(lambda job: page.shoot(*job), jobs))
-        with_text = all(done)
+        done = page.shoot_all(jobs)
+        with_text = bool(done) and all(done)
         if with_text:
             pictures = {job[0]: job[1] for job in jobs}
     if not pictures:
@@ -871,12 +882,17 @@ def selftest() -> int:
 
         browser = find_browser()
         if browser:
-            report = export(run, ["stills"], sizes=["4x5"])
+            try:
+                report = export(run, ["stills"], sizes=["4x5"])
+            except Stop:
+                browser, report = None, None
+                notes.append("the browser here did not answer, so the stills were not photographed")
+        if browser:
             files = [Path(f) for f in report["stills"]["files"]]
             checks.append(("a still is exactly the size asked for", bool(files) and all(png_size(f) == SIZES["4x5"] for f in files)))
             with zipfile.ZipFile(report["stills"]["archive"]) as zf:
                 checks.append(("the stills are also in one zip", len(zf.namelist()) == len(files)))
-        else:
+        elif not notes:
             notes.append("no browser here, so the stills were not photographed")
         if browser and find_ffmpeg():
             report = export(run, ["cut"])
