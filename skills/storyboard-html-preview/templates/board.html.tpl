@@ -278,14 +278,14 @@ body[data-open] { overflow: hidden; }
 .pv { position: sticky; top: 0; padding: 16px; }
 .pv .frame { border-radius: 8px; border: 1px solid var(--line2); }
 .media { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-.mi { border: 1px solid var(--line); border-radius: var(--r); background: var(--p1); overflow: hidden; display: flex; flex-direction: column; }
+.mi { border: 1px solid var(--line); border-radius: var(--r); background: var(--p1); overflow: hidden; min-width: 0; display: flex; flex-direction: column; }
 .mi[data-unused] { opacity: .62; }
 .mi__pic { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #000; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 1px; }
 .mi__pic img { width: 100%; height: 100%; min-width: 0; object-fit: contain; display: block; }
 .mi__pic[data-n="3"] img { object-fit: cover; }
 .mi__pic .tag { position: absolute; left: 8px; top: 8px; background: rgba(8,9,11,.8); backdrop-filter: blur(6px); }
 .mi__pic time { position: absolute; right: 8px; bottom: 8px; padding: 3px 6px; border-radius: 4px; background: rgba(8,9,11,.8); font: 500 11px/1 var(--mono); color: var(--ink); }
-.mi__b { padding: 10px 11px 12px; display: grid; gap: 7px; }
+.mi__b { padding: 10px 11px 12px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 7px; }
 .mi__h { display: flex; gap: 8px; align-items: baseline; font: 600 12px/1.2 var(--mono); }
 .mi__h span { flex: 1; min-width: 0; color: var(--mut); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mi__h small { color: var(--dim); font: 400 11px/1 var(--mono); white-space: nowrap; }

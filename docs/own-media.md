@@ -4,7 +4,7 @@ Shotkit can plan a video around footage you already have. Claude looks at every 
 puts each one on the shot it fits, and tells you what is missing. A generator fills
 only the gaps.
 
-![The board's media tray: four of the user's files, what Claude saw in each, and the shot each one is on](images/own-media.jpg)
+![The board's media tray: the user's files, what Claude saw in each, and the shot each one is on](images/own-media.jpg)
 
 *Shown with sample files. The bundled example, `examples/brightdock`, is a full run made this way.*
 

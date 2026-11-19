@@ -4,6 +4,17 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.5.1] - 2026-11-19
+
+### Fixed
+
+- **A long file name cut off the note under it** in the board's media tray.
+
+### Removed
+
+- **The Harbor Roast example.** `examples/brightdock` is the one bundled example. The
+  pictures in the own-media guide now come from it.
+
 ## [3.5.0] - 2026-11-19
 
 ### Added
@@ -18,7 +29,7 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
   and the rough cut carry the type the board shows.
 - **A new bundled example.** `examples/brightdock`: a 20-second launch video for a
   fictional software product, made from the team's own screens. Six shots, all accepted.
-  `sk board --example` opens it. Harbor Roast stays as the example with generated frames.
+  `sk board --example` opens it.
 - **A deck from a plan alone.** With no frames yet, each slide shows the planned text on
   the brand's ground, so a concept can be presented before anything is generated.
 - **`sk doctor` says what export can make** on this computer: which browser it found, and

@@ -10,9 +10,9 @@ Claude Code 的 AI 分镜技能包。一句需求，或者一个装着你自己�
 
 三个已完成的案例，点击图片打开在线看板。
 
-| Media Tsunami · 16:9 | 屋顶工程公司 · 16:9 | 咖啡烘焙 · 9:16 |
+| Media Tsunami · 16:9 | 屋顶工程公司 · 16:9 | 软件发布 · 9:16 |
 |---|---|---|
-| [![Media Tsunami 看板](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![Kestrel Roofing 看板](docs/images/example-kestrel-roofing.jpg)](https://whystrohm.com/shotkit/examples/kestrel-roofing/board.html) | [![Harbor Roast 看板](docs/images/example-harbor-roast.jpg)](https://whystrohm.com/shotkit/examples/harbor-roast/board.html) |
+| [![Media Tsunami 看板](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![Kestrel Roofing 看板](docs/images/example-kestrel-roofing.jpg)](https://whystrohm.com/shotkit/examples/kestrel-roofing/board.html) | [![Brightdock 看板](docs/images/example-brightdock.jpg)](examples/brightdock) |
 
 六个 Claude 技能加一组小工具，由 [WhyStrohm](https://whystrohm.com) 开发。
 Apache 2.0 开源，免费。仓库里不带任何密钥。
@@ -46,7 +46,7 @@ Shotkit 负责规划镜头，接入你自己的密钥后还能生成画面和片
 然后输入需求：
 
 ```
-/shotkit:shotkit 为 Harbor Roast 做一支 30 秒的新品发布视频，9:16
+/shotkit:shotkit 为我们的新应用做一支 30 秒的发布视频，9:16
 ```
 
 需要 Claude Code 2.1.275 或更高版本。旧版本请先运行

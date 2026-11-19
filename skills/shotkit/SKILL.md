@@ -13,7 +13,7 @@ type a brief and a browser tab opens with every shot on it.
 
 ## What the user sees
 
-1. They type a brief, for example `/shotkit 30-second founder explainer for Harbor Roast, 9:16`.
+1. They type a brief, for example `/shotkit 30-second founder explainer for our studio, 9:16`.
 2. About two minutes later a browser tab opens: the board, with every shot on a timeline
    and a contact sheet.
 3. The board fills in with a prompt for each shot.
