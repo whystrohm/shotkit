@@ -19,6 +19,10 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 - **A new bundled example.** `examples/brightdock`: a 20-second launch video for a
   fictional software product, made from the team's own screens. Six shots, all accepted.
   `sk board --example` opens it. Harbor Roast stays as the example with generated frames.
+- **A deck from a plan alone.** With no frames yet, each slide shows the planned text on
+  the brand's ground, so a concept can be presented before anything is generated.
+- **`sk doctor` says what export can make** on this computer: which browser it found, and
+  whether `ffmpeg` is there.
 - **`extrabold`** as an on-screen text weight (800), between `bold` and `black`.
 
 ### Fixed
@@ -34,6 +38,7 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 ### Changed
 
 - The board's next step for a finished run points to Export.
+- The README opens on install and three briefs to try. The pitch and the examples follow.
 - The README demo is a new 12-second cut with a title for each step. The MP4 is 3.6 MB,
   down from 11.6 MB.
 

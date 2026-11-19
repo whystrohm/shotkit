@@ -117,6 +117,11 @@ case "$cmd" in
     if [[ -x "${VENV}/bin/python" ]] && have_deps "${VENV}/bin/python"; then echo "  checks   ready (private environment)"
     elif [[ -n "$py" ]] && have_deps "$py"; then echo "  checks   ready (system Python has pyyaml and jsonschema)"
     else echo "  checks   not set up yet. They set themselves up the first time they run, or run: ${TOOLS}/sk setup"; fi
+    browser="$("${py:-python3}" -c "import sys; sys.path.insert(0, '${TOOLS}'); import export; print(export.find_browser() or '')" 2>/dev/null)"
+    if [[ -n "$browser" ]]; then echo "  browser  ${browser} (export can make stills and put text on the rough cut)"
+    else echo "  browser  none found. Export needs Chrome, Edge, Brave or Chromium for stills. The deck works without one."; fi
+    if command -v ffmpeg >/dev/null 2>&1; then echo "  ffmpeg   $(command -v ffmpeg) (export can make the rough cut)"
+    else echo "  ffmpeg   not found. Export needs it for the rough cut, and clips need it for thumbnails."; fi
     skills="$(dirname "$TOOLS")/skills"
     for name in shotkit storyboard-architect visual-prompt-forge visual-asset-critic storyboard-html-preview brand-lock-extractor; do
       if [[ -f "${skills}/${name}/SKILL.md" ]]; then echo "  skill    ${name}"; else echo "  skill    ${name} MISSING"; fi

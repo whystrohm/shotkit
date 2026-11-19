@@ -34,6 +34,12 @@ sk export output/ cut --music track.wav
 | `export/storyboard.pptx` | A deck: a title slide, the whole story on one slide, one slide per shot, and the brand lock. The words are real text you can edit. It opens in PowerPoint, Keynote and Google Slides. | Nothing. With a browser the pictures carry the on-screen text. |
 | `export/rough-cut.mp4` | The shots in order as one video. Each runs for its planned length, and the text comes in and out at its planned times. | `ffmpeg`, and a browser for the text |
 
+The deck works on a plan with no frames at all. Each slide then shows the planned text on
+the brand's ground, so you can present a concept before anything is generated.
+
+Not sure what this computer can make? `sk doctor` says whether it found a browser and
+`ffmpeg`.
+
 Pick other sizes with `--size`: `9x16`, `4x5`, `1x1`, `16x9`, `3x4`, `2x3`. A size that is
 not the plan's own is cropped from the centre of the frame, so check that nothing
 important sits at the edge.

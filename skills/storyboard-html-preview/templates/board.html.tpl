@@ -391,7 +391,7 @@ html[data-still] { background: #050607; }
 html[data-still="text"], html[data-still="field"] { background: transparent; }
 html[data-still] body { overflow: hidden; }
 html[data-still] .frame { width: 100vw; height: 100vh; aspect-ratio: auto; }
-html[data-still] .safe, html[data-still] .drop { display: none !important; }
+html[data-still] .safe, html[data-still] .drop, html[data-still] .panel, html[data-still] .scrim, html[data-still] .toast, html[data-still] .ph span { display: none !important; }
 html[data-still] .ovg, html[data-still] .field { transition: none; }
 html[data-still="text"] .frame, html[data-still="field"] .frame { background: transparent; }
 html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-still="field"] .frame img, html[data-still="field"] .ovg { display: none; }

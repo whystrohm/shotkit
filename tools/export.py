@@ -453,14 +453,18 @@ def seconds(value) -> str:
 
 
 def deck_pictures(page: Page, scratch: Path, size: tuple[int, int]) -> tuple[dict[str, Path], bool]:
-    """A picture for each shot that has a frame: the still with its text, or the plain frame."""
+    """
+    A picture for each shot. With a browser it is the still with its text, and a shot with
+    no frame yet gets its planned text on the brand's ground. Without one it is the plain
+    frame, for the shots that have one.
+    """
     shots, _ = framed(page.shots)
     pictures: dict[str, Path] = {}
     with_text = False
     if page.browser:
         folder = scratch / "deck"
         folder.mkdir(exist_ok=True)
-        jobs = [(s["id"], folder / f"{s['id']}.png", size) for s in shots]
+        jobs = [(s["id"], folder / f"{s['id']}.png", size) for s in page.shots]
         done = page.shoot_all(jobs)
         with_text = bool(done) and all(done)
         if with_text:
@@ -661,7 +665,7 @@ def make_deck(page: Page, dest: Path, scratch: Path) -> dict:
     out = dest / "storyboard.pptx"
     write_pptx(out, slides, title, str(data["rendered_at"]))
     return {"file": str(out), "slides": len(slides), "with_text": with_text,
-            "missing": [x["id"] for x in shots if x["id"] not in pictures]}
+            "missing": [x["id"] for x in shots if not x["frames"]]}
 
 
 # --------------------------------------------------------------------------
@@ -809,6 +813,10 @@ def say(report: dict, out_dir: Path) -> None:
     if "deck" in report:
         r = report["deck"]
         print(f"  deck     {r['slides']} slides. {rel(r['file'])}")
+        if r["missing"] and r["with_text"]:
+            print(f"           no frame yet, so the slide shows the planned text on the brand's ground: {', '.join(r['missing'])}")
+        elif r["missing"]:
+            print(f"           no frame yet, so the slide has no picture: {', '.join(r['missing'])}")
         if not r["with_text"]:
             print("           the pictures are the plain frames. With Chrome installed they carry the on-screen text.")
     if "cut" in report:

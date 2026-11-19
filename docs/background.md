@@ -148,7 +148,6 @@ output tree addressed by round and shot so concurrent work cannot overwrite itse
 validators that run against a real project instead of only against the repo. See the
 [changelog](../CHANGELOG.md). Still on the roadmap:
 
-- **A PPTX exporter**. A sibling to the client preview, which already prints to PDF, for agency handoff.
 - **Duration rescale workflow**. Change a project from :30 to :60 and have the timing redistribute correctly across the beat framework.
 - **Worked examples for the motion adapters**. `one-shot-all-adapters/` covers the six stills generators plus Kling; Veo, Seedance, and Hailuo have prompt examples in their adapter files but no side-by-side entry.
 - **An MCP surface**, so the pipeline runs outside Claude-skill hosts. The `sk` launcher already runs every tool from a terminal.
