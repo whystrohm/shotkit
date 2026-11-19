@@ -1,6 +1,6 @@
 # Critique: shot_04, round 1
 
-Frame `frames/round-1/shot_04.png` (sha256 `2b0984d13e0c`), the team's own screen, judged against `brand-lock.snapshot.md`. No prompt: this picture was supplied, not generated.
+Frame `frames/round-1/shot_04.png` (sha256 `70277d79d16d`), drawn in code from `design/cards.json`, judged against `brand-lock.snapshot.md`. No model made this picture, so there is no generator or seed.
 
 Review method: Viewed the full 1080x1920 frame, then the frame with its on-screen text placed at 9:16 and at 4:5.
 
@@ -16,7 +16,7 @@ ACCEPT
 - **Shot Spec, minor.** The button and the line that says the roll back is done are in one picture. They are two moments.
 
 ## Revision plan
-- **Shot Spec:** Post-level. In the edit, hold the frame and bring the ticked line in half way through the shot, or leave it.
+- **Shot Spec:** Post-level. In the edit, bring the ticked line in half way through the shot, or leave it.
 
 ## Confidence
 HIGH

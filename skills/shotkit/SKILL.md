@@ -189,6 +189,35 @@ plan is built around what they have. A generator only fills what is missing.
 If the folder is empty or holds nothing Shotkit can read, say so and stop. Do not plan a
 generated video and call it theirs.
 
+## Frames drawn in code (designed frames)
+
+Use this for a shot that shows interface, data or words: a screen of the user's product,
+a list, a number, a quote, a notice, a logo card. A generator cannot spell and has never
+seen their product. Also use it when the user says "draw the screens", "do not generate
+it", "make it from the brand".
+
+1. In `shots.json` give the shot `"source": {"type": "design", "card": "<kind>"}`.
+   Run `SK design --kinds` for the kinds and their fields: `lines`, `list`, `detail`,
+   `action`, `notices`, `mark`, `stat`, `quote`.
+2. Write the card to `output/design/cards.json`, under the shot's id. Put in only what
+   the user gave you or confirmed. Never invent a customer, a number or a feature. If you
+   need an example value, say it is an example and ask for the real one.
+3. Keep the on-screen text out of the card. Text is still composited from
+   `text-overlays.json`, and the panel is placed where that text is not.
+4. Draw and check:
+   ```bash
+   SK design output/
+   SK validate output/
+   SK board output/ --serve --open
+   ```
+5. Review each frame with `visual-asset-critic`. In the critique set `prompt_ref` to
+   `design/cards.json` with its hash, and `generator`, `model_version` and `seed` to null.
+6. To change a frame, edit its card and run `SK design output/` again. Do not write a
+   prompt for a designed shot, and `SK generate` skips it.
+
+Mix freely: designed frames for the screens, the user's footage or a generator for the
+people and places.
+
 ## Later turns
 
 The user comes back with frames, or asks for changes. Do the step and refresh the board
@@ -202,7 +231,9 @@ every time, without being asked:
 | "make the frames", "generate", names fal | See "Making frames and clips" below |
 | "make the clips", "animate these" | `SK generate output/ --model kling`, same rule |
 | "I approve", "the client signed off", names who approved | `SK approve output/ --by "<their name>"`, with `--what frames` for the frames, then `SK board output/`. Only when a person says so, and with the name they give. Never approve on your own, and never invent a name |
-| "export", "give me the stills", "a carousel", "a deck", "a PowerPoint", "a rough cut", "something I can play" | `SK export output/ stills`, `deck` or `cut`, or `SK export output/` for all three. Say where the files are (`output/export/`) and repeat what the tool reports as left out or skipped. Stills need Chrome, Edge, Brave or Chromium. The cut needs `ffmpeg`. If one is missing, say which and that the deck still works |
+| "a shot list", "for the editor", "an EDL", "subtitles", "hand this to my editor", "what do I shoot" | `SK export output/ edit`. It writes `shot-list.csv` in a crew's words, `text.srt` and `cut.edl` to `output/export/edit/`. Needs nothing installed |
+| "draw the screens", "do not generate it", "make it from the brand", or a shot that shows interface, data or words | See "Frames drawn in code" |
+| "export", "give me the stills", "a carousel", "a deck", "a PowerPoint", "a rough cut", "something I can play" | `SK export output/ stills`, `deck` or `cut`, or `SK export output/` for everything. Say where the files are (`output/export/`) and repeat what the tool reports as left out or skipped. Stills need Chrome, Edge, Brave or Chromium. The cut needs `ffmpeg`. If one is missing, say which and that the deck still works |
 | "use my photos", names a folder, or files were dropped on the board | See "Starting from the user's own photos and clips" |
 | "fill the gaps", "make the bridges" | `SK generate output/ --model flux` for stills, `--model kling` for bridges, same rule. Shots on the user's own media are skipped. |
 | "open the board" | `SK board output/ --open` |

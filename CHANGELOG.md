@@ -4,6 +4,29 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.6.0] - 2026-11-19
+
+### Added
+
+- **Designed frames.** `sk design output/` draws a frame in code from the brand lock, for
+  a shot that shows interface, data or words: `lines`, `list`, `detail`, `action`,
+  `notices`, `mark`, `stat` and `quote`. No model is involved. The colours and body type
+  come from the brand lock, the panel sits where the shot's text is not, and
+  `sk design output/ --check` draws them again and says if a picture changed, on the
+  computer that drew them. A shot
+  asks for one with `"source": {"type": "design", "card": "list"}`. Guide:
+  `docs/designed-frames.md`.
+- **The shoot and edit files.** `sk export output/ edit` writes a shot list in a crew's
+  words (close-up, eye level, push in), every on-screen line as a timed subtitle file,
+  and the cut as an edit decision list that Premiere, Resolve and Final Cut read.
+
+### Changed
+
+- **The README demo has two more beats:** designed frames and export. It is 18 seconds.
+- **The Brightdock example is drawn by `sk design`.** Its six frames come from
+  `design/cards.json`, so anyone can redraw them and change them. It was built from
+  hand-made screens before.
+
 ## [3.5.1] - 2026-11-19
 
 ### Fixed

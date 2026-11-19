@@ -7,6 +7,7 @@
   export.py output/ deck             a PowerPoint deck, one slide per shot
   export.py output/ cut              a rough cut: the shots in order, as one video
   export.py output/ cut --music track.wav
+  export.py output/ edit             the hand-off for a shoot and an edit
   export.py --selftest
 
 Everything is written to output/export/. Nothing else in the folder is changed.
@@ -22,6 +23,10 @@ Everything is written to output/export/. Nothing else in the folder is changed.
            clip plays the clip, and a shot with only a frame holds the frame. The text
            comes in and out at its planned times. Needs ffmpeg, and a browser for the
            text. It is a rough cut: hard cuts, no clip sound, no motion on stills.
+
+  edit     export/edit/: shot-list.csv in a crew's words (close-up, eye level, push in),
+           text.srt with every on-screen line at its planned time, and cut.edl, an edit
+           decision list that Premiere, Resolve and Final Cut read. Needs nothing.
 
 A shot with no frame is left out of the stills and the cut, and named in the report.
 """
@@ -50,7 +55,7 @@ SIZES = {
     "9x16": (1080, 1920), "4x5": (1080, 1350), "1x1": (1080, 1080), "16x9": (1920, 1080),
     "3x4": (1080, 1440), "2x3": (1080, 1620),
 }
-WHAT = ("stills", "deck", "cut")
+WHAT = ("stills", "deck", "cut", "edit")
 FPS = 30
 
 
@@ -611,6 +616,8 @@ def make_deck(page: Page, dest: Path, scratch: Path) -> dict:
             fields.append(("Voice", shot["vo"]))
         fields.append(("Why this shot", shot.get("rationale")))
         source = shot.get("source") or {}
+        if source.get("type") == "design":
+            fields.append(("Picture", f"Drawn in code from the brand lock, a {source.get('card') or 'card'}"))
         if source.get("type") == "own":
             fields.append(("Picture", "Your own media" + (f", {source['media']}" if source.get("media") else "")))
         status = STATUS_WORDS.get(shot.get("status"), "")
@@ -763,6 +770,102 @@ def make_cut(page: Page, dest: Path, scratch: Path, music: Path | None) -> dict:
 
 
 # --------------------------------------------------------------------------
+# The hand-off for a shoot and an edit
+# --------------------------------------------------------------------------
+
+# The plan stores a shot in short codes. A crew and an editor read the full words.
+FRAMING_WORDS = {"ECU": "Extreme close-up", "CU": "Close-up", "MCU": "Medium close-up", "MS": "Medium shot",
+                 "MLS": "Medium long shot", "WS": "Wide shot", "EWS": "Extreme wide shot"}
+ANGLE_WORDS = {"eye-level": "Eye level", "high": "High angle", "low": "Low angle", "overhead": "Overhead", "dutch": "Dutch tilt"}
+MOTION_WORDS = {"static": "Locked off", "push": "Push in", "pull": "Pull out", "pan-left": "Pan left", "pan-right": "Pan right",
+                "tilt-up": "Tilt up", "tilt-down": "Tilt down", "handheld": "Handheld", "orbit": "Orbit", "whip": "Whip pan",
+                "rack": "Rack focus"}
+FOCUS_WORDS = {"shallow": "Shallow focus", "deep": "Deep focus", "rack": "Rack focus"}
+
+
+def timecode(seconds_in: float, fps: int = FPS, hour: int = 0) -> str:
+    frames = int(round(seconds_in * fps))
+    s, f = divmod(frames, fps)
+    m, s = divmod(s, 60)
+    h, m = divmod(m, 60)
+    return f"{h + hour:02d}:{m:02d}:{s:02d}:{f:02d}"
+
+
+def srt_time(seconds_in: float) -> str:
+    ms = int(round(seconds_in * 1000))
+    s, ms = divmod(ms, 1000)
+    m, s = divmod(s, 60)
+    h, m = divmod(m, 60)
+    return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+
+
+def make_edit(page: Page, dest: Path) -> dict:
+    import csv
+    import io
+
+    shots = [s for s in page.shots if isinstance(s.get("start"), (int, float)) and isinstance(s.get("end"), (int, float))]
+    if not shots:
+        raise Stop("there is no timed plan in this folder yet, so there is nothing to hand off")
+    folder = dest / "edit"
+    if folder.exists():
+        shutil.rmtree(folder)
+    folder.mkdir(parents=True)
+    title = page.data["project"].get("title") or "Storyboard"
+
+    # 1. The shot list, in a crew's words.
+    out = io.StringIO()
+    rows = csv.writer(out, lineterminator="\n")
+    rows.writerow(["Shot", "Beat", "In", "Out", "Seconds", "Size", "Angle", "Move", "Focus", "What we see", "On screen", "Voice", "Sound", "Picture", "File"])
+    for s in shots:
+        source = s.get("source") or {}
+        picture = {"own": "Your footage", "design": "Drawn in code", "generate": "To generate"}.get(source.get("type"), "To generate")
+        file = (s["clips"][-1]["path"] if s["clips"] else s["frames"][-1]["path"] if s["frames"] else "")
+        rows.writerow([
+            s["n"], s.get("beat") or "", timecode(s["start"]), timecode(s["end"]), f"{s['end'] - s['start']:g}",
+            FRAMING_WORDS.get(s.get("framing"), s.get("framing") or ""), ANGLE_WORDS.get(s.get("angle"), s.get("angle") or ""),
+            MOTION_WORDS.get(s.get("motion"), s.get("motion") or ""), FOCUS_WORDS.get(s.get("depth_of_field"), s.get("depth_of_field") or ""),
+            s.get("subject") or "", " / ".join(o["content"] for o in s["overlays"] if o.get("content")), s.get("vo") or "", s.get("sfx") or "",
+            picture, file,
+        ])
+    (folder / "shot-list.csv").write_text(out.getvalue(), encoding="utf-8")
+
+    # 2. Every on-screen line at its planned time, as subtitles an editor can import.
+    cues = []
+    for s in shots:
+        for o in s["overlays"]:
+            if not o.get("content"):
+                continue
+            a = o.get("enter_at") if isinstance(o.get("enter_at"), (int, float)) else s["start"]
+            b = o.get("exit_at") if isinstance(o.get("exit_at"), (int, float)) else s["end"]
+            if b > a:
+                cues.append((a, b, str(o["content"])))
+    cues.sort()
+    (folder / "text.srt").write_text(
+        "".join(f"{i}\n{srt_time(a)} --> {srt_time(b)}\n{text}\n\n" for i, (a, b, text) in enumerate(cues, 1)), encoding="utf-8")
+
+    # 3. The cut as an edit decision list (CMX 3600). The record side starts at hour one.
+    lines = [f"TITLE: {title[:60]}", "FCM: NON-DROP FRAME", ""]
+    for i, s in enumerate(shots, 1):
+        length = s["end"] - s["start"]
+        source = s.get("source") or {}
+        src_in = float(source["in"]) if s["clips"] and isinstance(source.get("in"), float) else 0.0
+        name = Path(s["clips"][-1]["path"] if s["clips"] else s["frames"][-1]["path"] if s["frames"] else f"{s['id']} (to make)").name
+        lines.append(f"{i:03d}  AX       V     C        {timecode(src_in)} {timecode(src_in + length)} "
+                     f"{timecode(s['start'], hour=1)} {timecode(s['end'], hour=1)}")
+        lines.append(f"* FROM CLIP NAME: {name}")
+        lines.append(f"* COMMENT: {s['id']} {s.get('beat') or ''}".rstrip())
+        lines.append("")
+    (folder / "cut.edl").write_text("\n".join(lines), encoding="utf-8")
+
+    archive = dest / "edit.zip"
+    with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zf:
+        for path in sorted(folder.iterdir()):
+            zf.write(path, f"edit/{path.name}")
+    return {"files": [str(p) for p in sorted(folder.iterdir())], "archive": str(archive), "shots": len(shots), "lines": len(cues),
+            "missing": [s["id"] for s in shots if not s["frames"] and not s["clips"]]}
+
+
+# --------------------------------------------------------------------------
 # Run
 # --------------------------------------------------------------------------
 
@@ -793,6 +896,8 @@ def export(out_dir: Path, what: list[str], sizes: list[str] | None = None, music
                     report["deck"] = make_deck(page, dest, scratch)
                 elif kind == "cut":
                     report["cut"] = make_cut(page, dest, scratch, music)
+                elif kind == "edit":
+                    report["edit"] = make_edit(page, dest)
             except Stop as stop:
                 if what:  # asked for by name: it is an error, not something to skip
                     raise
@@ -829,6 +934,11 @@ def say(report: dict, out_dir: Path) -> None:
             print(f"           left out, no frame yet: {', '.join(r['missing'])}")
         if not r["text"]:
             print("           without the on-screen text, which needs Chrome installed.")
+    if "edit" in report:
+        r = report["edit"]
+        print(f"  edit     a shot list of {r['shots']} shots, {r['lines']} lines of text as subtitles, and an edit decision list. {rel(r['archive'])}")
+        if r["missing"]:
+            print(f"           no picture yet, named in the list as to make: {', '.join(r['missing'])}")
     for line in report["skipped"]:
         print(f"  skipped  {line}")
 
@@ -890,6 +1000,15 @@ def selftest() -> int:
         checks.append(("a text with markup in it cannot break a slide", "<b>" not in clean("<b>x</b> & y") and "&amp;" in clean("a & b")))
         checks.append(("a tall plan also gets the 4:5 carousel size, a wide plan does not",
                        default_sizes("9:16") == ["9x16", "4x5"] and default_sizes("16:9") == ["16x9"]))
+
+        report = export(run, ["edit"], browser=None)
+        folder = Path(report["edit"]["archive"]).parent / "edit"
+        listing = (folder / "shot-list.csv").read_text().splitlines()
+        edl = (folder / "cut.edl").read_text()
+        checks.append(("the shot list has a row per shot, in a crew's words", len(listing) == shots_n + 1 and "Close-up" in FRAMING_WORDS.values()))
+        checks.append(("the edit decision list has an event per shot and starts at hour one", edl.count("* FROM CLIP NAME") == shots_n and "01:00:00:00" in edl))
+        checks.append(("the on-screen text is a subtitle file with planned times", "-->" in (folder / "text.srt").read_text()))
+        checks.append(("timecode counts frames", timecode(3.5) == "00:00:03:15" and srt_time(3.5) == "00:00:03,500"))
 
         browser = find_browser()
         if browser:

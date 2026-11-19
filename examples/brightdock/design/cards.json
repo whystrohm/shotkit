@@ -1,0 +1,223 @@
+{
+  "version": "1.0",
+  "cards": {
+    "shot_01": {
+      "kind": "lines",
+      "lines": [
+        {
+          "at": "14:01:52",
+          "tag": "deploy",
+          "text": "web@a91e04 build started by ci-runner-3"
+        },
+        {
+          "at": "14:01:53",
+          "tag": "deploy",
+          "text": "web@a91e04 pulling cache layer 4 of 11"
+        },
+        {
+          "at": "14:01:58",
+          "tag": "worker",
+          "text": "queue=exports depth=214 ok"
+        },
+        {
+          "at": "14:02:01",
+          "tag": "deploy",
+          "text": "api@7f3c2a image pushed sha256:5be1"
+        },
+        {
+          "at": "14:02:03",
+          "tag": "deploy",
+          "text": "api@7f3c2a migrate 0412_add_export_idx"
+        },
+        {
+          "at": "14:02:04",
+          "tag": "router",
+          "text": "drain eu-west-2b connections=318"
+        },
+        {
+          "at": "14:02:09",
+          "tag": "ERROR",
+          "text": "api@7f3c2a healthcheck failed 3 of 3",
+          "flag": "bad"
+        },
+        {
+          "at": "14:02:09",
+          "tag": "deploy",
+          "text": "api@7f3c2a who merged this? see #eng-deploys"
+        },
+        {
+          "at": "14:02:11",
+          "tag": "router",
+          "text": "restore eu-west-2b from api@c20d77"
+        },
+        {
+          "at": "14:02:14",
+          "tag": "deploy",
+          "text": "web@a91e04 build finished in 21.4s"
+        },
+        {
+          "at": "14:02:15",
+          "tag": "worker",
+          "text": "queue=exports depth=260 slow"
+        },
+        {
+          "at": "14:02:19",
+          "tag": "deploy",
+          "text": "api@7f3c2a retry 2 of 3 scheduled"
+        },
+        {
+          "at": "14:02:23",
+          "tag": "deploy",
+          "text": "web@a91e04 released to 100% of traffic"
+        },
+        {
+          "at": "14:02:27",
+          "tag": "router",
+          "text": "drain eu-west-2a connections=291"
+        },
+        {
+          "at": "14:02:31",
+          "tag": "deploy",
+          "text": "api@7f3c2a migrate 0412 rolled forward"
+        },
+        {
+          "at": "14:02:36",
+          "tag": "worker",
+          "text": "queue=exports depth=198 ok"
+        },
+        {
+          "at": "14:02:40",
+          "tag": "deploy",
+          "text": "api@7f3c2a healthcheck 1 of 3 passed"
+        },
+        {
+          "at": "14:02:44",
+          "tag": "deploy",
+          "text": "api@7f3c2a healthcheck 2 of 3 passed"
+        },
+        {
+          "at": "14:02:49",
+          "tag": "router",
+          "text": "restore eu-west-2a from api@7f3c2a"
+        },
+        {
+          "at": "14:02:51",
+          "tag": "deploy",
+          "text": "web@b02c19 build started by ci-runner-1"
+        },
+        {
+          "at": "14:02:55",
+          "tag": "worker",
+          "text": "queue=mail depth=12 ok"
+        },
+        {
+          "at": "14:02:58",
+          "tag": "deploy",
+          "text": "web@b02c19 pulling cache layer 2 of 11"
+        }
+      ]
+    },
+    "shot_02": {
+      "kind": "list",
+      "title": "Deploys",
+      "tag": "Today",
+      "rows": [
+        {
+          "key": "#214",
+          "title": "Raise the export rate limit",
+          "sub": "api · Mara K. · 14:02",
+          "status": "Live"
+        },
+        {
+          "key": "#213",
+          "title": "New invoice layout",
+          "sub": "web · Dev P. · 13:40",
+          "status": "Live"
+        },
+        {
+          "key": "#212",
+          "title": "Cache the pricing table",
+          "sub": "web · Dev P. · 11:17",
+          "status": "Rolled back",
+          "tone": "warn"
+        },
+        {
+          "key": "#211",
+          "title": "Retry failed exports",
+          "sub": "worker · Lin O. · 10:05",
+          "status": "Live"
+        },
+        {
+          "key": "#210",
+          "title": "Fix time zone on invoices",
+          "sub": "api · Mara K. · 09:31",
+          "status": "Live"
+        },
+        {
+          "key": "#209",
+          "title": "Smaller login bundle",
+          "sub": "web · Lin O. · 09:02",
+          "status": "Live"
+        }
+      ]
+    },
+    "shot_03": {
+      "kind": "detail",
+      "label": "Deploy",
+      "big": "#214",
+      "chip": "api",
+      "status": "Live in 42 s",
+      "section": "What changed",
+      "rows": [
+        {
+          "text": "Raise the export rate limit",
+          "right": "+18 -4"
+        },
+        {
+          "text": "Fix time zone on invoices",
+          "right": "+6 -6"
+        },
+        {
+          "text": "Drop an unused index",
+          "right": "+2 -31"
+        }
+      ],
+      "foot": "Mara K. merged it at 14:02"
+    },
+    "shot_04": {
+      "kind": "action",
+      "alert": "#214 failed its health check",
+      "sub": "api · 14:02 · 3 of 3 checks failed",
+      "button": "Roll back to #213",
+      "done": "#213 is live again",
+      "done_right": "9 s"
+    },
+    "shot_05": {
+      "kind": "notices",
+      "items": [
+        {
+          "from": "Brightdock",
+          "when": "now",
+          "title": "#214 is live on api",
+          "text": "3 changes by Mara K. It took 42 s."
+        },
+        {
+          "from": "Brightdock",
+          "when": "11:19",
+          "title": "#212 was rolled back on web",
+          "text": "Dev P. rolled it back. #211 is live again."
+        },
+        {
+          "from": "Brightdock",
+          "when": "10:05",
+          "title": "#211 is live on worker",
+          "text": "2 changes by Lin O. It took 38 s."
+        }
+      ]
+    },
+    "shot_06": {
+      "kind": "mark",
+      "name": "Brightdock"
+    }
+  }
+}

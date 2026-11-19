@@ -397,7 +397,7 @@ def plan(out_dir: Path, model: str, prompts_from: str | None, only: set[str] | N
         frame = newest_frame(out_dir, shot_id) if video else None
         end_frame = None
         source = shot.get("source") if isinstance(shot.get("source"), dict) else {}
-        if not video and source.get("type") == "own":
+        if not video and source.get("type") in ("own", "design"):
             skipped.append((shot_id, "uses your own media"))
             continue
         if video and source.get("type") == "generate" and source.get("start") and source.get("end"):

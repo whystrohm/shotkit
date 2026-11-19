@@ -7,10 +7,9 @@
   "brand_lock_ref": "brand-lock.snapshot.md",
   "brand_lock_sha256": "ba77fc4c98394ebc6470bc7de5f520744e18b702463d1a4ba3c312d2a7bfe48c",
   "image_ref": "frames/round-1/shot_01.png",
-  "image_sha256": "6084231b97258add210b25d47a88883b26a813363d10de028cdd98963cab686d",
-  "media_ref": "m01",
-  "prompt_ref": null,
-  "prompt_sha256": null,
+  "image_sha256": "212abd7a2d4e75f4c5af0cc7c035b21222e758abda67944bc3c66d3dc6961c23",
+  "prompt_ref": "design/cards.json",
+  "prompt_sha256": "9c9e5b32c531276b1a1e6366df15693c4decf1656c4170eb268a3704fa8da1c2",
   "generator": null,
   "model_version": null,
   "seed": null,
@@ -19,7 +18,7 @@
   "working": [
     "Grey monospaced log lines fill the lower 60 percent and fade out at both ends, so the frame reads as noise at a glance.",
     "One red line marks the failed health check and is the only saturated element.",
-    "The upper 37 percent is empty near-black, which is where text_01 sits."
+    "The upper 40 percent is empty, which is where text_01 sits."
   ],
   "issues": [
     {
