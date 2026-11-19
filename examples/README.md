@@ -15,7 +15,14 @@ tools/sk board --example            # from a clone
 ```
 
 The frames were generated with the prompts in `prompts/`. They are here as web-size JPEG
-copies. The critiques pin the original PNG files by hash, and those are not in the repo,
-so the provenance check reports seven reviewed frames as missing and the board marks
-each of those checks "reviewed file not in this folder". The shots, the brand lock and
-the prompt files all pass `tools/sk validate examples/harbor-roast`.
+copies. The critiques pin the original PNG files by hash, and those are not in the repo.
+So check this example with `--frames-optional`, which reports the seven reviewed frames
+as not in the folder and checks everything else:
+
+```bash
+tools/sk validate examples/harbor-roast --frames-optional
+```
+
+Without the flag the provenance check fails on those seven frames, which is what it
+should do for a run of your own. The board marks each of them "reviewed file not in this
+folder". `tools/check.sh` runs this example with the flag on every change.

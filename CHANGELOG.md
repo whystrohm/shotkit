@@ -54,8 +54,13 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
   site address, a brand book PDF or screenshots in the brief and `brand-lock-extractor`
   writes it. `_starter.md` is still used when a brief names no brand. `_template.md` is
   the manual route.
-- `sk generate` keeps clips silent unless the plan sets `clips_have_sound`. Before this
-  there was no way to ask for sound.
+- `sk generate` keeps clips silent unless the plan sets `clips_have_sound` or the run is
+  given `--sound`. Before this there was no way to ask for sound. `--sound` is for after
+  the plan is written: `shots.json` is pinned by hash, so it is not edited to switch
+  sound on.
+- **The README says what leaves your computer.** Shotkit has no server and the tools
+  send nothing. Claude receives what it reads, including thumbnails of your footage. A
+  generation request goes to fal.ai only when you ask for one.
 - The README no longer says Shotkit is not a video generator. It plans the shots and can
   make the frames and clips with your own key. It does not cut the film.
 
@@ -70,7 +75,15 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 - **The board's file list is closed by default.** It opens by itself when a file has
   changed or is missing. A frame or critique that `run.json` does not hash reads "Not
   tracked" in place of "Not pinned".
-- **No type on the board is smaller than 11px.**
+- **No type on the board is smaller than 11px.** That includes the framing label on a
+  shot with no frame yet, which was 8px on a narrow card.
+- **The open-shot panel keeps its Close button on a phone.** Under 520px the "Copy shot
+  for LLM" button is hidden so Previous, Next and Close stay on screen.
+- **The Harbor Roast example is checked on every change.** `validate_provenance.py` takes
+  `--frames-optional`: a reviewed frame that is not in the folder is a warning, and a
+  frame that is present but edited is still an error. The example ships JPEG copies of
+  its frames, so it is checked with that flag.
+- The docs no longer say a clip with sound always costs more. That is the model's rule.
 - **On a phone** the board keeps each shot's subject line, and the timeline shows that it
   scrolls.
 - The board's wordmark reads "Shotkit", and the version line says which Shotkit planned

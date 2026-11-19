@@ -75,9 +75,19 @@ Each clip is saved as `output/clips/round-N/shot_NN.mp4` and plays on the board 
 its frame. The clip length is the shortest the model offers that covers the shot.
 
 Clips are made silent, so sound is added in the edit. To have a model that offers sound
-add it, set `"clips_have_sound": true` under `project.audio` in `shots.json`. The plan
-`sk generate` prints then shows `generate_audio=True` for a model that offers sound. A
-model bills more for a clip with sound.
+add it, there are two ways:
+
+- **In the brief.** Say you want clips with sound when you ask for the storyboard. The
+  plan then carries `"clips_have_sound": true` under `project.audio` in `shots.json`.
+- **After the plan is written.** Add `--sound` to the `sk generate` line.
+
+Do not edit `shots.json` by hand to switch sound on. Once the plan is written, `run.json`
+holds its hash, and an edited file fails `sk validate`. To change the plan itself, ask
+Claude to write the storyboard again. A new plan gets its own run record.
+
+Either way, the plan `sk generate` prints shows `generate_audio=True` for a model that
+offers sound. Whether sound changes the price is up to the model: some bill more for it
+and some bill the same. The model's page on fal says which.
 
 ## Pick the model
 
@@ -116,6 +126,7 @@ and the length.
 |---|---|
 | `--shots shot_02,shot_04` | only these shots |
 | `--replace` | make a shot again when it already has a frame that has not been reviewed |
+| `--sound` | ask a video model that offers sound to add it, without changing `shots.json` |
 | `--workers 3` | how many requests run at once |
 | `--yes` | send the requests |
 

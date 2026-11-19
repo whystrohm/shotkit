@@ -177,7 +177,7 @@ or sound, also add the optional `project.audio` block:
 - `music`, the mood and pace in a few words, or null
 - `sfx`, sound that runs under the whole film, such as room tone, or null
 - `clips_have_sound`, true only when the user wants generated clips to carry sound.
-  Default false. A model that adds sound bills more, so never set it on your own
+  Default false. Some models bill more for sound, so never set it on your own
 
 This is intent for whoever cuts the film. Shotkit writes no audio files.
 

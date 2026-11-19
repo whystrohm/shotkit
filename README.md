@@ -57,9 +57,12 @@ Shotkit does the part that comes before generation:
   type stays clear of the app's own buttons.
 - **Puts it all on one board** that opens in your browser, with copy buttons for any model.
 
-**It runs on your computer.** The plan, the board, the checks and your footage never
-leave it. The only thing that goes out is a generation request, and only when you ask
-for one with your own key.
+**Your files stay on your computer.** Shotkit has no server and no account. The board,
+the checks and the tools run locally and send nothing anywhere. Claude does the planning
+and the review, so Claude receives what it reads: your brief, your brand source and the
+thumbnails of any footage and frames it looks at, on the same terms as the rest of your
+Claude use. A generation request goes to fal.ai only when you ask for one with your own
+key.
 
 Shotkit plans the shots, and with your own key it can make the frames and clips. It does
 not cut the film.
@@ -178,8 +181,8 @@ output/
 └── preview.html               # The page you send a client. Printable. Brand-aware.
 ```
 
-Plain files an editor, an agency or a developer can act on. Nothing is uploaded and there is
-no account. Everything is filed by round and shot, so round 2 never overwrites round 1.
+Plain files an editor, an agency or a developer can act on. Shotkit has no server and no
+account. Everything is filed by round and shot, so round 2 never overwrites round 1.
 
 ### Start from footage you already have
 

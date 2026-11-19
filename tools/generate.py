@@ -37,8 +37,10 @@ model takes it, one image, PNG when offered, the seed from the prompt file, and 
 video model the shot's frame and its length. A model released next month works without
 a change here.
 
-Sound. A clip is made silent. It carries sound only when shots.json says so with
-project.audio.clips_have_sound, and only on a model that offers it.
+Sound. A clip is made silent. It carries sound when shots.json says so with
+project.audio.clips_have_sound, or when this run is given --sound, and only on a model
+that offers it. shots.json is pinned by hash in run.json once the plan is written, so
+--sound is the way to ask for sound afterwards. Do not edit shots.json to do it.
 """
 
 from __future__ import annotations
@@ -192,8 +194,8 @@ def build_input(schema: dict, prompt: str, aspect: str, params: dict, frame: Pat
         if "duration" in props:
             body["duration"] = pick_duration(props["duration"], seconds)
         # A clip is a silent picture unless the plan asks for sound, with
-        # project.audio.clips_have_sound in shots.json. A model that can add sound bills
-        # more for it.
+        # project.audio.clips_have_sound in shots.json, or the run is given --sound.
+        # Whether sound changes the price is the model's own rule.
         if "generate_audio" in props:
             body["generate_audio"] = sound
     return body
@@ -350,7 +352,7 @@ def load_models() -> dict:
 
 
 def plan(out_dir: Path, model: str, prompts_from: str | None, only: set[str] | None,
-         replace: bool) -> dict:
+         replace: bool, sound: bool = False) -> dict:
     shots_doc, err = load_json(out_dir / "shots.json")
     if err or not isinstance(shots_doc, dict):
         raise Stop(err or "shots.json is not readable")
@@ -371,7 +373,7 @@ def plan(out_dir: Path, model: str, prompts_from: str | None, only: set[str] | N
     kind = "clips" if video else "frames"
     aspect = (shots_doc.get("project") or {}).get("aspect") or "16:9"
     audio = (shots_doc.get("project") or {}).get("audio")
-    sound = isinstance(audio, dict) and audio.get("clips_have_sound") is True
+    sound = sound or (isinstance(audio, dict) and audio.get("clips_have_sound") is True)
     jobs, skipped = [], []
     for shot in shots_doc.get("shots") or []:
         shot_id = shot.get("id")
@@ -604,6 +606,10 @@ def selftest() -> int:
             checks.append(("a video model starts from the shot's frame", str(sent.get("start_image_url", "")).startswith("data:image/png;base64,")))
             checks.append(("and gets the shortest length that covers the shot", sent.get("duration") == "5"))
             checks.append(("a clip is silent when the plan does not ask for sound", sent.get("generate_audio") is False))
+            pinned = (run / "shots.json").read_bytes()
+            asked = plan(run, "test/video", "flux", {"shot_02"}, replace=False, sound=True)["jobs"][0]["input"]
+            checks.append(("--sound asks for sound without touching the pinned shots.json",
+                           asked.get("generate_audio") is True and (run / "shots.json").read_bytes() == pinned))
             execute(run, clips, "test-key", workers=1)
             checks.append(("saves the clip beside the frames", (run / "clips/round-2/shot_02.mp4").exists()))
 
@@ -661,6 +667,8 @@ def main() -> int:
     p.add_argument("--shots", help="Only these shots, comma separated: shot_02,shot_04")
     p.add_argument("--yes", action="store_true", help="Send the requests. Without it, only the plan is shown")
     p.add_argument("--replace", action="store_true", help="Make a shot again even if it has an unreviewed frame")
+    p.add_argument("--sound", action="store_true",
+                   help="Ask a video model that offers sound to add it. shots.json is left as it is")
     p.add_argument("--workers", type=int, default=3, help="Requests to run at once (default 3)")
     p.add_argument("--list", metavar="WORDS", help="Search fal's models and exit")
     p.add_argument("--selftest", action="store_true", help="Prove the tool's guarantees against a fake fal")
@@ -677,7 +685,7 @@ def main() -> int:
         if not (out_dir / "shots.json").exists():
             raise Stop(f"shots.json not found in {out_dir}")
         only = {s.strip() for s in args.shots.split(",") if s.strip()} if args.shots else None
-        the_plan = plan(out_dir, args.model, args.prompts, only, args.replace)
+        the_plan = plan(out_dir, args.model, args.prompts, only, args.replace, args.sound)
 
         what = "clip" if the_plan["video"] else "frame"
         count = len(the_plan["jobs"])

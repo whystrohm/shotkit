@@ -138,7 +138,7 @@ body[data-quiet] .meter i { transition: none; }
     linear-gradient(90deg, color-mix(in srgb, currentColor 13%, transparent) 1px, transparent 1px) 33.33% 0/33.33% 100%,
     var(--ph-bg, #0F1114); }
 .ph b { display: none; }
-.ph span { position: absolute; left: 10px; top: 11px; font: 500 clamp(8px, 2.6cqw, 10.5px)/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
+.ph span { position: absolute; left: 10px; right: 10px; top: 10px; font: 500 clamp(11px, 2.6cqw, 12px)/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; opacity: .55; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Type over a frame. Overlays on the same side of the frame share one group, so they
    stack with a set gap and can never sit on top of each other. Sizes are in cqw, the
    frame's own width, and --s is the scale fit() settles on. */
@@ -269,6 +269,7 @@ body[data-open] .panel { transform: none; }
 body[data-open] { overflow: hidden; }
 .panel__bar { display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 16px; border-bottom: 1px solid var(--line); flex: none; }
 .panel__bar b { font: 600 13px/1 var(--mono); }
+.panel__bar .ib, .panel__bar .btn { flex: none; }
 .panel__bar span { color: var(--mut); font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ib { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid var(--line2); border-radius: 7px; color: var(--mut); transition: all .15s; }
 .ib:hover { color: var(--ink); background: var(--p3); } .ib:disabled { opacity: .3; cursor: default; }
@@ -369,6 +370,9 @@ kbd { font: 500 11px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
   .tl { position: relative; }
   .tl::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 28px; pointer-events: none; background: linear-gradient(90deg, transparent, var(--p1)); }
   .stat__n { font-size: 22px; }
+  /* The shot panel's bar has to keep Previous, Next and Close on screen. */
+  .panel__bar { gap: 8px; padding: 0 10px; }
+  .panel__bar .hide-s { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 @media print { .bar, .tools, .panel, .scrim, .toast, .next .say { display: none !important; } html { background: #fff; color: #111; } }

@@ -222,7 +222,9 @@ it never runs on its own.
    their account at the price on that model's page. Ask for a yes. Do not state a price
    yourself. Clips are made silent unless `project.audio.clips_have_sound` is true in
    `shots.json`. When it is, the plan shows `generate_audio=True`. Say that the clips
-   will carry sound and that a model bills more for it.
+   will carry sound and that some models bill more for it. If the user asks for sound
+   after the plan is written, add `--sound` to the command. Never edit `shots.json` to
+   switch it on: the file is pinned by hash in `run.json` and the edit fails validation.
 3. On a yes, run it with `--yes`. If it reports no key, tell them: make a key at
    fal.ai/dashboard/keys and put `FAL_KEY=...` in a `.env` file in this folder. Never ask
    them to paste the key into the chat.

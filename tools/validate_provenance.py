@@ -72,6 +72,10 @@ class Report:
         self.output_dir = output_dir
         self.errors: list[str] = []
         self.warnings: list[str] = []
+        # True when a reviewed frame may be absent, as in an example that ships web-size
+        # copies in place of the files the critic hashed. A frame that is present and
+        # does not match its hash is an error either way.
+        self.frames_optional = False
         self.shots: dict[str, dict] = {}
         # Every shot id in shots.json, in file order. Empty when shots.json is unreadable.
         self.shot_ids: list[str] = []
@@ -94,13 +98,19 @@ class Report:
 
 
 def _check_hash(
-    report: Report, label: str, rel: str | None, expected: str | None
+    report: Report, label: str, rel: str | None, expected: str | None,
+    optional: bool = False,
 ) -> None:
     """Compare a recorded hash against the file currently on disk."""
     if not rel or not expected:
         return
     path = report.output_dir / rel
     if not path.exists():
+        if optional:
+            report.warnings.append(
+                f"{label}: the reviewed file '{rel}' is not in this folder, so its hash was not checked"
+            )
+            return
         report.errors.append(f"{label}: '{rel}' is referenced but missing on disk")
         return
     actual = sha256_file(path)
@@ -293,7 +303,8 @@ def check_critiques(report: Report, run_doc: dict | None) -> None:
             else:
                 seen[key] = rel
 
-        _check_hash(report, f"{rel} image", data.get("image_ref"), data.get("image_sha256"))
+        _check_hash(report, f"{rel} image", data.get("image_ref"), data.get("image_sha256"),
+                    optional=report.frames_optional)
         _check_hash(report, f"{rel} prompt", data.get("prompt_ref"), data.get("prompt_sha256"))
         _check_hash(
             report,
@@ -361,8 +372,9 @@ def check_coverage(report: Report, run_doc: dict | None) -> None:
             )
 
 
-def validate_tree(output_dir: Path) -> Report:
+def validate_tree(output_dir: Path, frames_optional: bool = False) -> Report:
     report = Report(output_dir)
+    report.frames_optional = frames_optional
     if not output_dir.is_dir():
         report.errors.append(f"not a directory: {output_dir}")
         return report
@@ -548,6 +560,28 @@ def selftest() -> int:
             print(f"  FAIL  selftest: expected only shot_02 outstanding, got {outstanding(report)}")
             ok = False
 
+    # A reviewed frame that is not in the folder. By default that is an error. With
+    # --frames-optional it is a warning, and a frame that is present but edited still fails.
+    with tempfile.TemporaryDirectory() as tmp:
+        scratch = Path(tmp) / "run"
+        shutil.copytree(WORKED_RUN, scratch)
+        gone = scratch / "frames" / "round-1" / "shot_01.png"
+        gone.unlink()
+        strict = validate_tree(scratch)
+        loose = validate_tree(scratch, frames_optional=True)
+        if strict.errors and not loose.errors and any("not in this folder" in w for w in loose.warnings):
+            print("  ok    selftest: a missing reviewed frame is an error, or a warning with --frames-optional")
+        else:
+            print(f"  FAIL  selftest: missing frame: strict={strict.errors} loose={loose.errors}")
+            ok = False
+        edited = scratch / "frames" / "round-1" / "shot_02.png"
+        edited.write_bytes(edited.read_bytes() + b"x")
+        if validate_tree(scratch, frames_optional=True).errors:
+            print("  ok    selftest: --frames-optional still fails a frame that is present and edited")
+        else:
+            print("  FAIL  selftest: --frames-optional let an edited frame through")
+            ok = False
+
     # The all-ACCEPT worked run passes the full gate.
     if _exit_code([clean], require_accept=True) == 0:
         print("  ok    selftest: an all-ACCEPT tree passes --require-accept")
@@ -573,6 +607,7 @@ def main() -> int:
     if not args:
         print("Usage: python tools/validate_provenance.py <output-dir> [...]")
         print("       python tools/validate_provenance.py <output-dir> --require-accept")
+        print("       python tools/validate_provenance.py <output-dir> --frames-optional")
         print("       python tools/validate_provenance.py --examples")
         print("       python tools/validate_provenance.py --selftest")
         return 2
@@ -591,7 +626,8 @@ def main() -> int:
         print("ERROR: no output directory given")
         return 2
 
-    reports = [validate_tree(t) for t in targets]
+    frames_optional = "--frames-optional" in args
+    reports = [validate_tree(t, frames_optional) for t in targets]
 
     if as_json:
         print(json.dumps([r.as_dict() for r in reports], indent=2))
