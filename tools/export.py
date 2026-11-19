@@ -505,7 +505,7 @@ def make_deck(page: Page, dest: Path, scratch: Path) -> dict:
     m = 0.6
 
     def label(slide: Slide, x: float, y: float, w: float, text: str, colour: str | None = None) -> None:
-        slide.text(x, y, w, 0.25, text, 10, colour or c["muted"], bold=True, font=body, spacing=140, caps=True)
+        slide.text(x, y, w, 0.25, text, 11, colour or c["muted"], bold=True, font=body, spacing=140, caps=True)
 
     def footer(slide: Slide, n: int) -> None:
         slide.text(m, SLIDE_H - 0.45, 8, 0.2, title, 9, c["muted"], font=body)
@@ -589,16 +589,19 @@ def make_deck(page: Page, dest: Path, scratch: Path) -> dict:
         when = f"{seconds(shot.get('start'))} to {seconds(shot.get('end'))} s"
         label(s, x, y, w, "   ·   ".join(v for v in (f"Shot {shot['n']}", shot.get("beat"), when) if v), c["accent"])
         y += 0.45
-        said = [o["content"] for o in shot["overlays"] if o.get("content")]
-        head = "\n".join(said) if said else shorten(shot.get("subject") or "", w, 24, 3)
-        head_pt = 30 if said and max(len(t) for t in said) <= 30 else 24
-        head_lines = lines_for(head, w, head_pt, 0.52)
-        if head_lines > 4:
-            head_pt, head_lines = 20, lines_for(head, w, 20, 0.52)
+        said = [o["content"] for o in shot["overlays"] if o.get("content") and o.get("treatment") != "lockup"]
+        head = "\n".join(said) if said else shorten(shot.get("subject") or "", w, 26, 3)
+        head_pt = 40 if said and max(len(t) for t in said) <= 26 else 32 if said and max(len(t) for t in said) <= 40 else 26
+        # A heavy display face can run wide, and the deck may open with a fallback font,
+        # so the headline is given room for the widest likely setting.
+        head_lines = lines_for(head, w, head_pt, 0.66)
+        if head_lines > 3:
+            head_pt = 26
+            head_lines = lines_for(head, w, head_pt, 0.66)
         head_h = head_lines * head_pt * 1.1 / 72
         s.text(x, y, w, head_h + 0.1, head.split("\n"), head_pt, bold=True, font=display, spacing=-40, line=100)
-        y += head_h + 0.4
-        s.rect(x, y - 0.18, w, 0.01, c["line"])
+        y += head_h + 0.55
+        s.rect(x, y - 0.25, w, 0.01, c["line"])
         fields = []
         if said:
             fields.append(("In the frame", shot.get("subject")))
@@ -618,14 +621,14 @@ def make_deck(page: Page, dest: Path, scratch: Path) -> dict:
         for name, value in fields:
             if not value:
                 continue
-            room = int((floor - y - 0.24) / (12 * 1.35 / 72))
+            room = int((floor - y - 0.28) / (15 * 1.35 / 72))
             if room < 1:
                 break
-            value = shorten(value, w, 12, min(room, 4))
+            value = shorten(value, w, 15, min(room, 4))
             label(s, x, y, w, name)
-            height = lines_for(value, w, 12) * 12 * 1.35 / 72
-            s.text(x, y + 0.24, w, height + 0.05, value, 12, c["ink"], font=body, line=118)
-            y += 0.24 + height + 0.22
+            height = lines_for(value, w, 15) * 15 * 1.35 / 72
+            s.text(x, y + 0.28, w, height + 0.05, value, 15, c["ink"], font=body, line=118)
+            y += 0.28 + height + 0.3
         footer(s, n)
         slides.append(s)
 
