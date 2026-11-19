@@ -34,6 +34,8 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 ### Changed
 
 - The board's next step for a finished run points to Export.
+- The README demo is a new 12-second cut with a title for each step. The MP4 is 3.6 MB,
+  down from 11.6 MB.
 
 ## [3.4.0] - 2026-11-19
 

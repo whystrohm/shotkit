@@ -6,7 +6,7 @@ Claude Code 的 AI 分镜技能包。一句需求，或者一个装着你自己�
 
 <p align="center"><a href="README.md">English</a> · <strong>简体中文</strong></p>
 
-![Shotkit 演示：输入一句需求，看板打开，七个镜头依次得到规划、提示词、画面和检查结果，两个镜头被退回重做，最后播放成片](docs/images/demo.webp)
+![Shotkit 演示：在 Claude Code 里输入一句需求，每个镜头得到规划，每个画面经过检查，然后生成画面和视频片段](docs/images/demo.webp)
 
 三个已完成的案例，点击图片打开在线看板。
 
