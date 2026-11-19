@@ -25,7 +25,7 @@ becomes a board with every shot planned, prompted and checked.</p>
   <a href="https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html">A live board</a>
 </p>
 
-![Shotkit demo: type one line in Claude Code, every shot is planned, the pictures come from your footage, from code or from a generator, every frame is checked, and the rough cut, deck and stills are exported](docs/images/demo.webp)
+![Shotkit demo: type one line in Claude Code, every shot is planned, every frame is checked, the rough cut plays with its text, then boards for a software company, a roofer and a coffee roaster](docs/images/demo.webp)
 
 ## Install
 
@@ -182,9 +182,9 @@ tools/sk export examples/brightdock
 The stills, the deck and the rough cut are drawn by the board's own page, so they carry
 the type you see on the board.
 
-The demo at the top is 20 seconds and follows one real Shotkit run from start to finish:
-the Media Tsunami film. Its seven shots, the two frames that were sent back and redone,
-and the rough cut, deck and stills are that run's own files. The same cut is a silent MP4
+The demo at the top is 14 seconds. The plan, the check and the rough cut are the Media
+Tsunami run. The boards after it are three more runs: Brightdock, whose screens are drawn
+in code, Kestrel Roofing and Harbor Roast. The same cut is a silent MP4
 at [`docs/images/demo.mp4`](docs/images/demo.mp4).
 
 ---

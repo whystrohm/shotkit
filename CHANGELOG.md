@@ -13,9 +13,9 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ### Changed
 
-- **A new README demo.** 20 seconds, one real run in the order a user works: type one
-  line, plan, pictures three ways, check, export. The on-screen text shows in every beat.
-  It replaces the cut from 3.6.0, whose last two beats came from a different example.
+- **A shorter README demo.** 14 seconds, down from 20. It types one line, plans and
+  checks the Media Tsunami run and plays its rough cut, then shows three more boards:
+  Brightdock, Kestrel Roofing and Harbor Roast.
 
 ## [3.6.0] - 2026-11-19
 
