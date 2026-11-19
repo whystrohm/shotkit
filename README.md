@@ -25,7 +25,7 @@ becomes a board with every shot planned, prompted and checked.</p>
   <a href="https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html">A live board</a>
 </p>
 
-![Shotkit demo: type one line in Claude Code, every shot is planned, every frame is checked, the frames and clips are made, screens are drawn in code from the brand, and the stills, deck and rough cut are exported](docs/images/demo.webp)
+![Shotkit demo: type one line in Claude Code, every shot is planned, every frame is checked against the shot and the brand, then the frames and clips are made](docs/images/demo.webp)
 
 ## Install
 
@@ -182,10 +182,9 @@ tools/sk export examples/brightdock
 The stills, the deck and the rough cut are drawn by the board's own page, so they carry
 the type you see on the board.
 
-The demo at the top is 18 seconds. The first 12 are the live board replaying one real
-Shotkit run: the Media Tsunami film, planned in seven shots, checked, then the film that
-plan became. The last two beats show designed frames and export from the bundled
-example. The same cut is a silent MP4 at [`docs/images/demo.mp4`](docs/images/demo.mp4).
+The demo at the top is 12 seconds of the live board replaying one real Shotkit run: the
+Media Tsunami film, planned in seven shots, checked, then the film that plan became. The
+same cut is a silent MP4 at [`docs/images/demo.mp4`](docs/images/demo.mp4).
 
 ---
 
