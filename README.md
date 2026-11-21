@@ -28,16 +28,19 @@ frames from Claude Code. Both use the same Shotkit run files.</p>
 Canvas is a local macOS workspace. Python 3.10 or later opens Home, storyboards,
 and the finished example films.
 
-1. Under **Assets** for a Canvas preview release, download the
+If Canvas assets are pending, use the [workspace walkthrough](docs/images/workspace-demo.gif)
+or [install the Claude Code plugin](#install).
+
+1. Under **Assets** for a published Canvas preview, download the
    `shotkit-canvas-*.zip` and the matching `.zip.sha256`. GitHub's **Source code**
    archives contain the Shotkit plugin and CLI. [GitHub Releases](https://github.com/whystrohm/shotkit/releases)
-2. Verify the archive in the folder where you downloaded both files, then unzip it.
-   Run the launcher from the extracted `shotkit-canvas` folder.
+2. Put the archive and checksum in their own folder. From that folder, verify,
+   extract, and open Canvas.
 
    ```sh
-   shasum -a 256 -c shotkit-canvas-v3.7.0-rc.2.zip.sha256
-   unzip shotkit-canvas-v3.7.0-rc.2.zip
-   cd shotkit-canvas
+   shasum -a 256 -c shotkit-canvas-*.zip.sha256 &&
+   unzip shotkit-canvas-*.zip &&
+   cd shotkit-canvas &&
    ./start.sh --isolated --open --port 0
    ```
 
@@ -46,7 +49,7 @@ and the finished example films.
    Apollo 11** to try chapter navigation on a longer board.
 
 The preview includes the workspace source and example media. To play editable
-cut previews, run `npm install` and `npm run build` in the Canvas folder, then
+cut previews, run `npm ci` and `npm run build` in the Canvas folder, then
 restart it.
 
 ### Connect Claude in Canvas

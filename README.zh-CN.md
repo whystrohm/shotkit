@@ -37,15 +37,18 @@ Shotkit 插件负责规划镜头、检查画面并生成粗剪。Canvas 支持�
 
 ## 试用 Canvas
 
-在预览发行版的 **Assets** 中下载 `shotkit-canvas-*.zip` 和对应的校验文件。
+可以先看[工作区演示](docs/images/workspace-demo.gif)。如果 Canvas 压缩包还未发布，
+可以[安装 Claude Code 插件](#安装)。
+
+在已发布的 Canvas 预览版 **Assets** 中下载 `shotkit-canvas-*.zip` 和对应的校验文件。
 GitHub 的 **Source code** 压缩包包含插件与 CLI。 [GitHub Releases](https://github.com/whystrohm/shotkit/releases)
 
-在下载目录校验并解压。macOS 需要 Python 3.10 或更高版本。
+把这两个文件放在单独的文件夹，在该目录校验、解压并启动。macOS 需要 Python 3.10 或更高版本。
 
 ```sh
-shasum -a 256 -c shotkit-canvas-v3.7.0-rc.2.zip.sha256
-unzip shotkit-canvas-v3.7.0-rc.2.zip
-cd shotkit-canvas
+shasum -a 256 -c shotkit-canvas-*.zip.sha256 &&
+unzip shotkit-canvas-*.zip &&
+cd shotkit-canvas &&
 ./start.sh --isolated --open --port 0
 ```
 
@@ -100,7 +103,7 @@ cd shotkit && ./install.sh
 
 Python 3.10 或更高版本可打开主页、分镜和已经完成的示例影片。
 如需预览可编辑剪辑，请在 Canvas 目录运行
-`npm install` 和 `npm run build`，然后重启 Canvas。
+`npm ci` 和 `npm run build`，然后重启 Canvas。
 
 ## 从你已有的素材开始
 
