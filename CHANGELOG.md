@@ -4,6 +4,20 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.7.0-rc.2] - 2026-11-21
+
+### Added
+
+- **Canvas for Codex and other local MCP clients.** Read a storyboard by run
+  and revise it against the current board version. See
+  [Codex setup](README.md#use-canvas-from-codex).
+
+### Changed
+
+- **Canvas first run.** Added the release-asset download, checksum, example
+  and Claude Console setup steps to the README.
+- CI checks that VERSION and the Claude plugin manifests agree.
+
 ## [3.7.0-rc.1] - 2026-11-21
 
 ### Added

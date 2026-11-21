@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 # A pull-request branch would otherwise run twice per push, once for each trigger.
 # Superseded runs are cancelled rather than left to finish.
 concurrency:
@@ -37,6 +40,21 @@ jobs:
       # going quiet.
       - name: Run all checks
         run: ./tools/check.sh
+
+      - name: Verify release metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          release = Path("VERSION").read_text().strip()
+          plugin = json.loads(Path(".claude-plugin/plugin.json").read_text())
+          marketplace = json.loads(Path(".claude-plugin/marketplace.json").read_text())
+          entry = next(item for item in marketplace["plugins"] if item["name"] == plugin["name"])
+          versions = {release, plugin["version"], marketplace["metadata"]["version"], entry["version"]}
+          if len(versions) != 1:
+              raise SystemExit("VERSION and the Claude plugin and marketplace manifests must agree.")
+          PY
 
       # The bundled previews are committed artifacts. Re-render them with the same
       # pinned timestamps they were built with and fail if the output moved: that is

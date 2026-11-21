@@ -11,22 +11,28 @@ The latest release is the supported version.
 
 ## What Shotkit touches
 
-- **Your files.** Shotkit reads and writes inside the output folder you point it at, and
-  installs into `~/.claude/` or `./.claude/`.
-- **The network.** Nothing by default except Google Fonts links on the preview and the
-  board, which `--no-web-fonts` turns off. `sk generate` talks to fal.ai, and only when
-  you run it with `--yes`.
-- **The live board.** `sk board --serve` listens on `127.0.0.1` only. It refuses writes
-  from any other site, saves only image files, only into `frames/`, and does not serve
-  hidden files such as `.env`.
+- **Plugin and CLI.** The installer writes to `~/.claude/` or `./.claude/`.
+  Board and export tools use the run folder you pass to them. The preview can
+  load Google Fonts. Disable those links with `--no-web-fonts`.
+- **Live board.** `sk board --serve` listens on `127.0.0.1`. Edits arrive through
+  the board's local endpoints. Hidden files such as `.env` are excluded from
+  asset requests.
+- **Canvas.** The workspace also listens on `127.0.0.1`. It reads source runs
+  in place and stores edits and exports locally. Use `--isolated` to open the
+  public examples in a separate profile with local rules.
+- **Connected providers.** Claude Code receives material it reads when it
+  plans or reviews. With Claude enabled in Canvas, Home chat sends the request
+  and relevant project context. `sk generate --yes` sends an approved
+  generation request to fal.ai.
+- **MCP.** A client you connect can read and change workspace state through
+  the local API. Connect it only to a workspace whose contents it may use.
 
 ## Keys
 
-Shotkit ships with no keys. If you use `sk generate`, your fal.ai key stays in your
-environment or in a `.env` file that git ignores. Shotkit sends it to fal and nowhere
-else, and never prints or stores it.
+Shotkit ships with no keys. The generation CLI reads your fal.ai key from
+the environment or a git-ignored `.env` file. Canvas checks your Claude Console
+key and stores it in macOS Keychain.
 
 - Never commit a key. `tools/validate_no_secrets.py` runs in CI and fails the build if
   one is found.
-- If a key was ever committed or pasted somewhere public, delete it at
-  fal.ai/dashboard/keys and make a new one. Removing it from the file is not enough.
+- Revoke any exposed key with its provider and issue a replacement.

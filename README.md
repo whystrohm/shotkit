@@ -1,8 +1,8 @@
 <h1 align="center">Shotkit</h1>
 
 <p align="center"><strong>Plan the whole video before you generate a single frame.</strong><br>
-An AI storyboard skill for Claude Code. One line of brief, or a folder of your own footage,<br>
-becomes a board with every shot planned, prompted and checked.</p>
+Storyboard and review your video in a local workspace, or plan shots and check<br>
+frames from Claude Code. Both use the same Shotkit run files.</p>
 
 <p align="center"><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a></p>
 
@@ -14,19 +14,68 @@ becomes a board with every shot planned, prompted and checked.</p>
 </p>
 
 <p align="center">
-  <a href="#install">Install</a> ·
-  <a href="#why">Why</a> ·
-  <a href="#the-board">The board</a> ·
-  <a href="#open-a-run-in-canvas">Canvas</a> ·
-  <a href="docs/own-media.md">Your own footage</a> ·
-  <a href="docs/designed-frames.md">Designed frames</a> ·
-  <a href="docs/export.md">Export</a> ·
-  <a href="docs/generate-with-fal.md">Frames and clips</a> ·
-  <a href="https://whystrohm.com/shotkit/docs/quickstart">Quickstart</a> ·
-  <a href="https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html">A live board</a>
+  <a href="#try-canvas"><strong>Get the Canvas preview</strong></a> ·
+  <a href="#install">Install the Claude Code plugin</a> ·
+  <a href="#connect-claude-in-canvas">Connect chat</a> ·
+  <a href="#examples">Examples</a> ·
+  <a href="#docs">Docs</a>
 </p>
 
 ![Shotkit Canvas opens a storyboard from a brief, reviews a frame, reorders shots and compares the wide and feed cuts of the WhyStrohm film.](docs/images/workspace-demo.gif)
+
+## Try Canvas
+
+Canvas is a local macOS workspace. Python 3.10 or later opens Home, storyboards,
+and the finished example films.
+
+1. Under **Assets** for a Canvas preview release, download the
+   `shotkit-canvas-*.zip` and the matching `.zip.sha256`. GitHub's **Source code**
+   archives contain the Shotkit plugin and CLI. [GitHub Releases](https://github.com/whystrohm/shotkit/releases)
+2. Verify the archive in the folder where you downloaded both files, then unzip it.
+   Run the launcher from the extracted `shotkit-canvas` folder.
+
+   ```sh
+   shasum -a 256 -c shotkit-canvas-v3.7.0-rc.2.zip.sha256
+   unzip shotkit-canvas-v3.7.0-rc.2.zip
+   cd shotkit-canvas
+   ./start.sh --isolated --open --port 0
+   ```
+
+3. On Home, open **WhyStrohm · How it works**. Play the film, compare wide and
+   feed at the same moment, and pin a note on a frame. Open **The flight of
+   Apollo 11** to try chapter navigation on a longer board.
+
+The preview includes the workspace source and example media. To play editable
+cut previews, run `npm install` and `npm run build` in the Canvas folder, then
+restart it.
+
+### Connect Claude in Canvas
+
+1. Run `./start.sh --open` from the Canvas folder to use your regular profile.
+2. In Canvas, open **Settings and keys → Claude**, paste an API key and select
+   **Save and check**. Create the key in [Claude Console](https://platform.claude.com/settings/keys).
+3. Return to **Home** and ask about your project. Canvas stores the key in macOS
+   Keychain. Claude receives the request and relevant project context.
+
+### Use Canvas from Codex
+
+Start Canvas normally on port **4711** and sign in with `codex login`. Add the
+Canvas MCP server using the absolute path to the extracted folder, then start a
+new Codex session.
+
+```sh
+codex mcp add shotkit-canvas -- python3 "/path/to/shotkit-canvas/mcp.py"
+```
+
+Ask Codex to list the open storyboards. If Canvas uses another port, pass
+`--env SHOTKIT_CANVAS_URL=http://127.0.0.1:PORT` before the `--`.
+The workspace's Home chat uses Claude Console or local rules.
+
+The local MCP tools read run keys with `board_state`. Use `storyboard_state`
+to read one board, its current revision, shots and notes. To edit it, pass that
+revision as `expected_board_revision` to `run_commands`. Undo uses the run,
+latest undo entry and current revision. Canvas records those changes with
+the `mcp` source label.
 
 ## Install
 
@@ -42,9 +91,8 @@ Then type a brief:
 /shotkit:shotkit 30-second launch video for our new app, 9:16
 ```
 
-Shotkit plans the shots, writes the prompts and opens the board in your browser. There
-is nothing else to set up. The checks make their own private Python environment, so
-`pip` and your system Python are left alone.
+Shotkit plans the shots, writes the prompts and opens the portable board in your
+browser. The checks create a private Python environment for their dependencies.
 
 Three briefs to try:
 
@@ -76,18 +124,9 @@ Installed this way, the command is `/shotkit` in place of `/shotkit:shotkit`.
 
 ### Open a run in Canvas
 
-Pass your project and a local Shotkit Canvas installation to the CLI.
-Use a Canvas checkout with workspace API 1 or extract the Canvas archive
-when supplied as a [GitHub release asset](https://github.com/whystrohm/shotkit/releases).
-The preview archive is `shotkit-canvas-v3.7.0-rc.1.zip`. Verify the archive
-alongside its checksum file before extracting it.
-
-```sh
-shasum -a 256 -c shotkit-canvas-v3.7.0-rc.1.zip.sha256
-```
-
-From the Shotkit checkout, use `tools/sk`. After running `./install.sh`, use
-the installed copy below.
+With a local Canvas preview that supports workspace API 1, open your project
+from the CLI. From the Shotkit checkout, use `tools/sk`. After running
+`./install.sh`, use the installed copy below.
 
 ```bash
 ~/.claude/shotkit-tools/sk workspace "/path/to/project" \
@@ -101,12 +140,7 @@ choose an available localhost port. Use `--isolated` to skip discovery of other
 projects and saved keys. `sk doctor` reports whether the configured launcher
 is usable.
 
-Home, storyboards, and the finished example films work with Python 3.10 or
-later. For the editable cut preview, run `npm install` and `npm run build`
-in the extracted Canvas folder, then restart Canvas.
-
-Canvas is a separate local workspace. The plugin's portable board is available
-through `sk board output/ --open`.
+Open the plugin's portable board with `sk board output/ --open`.
 
 ### Your brand
 
@@ -134,9 +168,6 @@ Three finished runs. The first two pictures open a live board. The third is in t
 | Media Tsunami · 16:9 | Roofing company · 16:9 | Software launch · 9:16 |
 |---|---|---|
 | [![The Media Tsunami board](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![The Kestrel Roofing board](docs/images/example-kestrel-roofing.jpg)](https://whystrohm.com/shotkit/examples/kestrel-roofing/board.html) | [![The Brightdock board](docs/images/example-brightdock.jpg)](examples/brightdock) |
-
-Six Claude skills and a set of small tools, built by [WhyStrohm](https://whystrohm.com).
-Free and open source under Apache 2.0. Nothing ships with a key.
 
 ## Why
 
@@ -166,15 +197,11 @@ Shotkit does the part that comes before generation:
   a rough-cut video, and a shot list, subtitles and an edit decision list for the crew
   and the editor.
 
-**Your files stay on your computer.** Shotkit has no server and no account. The board,
-the checks and the tools run locally and send nothing anywhere. Claude does the planning
-and the review, so Claude receives what it reads: your brief, your brand source and the
-thumbnails of any footage and frames it looks at, on the same terms as the rest of your
-Claude use. A generation request goes to fal.ai only when you ask for one with your own
-key.
-
-Shotkit plans the shots, and with your own key it can make the frames and clips. It
-gives you a rough cut. It does not make the finished edit.
+The portable board and checks run locally. Canvas runs on a localhost server.
+When you ask Claude Code to plan or review, it receives the brief, brand
+references and media it reads. Canvas Home chat sends the request and relevant
+project context to Claude when you enable the Console connection. Generation
+uses your fal.ai key and requires approval. [Security and data](SECURITY.md)
 
 ![The Shotkit board: a timeline, a contact sheet of every shot with its frame and verdict, and the next step](docs/images/board.jpg)
 
@@ -282,21 +309,16 @@ They work alone. They work better together, the critic writes a machine-readable
 
 ---
 
-## What you get, and what you do not
+## Outputs
 
-Shotkit gets you from an idea to something you can look at, quickly and many times over.
-A marketing team can put ten concepts on ten boards in an afternoon.
+- **Portable board.** A timed plan, prompts, frame checks, and optional generated
+  frames and clips. Export carousel stills, a deck, a rough cut and crew files.
+  [Generation](docs/generate-with-fal.md) · [Export](docs/export.md)
+- **Canvas preview.** Chapters, reorderable shots, frame notes, revision history,
+  an editable cut, and a handoff with a timed clip list and optional source media.
+  [Try Canvas](#try-canvas)
 
-- **In Shotkit.** The plan, the prompts, the checks, the board. With your own
-  [fal.ai](https://fal.ai) key, the frames and clips too:
-  [`docs/generate-with-fal.md`](docs/generate-with-fal.md). And three files to take
-  away: carousel stills, a deck and a rough cut: [`docs/export.md`](docs/export.md).
-- **Not in Shotkit.** The finished edit. Motion on the type, transitions, grading, a
-  sound mix, every size a campaign needs, and posting. The rough cut is hard cuts with
-  the text on, for judging the plan.
-
-The board and the client page carry no sales message. WhyStrohm, which builds Shotkit,
-does the edit as a paid service: [whystrohm.com](https://whystrohm.com).
+WhyStrohm also offers video production. [WhyStrohm](https://whystrohm.com)
 
 ### A person's approval
 
@@ -311,9 +333,9 @@ Each approval is a new file in `output/approvals/` that names what was approved,
 The board and `sk validate` say when one no longer holds because something changed after
 it. The name is whatever was typed, so this is a record and not a signature.
 
-**Bring your own key.** Shotkit ships with no keys and calls nothing until you connect
-your own fal.ai key. That key stays in your environment or a `.env` file git ignores.
-The repo's checks fail if a key is ever committed.
+**Bring your own key.** For generation with the CLI, keep your fal.ai key in
+your environment or a git-ignored `.env` file. The repo's checks scan for
+committed secrets.
 
 To hand the files to your own editor instead, `shots.json` and `text-overlays.json`
 carry every shot, length and line of text. See
@@ -357,4 +379,8 @@ The Apache License 2.0 covers the code and documentation in this repository. It 
 
 ## Who built this
 
-[WhyStrohm](https://whystrohm.com). Questions: [hello@whystrohm.com](mailto:hello@whystrohm.com).
+Yuri Strohm created and maintains Shotkit at WhyStrohm. OpenAI Codex and
+Anthropic Claude assisted with implementation and review. The workspace
+design went through an Astra review.
+
+[WhyStrohm](https://whystrohm.com) · [Contact](mailto:hello@whystrohm.com)
