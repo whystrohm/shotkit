@@ -9,6 +9,7 @@ Python 3. Run the tools through `sk` and there is nothing to install:
 
 ```bash
 tools/sk board output/ --open     # the board
+tools/sk workspace output/ --open # Canvas, with a local runtime configured
 tools/sk validate output/         # every check a storyboard has to pass
 tools/sk check                    # every check in this repo
 tools/sk doctor                   # what is installed
@@ -33,6 +34,22 @@ five shotkit skills. Other skills in that folder are never checked.
 `install.sh` also writes `~/.claude/shotkit-tools/VERSION`. Line 1 is the shotkit
 version from the repo's `VERSION` file. Line 2, when the install came from a git clone,
 names the exact checkout.
+
+## Canvas workspace
+
+`sk workspace RUN_OR_OUTPUT_DIR` starts a local Canvas installation with the
+selected run. Use a Canvas installation with workspace API 1. Set
+`SHOTKIT_CANVAS_HOME` to the Canvas folder or pass
+`--runtime /path/to/shotkit-canvas`. A project folder, its `output/` folder, or
+a standalone run folder can be used. The CLI passes the absolute path and
+keeps the run files in place.
+
+Use `--open` to open the selected review page, `--rules-only` to skip the AI
+connection, or `--port 0` to pick an available localhost port. Use
+`--isolated` to skip discovery of other projects and saved keys. This command
+uses the local Python runtime and needs no validator dependencies. If Canvas
+is unavailable, the standalone board remains available with
+`sk board RUN_OR_OUTPUT_DIR --open` using the directory that contains `shots.json`.
 
 ## Run everything
 

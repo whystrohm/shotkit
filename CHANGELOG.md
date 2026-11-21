@@ -4,6 +4,30 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.7.0-rc.2] - 2026-11-21
+
+### Added
+
+- **Canvas for Codex and other local MCP clients.** Read a storyboard by run
+  and revise it against the current board version. See
+  [Codex setup](README.md#use-canvas-from-codex).
+
+### Changed
+
+- **Canvas first run.** Added the release-asset download, checksum, example
+  and Claude Console setup steps to the README.
+- CI checks that VERSION and the Claude plugin manifests agree.
+
+## [3.7.0-rc.1] - 2026-11-21
+
+### Added
+
+- **Open a run in Canvas.** `sk workspace` passes a Shotkit project or its
+  `output/` directory to an explicitly configured local Canvas installation.
+  It supports browser launch, local rules mode, isolated project discovery
+  and a chosen port. See
+  [the workspace setup](README.md#open-a-run-in-canvas).
+
 ### Fixed
 
 - **A designed frame could come out in a different typeface from one draw to the next.**
@@ -13,9 +37,9 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ### Changed
 
-- **A shorter README demo.** 14 seconds, down from 20. It types one line, plans and
-  checks the Media Tsunami run and plays its rough cut, then shows three more boards:
-  Brightdock, Kestrel Roofing and Harbor Roast.
+- **A new README demo.** The WhyStrohm project shows the home brief, chapter
+  navigation, frame notes, shot reordering, wide and feed comparison, and the
+  editable cut action.
 
 ## [3.6.0] - 2026-11-19
 

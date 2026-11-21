@@ -127,6 +127,7 @@ run "contracts: schemas and examples" "$TOOLS/validate_contracts.py"
 # Tools that ship as part of the workflow
 run "preview renderer: selftest"     "$TOOLS/shots-to-html.py" --selftest
 run "board: selftest"                "$TOOLS/board.py" --selftest
+run "workspace: CLI bridge"          "$TOOLS/test_workspace.py"
 run "generate: selftest"             "$TOOLS/generate.py" --selftest
 run "media: selftest"                "$TOOLS/media.py" --selftest
 run "export: selftest"               "$TOOLS/export.py" --selftest

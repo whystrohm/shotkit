@@ -19,8 +19,9 @@ Open an issue first for anything that changes a file format (`shots.json`,
 tools/sk check
 ```
 
-That is the same entry point CI runs, so green locally means green on the pull request.
-It needs Python 3 and nothing else; `sk` sets up what the validators use.
+CI runs the same suite on Python 3.11 and checks that the bundled previews
+can be reproduced. The launcher sets up the validator dependencies in a private
+environment.
 
 ## Rules the checks enforce
 
@@ -30,6 +31,9 @@ It needs Python 3 and nothing else; `sk` sets up what the validators use.
   templates, re-render the three bundled `preview.html` files with their pinned
   timestamps (the commands are in `.github/workflows/validate-skills.yml`).
 - **No keys in the repo.** `tools/validate_no_secrets.py` fails the build on one.
+- **Share fixtures that can be published.** Use generated test data or
+  approved example media. Keep private run folders, project state, and account
+  files out of the repository and release assets.
 - **The tools that ship to users need no install.** `board.py`, `generate.py`,
   `shots-to-html.py` and `copy-prompt.py` use the Python standard library only.
 
