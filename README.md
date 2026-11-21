@@ -17,6 +17,7 @@ becomes a board with every shot planned, prompted and checked.</p>
   <a href="#install">Install</a> ·
   <a href="#why">Why</a> ·
   <a href="#the-board">The board</a> ·
+  <a href="#open-a-run-in-canvas">Canvas</a> ·
   <a href="docs/own-media.md">Your own footage</a> ·
   <a href="docs/designed-frames.md">Designed frames</a> ·
   <a href="docs/export.md">Export</a> ·
@@ -72,6 +73,29 @@ cd shotkit && ./install.sh
 Installed this way, the command is `/shotkit` in place of `/shotkit:shotkit`.
 
 </details>
+
+### Open a run in Canvas
+
+Pass your project and a local Shotkit Canvas installation to the installed CLI.
+Use a Canvas checkout with workspace API 1 or extract the Canvas archive
+when supplied as a [GitHub release asset](https://github.com/whystrohm/shotkit/releases).
+The preview archive is `shotkit-canvas-v3.7.0-rc.1.zip`. Check its matching
+`.sha256` file with `shasum -a 256 -c` before extracting it.
+
+```bash
+~/.claude/shotkit-tools/sk workspace "/path/to/project" \
+  --runtime "/path/to/shotkit-canvas" --open
+```
+
+The project folder and its `output/` folder open the same run. You can set
+`SHOTKIT_CANVAS_HOME` to your Canvas folder to skip `--runtime`. Use
+`--rules-only` for local review without an AI connection or `--port 0` to
+choose an available localhost port. Use `--isolated` to skip discovery of other
+projects and saved keys. `sk doctor` reports whether the configured launcher
+is usable.
+
+Canvas is a separate local workspace. The plugin's portable board is available
+through `sk board output/ --open`.
 
 ### Your brand
 

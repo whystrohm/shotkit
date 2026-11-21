@@ -3,6 +3,7 @@
 #
 #   sk board output/ --open      the board, opened in a browser
 #   sk board output/ --serve     a live board on localhost
+#   sk workspace output/ --open open the run in a configured Canvas workspace
 #   sk generate output/ --model flux   make the frames on fal.ai with your key
 #   sk media scan <folder> --out output/   start from your own photos and clips
 #   sk media place output/       put each of them on the shot the plan gave it
@@ -87,6 +88,13 @@ cmd="${1:-help}"
 
 case "$cmd" in
   board)    run_tool 0 board.py "$@" ;;
+  workspace|workspace.py)
+    py="$(python_for 0)"
+    if [[ -z "$py" ]]; then
+      echo "shotkit: Python 3 was not found." >&2
+      exit 1
+    fi
+    exec "$py" "${TOOLS}/workspace.py" "$@" ;;
   generate) run_tool 0 generate.py "$@" ;;
   media)    run_tool 0 media.py "$@" ;;
   preview)  run_tool 0 shots-to-html.py "$@" ;;
@@ -124,6 +132,9 @@ case "$cmd" in
     else echo "  browser  none found. Export needs Chrome, Edge, Brave or Chromium for stills. The deck works without one."; fi
     if command -v ffmpeg >/dev/null 2>&1; then echo "  ffmpeg   $(command -v ffmpeg) (export can make the rough cut)"
     else echo "  ffmpeg   not found. Export needs it for the rough cut, and clips need it for thumbnails."; fi
+    if [[ -n "$py" ]]; then
+      "$py" "${TOOLS}/workspace.py" --doctor
+    fi
     skills="$(dirname "$TOOLS")/skills"
     for name in shotkit storyboard-architect visual-prompt-forge visual-asset-critic storyboard-html-preview brand-lock-extractor; do
       if [[ -f "${skills}/${name}/SKILL.md" ]]; then echo "  skill    ${name}"; else echo "  skill    ${name} MISSING"; fi
@@ -133,6 +144,6 @@ case "$cmd" in
       board.py|generate.py|media.py|shots-to-html.py|copy-prompt.py|export.py|design.py) run_tool 0 "$cmd" "$@" ;;
       *) run_tool 1 "$cmd" "$@" ;;
     esac ;;
-  help|-h|--help) sed -n '2,18p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  help|-h|--help) sed -n '2,19p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) echo "shotkit: unknown command '$cmd'. Try: sk help" >&2; exit 2 ;;
 esac

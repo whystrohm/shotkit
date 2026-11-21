@@ -59,6 +59,21 @@ git clone https://github.com/whystrohm/shotkit.git
 cd shotkit && ./install.sh
 ```
 
+### 在 Canvas 中打开项目
+
+安装支持工作区 API 1 的 Shotkit Canvas 后，可通过已安装的 CLI 打开项目。
+
+```bash
+~/.claude/shotkit-tools/sk workspace "/path/to/project" \
+  --runtime "/path/to/shotkit-canvas" --open
+```
+
+项目目录和它的 `output/` 目录指向同一次工作记录。设置
+`SHOTKIT_CANVAS_HOME` 后可省略 `--runtime`。`--rules-only`
+可在无需连接 AI 的情况下审阅。`--port 0` 会选择可用的本地端口。
+`--isolated` 跳过对其他项目和已保存密钥的查找。
+插件自带的便携看板仍可通过 `sk board output/ --open` 打开。
+
 ## 从你已有的素材开始
 
 ```
