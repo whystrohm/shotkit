@@ -26,7 +26,7 @@ becomes a board with every shot planned, prompted and checked.</p>
   <a href="https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html">A live board</a>
 </p>
 
-![Shotkit demo: type one line in Claude Code, every shot is planned, every frame is checked, the rough cut plays with its text, then boards for a software company, a roofer and a coffee roaster](docs/images/demo.webp)
+![Shotkit Canvas opens a storyboard from a brief, reviews a frame, reorders shots and compares the wide and feed cuts of the WhyStrohm film.](docs/images/workspace-demo.gif)
 
 ## Install
 
@@ -76,11 +76,18 @@ Installed this way, the command is `/shotkit` in place of `/shotkit:shotkit`.
 
 ### Open a run in Canvas
 
-Pass your project and a local Shotkit Canvas installation to the installed CLI.
+Pass your project and a local Shotkit Canvas installation to the CLI.
 Use a Canvas checkout with workspace API 1 or extract the Canvas archive
 when supplied as a [GitHub release asset](https://github.com/whystrohm/shotkit/releases).
-The preview archive is `shotkit-canvas-v3.7.0-rc.1.zip`. Check its matching
-`.sha256` file with `shasum -a 256 -c` before extracting it.
+The preview archive is `shotkit-canvas-v3.7.0-rc.1.zip`. Verify the archive
+alongside its checksum file before extracting it.
+
+```sh
+shasum -a 256 -c shotkit-canvas-v3.7.0-rc.1.zip.sha256
+```
+
+From the Shotkit checkout, use `tools/sk`. After running `./install.sh`, use
+the installed copy below.
 
 ```bash
 ~/.claude/shotkit-tools/sk workspace "/path/to/project" \
@@ -93,6 +100,10 @@ The project folder and its `output/` folder open the same run. You can set
 choose an available localhost port. Use `--isolated` to skip discovery of other
 projects and saved keys. `sk doctor` reports whether the configured launcher
 is usable.
+
+Home, storyboards, and the finished example films work with Python 3.10 or
+later. For the editable cut preview, run `npm install` and `npm run build`
+in the extracted Canvas folder, then restart Canvas.
 
 Canvas is a separate local workspace. The plugin's portable board is available
 through `sk board output/ --open`.
@@ -114,6 +125,9 @@ Writing a lock by hand from `brand-packs/_template.md` is the manual route, for 
 want to set every value yourself. See [`brand-packs/README.md`](brand-packs/README.md).
 
 ## Examples
+
+The Canvas preview includes the [WhyStrohm How It Works project](https://whystrohm.com/system)
+shown in the animation.
 
 Three finished runs. The first two pictures open a live board. The third is in this repo: `tools/sk board --example`.
 

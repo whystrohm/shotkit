@@ -23,9 +23,9 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ### Changed
 
-- **A shorter README demo.** 14 seconds, down from 20. It types one line, plans and
-  checks the Media Tsunami run and plays its rough cut, then shows three more boards:
-  Brightdock, Kestrel Roofing and Harbor Roast.
+- **A new README demo.** The WhyStrohm project shows the home brief, chapter
+  navigation, frame notes, shot reordering, wide and feed comparison, and the
+  editable cut action.
 
 ## [3.6.0] - 2026-11-19
 

@@ -6,7 +6,7 @@ Claude Code 的 AI 分镜技能包。一句需求，或者一个装着你自己�
 
 <p align="center"><a href="README.md">English</a> · <strong>简体中文</strong></p>
 
-![Shotkit 演示：在 Claude Code 里输入一句需求，每个镜头得到规划，每个画面经过检查，粗剪带着文字播放，随后是软件公司、屋顶公司和咖啡烘焙店的看板](docs/images/demo.webp)
+![Shotkit Canvas 演示从脚本创建分镜、标注画面、调整镜头顺序，并对比 WhyStrohm 影片的横版和信息流版。](docs/images/workspace-demo.gif)
 
 三个已完成的案例，点击图片打开在线看板。
 
@@ -61,7 +61,8 @@ cd shotkit && ./install.sh
 
 ### 在 Canvas 中打开项目
 
-安装支持工作区 API 1 的 Shotkit Canvas 后，可通过已安装的 CLI 打开项目。
+安装支持工作区 API 1 的 Shotkit Canvas 后，可通过 CLI 打开项目。
+从仓库运行时使用 `tools/sk`。运行 `./install.sh` 后，使用以下路径。
 
 ```bash
 ~/.claude/shotkit-tools/sk workspace "/path/to/project" \
@@ -73,6 +74,10 @@ cd shotkit && ./install.sh
 可在无需连接 AI 的情况下审阅。`--port 0` 会选择可用的本地端口。
 `--isolated` 跳过对其他项目和已保存密钥的查找。
 插件自带的便携看板仍可通过 `sk board output/ --open` 打开。
+
+Python 3.10 或更高版本可打开主页、分镜和已经完成的示例影片。
+如需预览可编辑剪辑，请在 Canvas 目录运行
+`npm install` 和 `npm run build`，然后重启 Canvas。
 
 ## 从你已有的素材开始
 
