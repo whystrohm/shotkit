@@ -6,7 +6,7 @@ Claude Code 的 AI 分镜技能包。一句需求，或者一个装着你自己�
 
 <p align="center"><a href="README.md">English</a> · <strong>简体中文</strong></p>
 
-![Shotkit Canvas 演示从脚本创建分镜、标注画面、调整镜头顺序，并对比 WhyStrohm 影片的横版和信息流版。](docs/images/workspace-demo.gif)
+![Shotkit Canvas 演示从网站添加 WhyStrohm 品牌、在聊天中用一句话规划影片、为镜头添加画面、留下剪辑备注并生成可编辑的粗剪。](docs/images/workspace-demo.gif)
 
 三个已完成的案例，点击图片打开在线看板。
 
@@ -58,6 +58,9 @@ cd shotkit-canvas &&
 如需连接 Claude，运行 `./start.sh --open`，进入 **Settings and keys → Claude**，
 粘贴 API 密钥并选择 **Save and check**。密钥保存在 macOS 钥匙串中。
 [Claude Console](https://platform.claude.com/settings/keys)
+
+连接后，在 Home 选择 **Add a brand** 并输入网站，Canvas 会保存该网站显示的颜色、字体和文案规则。
+然后在聊天中用一句话描述影片，Claude 会规划镜头并打开分镜。规划不会生成任何素材。
 
 Codex 可以通过 MCP 连接本机工作区。 [Codex 设置](README.md#use-canvas-from-codex)
 

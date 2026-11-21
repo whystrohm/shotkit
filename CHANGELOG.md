@@ -4,6 +4,32 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.7.0-rc.3] - 2026-11-21
+
+### Added
+
+- **Add a brand in Canvas from its website.** Canvas reads the page text,
+  colours and font names, and saves a brand lock that keeps only what the site
+  shows. It uses the Claude Console key you connect in Settings.
+- **Plan a video from Home chat.** Ask for a video in a sentence. Claude plans
+  the shots from the brief and the brand lock, and the storyboard opens with
+  chapters, a direction and an on-screen line for each shot. No media is
+  generated.
+
+### Fixed
+
+- **Home in the downloaded Canvas offered actions that ended in an error.**
+  Add a brand, Plan a video and the first chat suggestion needed a Claude Code
+  session. They now run with the connected key, and the chat no longer offers
+  what the installation cannot do.
+- Canvas rejects a malformed request length, reports file errors on upload,
+  and keeps running when a post render has no `exiftool`.
+
+### Changed
+
+- **A new README demo.** One WhyStrohm project from an empty Home: add the
+  brand, ask for a film, attach stills, leave a note and make an editable cut.
+
 ## [3.7.0-rc.2] - 2026-11-21
 
 ### Added

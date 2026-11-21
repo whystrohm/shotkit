@@ -21,7 +21,7 @@ frames from Claude Code. Both use the same Shotkit run files.</p>
   <a href="#docs">Docs</a>
 </p>
 
-![Shotkit Canvas opens a storyboard from a brief, reviews a frame, reorders shots and compares the wide and feed cuts of the WhyStrohm film.](docs/images/workspace-demo.gif)
+![Shotkit Canvas adds the WhyStrohm brand from its website, plans a film from one sentence in chat, attaches stills to the shots, takes an editor note and makes an editable cut.](docs/images/workspace-demo.gif)
 
 ## Try Canvas
 
@@ -59,6 +59,11 @@ restart it.
    **Save and check**. Create the key in [Claude Console](https://platform.claude.com/settings/keys).
 3. Return to **Home** and ask about your project. Canvas stores the key in macOS
    Keychain. Claude receives the request and relevant project context.
+4. Choose **Add a brand** and enter a website. Canvas saves a brand lock with the
+   colours, fonts and voice rules the site shows.
+5. Ask in chat for a video, for example "Plan a 12 second wide film for
+   WhyStrohm: research, production, approval". The planned storyboard opens
+   from the chat. Attach your own stills and clips, then make an editable cut.
 
 ### Use Canvas from Codex
 
