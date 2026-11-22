@@ -8,27 +8,37 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ### Added
 
-- **Add a brand in Canvas from its website.** Canvas reads the page text,
-  colours and font names, and saves a brand lock that keeps only what the site
-  shows. It uses the Claude Console key you connect in Settings.
-- **Plan a video from Home chat.** Ask for a video in a sentence. Claude plans
-  the shots from the brief and the brand lock, and the storyboard opens with
-  chapters, a direction and an on-screen line for each shot. No media is
-  generated.
+- **Add a brand from its website in Canvas.** Canvas reads the page and its
+  stylesheets and saves a brand lock from what the site shows.
+- **Plan a video from one sentence in Canvas chat.** Claude plans the shots from the
+  brief and the brand lock. Nothing is generated.
+- **Revise what the critic sent back.** One click writes new prompts for the shots
+  it rejected; the next prices the new frames. Needs Claude Code.
+- **Captions as plain type in Canvas.** `**Caption style:** type` in a brand lock sets
+  the lines straight on the footage, with no box. See
+  [Brand locks](docs/brand-lock-anatomy.md#caption-style-canvas).
 
 ### Fixed
 
-- **Home in the downloaded Canvas offered actions that ended in an error.**
-  Add a brand, Plan a video and the first chat suggestion needed a Claude Code
-  session. They now run with the connected key, and the chat no longer offers
-  what the installation cannot do.
-- Canvas rejects a malformed request length, reports file errors on upload,
-  and keeps running when a post render has no `exiftool`.
+- Add a brand and Plan a video work in the downloaded Canvas with a Claude key. In
+  rc.2 they needed Claude Code, and the chat offered them anyway.
+- The critic saves its verdicts to the run.
+- Wide, vertical, feed and square cuts sit on the board in their real shapes.
+- A cut fills every size with the clips. A wide clip no longer sits between bars in
+  a square or vertical cut.
+- A shot with only a clip shows it in the storyboard and takes pinned notes.
+- A cut made in chat keeps the shape of its shots and can skip captions.
+- The planner no longer asks for `sk memory`, which this plugin does not have.
+- Canvas rejects malformed requests, reports upload errors and finishes a post
+  render without `exiftool`.
 
 ### Changed
 
-- **A new README demo.** One WhyStrohm project from an empty Home: add the
-  brand, ask for a film, attach stills, leave a note and make an editable cut.
+- **README.** Shorter and plainer. The demo keeps the Media Tsunami plan, check and
+  rough cut, and adds the board with clips playing and a shot moved, and one cut in
+  every size. Two real WhyStrohm runs are the examples, and the worked brand lock is
+  based on whystrohm.com in place of the fictional coffee brand. The fictional
+  roofing, coffee and software examples are gone from the README and the demo.
 
 ## [3.7.0-rc.2] - 2026-11-21
 
@@ -52,7 +62,7 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
   `output/` directory to an explicitly configured local Canvas installation.
   It supports browser launch, local rules mode, isolated project discovery
   and a chosen port. See
-  [the workspace setup](README.md#open-a-run-in-canvas).
+  [the workspace setup](README.md#install).
 
 ### Fixed
 

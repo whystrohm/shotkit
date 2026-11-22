@@ -1,30 +1,27 @@
 # Example input: what the user handed over
 
-This is the raw source material for the worked extraction. The user provided a URL and a one-page brand sheet. The `brand-lock.md` in this folder is what the skill produced from it.
+The source for this worked example is one web address, **https://whystrohm.com**,
+read in Shotkit Canvas on 2026-11-21 with **Add a brand**. Canvas saved a short
+brand lock from it. The `brand-lock.md` in this folder is based on that lock,
+filled out to the skill's full set of sections. Every value the site did not
+state is marked in its Extraction notes.
 
-## Source 1: website (fetched)
+## What was read
 
-**Homepage hero:**
-> Northwind Coffee Roasters
-> Small-batch coffee, roasted the morning it ships.
-> No subscriptions to forget about. No bitter shortcuts. Just coffee that tastes like someone cared.
+- The homepage text: the offer, the voice, the steps and the questions.
+- The page's stylesheets: seven colours with a role on the page, and the two
+  typefaces the page lists, Archivo and IBM Plex Mono.
 
-**About page excerpt:**
-> We started Northwind in a one-car garage in Duluth because the coffee we could buy locally was either burnt to hide cheap beans or priced like a luxury good. We roast in small batches, ship the same day, and tell you exactly where the beans came from and who grew them. We are roasters, not a lifestyle brand. The coffee does the talking.
+## What was not on the site
 
-**CSS (from the page source):**
-```
---paper: #F4EFE6;
---espresso: #2B2018;
---ember: #C5562B;
---stone: #8A8076;
-font-family: "Tiempos Headline", Georgia, serif;   /* headings */
-font-family: "Söhne", -apple-system, sans-serif;    /* body */
-```
+- Colours named in the CSS that carry no brand role on the page (framework
+  defaults) were left out.
+- The site gives no logo rules, so the lock records none.
+- The site gives no video rules. The grade and motion lines come from the brief
+  of the run that used this lock, which describes the homepage's 3D look, and
+  are marked inferred.
+- The site does not say which font is display and which is body, so the
+  pairing is marked inferred.
 
-## Source 2: one-page brand sheet (read)
-
-- Logo: wordmark only, espresso brown on paper cream. No icon.
-- Photography: matte, low-contrast, natural window light. Beans, hands, kraft bags. Never glossy product-on-white.
-- "We don't do: stock smiles, latte art as decoration, exclamation points, or the word 'artisanal'."
-- Formats noted: Instagram (4:5 and 9:16), website hero (16:9).
+The run that used this lock is on the board at
+https://whystrohm.com/shotkit/examples/whystrohm-how-we-work/board.html
