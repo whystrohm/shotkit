@@ -32,25 +32,28 @@ Making one clip is easy now. Shipping fifty that look like one brand is not. Sho
 that work a board: plan it, leave notes, break it, make it better, and render the version you
 approve. It still takes your taste.
 
-![Four parts of Shotkit from one real run: the board with clips playing and a shot being moved; chat with Claude reading the brand and planning five shots; the critic's verdicts and a clip price waiting for approval; and one cut in 16:9, 9:16, 4:5 and 1:1.](docs/images/features.png)
-
 - **Keeps it on brand.** Paste your website. Shotkit saves your colours, type, voice and
   never-rules, and plans and checks every shot against them.
-- **Organizes your own footage.** Drop in photos and clips, or a long recording with its
+- **Remembers what you like.** Like or dislike a clip, caption or render and say why. Canvas
+  keeps it as a preference for that brand that you can read and edit, and its chat follows
+  it next time. Nothing is trained on your files.
+- **Starts from your own footage.** Drop in photos and clips, or a long recording with its
   transcript. Shotkit places them on shots and chapters and shows what is missing.
 - **Uses AI for concepts and gaps.** Generate frames and clips to test an idea or fill a
   shot you cannot film. Not every generation is good, so a critic checks each one, only the
   misses are redone, and nothing runs until you approve the price.
 - **Lets you see and cut.** Every clip plays on the board. Move shots, trim clips, change
-  the lines and cut the video in 16:9, 9:16, 4:5 and 1:1.
-- **Hands it off.** Render the cut, or export stills, a deck, a rough cut and an edit list
-  for your editor.
+  the lines and render the cut in 16:9, 9:16, 4:5 and 1:1 with Remotion.
+- **Shares the plan.** A storyboard page, a client page you can print to PDF, a PowerPoint
+  deck, stills and an edit list, so the people you work with can review it anywhere.
 
-## Get started
+## Two ways to use it
 
-| **Canvas for Mac** | **Claude Code plugin** |
-|---|---|
-| Download the ZIP from [Releases](https://github.com/whystrohm/shotkit/releases), run `./start.sh --open` and open the example board. [All steps](#try-canvas) | Run `/plugin install shotkit --marketplace whystrohm/shotkit`, then `/shotkit:shotkit` and your brief. [All steps](#install) |
+| | **Plugin** · in Claude Code | **Canvas** · for Mac |
+|---|---|---|
+| **Best for** | Turning a brief and your photos into a clear plan to share | Planning, checking and cutting the video in one place |
+| **You get** | A storyboard page, a client page you print to PDF, a PowerPoint deck, stills and a rough cut | The plugin's plan plus chat, prices you approve, clips on a live board, and cuts in every size |
+| **Start** | `/plugin install shotkit --marketplace whystrohm/shotkit` · [steps](#install) | Download from [Releases](https://github.com/whystrohm/shotkit/releases), run `./start.sh --open` · [steps](#try-canvas) |
 
 ## How it works
 
@@ -59,13 +62,19 @@ approve. It still takes your taste.
 Our run for WhyStrohm: five shots, three sent back and remade, four sizes, about ten minutes
 from brief to clips and $2.34 of generation at fal's quoted prices.
 
-## What you see in Canvas
+## See it in Canvas
 
-![Recorded in Canvas: the brief typed into Home chat, the frame price waiting for approval, the critic sending three shots back, a revision asked for in chat, and one cut made in every size.](docs/images/canvas-tour.webp)
+![Recorded in Canvas, in eight steps: open Canvas and pick where to start; add a brand from its website; ask for a video in one sentence; the plan lands on the board; see the price and approve it; the critic checks every frame; move a shot and pin a note; cut it in every size.](docs/images/canvas-tour.webp)
 
-Recorded in the app. You ask in chat, see the price first, the critic sends three shots back,
-you ask Claude to fix them, and the cut comes out in every size.
+Recorded in the app, start to finish: open it, add your brand, ask for a video, approve the
+price, let the critic check the frames, move shots and pin notes, then cut every size.
 [Watch the 55-second film](https://whystrohm.com/blog/shotkit-canvas-one-real-run).
+
+## Done for you
+
+Shotkit is free. If you want the whole system on your brand, WhyStrohm sets it up and runs it:
+your brand, footage library and templates, finished videos rendered in every size, and posting
+every month. [Talk to us](https://whystrohm.com/apply).
 
 ## Long recordings
 
@@ -91,7 +100,8 @@ Canvas is a preview for macOS. It needs Python 3.10 or later.
 3. Open the bundled example **WhyStrohm · How it works** and play it.
 
 To preview and render cuts, install Node.js and run `npm ci` and `npm run build` once in the
-Canvas folder.
+Canvas folder. Cuts render with [Remotion](https://www.remotion.dev); if you render for a
+company, check [Remotion's license](https://www.remotion.dev/license).
 
 ### Connect Claude in Canvas
 
