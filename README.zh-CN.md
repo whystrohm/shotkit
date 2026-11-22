@@ -8,6 +8,8 @@
 
 <p align="center"><a href="README.md">English</a> · <strong>简体中文</strong></p>
 
+<p align="center"><a href="https://whystrohm.com/shotkit"><strong>完整介绍</strong></a> · <a href="https://github.com/whystrohm/shotkit/releases">下载 Canvas</a></p>
+
 <p align="center"><strong>3.7 新增：Shotkit Canvas。</strong>每个片段都在看板上播放，镜头可以移动和修剪，<br>
 一个剪辑输出所有尺寸。免费开源。<a href="https://github.com/whystrohm/shotkit/releases">下载</a></p>
 
