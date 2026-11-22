@@ -11,6 +11,12 @@
 <p align="center"><strong>3.7 新增：Shotkit Canvas。</strong>每个片段都在看板上播放，镜头可以移动和修剪，<br>
 一个剪辑输出所有尺寸。免费开源。<a href="https://github.com/whystrohm/shotkit/releases">下载</a></p>
 
+![Shotkit 的四个部分：看板、与 Claude 对话、检查和报价、每种尺寸。](docs/images/features.png)
+
+![流程：添加品牌、规划看板、确认报价、检查每一帧、剪出每种尺寸。](docs/images/how-it-works.png)
+
+![在 Canvas 中录制：在聊天里输入简报、先看报价、审查退回三个镜头、在聊天里要求修改、剪出每种尺寸。](docs/images/canvas-tour.webp)
+
 两个真实的 WhyStrohm 案例，点击图片打开在线看板。
 
 | How we work · 在 Canvas 中完成 · 16:9 | Media Tsunami · 16:9 |

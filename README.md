@@ -32,6 +32,8 @@ Making one clip is easy now. Shipping fifty that look like one brand is not. Sho
 that work a board: plan it, leave notes, break it, make it better, and render the version you
 approve. It still takes your taste.
 
+![Four parts of Shotkit from one real run: the board with clips playing and a shot being moved; chat with Claude reading the brand and planning five shots; the critic's verdicts and a clip price waiting for approval; and one cut in 16:9, 9:16, 4:5 and 1:1.](docs/images/features.png)
+
 - **Keeps it on brand.** Paste your website. Shotkit saves your colours, type, voice and
   never-rules, and plans and checks every shot against them.
 - **Organizes your own footage.** Drop in photos and clips, or a long recording with its
@@ -44,17 +46,25 @@ approve. It still takes your taste.
 - **Hands it off.** Render the cut, or export stills, a deck, a rough cut and an edit list
   for your editor.
 
+## Get started
+
+| **Canvas for Mac** | **Claude Code plugin** |
+|---|---|
+| Download the ZIP from [Releases](https://github.com/whystrohm/shotkit/releases), run `./start.sh --open` and open the example board. [All steps](#try-canvas) | Run `/plugin install shotkit --marketplace whystrohm/shotkit`, then `/shotkit:shotkit` and your brief. [All steps](#install) |
+
 ## How it works
 
-1. **Add your brand** from its website.
-2. **Say what you want**, or bring your footage. Claude plans the shots on a board.
-3. **Review the plan.** Move cards, change lines. No media has been made yet.
-4. **Approve the price** of any frames or clips. A critic checks each one and sends the
-   misses back.
-5. **Cut every size.** Trim, reorder and preview, then render or hand off.
+![1. Add your brand from your website. 2. Plan the board: say what you want or bring footage. 3. Approve the price: nothing runs until you say yes. 4. Check every frame: a critic sends the misses back. 5. Cut every size: trim, move and render 16:9, 9:16, 4:5 and 1:1.](docs/images/how-it-works.png)
 
 Our run for WhyStrohm: five shots, three sent back and remade, four sizes, about ten minutes
 from brief to clips and $2.34 of generation at fal's quoted prices.
+
+## What you see in Canvas
+
+![Recorded in Canvas: the brief typed into Home chat, the frame price waiting for approval, the critic sending three shots back, a revision asked for in chat, and one cut made in every size.](docs/images/canvas-tour.webp)
+
+Recorded in the app. You ask in chat, see the price first, the critic sends three shots back,
+you ask Claude to fix them, and the cut comes out in every size.
 [Watch the 55-second film](https://whystrohm.com/blog/shotkit-canvas-one-real-run).
 
 ## Long recordings
