@@ -87,6 +87,9 @@ def check_timing(shots: list[dict], duration_s: float) -> tuple[list[str], list[
         seen.add(sid)
         start, end = shot.get("start"), shot.get("end")
         if isinstance(start, (int, float)) and isinstance(end, (int, float)):
+            # an optional shot (a missing picture, a suggested bridge) sits at one point in time until it is filled
+            if shot.get("optional") is True and end == start:
+                continue
             if end <= start:
                 errors.append(
                     f"timing: {sid} has end ({end}) not after start ({start})"
@@ -97,6 +100,7 @@ def check_timing(shots: list[dict], duration_s: float) -> tuple[list[str], list[
         for s in shots
         if isinstance(s.get("start"), (int, float))
         and isinstance(s.get("end"), (int, float))
+        and not (s.get("optional") is True and s["end"] == s["start"])
     ]
     if not timed:
         return errors, warnings

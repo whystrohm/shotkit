@@ -265,21 +265,47 @@ def read_source(raw) -> dict | None:
     """
     Where a shot's picture comes from, when the plan says so.
 
-    own       a photo or clip the user brought, by its id in media/media.json
+    own       a photo or clip the user brought, by its id in media/media.json, with
+              why it was picked and the other files weighed for the shot
     design    a frame drawn in code from the brand lock, by the kind of card
     generate  a gap to fill with a generator, with the reason and, for a bridge
-              between two shots, the shots it starts on and ends on
+              between two shots, the shots it starts on and ends on, and the price
+              quoted for it when one was asked for (nothing is sent by a quote)
+    missing   a picture the story needs that the user's media does not have; it is
+              shot, not generated
     """
-    if not isinstance(raw, dict) or raw.get("type") not in ("own", "generate", "design"):
+    if not isinstance(raw, dict) or raw.get("type") not in ("own", "generate", "design", "missing"):
         return None
     source = {"type": raw["type"]}
-    for key in ("media", "why", "model", "start", "end", "card"):
+    for key in ("media", "why", "model", "start", "end", "card", "fill"):
         if isinstance(raw.get(key), str) and raw[key].strip():
             source[key] = raw[key].strip()
     for key in ("in", "out"):
         if isinstance(raw.get(key), (int, float)) and not isinstance(raw.get(key), bool):
             source[key] = float(raw[key])
+    if isinstance(raw.get("considered"), list):
+        source["considered"] = [str(x) for x in raw["considered"] if isinstance(x, str)][:6]
+    quote = raw.get("quote")
+    if isinstance(quote, dict):
+        q = {k: str(quote[k])[:300] for k in ("status", "endpoint", "note", "at", "why") if isinstance(quote.get(k), str)}
+        for k in ("usd", "units"):
+            if isinstance(quote.get(k), (int, float)) and not isinstance(quote.get(k), bool):
+                q[k] = float(quote[k])
+        source["quote"] = q
     return source
+
+
+FLAG_LEVELS = ("weak", "missing", "optional", "note")
+
+
+def read_flags(raw) -> list[dict]:
+    """What the plan or a measurement says is weak or missing about a shot, as short notes."""
+    out = []
+    for f in raw if isinstance(raw, list) else []:
+        if not isinstance(f, dict) or f.get("level") not in FLAG_LEVELS or not isinstance(f.get("note"), str):
+            continue
+        out.append({"level": f["level"], "kind": str(f.get("kind") or "")[:40], "short": str(f.get("short") or "")[:80], "note": f["note"][:400]})
+    return out[:6]
 
 
 def read_media(out_dir: Path, inline: bool) -> dict:
@@ -451,8 +477,12 @@ def shot_status(shot: dict) -> str:
     check    its newest frame has not been reviewed
     revise   its newest frame came back REVISE, or REJECT
     accept   its newest frame is ACCEPT
+    missing  an optional shot the user's media does not have, to shoot
+    optional an optional generated shot, such as a bridge, that has not been made
     """
     frames, critiques = shot["frames"], shot["critiques"]
+    if shot.get("optional") and not frames and not shot.get("clips"):
+        return "missing" if (shot.get("source") or {}).get("type") == "missing" else "optional"
     if not frames:
         if shot.get("clips"):
             return "check"  # a bridge is a clip with no still of its own
@@ -491,6 +521,17 @@ def next_step(shots: list[dict], generators: list[str], rounds: int, media: list
                       "marks the gaps a generator can fill.",
             "say": "/shotkit plan a 30-second video from the media in output/, 9:16",
         }
+    extra = [s for s in shots if s["status"] in ("missing", "optional")]
+    shots = [s for s in shots if s["status"] not in ("missing", "optional")]
+    if not shots:
+        return {"title": "Add your photos and clips", "body": "Every shot in this plan is optional.", "say": None}
+    aside = ""
+    if extra:
+        miss = [s["id"] for s in extra if s["status"] == "missing"]
+        opt = [s["id"] for s in extra if s["status"] == "optional"]
+        aside = (" " + " ".join(x for x in (
+            f"{count(len(miss), 'missing picture')} to shoot ({', '.join(miss)})." if miss else "",
+            f"{count(len(opt), 'optional generated shot')}, not run ({', '.join(opt)})." if opt else "") if x))
     gaps = [s["id"] for s in shots if (s.get("source") or {}).get("type") == "generate" and not s["frames"]]
     by = {}
     for shot in shots:
@@ -562,7 +603,7 @@ def next_step(shots: list[dict], generators: list[str], rounds: int, media: list
         }
     return {
         "title": "Every shot is accepted",
-        "body": f"Each of the {count(total)} has an accepted frame. Use Export for carousel stills, a deck "
+        "body": f"Each of the {count(total)} has an accepted frame.{aside} Use Export for carousel stills, a deck "
                 "or a rough cut. Or send preview.html for review, or hand shots.json and "
                 "text-overlays.json to the edit.",
         "say": "Render the client preview for output/ and open it.",
@@ -631,9 +672,18 @@ def shot_markdown(shot: dict, heading: str = "##") -> list[str]:
     if source and source["type"] == "own":
         cut = f", {source['in']}s to {source['out']}s" if "in" in source and "out" in source else ""
         lines.append(f"- Picture: the user's own media {source.get('media', '')}{cut}")
+        if source.get("why"):
+            lines.append(f"- Why this pick: {source['why']}")
+    elif source and source["type"] == "missing":
+        lines.append(f"- Picture: missing from the user's media, to shoot. {source.get('why', '')}".rstrip())
     elif source:
         bridge = f" It starts on {source['start']} and ends on {source['end']}." if "start" in source and "end" in source else ""
         lines.append(f"- Picture: to be generated. {source.get('why', '')}{bridge}".rstrip())
+    for flag in shot.get("flags") or []:
+        lines.append(f"- Flag ({flag['level']}): {flag['note']}")
+    if (shot.get("source") or {}).get("quote"):
+        q = shot["source"]["quote"]
+        lines.append(f"- Quote: {'$%.2f' % q['usd'] if 'usd' in q else 'not priced'}, {q.get('status', 'not run')}")
     if shot["critiques"]:
         last = shot["critiques"][-1]
         lines.append(f"- Latest check: {last['verdict']}, round {last['round']}")
@@ -749,6 +799,8 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
             "critiques": critiques_by_shot.get(shot_id, []),
             "prompts": prompts_by_shot.get(shot_id, {}),
             "source": read_source(raw.get("source")),
+            "flags": read_flags(raw.get("flags")),
+            "optional": raw.get("optional") is True,
         }
         shot["status"] = shot_status(shot)
         shots.append(shot)
@@ -1196,6 +1248,26 @@ def selftest() -> int:
     (own_dir / "prompts" / "round-1" / "flux.txt").write_text("# shot_03 close\nA picture.\n")
     own, _ = build(own_dir, rendered_at=pinned)
     own_by = {s["id"]: s for s in own["shots"]}
+
+    # a plan made on the user's own media: a pick reason, a measured flag, a missing picture and an optional, quoted bridge
+    opt_dir = own_tmp / "optional"
+    shutil.copytree(own_dir, opt_dir)
+    shutil.rmtree(opt_dir / "clips")
+    (opt_dir / "shots.json").write_text(json.dumps({"project": {"title": "Own", "duration_s": 3, "aspect": "9:16"}, "shots": [
+        {"id": "shot_01", "beat": "world", "start": 0, "end": 3, "subject": "front", "rationale": "r",
+         "source": {"type": "own", "media": "m01", "why": "The whole print is in frame.", "considered": ["m02", 7]},
+         "flags": [{"level": "weak", "kind": "resolution", "short": "720p clip", "note": "Enlarged 2.7x."}, {"level": "bogus", "note": "x"}]},
+        {"id": "shot_02", "beat": "world", "start": 3, "end": 3, "subject": "a worn shot", "rationale": "r", "optional": True,
+         "source": {"type": "missing", "why": "Nobody wears it yet.", "fill": "shoot"}},
+        {"id": "shot_03", "beat": "world", "start": 3, "end": 3, "subject": "bridge", "rationale": "r", "optional": True,
+         "source": {"type": "generate", "model": "kling", "why": "A jump in scale.", "start": "shot_01", "end": "shot_01",
+                    "quote": {"status": "not run", "usd": 0.42, "units": 5, "endpoint": "fal-ai/kling"}}},
+    ]}))
+    (opt_dir / "critiques" / "round-1").mkdir(parents=True)
+    (opt_dir / "critiques" / "round-1" / "shot_01.critique.json").write_text(json.dumps({"verdict": "ACCEPT", "shot_id": "shot_01", "round": 1}))
+    opt, _ = build(opt_dir, rendered_at=pinned)
+    opt_by = {s["id"]: s for s in opt["shots"]}
+    opt_html = render(opt)
     (own_tmp / "nothing").mkdir()
     live_empty, _ = build(own_tmp / "nothing", live=True)
 
@@ -1265,6 +1337,16 @@ def selftest() -> int:
         ("a bridge with a clip and no still counts as made", own_by["shot_02"]["status"] == "check"),
         ("the Markdown copy says which shots are yours", "the user's own media m01" in own["markdown"]),
         ("a thumbnail path cannot leave the folder", own["media"]["items"][1]["thumbs"] == []),
+        ("a pick keeps its reason and only the ids it weighed", opt_by["shot_01"]["source"].get("why") == "The whole print is in frame."
+         and opt_by["shot_01"]["source"].get("considered") == ["m02"]),
+        ("a flag keeps its level and note; an unknown level is dropped", [f["level"] for f in opt_by["shot_01"]["flags"]] == ["weak"]),
+        ("a missing picture is its own status, not work for a generator", opt_by["shot_02"]["status"] == "missing"),
+        ("an optional bridge that was not made reads optional", opt_by["shot_03"]["status"] == "optional"),
+        ("its quote is carried, and says nothing was run", opt_by["shot_03"]["source"]["quote"] == {"status": "not run", "endpoint": "fal-ai/kling", "usd": 0.42, "units": 5.0}),
+        ("optional shots do not hold back an accepted plan", opt["next"]["title"] == "Every shot is accepted" and "1 missing picture to shoot" in opt["next"]["body"]),
+        ("the Markdown copy carries the pick reason, the flag and the quote",
+         all(x in opt["markdown"] for x in ("Why this pick: The whole print", "Flag (weak): Enlarged 2.7x.", "Quote: $0.42, not run"))),
+        ("the board with optional shots still parses", script_parses(opt_html) is not False),
         ("an empty folder still serves a live board", live_empty["next"]["title"] == "Add your photos and clips"),
     ]
     ok = True

@@ -13,7 +13,7 @@
   --line: #22262D; --line2: #2E333B;
   --ink: #F3F2EE; --mut: #9096A0; --dim: #5D636D;
   --acc: #FF5A2B; --acc-ink: #150703;
-  --accept: #35D08A; --revise: #F2B33D; --check: #6AA8FF; --wait: #6B717C;
+  --accept: #35D08A; --revise: #F2B33D; --check: #6AA8FF; --wait: #6B717C; --miss: #FF6B61;
   --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   --r: 10px; --gut: clamp(16px, 3.2vw, 44px);
@@ -75,6 +75,7 @@ ul, ol { list-style: none; }
 
 /* Timeline */
 .tl { margin: 18px var(--gut) 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--p1); overflow: hidden; }
+.tl__hint { display: none; }
 .tl__scroll { overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--line2) transparent; }
 .tl__in { min-width: 640px; padding: 12px 14px 12px 0; display: grid; grid-template-columns: 54px 1fr; row-gap: 5px; align-items: center; }
 .tl__k { padding-left: 14px; }
@@ -125,6 +126,10 @@ body[data-quiet] .meter i { transition: none; }
 .card__meta { display: flex; align-items: center; gap: 8px; padding: 9px 11px 9px; }
 .card__meta b { font: 600 12px/1 var(--mono); }
 .card__meta span { flex: 1; min-width: 0; color: var(--mut); font: 500 11px/1 var(--mono); letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card__why { margin: 0 11px 12px; color: var(--ink); font-size: 12.5px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.card--opt { border-style: dashed; }
+.tag--flag { color: #211400; background: var(--revise); border-color: var(--revise); padding: 0 6px; }
+.srcb .why b, .srcb .flag b { color: var(--ink); font-weight: 600; } .srcb .flag b { color: var(--revise); }
 .card__sub { margin: 0 11px 12px; color: var(--mut); font-size: 12.5px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
 /* Frame */
@@ -368,7 +373,14 @@ kbd { font: 500 11px/1 var(--mono); padding: 3px 5px; border: 1px solid var(--li
 @media (max-width: 520px) {
   .sheet { --min: 150px !important; gap: 10px; }
   .tl { position: relative; }
-  .tl::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 28px; pointer-events: none; background: linear-gradient(90deg, transparent, var(--p1)); }
+  .tl::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 56px; pointer-events: none; background: linear-gradient(90deg, transparent, var(--p1) 85%); opacity: 0; transition: opacity .3s; }
+  .tl--more::after { opacity: 1; }
+  .tl__hint { position: absolute; right: 10px; bottom: 8px; z-index: 1; display: flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 999px;
+    background: var(--ink); color: var(--p1); font: 600 11px/1 var(--mono); letter-spacing: .02em; pointer-events: none; opacity: 0; transform: translateX(6px); transition: opacity .3s, transform .3s; }
+  .tl--more .tl__hint { opacity: 1; transform: none; }
+  .tl--more .tl__hint b { animation: tlnudge 1.6s ease-in-out infinite; }
+  @keyframes tlnudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+  @media (prefers-reduced-motion: reduce) { .tl--more .tl__hint b { animation: none; } }
   .stat__n { font-size: 22px; }
   /* The shot panel's bar has to keep Previous, Next and Close on screen. */
   .panel__bar { gap: 8px; padding: 0 10px; }
@@ -416,7 +428,9 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
     frame:  { label: "Needs frame",  color: "var(--mut)" },
     check:  { label: "Needs check",  color: "var(--check)" },
     revise: { label: "Revise",       color: "var(--revise)" },
-    accept: { label: "Accepted",     color: "var(--accept)" }
+    accept: { label: "Accepted",     color: "var(--accept)" },
+    missing:  { label: "Missing",           color: "var(--miss)" },
+    optional: { label: "Optional, not run", color: "var(--wait)" }
   };
   var ICON = {
     copy: "M5 5V3.5A1.5 1.5 0 0 1 6.5 2h6A1.5 1.5 0 0 1 14 3.5v6a1.5 1.5 0 0 1-1.5 1.5H11M3.5 5h6A1.5 1.5 0 0 1 11 6.5v6A1.5 1.5 0 0 1 9.5 14h-6A1.5 1.5 0 0 1 2 12.5v-6A1.5 1.5 0 0 1 3.5 5Z",
@@ -614,22 +628,41 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
     if (!s.source) return null;
     if (s.source.type === "design") return el("span", { class: "tag tag--r", title: "Drawn in code from the brand lock. No model was used, and the same card draws the same picture.", text: "Designed" });
     if (s.source.type === "own") return el("span", { class: "tag tag--r", title: "Your own media" + (s.source.media ? ", " + s.source.media : ""), text: "Yours" });
+    if (s.source.type === "missing") return el("span", { class: "tag tag--r", title: s.source.why || "Not in your media", text: "Shoot it" });
+    var q = s.source.quote;
+    if (s.optional && !s.frames.length && !(s.clips && s.clips.length)) return el("span", { class: "tag tag--r", title: s.source.why || "", text: q && q.usd != null ? "Not run · quoted $" + q.usd.toFixed(2) : "Not run" });
     return el("span", { class: "tag tag--r", title: s.source.why || "A gap to fill with a generator", text: s.source.start && s.source.end ? "Bridge" : s.frames.length ? "Made" : "To make" });
+  }
+  function flagTags(s) {
+    return (s.flags || []).filter(function (f) { return f.level === "weak"; }).map(function (f) {
+      return el("span", { class: "tag tag--flag", title: f.note, text: "Weak · " + (f.short || f.kind) });
+    });
   }
   function mediaById(id) { var m = D.media.items; for (var i = 0; i < m.length; i++) if (m[i].id === id) return m[i]; return null; }
   function sourceBlock(s) {
     var src = s.source; if (!src) return null;
     if (src.type === "design") return el("div", { class: "srcb", style: "--c:var(--accept)" }, el("div", { class: "lab" }, el("i"), "Designed frame · " + (src.card || "card")),
       el("div", { text: "Drawn in code from the brand lock." }), el("p", { text: "No model was used. The card is in design/cards.json, and the same card draws the same picture. Change it and run sk design." }));
+    var flags = (s.flags || []).filter(function (f) { return f.level === "weak"; }).map(function (f) {
+      return el("p", { class: "flag" }, el("b", { text: "Weak. " }), f.note);
+    });
     if (src.type === "own") {
       var m = mediaById(src.media), cut = src.in != null && src.out != null ? fmt(src.in) + " to " + fmt(src.out) + "s of it" : null;
+      var weighed = (src.considered || []).map(mediaById).filter(Boolean);
       return el("div", { class: "srcb", style: "--c:var(--accept)" }, el("div", { class: "lab" }, el("i"), "Your " + (m && m.kind === "clip" ? "clip" : "photo") + " · " + (src.media || "")),
-        el("div", { text: (m && m.name ? m.name : "not in the media list") + (cut ? " · " + cut : "") }), m && m.note ? el("p", { text: m.note }) : null);
+        el("div", { text: (m && m.name ? m.name : "not in the media list") + (cut ? " · " + cut : "") }),
+        src.why ? el("p", { class: "why" }, el("b", { text: "Why this pick. " }), src.why) : null,
+        weighed.length ? el("p", { text: "Also weighed: " + weighed.map(function (w) { return w.id + " " + w.name; }).join(", ") + "." }) : null,
+        m && m.note ? el("p", { text: m.note }) : null, flags);
     }
-    var bridge = src.start && src.end;
-    return el("div", { class: "srcb", style: "--c:var(--revise)" }, el("div", { class: "lab" }, el("i"), bridge ? "Bridge to make" : "Gap to make" + (src.model ? " · " + src.model : "")),
+    if (src.type === "missing") return el("div", { class: "srcb", style: "--c:var(--miss)" }, el("div", { class: "lab" }, el("i"), "Missing from your media"),
+      src.why ? el("div", { text: src.why }) : null, el("p", { text: "Shoot it and plan again. It is not in the cut, and nothing is generated for it." }));
+    var bridge = src.start && src.end, q = src.quote;
+    var notRun = s.optional && !s.frames.length && !(s.clips && s.clips.length);
+    return el("div", { class: "srcb", style: "--c:" + (notRun ? "var(--wait)" : "var(--revise)") }, el("div", { class: "lab" }, el("i"), (notRun ? "Optional, not run · " : "") + (bridge ? "Bridge" : "Gap to make") + (src.model ? " · " + src.model : "")),
       src.why ? el("div", { text: src.why }) : null,
-      bridge ? el("p", { text: "The clip starts on the last frame of " + src.start + " and ends on the first frame of " + src.end + ", so the cut between them disappears." }) : null);
+      bridge ? el("p", { text: "The clip would start on the last frame of " + src.start + " and end on the first frame of " + src.end + ", so the cut between them disappears." }) : null,
+      q ? el("p", { text: q.usd != null ? "Quoted $" + q.usd.toFixed(2) + (q.units ? " for " + q.units + " s" : "") + (q.endpoint ? " on " + q.endpoint : "") + ". Nothing was sent." : (q.why || "Not priced.") }) : null);
   }
   var upQueue = [], upBusy = false, upLine = null;
   function upload(files) {
@@ -722,15 +755,17 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
   }
 
   // ---------- page ----------
-  var counts = { plan: 0, frame: 0, check: 0, revise: 0, accept: 0 };
+  var counts = { plan: 0, frame: 0, check: 0, revise: 0, accept: 0, missing: 0, optional: 0 };
   D.shots.forEach(function (s) { counts[s.status]++; });
-  var total = D.shots.length || 1;
-  var prompted = total - counts.plan, framed = D.shots.filter(function (s) { return s.frames.length; }).length;
-  var checked = D.shots.filter(function (s) { return s.critiques.length; }).length;
+  // missing and optional shots are listed, never counted as the work of the cut
+  var core = D.shots.filter(function (s) { return s.status !== "missing" && s.status !== "optional"; });
+  var total = core.length || 1;
+  var prompted = core.length - counts.plan, framed = core.filter(function (s) { return s.frames.length; }).length;
+  var checked = core.filter(function (s) { return s.critiques.length; }).length;
 
   function stat(label, n, color) {
     return el("div", { class: "stat" }, el("div", { class: "lab", text: label }),
-      el("div", { class: "stat__n" }, String(n), el("small", { text: "/ " + D.shots.length })),
+      el("div", { class: "stat__n" }, String(n), el("small", { text: "/ " + core.length })),
       el("div", { class: "meter" }, el("i", { style: "--w:" + Math.round(n / total * 100) + "%;--c:" + color })));
   }
 
@@ -807,7 +842,7 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
       next);
 
     var stats = el("section", { class: "stats", "aria-label": "Progress" },
-      stat("Planned", D.shots.length, "var(--ink)"), stat("Prompted", prompted, "var(--mut)"),
+      stat("Planned", core.length, "var(--ink)"), stat("Prompted", prompted, "var(--mut)"),
       stat("Framed", framed, "var(--check)"), stat("Accepted", counts.accept, "var(--accept)"));
 
     app.appendChild(bar); app.appendChild(head);
@@ -840,9 +875,10 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
         el("div", { class: "card__state" }, el("span", { class: "tag", style: "--c:" + STATUS[s.status].color }, el("i"), STATUS[s.status].label),
           s.frames.length > 1 ? el("span", { class: "tag tag--r", title: "Round " + s.frames[s.frames.length - 1].round, text: "R" + s.frames[s.frames.length - 1].round }) : null,
           s.clips && s.clips.length ? el("span", { class: "tag tag--r", title: "This shot has a clip", text: "Clip" }) : null,
-          srcTag(s)),
-        el("div", { class: "card__meta" }, el("b", { text: s.n }), el("span", { text: s.beat || "" }), el("time", { text: fmt(s.start) + " to " + fmt(s.end) + "s" })),
-        el("div", { class: "card__sub", text: s.subject || "" }));
+          srcTag(s), flagTags(s)),
+        el("div", { class: "card__meta" }, el("b", { text: s.n }), el("span", { text: s.beat || "" }), el("time", { text: s.end > s.start ? fmt(s.start) + " to " + fmt(s.end) + "s" : "not in the cut" })),
+        s.source && s.source.type === "own" && s.source.why ? el("div", { class: "card__why", text: s.source.why }) : el("div", { class: "card__sub", text: s.subject || "" }));
+      if (s.status === "missing" || s.status === "optional") card.classList.add("card--opt");
       cards[s.id] = card; sheet.appendChild(card);
     });
     app.appendChild(sheet);
@@ -899,6 +935,7 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
 
     var shots = el("div", { class: "track track--shots" });
     D.shots.forEach(function (s) {
+      if (!(s.end > s.start) && s.optional) return;
       var f = s.frames[s.frames.length - 1];
       var seg = el("button", { class: "seg", type: "button", title: s.id + " · " + s.beat + " · " + STATUS[s.status].label, style: "--d:" + Math.max(0.2, s.end - s.start) + ";--c:" + STATUS[s.status].color,
         onclick: function () { open(s.id); } }, el("span", { text: s.beat || "" }), el("b", { text: s.n }));
@@ -921,7 +958,15 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
     var grid = el("div", { class: "tl__in" }, el("span"), ruler, el("span", { class: "lab tl__k", text: "Shots" }), shots);
     if (anyT) { grid.appendChild(el("span", { class: "lab tl__k", text: "Text" })); grid.appendChild(text); }
     if (anyV) { grid.appendChild(el("span", { class: "lab tl__k", text: "VO" })); grid.appendChild(vo); }
-    return el("section", { class: "tl", "aria-label": "Timeline" }, el("div", { class: "tl__scroll" }, grid));
+    var scroller = el("div", { class: "tl__scroll" }, grid);
+    var hint = el("div", { class: "tl__hint", "aria-hidden": "true" }, el("span", { text: "Swipe for the whole timeline" }), el("b", { text: "\u2192" }));
+    var box = el("section", { class: "tl", "aria-label": "Timeline" }, scroller, hint);
+    // the cue shows only while there is more timeline to the right, and leaves once it has been scrolled to the end
+    function edge() { box.classList.toggle("tl--more", scroller.scrollWidth - scroller.clientWidth - scroller.scrollLeft > 8); }
+    scroller.addEventListener("scroll", edge, { passive: true });
+    window.addEventListener("resize", edge);
+    requestAnimationFrame(edge);
+    return box;
   }
 
   function setFilter(f) {
