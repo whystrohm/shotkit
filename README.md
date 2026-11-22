@@ -16,7 +16,8 @@ It runs on your Mac, with Claude Code or Codex, and your own keys.</p>
 </p>
 
 <p align="center">
-  <a href="#try-canvas"><strong>Try Canvas</strong></a> ·
+  <a href="https://whystrohm.com/shotkit"><strong>Full tour</strong></a> ·
+  <a href="#try-canvas">Try Canvas</a> ·
   <a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run">Watch a real run</a> ·
   <a href="https://whystrohm.com/shotkit/examples/whystrohm-how-we-work/board.html">Open its board</a> ·
   <a href="#install">Claude Code</a> ·
