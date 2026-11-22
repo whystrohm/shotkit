@@ -1,11 +1,11 @@
-# Brand Lock: Northwind Coffee Roasters
+# Brand Lock: WhyStrohm
 
 ## Identity
 
-**Brand:** Northwind Coffee Roasters
-**One-line description:** Small-batch coffee, roasted and shipped the same morning, with full origin transparency, for people who want real coffee and no subscription to babysit.
-**Archetype:** Maker, with a Rebel edge against pretension (frames the category's problem as cheap beans hidden behind burnt roasts and luxury pricing).
-**Voice posture:** Plainspoken and confident. Short declaratives, dry, no decoration.
+**Brand:** WhyStrohm
+**One-line description:** A Boston brand and content studio that sets brand rules, makes videos and posts, publishes them and reports monthly for founder-led companies.
+**Archetype:** Sage, with a Caregiver edge (explains the work plainly, then takes it off the founder's plate).
+**Voice posture:** Plain, direct, practical. Short sentences that say who does what and when.
 
 ## Palette
 
@@ -13,69 +13,74 @@ Every hex value here is allowed. Anything outside this list is not.
 
 | Role | Hex | Use |
 |---|---|---|
-| Background | `#F4EFE6` | Paper cream, primary canvas |
-| Ink | `#2B2018` | Espresso brown, primary text and dark elements |
-| Accent | `#C5562B` | Ember, highlights and CTAs |
-| Muted | `#8A8076` | Stone, secondary text and captions |
-| Rule | `#DCD3C4` | Borders and dividers |
+| Background | `#F6F5F2` | Warm off-white page background |
+| Accent | `#E4552A` | Orange-red, emphasis and calls to action |
+| Ink | `#07080A` | Near-black text and dark sections |
+| Surface | `#FFFFFF` | Cards and clean surfaces |
+| Muted | `#8E8C87` | Secondary text |
+| Dark surface | `#101112` | Dark panels and alternate sections |
+| Rule | `#BFCBD7` | Pale blue-grey borders and fine detail |
 
 ## Typography
 
-**Display font:** `Tiempos Headline Semibold`, serif
-**Body font:** `Söhne Regular`, sans-serif, Medium for emphasis
+**Display font:** `Archivo`, sans-serif, ExtraBold for headlines
+**Body font:** `IBM Plex Mono`, monospace, for labels and small text
 
 ## Mood adjectives
 
-- plainspoken, not precious
-- warm, not cozy-cute
-- honest about origin
-- unhurried
+- calm
+- direct
+- systematic
+- founder-friendly
+- grounded
 
 ## Never list
 
-- never use stock smiles or posed lifestyle photography
-- never use latte art as decoration
-- never use the word "artisanal"
-- never use exclamation points
-- never shoot glossy product-on-white; matte and natural-light only
-- never lean on burnt, dark-roast cliche imagery
+- no hype or inflated claims
+- no jargon-heavy marketing language
+- never hide that some content uses AI
+- never imply a crew or a shoot is needed
+- never post without the client's approval
+- no promises without scope or fee agreed in writing
 
 ## Aspect ratios
 
-Default: 4:5 and 9:16 for social, 16:9 for the web hero.
+Default: 16:9 for the web, 9:16 and 4:5 for social.
 
 ## Color grade direction
 
-> Matte, low contrast, natural window light, warm but restrained. Reminiscent of Kinfolk editorial photography. Never glossy commercial product lighting.
+> Dark and controlled. Matte black and bone-white surfaces in deep space, one glossy black highlight, soft top light. The orange accent appears only in type and interface, never as a colour cast.
 
 ## Motion language
 
-> Minimal and unhurried. Static or slow push only. Cuts land on action, not on a timer. Type sets in place, it does not bounce or wobble. No fast cuts, no whip pans.
+> Slow, deliberate camera moves. Pieces assemble and settle rather than bounce. Each cut carries a shape or a movement into the next shot. Type sets in place, plainly.
 
 ## Voice rules
 
-- no exclamation points, anywhere
-- never the word "artisanal" (or "curated", "elevated")
-- short declarative sentences; cut adjectives before nouns that do not need them
-- prefer specific origin claims (farm, region, roast date) over vague quality words
-- no hype words ("best", "premium", "game-changing")
+- use short, plain sentences
+- speak to the founder as "you" and say "we" for the studio
+- state what happens, who does it and when
+- name the problem concretely before the offer
+- answer questions straight, starting with yes or no
+- use numbered steps and short labelled lists
 
 ## Extraction notes
 
-Audit trail for this extraction. Values not listed here were read directly from an asset (`extracted`): the four palette hex from the site CSS, both font names from the CSS, the never-list lines from the brand sheet, and the aspect ratios from the brand sheet.
+Audit trail for this extraction. Read from https://whystrohm.com in Shotkit Canvas on 2026-11-21: the page text and its stylesheets. Read directly (`extracted`): the seven palette hex values and both font names. Drawn from the site's copy: the description, the never list and the voice rules.
 
 **Inferred** (reasoned from evidence, reasonable to ship):
-- Archetype "Maker / Rebel", from "we are roasters, not a lifestyle brand. The coffee does the talking" and the framing of competitors as burnt-cheap or overpriced.
-- Mood adjectives, from the plainspoken homepage copy and the matte, natural-light photography described on the brand sheet.
-- Color grade direction, inferred from the brand sheet's photography notes (matte, low-contrast, window light); no graded footage was provided.
+- Archetype "Sage / Caregiver", voice posture and mood adjectives, from copy that explains each step plainly and says the client approves and keeps everything.
+- Display and body roles. The site lists both fonts but does not say which is which, so the pairing is inferred.
+- Color grade direction and motion language, from the brief of the run that used this lock, which describes the homepage's 3D look. The site's stylesheets state no video rules.
+- Aspect ratios, from the offer copy, which names website and social formats.
 
 **Needs confirmation** (best estimate, please verify):
-- Rule color `#DCD3C4`, no divider/border color was given; estimated as a darker tint of the paper background. Confirm or replace.
-- Font weights (Tiempos Headline Semibold, Söhne Regular/Medium), fonts are confirmed from CSS, weights are estimated from visual weight. Confirm against the brand book.
-- Motion language, no motion assets were provided; this is a conservative default consistent with the Plainspoken/Confident posture. Confirm against any existing video.
+- Rule colour `#BFCBD7`. The site uses it for fine detail; its role as the border colour is a guess.
+- Colours named in the CSS that are framework defaults (red, amber, emerald, cyan, zinc) were left out. Confirm none of them is a brand colour.
+- The site gives no logo rules, so none are recorded.
 
 ---
 
-**Last updated:** 2026-06-18
+**Last updated:** 2026-11-21
 **Owner:** extracted
 **Version:** 1.0

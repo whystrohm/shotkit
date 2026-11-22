@@ -41,7 +41,7 @@ for a variable font a width, as in `Archivo Bold 700 wdth 80`. The tools split t
 family, a weight and a width, and the preview sets each as its own CSS property. The mono
 font, when declared, is what the preview uses for ids, labels and timings.
 
-Two fonts is the production maximum. Three only if one is reserved for code or data (mono). Past three, the brand stops being recognizable. This is not aesthetic preference, it is a perception fact across all serious brand systems.
+Two fonts is the maximum Shotkit plans for. Three only if one is reserved for code or data (mono). This is a design rule in this pack, chosen so every shot reads as the same brand.
 
 ### Mood adjectives
 
@@ -82,6 +82,20 @@ This field flows into the shot-grammar reference (it constrains what `motion` va
 Copy-level constraints that apply to VO and on-screen text.
 
 Same logic as the never-list. "No em dashes" is more useful than "good copy." "Prefer specific numbers over vague claims" is more useful than "be precise." Voice rules turn into prompt constraints in the storyboard-architect skill and into validators in commercial pipelines.
+
+### Caption style (Canvas)
+
+Optional. Canvas reads one line, `**Caption style:** <style>`, to set the on-screen lines
+in its cuts:
+
+| Style | Look |
+|---|---|
+| `line` | The default. Display type in the brand's ink colour, the key word in the accent, over a soft wash. |
+| `plate` | Each line in the body font on a solid plate of the ink colour. |
+| `chip` | Like `line`, with the key word on a chip of the accent colour. |
+| `type` | Display type in the background colour, straight on the footage, with no box or wash. |
+
+The plugin's board and export do not read it yet.
 
 ## Why hex precision matters
 
@@ -162,7 +176,7 @@ This is the architectural reason the pack composes. Change the brand-lock once, 
 
 Five patterns show up repeatedly in first-draft brand-locks.
 
-**Vague mood adjectives.** "Professional, modern, friendly" describes 90% of brands. Replace with contrast clauses ("operator not creator", "considered not reactive") that do real work.
+**Vague mood adjectives.** "Professional, modern, friendly" could describe almost any brand. Replace with contrast clauses ("operator not creator", "considered not reactive") that do real work.
 
 **Paraphrased palette.** "Warm cream", "deep navy", "coral pop." Replace with hex values. The schema requires them anyway.
 

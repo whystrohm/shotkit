@@ -4,6 +4,66 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.7.0-rc.3] - 2026-11-21
+
+### Added
+
+- **Add a brand from its website in Canvas.** Canvas reads the page and its
+  stylesheets and saves a brand lock from what the site shows.
+- **Plan a video from one sentence in Canvas chat.** Claude plans the shots from the
+  brief and the brand lock. Nothing is generated.
+- **Revise what the critic sent back.** One click writes new prompts for the shots
+  it rejected; the next prices the new frames. Needs Claude Code.
+- **Captions as plain type in Canvas.** `**Caption style:** type` in a brand lock sets
+  the lines straight on the footage, with no box. See
+  [Brand locks](docs/brand-lock-anatomy.md#caption-style-canvas).
+
+### Fixed
+
+- Add a brand and Plan a video work in the downloaded Canvas with a Claude key. In
+  rc.2 they needed Claude Code, and the chat offered them anyway.
+- The critic saves its verdicts to the run.
+- Wide, vertical, feed and square cuts sit on the board in their real shapes.
+- A cut fills every size with the clips. A wide clip no longer sits between bars in
+  a square or vertical cut.
+- A shot with only a clip shows it in the storyboard and takes pinned notes.
+- A cut made in chat keeps the shape of its shots and can skip captions.
+- The planner no longer asks for `sk memory`, which this plugin does not have.
+- Canvas rejects malformed requests, reports upload errors and finishes a post
+  render without `exiftool`.
+
+### Changed
+
+- **README.** Shorter and plainer. The demo keeps the Media Tsunami plan, check and
+  rough cut, and adds the board with clips playing and a shot moved, and one cut in
+  every size. Two real WhyStrohm runs are the examples, and the worked brand lock is
+  based on whystrohm.com in place of the fictional coffee brand. The fictional
+  roofing, coffee and software examples are gone from the README and the demo.
+
+## [3.7.0-rc.2] - 2026-11-21
+
+### Added
+
+- **Canvas for Codex and other local MCP clients.** Read a storyboard by run
+  and revise it against the current board version. See
+  [Codex setup](README.md#use-canvas-from-codex).
+
+### Changed
+
+- **Canvas first run.** Added the release-asset download, checksum, example
+  and Claude Console setup steps to the README.
+- CI checks that VERSION and the Claude plugin manifests agree.
+
+## [3.7.0-rc.1] - 2026-11-21
+
+### Added
+
+- **Open a run in Canvas.** `sk workspace` passes a Shotkit project or its
+  `output/` directory to an explicitly configured local Canvas installation.
+  It supports browser launch, local rules mode, isolated project discovery
+  and a chosen port. See
+  [the workspace setup](README.md#install).
+
 ### Fixed
 
 - **A designed frame could come out in a different typeface from one draw to the next.**
@@ -13,9 +73,9 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ### Changed
 
-- **A shorter README demo.** 14 seconds, down from 20. It types one line, plans and
-  checks the Media Tsunami run and plays its rough cut, then shows three more boards:
-  Brightdock, Kestrel Roofing and Harbor Roast.
+- **A new README demo.** The WhyStrohm project shows the home brief, chapter
+  navigation, frame notes, shot reordering, wide and feed comparison, and the
+  editable cut action.
 
 ## [3.6.0] - 2026-11-19
 

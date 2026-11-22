@@ -1,30 +1,33 @@
-<h1 align="center">Shotkit</h1>
+<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><img src="docs/images/demo.webp" alt="Shotkit 演示：在 Claude Code 里输入一句简报，规划每个镜头、检查每个画面，带台词的粗剪，然后是片段在看板上播放、一个镜头被移动，最后一个剪辑以 16:9、9:16、4:5 和 1:1 输出。" width="100%"></a></p>
 
-<p align="center"><strong>先把整支视频规划好，再去生成第一帧。</strong><br>
-Claude Code 的 AI 分镜技能包。一句需求，或者一个装着你自己素材的文件夹，<br>
-变成一块看板：每个镜头都已规划、写好提示词、并经过检查。</p>
+<h3 align="center">批量交付符合品牌的视频。</h3>
+
+<p align="center">在看板上规划每个镜头，检查每一帧，渲染每种尺寸。<br>
+用你自己的素材，或在有用的地方用 AI。每个报价都等你确认。<br>
+它在你自己的 Mac 上运行，配合 Claude Code 或 Codex，用你自己的密钥。</p>
 
 <p align="center"><a href="README.md">English</a> · <strong>简体中文</strong></p>
 
-![Shotkit 演示：在 Claude Code 里输入一句需求，每个镜头得到规划，每个画面经过检查，粗剪带着文字播放，随后是软件公司、屋顶公司和咖啡烘焙店的看板](docs/images/demo.webp)
+<p align="center"><strong>3.7 新增：Shotkit Canvas。</strong>每个片段都在看板上播放，镜头可以移动和修剪，<br>
+一个剪辑输出所有尺寸。免费开源。<a href="https://github.com/whystrohm/shotkit/releases">下载</a></p>
 
-三个已完成的案例，点击图片打开在线看板。
+两个真实的 WhyStrohm 案例，点击图片打开在线看板。
 
-| Media Tsunami · 16:9 | 屋顶工程公司 · 16:9 | 软件发布 · 9:16 |
-|---|---|---|
-| [![Media Tsunami 看板](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) | [![Kestrel Roofing 看板](docs/images/example-kestrel-roofing.jpg)](https://whystrohm.com/shotkit/examples/kestrel-roofing/board.html) | [![Brightdock 看板](docs/images/example-brightdock.jpg)](examples/brightdock) |
+| How we work · 在 Canvas 中完成 · 16:9 | Media Tsunami · 16:9 |
+|---|---|
+| [![How we work 看板](docs/images/example-whystrohm-how-we-work.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-how-we-work/board.html) | [![Media Tsunami 看板](docs/images/example-whystrohm-media-tsunami.jpg)](https://whystrohm.com/shotkit/examples/whystrohm-media-tsunami/board.html) |
 
 六个 Claude 技能加一组小工具，由 [WhyStrohm](https://whystrohm.com) 开发。
 Apache 2.0 开源，免费。仓库里不带任何密钥。
 
 ## 为什么需要它
 
-图像和视频生成模型一次只出一个片段。一支 30 秒的视频是八个必须互相对得上的镜头：
+生成一个片段已经很容易，难的是交付五十个看起来属于同一个品牌的视频。一支视频里的每个镜头都必须互相对得上：
 同一个人、同一个场景、同一种光线、同一个品牌，文字还要放得进画面。
 一个一个地写提示词，第五个镜头就和第二个对不上，品牌色会跑偏，
 而且直到剪辑时才有人认真看每一帧。
 
-Shotkit 做的是生成之前的那一步：
+Shotkit 负责规划、检查和剪辑：
 
 - **规划每个镜头**：时长、景别、运动和画面文字，按叙事框架排好。
 - **锁定不能变的东西**：整支视频共用的人物、场景、光线和调色，以及品牌的颜色和字体。
@@ -33,7 +36,52 @@ Shotkit 做的是生成之前的那一步：
 - **优先用你自己的素材**：指向一个照片和视频的文件夹，它逐个查看、放到合适的镜头上，只把缺的部分留给生成模型。
 - **全部放在一块看板上**：在浏览器里打开，每段内容都能一键复制给任何模型。
 
-Shotkit 负责规划镜头，接入你自己的密钥后还能生成画面和片段。它不负责剪辑成片。
+Shotkit 插件负责规划镜头、检查画面并生成粗剪。Canvas 支持在本机审阅、调整镜头与准备交接文件。
+
+## 试用 Canvas
+
+可以先看[一次真实运行](https://whystrohm.com/blog/shotkit-canvas-one-real-run)和[它的看板](https://whystrohm.com/shotkit/examples/whystrohm-how-we-work/board.html)。
+
+在已发布的 Canvas 预览版 **Assets** 中下载 `shotkit-canvas-*.zip` 和对应的校验文件。
+GitHub 的 **Source code** 压缩包包含插件与 CLI。 [GitHub Releases](https://github.com/whystrohm/shotkit/releases)
+
+把这两个文件放在单独的文件夹，在该目录校验、解压并启动。macOS 需要 Python 3.10 或更高版本。
+
+```sh
+shasum -a 256 -c shotkit-canvas-*.zip.sha256 &&
+unzip shotkit-canvas-*.zip &&
+cd shotkit-canvas &&
+./start.sh --isolated --open --port 0
+```
+
+在主页打开 **WhyStrohm · How it works**，可以播放影片、比较横版与信息流版，
+也可以在画面上添加批注。**The flight of Apollo 11** 展示长片的章节导航。
+
+如需连接 Claude，运行 `./start.sh --open`，进入 **Settings and keys → Claude**，
+粘贴 API 密钥并选择 **Save and check**。密钥保存在 macOS 钥匙串中。
+[Claude Console](https://platform.claude.com/settings/keys)
+
+连接后，在 Home 选择 **Add a brand** 并输入网站，Canvas 会保存该网站显示的颜色、字体和文案规则。
+然后在聊天中用一句话描述影片，Claude 会规划镜头并打开分镜。规划不会生成任何素材。
+
+### 在 Canvas 中生成画面和片段
+
+生成还需要已登录的 Claude Code、这个仓库的克隆，以及在 **Settings and keys** 中保存的
+[fal.ai](https://fal.ai) 密钥。用下面的方式启动 Canvas，并在这个模式下规划影片：
+
+```sh
+SHOTKIT_HOME=/path/to/shotkit SHOTKIT_CANVAS_DATA="$HOME/.shotkit/canvas" python3 serve.py --open
+```
+
+Claude Code 负责写提示词、运行评审和写修改，Shotkit 的工具负责报价并生成画面和片段。
+每个报价都要等你确认。只用下载包里的 `start.sh` 时，评审和修改不会运行。
+
+### 长录像
+
+从带时间码的字幕（SRT 文件）开始一个分镜，并添加 MP4 录像。Canvas 会按时间码把它分成章节和镜头，
+逐段播放，并直接从录像中剪出任意一章。也可以从脚本开始，每行一个镜头。
+
+Codex 可以通过 MCP 连接本机工作区。 [Codex 设置](README.md#use-canvas-from-codex)
 
 ## 安装
 
@@ -58,6 +106,26 @@ Shotkit 负责规划镜头，接入你自己的密钥后还能生成画面和片
 git clone https://github.com/whystrohm/shotkit.git
 cd shotkit && ./install.sh
 ```
+
+### 在 Canvas 中打开项目
+
+安装支持工作区 API 1 的 Shotkit Canvas 后，可通过 CLI 打开项目。
+从仓库运行时使用 `tools/sk`。运行 `./install.sh` 后，使用以下路径。
+
+```bash
+~/.claude/shotkit-tools/sk workspace "/path/to/project" \
+  --runtime "/path/to/shotkit-canvas" --open
+```
+
+项目目录和它的 `output/` 目录指向同一次工作记录。设置
+`SHOTKIT_CANVAS_HOME` 后可省略 `--runtime`。`--rules-only`
+可在无需连接 AI 的情况下审阅。`--port 0` 会选择可用的本地端口。
+`--isolated` 跳过对其他项目和已保存密钥的查找。
+插件自带的便携看板仍可通过 `sk board output/ --open` 打开。
+
+Python 3.10 或更高版本可打开主页、分镜和已经完成的示例影片。
+如需预览可编辑剪辑，请在 Canvas 目录运行
+`npm ci` 和 `npm run build`，然后重启 Canvas。
 
 ## 从你已有的素材开始
 
@@ -101,10 +169,12 @@ Claude 会查看每一张照片和每一段视频，把它们放到合适的镜�
 
 ## 数据去哪了
 
-Shotkit 没有服务器，也不需要账号。看板、检查和工具都在你的电脑上运行，不向外发送任何内容。
-规划和评审由 Claude 完成，所以 Claude 会收到它读取的内容：你的需求、品牌资料，
-以及它查看过的素材和画面的缩略图，与你平时使用 Claude 的条款相同。
-只有当你用自己的密钥发起生成时，请求才会发送到 fal.ai。
+便携看板和检查在电脑本地运行。Canvas 的服务仅监听本机。
+使用 Claude Code 规划和评审时，Claude 会收到读取的需求、品牌资料和素材。
+连接 Claude Console 后，Canvas 聊天会发送请求和相关项目内容。
+使用 fal.ai 生成素材需要使用自己的密钥，报价查询和你确认的生成任务会发到 fal.ai。
+**Add a brand** 会读取你输入的网站页面。看板联网打开时会加载 Google Fonts。
+只有你选择发送的内容才会发到 GoHighLevel。 [安全与数据](SECURITY.md)
 
 ## 人工确认
 
@@ -119,11 +189,10 @@ Shotkit 没有服务器，也不需要账号。看板、检查和工具都在你
 之后内容有变，看板和 `sk validate` 会提示这次确认已失效。名字是手动输入的，
 所以这是一条记录，不是签名。
 
-## Shotkit 不做什么
+## 输出
 
-Shotkit 给出的是计划和原始素材，不是成片。剪辑、文字排版、调色、声音、
-各平台尺寸和发布不在其中。开发 Shotkit 的 WhyStrohm 把这部分作为付费服务提供：
-[whystrohm.com](https://whystrohm.com)。
+便携看板可以导出镜头表、幻灯片和粗剪。Canvas 可以移动镜头、修剪片段、修改台词，
+以 16:9、9:16、4:5 和 1:1 输出剪辑，并将带时间信息的镜头表和字幕交给剪辑师。 [导出](docs/export.md)
 
 ## 文档
 
@@ -132,3 +201,8 @@ Shotkit 给出的是计划和原始素材，不是成片。剪辑、文字排版
 ## 许可
 
 Apache 2.0。见 [LICENSE](LICENSE)。
+
+## 开发者
+
+Shotkit 由 WhyStrohm 的 Yuri Strohm 创建和维护。OpenAI Codex 和 Anthropic
+Claude 协助实现与审查。

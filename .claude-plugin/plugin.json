@@ -1,7 +1,7 @@
 {
   "name": "shotkit",
   "description": "Plan a video in Claude Code. One line of brief, or a folder of your own footage, becomes a board with every shot planned, prompted and checked.",
-  "version": "3.6.0",
+  "version": "3.7.0-rc.3",
   "author": {
     "name": "WhyStrohm",
     "email": "hello@whystrohm.com",
