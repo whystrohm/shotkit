@@ -158,7 +158,9 @@ def check_file(
             f"project.aspect '{project.get('aspect')}'"
         )
 
-    shot_ids = [s["id"] for s in shots_data.get("shots", [])]
+    # a shot on the user's own media, a designed frame or a missing picture to shoot has no prompt to write
+    shot_ids = [s["id"] for s in shots_data.get("shots", [])
+                if (s.get("source") or {}).get("type") not in ("own", "design", "missing")]
     by_id = {s["id"]: s for s in shots_data.get("shots", [])}
     series = shots_data.get("series_lock", {})
 
@@ -357,6 +359,17 @@ def selftest() -> int:
             else:
                 print(f"  FAIL  selftest: {label} -> {errors or '(no errors)'}")
                 ok = False
+
+        # A shot on the user's own media needs no prompt, so a pass may leave it out.
+        own_fixture = {**SHOTS_FIXTURE, "shots": [{"id": "shot_01"}, {"id": "shot_02", "source": {"type": "own", "media": "m01"}}]}
+        p = out / "prompts" / "round-1" / "flux.txt"
+        p.write_text(_fixture(good))
+        errors, _ = check_file(p, own_fixture, caps)
+        if not any("missing a block" in e for e in errors):
+            print("  ok    selftest: a shot on your own media needs no block")
+        else:
+            print(f"  FAIL  selftest: own-media shot reported missing -> {errors}")
+            ok = False
 
         # Rule 1: overlay copy leaking into a prompt.
         (out / "text-overlays.json").write_text(
