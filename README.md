@@ -1,4 +1,4 @@
-<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><img src="docs/images/demo.webp" alt="Shotkit demo: a brief typed in Claude Code, every shot planned and every frame checked, the rough cut with its lines, then a board where the clips play and a shot is moved, and one cut in 16:9, 9:16, 4:5 and 1:1." width="100%"></a></p>
+<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit demo: a brief typed in Claude Code, every shot planned and every frame checked, the rough cut with its lines, then a board where the clips play and a shot is moved, and one cut in 16:9, 9:16, 4:5 and 1:1." width="100%"></picture></a></p>
 
 <h3 align="center">Ship on-brand video at scale.</h3>
 
@@ -46,7 +46,12 @@ approve. It still takes your taste.
 - **Lets you see and cut.** Every clip plays on the board. Move shots, trim clips, change
   the lines and render the cut in 16:9, 9:16, 4:5 and 1:1 with Remotion.
 - **Shares the plan.** A storyboard page, a client page you can print to PDF, a PowerPoint
-  deck, stills and an edit list, so the people you work with can review it anywhere.
+  deck and stills, so the people you work with can review it anywhere.
+- **Hands off to your editor.** Export the cut as an edit decision list (CMX 3600) for
+  Premiere or Resolve, the on-screen lines as timed captions, and a shot list for the crew.
+  See [Export](docs/export.md).
+- **Built for agents.** Claude Code plans the shots and a separate critic checks each frame.
+  Codex can read the Canvas board and make edits you can undo. Every spend waits for your yes.
 
 ## Two ways to use it
 
@@ -73,9 +78,10 @@ price, let the critic check the frames, move shots and pin notes, then cut every
 
 ## Done for you
 
-Shotkit is free. If you want the whole system on your brand, WhyStrohm sets it up and runs it:
-your brand, footage library and templates, finished videos rendered in every size, and posting
-every month. [Talk to us](https://whystrohm.com/apply).
+Shotkit is free. It is one part of the system WhyStrohm runs on a Mac Studio. If you want the
+whole system on your brand, we set it up and run it: your brand, footage library and templates,
+finished videos rendered in every size, and posting every month.
+[Talk to us](https://whystrohm.com/apply).
 
 ## Long recordings
 
@@ -245,6 +251,13 @@ board, a fictional software launch.
 [The audit trail](docs/audit-trail-pattern.md) ·
 [Connecting generators](docs/connecting-to-generators.md) ·
 [Changelog](CHANGELOG.md)
+
+## Feedback
+
+Tell us what broke or what you want next.
+[Open an issue](https://github.com/whystrohm/shotkit/issues),
+[start a discussion](https://github.com/whystrohm/shotkit/discussions), or write to
+[hello@whystrohm.com](mailto:hello@whystrohm.com).
 
 ## Contributing, license and who built this
 
