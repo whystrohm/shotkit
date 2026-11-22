@@ -1,4 +1,4 @@
-<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><img src="docs/images/demo.webp" alt="Shotkit 演示：在 Claude Code 里输入一句简报，规划每个镜头、检查每个画面，带台词的粗剪，然后是片段在看板上播放、一个镜头被移动，最后一个剪辑以 16:9、9:16、4:5 和 1:1 输出。" width="100%"></a></p>
+<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit 演示：在 Claude Code 里输入一句简报，规划每个镜头、检查每个画面，带台词的粗剪，然后是片段在看板上播放、一个镜头被移动，最后一个剪辑以 16:9、9:16、4:5 和 1:1 输出。" width="100%"></picture></a></p>
 
 <h3 align="center">批量交付符合品牌的视频。</h3>
 
@@ -50,6 +50,8 @@ Shotkit 负责规划、检查和剪辑：
 - **记住你的喜好**：对片段、字幕或渲染点喜欢或不喜欢并写明原因，Canvas 会把它存成这个品牌的偏好，你可以查看和修改，下次聊天会照着做。不会用你的文件训练模型。
 - **优先用你自己的素材**：指向一个照片和视频的文件夹，它逐个查看、放到合适的镜头上，只把缺的部分留给生成模型。
 - **全部放在一块看板上**：在浏览器里打开，每段内容都能一键复制给任何模型。
+- **交给剪辑师**：把剪辑导出为 Premiere 或 Resolve 可用的剪辑决策表（CMX 3600），画面文字导出为带时间的字幕，再加一份给拍摄团队的镜头表。见[导出](docs/export.md)。
+- **为智能体而建**：Claude Code 规划镜头，独立的审查者检查每一帧。Codex 可以读取 Canvas 看板并做可撤销的修改。每一笔花费都等你确认。
 
 Shotkit 插件负责规划镜头、检查画面并生成粗剪。Canvas 支持在本机审阅、调整镜头与准备交接文件。
 
@@ -216,8 +218,15 @@ Claude 会查看每一张照片和每一段视频，把它们放到合适的镜�
 
 ## 交给我们
 
-Shotkit 免费。如果你想把整套系统用在你的品牌上，WhyStrohm 可以帮你搭建并运行：品牌、素材库和模板，
+Shotkit 免费。它是 WhyStrohm 在一台 Mac Studio 上运行的整套系统中的一部分。如果你想把整套系统用在你的品牌上，我们可以帮你搭建并运行：品牌、素材库和模板，
 每种尺寸的成片，以及每月发布。[联系我们](https://whystrohm.com/apply)。
+
+## 反馈
+
+告诉我们哪里出了问题，或者你接下来想要什么。
+[提交 issue](https://github.com/whystrohm/shotkit/issues)、
+[发起讨论](https://github.com/whystrohm/shotkit/discussions)，或写信到
+[hello@whystrohm.com](mailto:hello@whystrohm.com)。
 
 ## 许可
 
