@@ -32,7 +32,7 @@ Making one clip is easy now. Shipping fifty that look like one brand is not. Sho
 that work a board: plan it, leave notes, break it, make it better, and render the version you
 approve. It still takes your taste.
 
-<p align="center"><img src="docs/images/features.png" alt="Four parts of Shotkit from one real run: the board with clips playing and a shot being moved; chat with Claude reading the brand and planning five shots; the critic's verdicts and a clip price waiting for approval; and one cut in 16:9, 9:16, 4:5 and 1:1." width="640"></p>
+![Four parts of Shotkit from one real run: the board with clips playing and a shot being moved; chat with Claude reading the brand and planning five shots; the critic's verdicts and a clip price waiting for approval; and one cut in 16:9, 9:16, 4:5 and 1:1.](docs/images/features.png)
 
 - **Keeps it on brand.** Paste your website. Shotkit saves your colours, type, voice and
   never-rules, and plans and checks every shot against them.
@@ -58,6 +58,13 @@ approve. It still takes your taste.
 
 Our run for WhyStrohm: five shots, three sent back and remade, four sizes, about ten minutes
 from brief to clips and $2.34 of generation at fal's quoted prices.
+
+## What you see in Canvas
+
+![Recorded in Canvas: the brief typed into Home chat, the frame price waiting for approval, the critic sending three shots back, a revision asked for in chat, and one cut made in every size.](docs/images/canvas-tour.webp)
+
+Recorded in the app. You ask in chat, see the price first, the critic sends three shots back,
+you ask Claude to fix them, and the cut comes out in every size.
 [Watch the 55-second film](https://whystrohm.com/blog/shotkit-canvas-one-real-run).
 
 ## Long recordings
