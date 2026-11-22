@@ -11,11 +11,17 @@
 <p align="center"><strong>3.7 新增：Shotkit Canvas。</strong>每个片段都在看板上播放，镜头可以移动和修剪，<br>
 一个剪辑输出所有尺寸。免费开源。<a href="https://github.com/whystrohm/shotkit/releases">下载</a></p>
 
-![Shotkit 的四个部分：看板、与 Claude 对话、检查和报价、每种尺寸。](docs/images/features.png)
+## 两种用法
+
+| | **插件** · 在 Claude Code 中 | **Canvas** · Mac 应用 |
+|---|---|---|
+| **适合** | 把一句简报和你的照片变成可以分享的清晰计划 | 在一个地方规划、检查并剪辑视频 |
+| **你会得到** | 分镜页面、可打印成 PDF 的客户页面、PowerPoint、静帧和粗剪 | 插件的全部计划，加上聊天、先确认的报价、在看板上播放的片段，以及每种尺寸的剪辑 |
+| **开始** | `/plugin install shotkit --marketplace whystrohm/shotkit` · [步骤](#安装) | 从 [Releases](https://github.com/whystrohm/shotkit/releases) 下载，运行 `./start.sh --open` · [步骤](#试用-canvas) |
 
 ![流程：添加品牌、规划看板、确认报价、检查每一帧、剪出每种尺寸。](docs/images/how-it-works.png)
 
-![在 Canvas 中录制：在聊天里输入简报、先看报价、审查退回三个镜头、在聊天里要求修改、剪出每种尺寸。](docs/images/canvas-tour.webp)
+![在 Canvas 中录制的八个步骤：打开 Canvas 并选择从哪里开始；从网站添加品牌；用一句话要一支视频；计划出现在看板上；先看报价并确认；审查检查每一帧；移动镜头并添加备注；剪出每种尺寸。](docs/images/canvas-tour.webp)
 
 两个真实的 WhyStrohm 案例，点击图片打开在线看板。
 
@@ -39,6 +45,7 @@ Shotkit 负责规划、检查和剪辑：
 - **锁定不能变的东西**：整支视频共用的人物、场景、光线和调色，以及品牌的颜色和字体。
 - **为每个镜头写提示词**：支持十个图像和视频生成模型，各用各的格式。
 - **检查每一帧**：对照镜头和品牌，指出要改什么，只重做那一个镜头。
+- **记住你的喜好**：对片段、字幕或渲染点喜欢或不喜欢并写明原因，Canvas 会把它存成这个品牌的偏好，你可以查看和修改，下次聊天会照着做。不会用你的文件训练模型。
 - **优先用你自己的素材**：指向一个照片和视频的文件夹，它逐个查看、放到合适的镜头上，只把缺的部分留给生成模型。
 - **全部放在一块看板上**：在浏览器里打开，每段内容都能一键复制给任何模型。
 
@@ -131,7 +138,8 @@ cd shotkit && ./install.sh
 
 Python 3.10 或更高版本可打开主页、分镜和已经完成的示例影片。
 如需预览可编辑剪辑，请在 Canvas 目录运行
-`npm ci` 和 `npm run build`，然后重启 Canvas。
+`npm ci` 和 `npm run build`，然后重启 Canvas。剪辑由 [Remotion](https://www.remotion.dev) 渲染；
+如果为公司渲染，请查看 [Remotion 的许可](https://www.remotion.dev/license)。
 
 ## 从你已有的素材开始
 
@@ -203,6 +211,11 @@ Claude 会查看每一张照片和每一段视频，把它们放到合适的镜�
 ## 文档
 
 完整文档为英文：[README](README.md) · [快速上手](https://whystrohm.com/shotkit/docs/quickstart) · [更新日志](CHANGELOG.md)
+
+## 交给我们
+
+Shotkit 免费。如果你想把整套系统用在你的品牌上，WhyStrohm 可以帮你搭建并运行：品牌、素材库和模板，
+每种尺寸的成片，以及每月发布。[联系我们](https://whystrohm.com/apply)。
 
 ## 许可
 
