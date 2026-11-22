@@ -577,6 +577,15 @@ def next_step(shots: list[dict], generators: list[str], rounds: int, media: list
             "say": "Check the new frames in output/frames against the storyboard, then update the board.",
         }
     if by.get("revise"):
+        own = [s["id"] for s in shots if s["status"] == "revise" and (s.get("source") or {}).get("type") == "own"]
+        if own and len(own) == len(by["revise"]):
+            # the user's own media came back: there is no prompt to rewrite, only a different take to choose
+            return {
+                "title": "Choose another take",
+                "body": f"The check sent back {', '.join(own)}, on your own media. Pick a different file or other "
+                        f"seconds for {'it' if len(own) == 1 else 'them'}, crop, or drop {'it' if len(own) == 1 else 'them'} from the cut.{aside}",
+                "say": None,
+            }
         open_ids = []
         for shot in shots:
             if shot["status"] != "revise":
@@ -1268,6 +1277,8 @@ def selftest() -> int:
     opt, _ = build(opt_dir, rendered_at=pinned)
     opt_by = {s["id"]: s for s in opt["shots"]}
     opt_html = render(opt)
+    (opt_dir / "critiques" / "round-1" / "shot_01.critique.json").write_text(json.dumps({"verdict": "REVISE", "shot_id": "shot_01", "round": 1}))
+    own_revise, _ = build(opt_dir, rendered_at=pinned)
     (own_tmp / "nothing").mkdir()
     live_empty, _ = build(own_tmp / "nothing", live=True)
 
@@ -1347,6 +1358,7 @@ def selftest() -> int:
         ("the Markdown copy carries the pick reason, the flag and the quote",
          all(x in opt["markdown"] for x in ("Why this pick: The whole print", "Flag (weak): Enlarged 2.7x.", "Quote: $0.42, not run"))),
         ("the board with optional shots still parses", script_parses(opt_html) is not False),
+        ("your own media sent back asks for another take, not new prompts", own_revise["next"]["title"] == "Choose another take"),
         ("an empty folder still serves a live board", live_empty["next"]["title"] == "Add your photos and clips"),
     ]
     ok = True
