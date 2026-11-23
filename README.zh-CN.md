@@ -1,6 +1,4 @@
-<p align="center"><a href="https://whystrohm.com/shotkit#films"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="一个镀铬球滚过 WhyStrohm 的一次真实 Shotkit 流程（3D）：简报、五个镜头的规划、批准价格后生成的五个画面、检查退回其中三个、三个重做，以及五个完成的片段。" width="100%"></picture></a></p>
-
-<p align="center"><sub>真实流程。由 Shotkit 制作，后期由 WhyStrohm 完成。<a href="https://whystrohm.com/shotkit#films"><strong>观看完整影片（有声）</strong></a>（含闪烁画面）</sub></p>
+<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit 演示：在 Claude Code 里输入一句简报，规划每个镜头、检查每个画面，带台词的粗剪，然后是片段在看板上播放、一个镜头被移动，最后一个剪辑以 16:9、9:16、4:5 和 1:1 输出。" width="100%"></picture></a></p>
 
 <h3 align="center">批量交付符合品牌的视频。</h3>
 
@@ -26,6 +24,10 @@ Canvas 里六种设计好的字体风格，以及用你自己的照片和视频�
 ![流程：添加品牌、规划看板、确认报价、检查每一帧、剪出每种尺寸。](docs/images/how-it-works.png)
 
 ![在 Canvas 中录制的八个步骤：打开 Canvas 并选择从哪里开始；从网站添加品牌；用一句话要一支视频；计划出现在看板上；先看报价并确认；审查检查每一帧；移动镜头并添加备注；剪出每种尺寸。](docs/images/canvas-tour.webp)
+
+**WhyStrohm：一次真实流程，做成影片。** 简报、规划、批准价格、检查退回三个镜头、重做、剪辑。由 Shotkit 制作，后期由 WhyStrohm 完成。[观看有声版和每种尺寸](https://whystrohm.com/films)（含闪烁画面） · [打开看板](https://whystrohm.com/shotkit/examples/whystrohm-how-we-work/board.html)
+
+[![一个球在 3D 中滚过一次真实的 Shotkit 流程：简报、规划、批准、检查、重做、剪辑。](docs/images/example-run-roll.webp)](https://whystrohm.com/films)
 
 **NVUS Hearts。** 这个循环展示 WhyStrohm 如何完成他们的卫衣镜头，在 Shotkit 之外制作：产品照片、抠图、线稿、文字放在后面。[和他们的黑五影片一起观看](https://whystrohm.com/films)（含闪烁画面）。Shotkit 也用他们自己的照片和视频规划并剪辑了一支短视频：[查看每一步](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts) · [打开看板](https://whystrohm.com/shotkit/examples/nvus-living-proof/board.html)
 

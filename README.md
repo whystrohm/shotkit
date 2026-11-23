@@ -1,6 +1,4 @@
-<p align="center"><a href="https://whystrohm.com/shotkit#films"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="A chrome ball rolls through a real Shotkit run for WhyStrohm, in 3D: the brief, the plan for five shots, five frames made after the price is approved, three of five sent back by the check, those three remade, and the five finished clips." width="100%"></picture></a></p>
-
-<p align="center"><sub>A real run. Made with Shotkit, plus WhyStrohm post work. <a href="https://whystrohm.com/shotkit#films"><strong>Watch the full film with sound</strong></a> (contains flashing images)</sub></p>
+<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit demo: a brief typed in Claude Code, every shot planned and every frame checked, the rough cut with its lines, then a board where the clips play and a shot is moved, and one cut in 16:9, 9:16, 4:5 and 1:1." width="100%"></picture></a></p>
 
 <h3 align="center">Ship on-brand video at scale.</h3>
 
@@ -201,6 +199,10 @@ your requests to Claude, price checks and the jobs you approve on fal, Google Fo
 board is online, and anything you choose to send to GoHighLevel. [Security and data](SECURITY.md)
 
 ## Examples
+
+**WhyStrohm: one real run, as a film.** The brief, the plan, the approved price, the check that sent three shots back, the remake and the cut. Made with Shotkit, plus WhyStrohm post work. [Watch it with sound in every size](https://whystrohm.com/films) (contains flashing images) · [Open its board](https://whystrohm.com/shotkit/examples/whystrohm-how-we-work/board.html)
+
+[![A ball rolls through one real Shotkit run in 3D: brief, plan, approve, check, remake, cut.](docs/images/example-run-roll.webp)](https://whystrohm.com/films)
 
 **NVUS Hearts.** The loop is how WhyStrohm finishes their hoodie shots, made outside Shotkit:
 the product photo, cut out, drawn and set over type.
