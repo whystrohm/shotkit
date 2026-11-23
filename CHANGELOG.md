@@ -4,7 +4,9 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
-## [3.7.0-rc.4] - 2026-11-22
+## [3.7.0] - 2026-11-23
+
+Shotkit 3.7: Canvas, final. Everything in the release candidates below, plus planning on your own photos and clips.
 
 ### Added
 
