@@ -4,6 +4,28 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [3.7.0-rc.4] - 2026-11-22
+
+### Added
+
+- **Plan from your own photos and clips.** A shot can point at one of the user's files
+  (`source: own`) with why it was picked, what else was weighed, and the seconds of a clip
+  it uses. Shots the folder does not have are `source: missing` and optional.
+- **Measured flags on shots.** `flags` carry a level (weak, missing, optional, note), a
+  short label and the measurement behind it. The board shows them on the card.
+- **Optional generated transitions.** A zero-length optional shot with `source: generate`
+  and its quote. The board shows it quoted and not run, and approved and made once its
+  clip exists.
+- **Board:** pick reasons, flags, missing pictures and quoted transitions; a swipe cue on
+  the phone timeline; "Choose another take" when the check sends back the user's own media.
+- **Canvas rc.4:** type styles from a frame or a sentence, the reel edit on the beat of your
+  track, an end card from your photos, the logo from your website, 1080p cuts.
+
+### Fixed
+
+- The prompt check needs no prompt block for a shot on the user's own media.
+- A board shows a media source folder by its name, never the path on the computer.
+
 ## [3.7.0-rc.3] - 2026-11-21
 
 ### Added
