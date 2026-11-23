@@ -43,6 +43,7 @@ from _shotkit import (
     PALETTE_ROW_RE,
     REPO_ROOT,
     SHOT_ID_RE,
+    SKETCH_TEMPLATE,
     TEXT_ID_RE,
     as_overlay_ids,
     capability_map,
@@ -54,6 +55,7 @@ from _shotkit import (
     parse_typography,
     round_dirs,
     sha256_file,
+    sketch_spec,
 )
 
 TEMPLATE = REPO_ROOT / "skills" / "storyboard-html-preview" / "templates" / "board.html.tpl"
@@ -767,7 +769,8 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
 
     overlay_families: list[tuple[str, int]] = []
     shots: list[dict] = []
-    for raw in shots_doc.get("shots") or []:
+    order = [r.get("id") if isinstance(r, dict) else None for r in shots_doc.get("shots") or []]
+    for at, raw in enumerate(shots_doc.get("shots") or []):
         shot_id = raw.get("id")
         if not isinstance(shot_id, str) or not SHOT_ID_RE.match(shot_id):
             warnings.append(f"skipped a shot with an unusable id: {shot_id!r}")
@@ -828,6 +831,10 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
         }
         made_after_quote(shot)
         shot["status"] = shot_status(shot)
+        # No frame and no clip yet: the page draws a storyboard sketch from the plan.
+        shot["sketch"] = None if shot["frames"] or shot["clips"] else sketch_spec(
+            raw, project.get("aspect") or "16:9", [o["position"] for o in overlays],
+            order[at - 1] if at else None, order[at + 1] if at + 1 < len(order) else None)
         shots.append(shot)
 
     rounds = max(
@@ -894,7 +901,8 @@ def render(data: dict) -> str:
         .replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     )
     return (
-        template.replace("<!--__FONT_LINKS__-->", links)
+        template.replace("/*__SKETCH__*/", SKETCH_TEMPLATE.read_text(encoding="utf-8"))
+        .replace("<!--__FONT_LINKS__-->", links)
         .replace("__TITLE__", title)
         .replace("/*__DATA__*/null", blob)
     )
@@ -1238,6 +1246,23 @@ def script_parses(page: str) -> bool | None:
         Path(handle.name).unlink(missing_ok=True)
 
 
+def sketch_draws(specs: list) -> bool | None:
+    """Whether the sketch code draws a panel for each spec. None when node is not installed."""
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    if not node:
+        return None
+    code = SKETCH_TEMPLATE.read_text(encoding="utf-8") + (
+        "\nprocess.stdout.write(JSON.stringify(" + json.dumps(specs) + ".map(function (k) { return ShotSketch.svg(k); })));")
+    run = subprocess.run([node, "-e", code], capture_output=True, text=True)
+    if run.returncode:
+        return False
+    out = json.loads(run.stdout or "[]")
+    return len(out) == len(specs) and all(x.startswith("<svg") and "<path" in x for x in out)
+
+
 def selftest() -> int:
     import shutil
     import tempfile
@@ -1328,6 +1353,8 @@ def selftest() -> int:
         edited_files = {f["path"]: f["state"] for f in build(edited, rendered_at=pinned)[0]["files"]}
 
     parses = script_parses(html_a)
+    sketches = [s["sketch"] for s in bare_data["shots"]] + [opt_by["shot_02"]["sketch"], opt_by["shot_03"]["sketch"]]
+    draws = sketch_draws([k for k in sketches if k])
     checks = [
         ("the board's script parses" + ("" if parses is not None else " (skipped: node is not installed)"), parses is not False),
         ("two renders with a pinned timestamp are identical", html_a == html_b),
@@ -1380,6 +1407,15 @@ def selftest() -> int:
         ("the board with optional shots still parses", script_parses(opt_html) is not False),
         ("your own media sent back asks for another take, not new prompts", own_revise["next"]["title"] == "Choose another take"),
         ("an empty folder still serves a live board", live_empty["next"]["title"] == "Add your photos and clips"),
+        ("a shot with no frame gets a sketch, drawn from its plan",
+         all(s["sketch"] and s["sketch"]["label"] == "Sketch" and s["sketch"]["framing"] == s["framing"] for s in bare_data["shots"])),
+        ("a shot with a frame gets no sketch", all(s["sketch"] is None for s in data["shots"]) and opt_by["shot_01"]["sketch"] is None),
+        ("a bridge with a clip and no still gets no sketch", own_by["shot_02"]["sketch"] is None),
+        ("a missing shot's sketch says To shoot", (opt_by["shot_02"]["sketch"] or {}).get("label") == "To shoot"),
+        ("an optional bridge's sketch says Transition, between the shots it joins",
+         (opt_by["shot_03"]["sketch"] or {}).get("label") == "Transition" and opt_by["shot_03"]["sketch"]["bridge"] is True),
+        ("the sketch code is in the page, filled in", "var ShotSketch" in html_a and "/*__SKETCH__*/" not in html_a),
+        ("the sketch code draws a panel for every sketch" + ("" if draws is not None else " (skipped: node is not installed)"), draws is not False),
     ]
     ok = True
     shutil.rmtree(own_tmp, ignore_errors=True)

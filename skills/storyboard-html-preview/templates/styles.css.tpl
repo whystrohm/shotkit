@@ -266,6 +266,18 @@ h1, h2, h3 {
   letter-spacing: 0.08em;
 }
 
+/* A sketch frame: the shot drawn as a storyboard panel from its plan, in the brand's
+   ground and ink, until a frame replaces it. */
+.sb-placeholder.sk { display: block; background: var(--sb-color-bg); --sk-g: var(--sb-color-bg); --sk-a: var(--sb-color-accent); --sk-mono: var(--sb-font-mono); }
+.sk__svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.sk__top { position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: center; gap: 9px; padding: 10px 11px; font: 500 11px/1 var(--sb-font-mono); letter-spacing: .1em; text-transform: uppercase; }
+.sk__top b { font-weight: 600; opacity: .72; }
+.sk__top span { flex: 1; min-width: 0; opacity: .36; white-space: nowrap; overflow: hidden; }
+.sk__top em { flex: none; margin-left: auto; font-style: normal; opacity: .5; }
+.sk[data-label="To shoot"] .sk__top em, .sk[data-label="Transition"] .sk__top em { color: var(--sb-color-accent); opacity: .95; }
+.sk[data-up] .sk__top { top: auto; bottom: 0; }
+@container (max-width: 340px) { .sk__top span { display: none; } }
+
 /* On-screen text over the frame. Overlays on the same side share one group, so they
    stack with a set gap. The board draws the same treatment; both follow
    text-overlays.schema.json. Sizes are in cqw, the frame's own width. */

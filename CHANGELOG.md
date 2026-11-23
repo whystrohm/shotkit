@@ -4,22 +4,19 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
-### Changed
+## [3.8.0] - 2026-11-23
 
-- **The deck, redesigned as a working document.** A cover in the brand's display face, a
-  scene breakdown, a picture-and-script slide per shot (on screen, voiceover, picture in
-  plain words, cut, notes, and a running-time bar), a script sheet on paper that prints,
-  and the brand lock. Set in the brand lock's colours and typefaces with a mono face for
-  labels. Every word is editable text, every slide has speaker notes with the full plan,
-  and a shot with no frame gets a drawn panel. No internal ids reach a slide. The deck no
-  longer needs a browser.
-
-## [3.7.0] - 2026-11-23
-
-Shotkit 3.7: Canvas, final. Everything in the release candidates below, plus planning on your own photos and clips.
+Everything since 3.7.0-rc.3, and the first final release with Canvas.
 
 ### Added
 
+- **Sketch frames.** A shot with no frame and no clip is drawn as a storyboard panel from
+  its own plan, on the board and on the client page, so a first run reads as a storyboard
+  with no keys and no cost. Framing sets the subject's size, angle sets the horizon and
+  perspective, motion is a camera mark in the brand accent, and a few words in the subject
+  pick a figure, hands, a garment, a device, a mark or a setting. A designed frame draws
+  its card kind. Missing shots say To shoot; optional bridges say Transition and show the
+  two shots they join. Same plan, same drawing. Inline SVG, nothing loaded.
 - **Plan from your own photos and clips.** A shot can point at one of the user's files
   (`source: own`) with why it was picked, what else was weighed, and the seconds of a clip
   it uses. Shots the folder does not have are `source: missing` and optional.
@@ -30,13 +27,33 @@ Shotkit 3.7: Canvas, final. Everything in the release candidates below, plus pla
   clip exists.
 - **Board:** pick reasons, flags, missing pictures and quoted transitions; a swipe cue on
   the phone timeline; "Choose another take" when the check sends back the user's own media.
-- **Canvas:** type styles from a frame or a sentence, the reel edit on the beat of your
-  track, an end card from your photos, the logo from your website, 1080p cuts.
+- **Canvas:** six built-in looks (Editorial, Bold Condensed, Kinetic Hook, Outline, Lower
+  Third, Big Number) with eased motion, set in each brand's own colours and faces and
+  picked for a brand that has no style yet; type styles from a frame or a sentence; the
+  reel edit on the beat of your track; an end card from your photos; the logo from your
+  website; 1080p cuts; a still that does not fit the cut sits on a blurred copy of itself
+  instead of black bars.
+
+### Changed
+
+- **The deck, redesigned as a working document.** A cover in the brand's display face, a
+  scene breakdown, a picture-and-script slide per shot (on screen, voiceover, picture in
+  plain words, cut, notes, and a running-time bar), a script sheet on paper that prints,
+  and the brand lock. Set in the brand lock's colours and typefaces with a mono face for
+  labels. Every word is editable text, every slide has speaker notes with the full plan,
+  and a shot with no frame gets a drawn panel. No internal ids reach a slide. The deck no
+  longer needs a browser.
 
 ### Fixed
 
 - The prompt check needs no prompt block for a shot on the user's own media.
 - A board shows a media source folder by its name, never the path on the computer.
+- Export: missing shots read To shoot in the shot list; zero-length optional shots stay out
+  of the edit list.
+- An empty frame takes the brand colour that reads best on the ground, so a palette whose
+  ink is meant for light panels no longer leaves dark lines and text on a dark frame.
+- A clip with no still shows its first picture on the card.
+- A card's frame starts at the top of the card when its row has a taller card.
 
 ## [3.7.0-rc.3] - 2026-11-21
 
