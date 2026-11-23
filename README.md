@@ -24,8 +24,8 @@ It runs on your Mac, with Claude Code or Codex, and your own keys.</p>
   <a href="#use-canvas-from-codex">Codex</a>
 </p>
 
-<p align="center"><strong>New in 3.7: Shotkit Canvas.</strong> Every clip plays on the board, shots move and trim,<br>
-and one cut comes out in every size. Free and open source. <a href="https://github.com/whystrohm/shotkit/releases">Get it</a></p>
+<p align="center"><strong>New in 3.8:</strong> a sketch on every card from the first run, a deck you can work from,<br>
+six designed looks in Canvas, and plans from your own photos and clips. Free and open source. <a href="https://github.com/whystrohm/shotkit/releases">Get it</a></p>
 
 ## What it does
 
@@ -38,15 +38,22 @@ approve. It still takes your taste.
 - **Remembers what you like.** Like or dislike a clip, caption or render and say why. Canvas
   keeps it as a preference for that brand that you can read and edit, and its chat follows
   it next time. Nothing is trained on your files.
-- **Starts from your own footage.** Drop in photos and clips, or a long recording with its
-  transcript. Shotkit places them on shots and chapters and shows what is missing.
+- **Starts from your own footage.** Point it at a folder of photos and clips, or a long
+  recording with its transcript. Shotkit picks a file for each shot and says why, flags the
+  weak ones and names what is missing.
 - **Uses AI for concepts and gaps.** Generate frames and clips to test an idea or fill a
   shot you cannot film. Not every generation is good, so a critic checks each one, only the
   misses are redone, and nothing runs until you approve the price.
 - **Lets you see and cut.** Every clip plays on the board. Move shots, trim clips, change
   the lines and render the cut in 16:9, 9:16, 4:5 and 1:1 with Remotion.
-- **Shares the plan.** A storyboard page, a client page you can print to PDF, a PowerPoint
-  deck and stills, so the people you work with can review it anywhere.
+- **Sets your type.** Six designed looks with motion, in your colours and fonts, or match the
+  type from a post you already ran. Add your track and the reel edit cuts on the beat.
+- **Shows the storyboard right away.** Every shot is sketched from its plan on the first run:
+  the shot size, the angle, the camera move and your line, in your colours. Your photo or a
+  generated frame replaces the sketch when it arrives.
+- **Shares the plan.** A storyboard page, a client page you can print to PDF, stills, and a
+  deck you can work from in PowerPoint, Keynote or Google Slides: a cover, the scenes, one
+  slide per shot with the picture, the line, the voiceover and notes, and a script sheet.
 - **Hands off to your editor.** Export the cut as an edit decision list (CMX 3600) for
   Premiere or Resolve, the on-screen lines as timed captions, and a shot list for the crew.
   See [Export](docs/export.md).
@@ -78,10 +85,10 @@ price, let the critic check the frames, move shots and pin notes, then cut every
 
 ## Done for you
 
-Shotkit is free. It is one part of the system WhyStrohm runs on a Mac Studio. If you want the
-whole system on your brand, we set it up and run it: your brand, footage library and templates,
-finished videos rendered in every size, and posting every month.
-[Talk to us](https://whystrohm.com/apply).
+Shotkit is free, and it is the base of how WhyStrohm makes video. Our own setup runs more on
+top of it: more plugins, effects, sound and voice models. If you want that built for your
+brand, we set it up and run it: your brand, footage library and templates, finished videos in
+every size, and posting every month. [Talk to us](https://whystrohm.com/apply).
 
 ## Long recordings
 
@@ -91,7 +98,7 @@ chapter straight from the recording. You can also start from a script, one shot 
 
 ## Try Canvas
 
-Canvas is a preview for macOS. It needs Python 3.10 or later.
+Canvas runs on macOS. It needs Python 3.10 or later.
 
 1. From [Releases](https://github.com/whystrohm/shotkit/releases), download
    `shotkit-canvas-*.zip` and the matching `.zip.sha256` into their own folder.
@@ -193,6 +200,12 @@ board is online, and anything you choose to send to GoHighLevel. [Security and d
 
 ## Examples
 
+**NVUS Hearts: a reel from the brand's own photos and clips.** A folder of product photos and
+phone clips became a planned, checked reel in the brand's type, in every size, with one
+generated transition priced first. [Every step](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts) · [Open its board](https://whystrohm.com/shotkit/examples/nvus-living-proof/board.html)
+
+[![NVUS Hearts in Canvas: the folder comes in, the board fills with their shots, the type is matched to a reel they posted, the reel plays, then every size.](docs/images/example-nvus-hearts.webp)](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts)
+
 Two real WhyStrohm runs. Each picture opens the live board.
 
 | How we work · made in Canvas · 16:9 | Media Tsunami · 16:9 |
@@ -254,10 +267,10 @@ board, a fictional software launch.
 
 ## Feedback
 
-Tell us what broke or what you want next.
-[Open an issue](https://github.com/whystrohm/shotkit/issues),
-[start a discussion](https://github.com/whystrohm/shotkit/discussions), or write to
-[hello@whystrohm.com](mailto:hello@whystrohm.com).
+Show us what you make, tell us what broke or what you want next.
+[Start a discussion](https://github.com/whystrohm/shotkit/discussions),
+[open an issue](https://github.com/whystrohm/shotkit/issues), or write to
+[hello@whystrohm.com](mailto:hello@whystrohm.com). Your comments decide what comes next.
 
 ## Contributing, license and who built this
 

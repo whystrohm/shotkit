@@ -10,8 +10,8 @@
 
 <p align="center"><a href="https://whystrohm.com/shotkit"><strong>完整介绍</strong></a> · <a href="https://github.com/whystrohm/shotkit/releases">下载 Canvas</a></p>
 
-<p align="center"><strong>3.7 新增：Shotkit Canvas。</strong>每个片段都在看板上播放，镜头可以移动和修剪，<br>
-一个剪辑输出所有尺寸。免费开源。<a href="https://github.com/whystrohm/shotkit/releases">下载</a></p>
+<p align="center"><strong>3.8 新增：</strong>第一次运行就给每张卡片画出草图，一份能直接拿来用的演示文稿，<br>
+Canvas 里六种设计好的字体风格，以及用你自己的照片和视频来规划。免费开源。<a href="https://github.com/whystrohm/shotkit/releases">下载</a></p>
 
 ## 两种用法
 
@@ -24,6 +24,10 @@
 ![流程：添加品牌、规划看板、确认报价、检查每一帧、剪出每种尺寸。](docs/images/how-it-works.png)
 
 ![在 Canvas 中录制的八个步骤：打开 Canvas 并选择从哪里开始；从网站添加品牌；用一句话要一支视频；计划出现在看板上；先看报价并确认；审查检查每一帧；移动镜头并添加备注；剪出每种尺寸。](docs/images/canvas-tour.webp)
+
+**NVUS Hearts：用品牌自己的照片和视频做成的短视频。** 一个装着产品照片和手机视频的文件夹，变成了一支有计划、经过检查、使用品牌字体、各种尺寸都有的短视频，其中只有一个生成的转场，并且先报价后生成。[查看每一步](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts) · [打开看板](https://whystrohm.com/shotkit/examples/nvus-living-proof/board.html)
+
+[![NVUS Hearts 在 Canvas 中：文件夹导入，看板填满他们自己的镜头，字体匹配他们发过的一条短视频，成片播放，然后是每种尺寸。](docs/images/example-nvus-hearts.webp)](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts)
 
 两个真实的 WhyStrohm 案例，点击图片打开在线看板。
 
@@ -48,7 +52,10 @@ Shotkit 负责规划、检查和剪辑：
 - **为每个镜头写提示词**：支持十个图像和视频生成模型，各用各的格式。
 - **检查每一帧**：对照镜头和品牌，指出要改什么，只重做那一个镜头。
 - **记住你的喜好**：对片段、字幕或渲染点喜欢或不喜欢并写明原因，Canvas 会把它存成这个品牌的偏好，你可以查看和修改，下次聊天会照着做。不会用你的文件训练模型。
-- **优先用你自己的素材**：指向一个照片和视频的文件夹，它逐个查看、放到合适的镜头上，只把缺的部分留给生成模型。
+- **优先用你自己的素材**：指向一个照片和视频的文件夹，它为每个镜头挑一个文件并说明原因，标出效果弱的素材，列出还缺什么，只把缺的部分留给生成模型。
+- **设置你的字体**：六种带动效的设计风格，用你的品牌颜色和字体；也可以从你发过的一条帖子里匹配字体。加入你的音乐，短视频剪辑会卡在节拍上。
+- **马上看到分镜**：第一次运行就按计划为每个镜头画出草图，包括景别、角度、运镜和你的文字，用你的品牌颜色。你的照片或生成的画面到了以后会替换草图。
+- **能直接用的演示文稿**：封面、场景拆解、每个镜头一页（画面、屏幕文字、旁白和备注），以及一份脚本表。可以在 PowerPoint、Keynote 或 Google Slides 里编辑。
 - **全部放在一块看板上**：在浏览器里打开，每段内容都能一键复制给任何模型。
 - **交给剪辑师**：把剪辑导出为 Premiere 或 Resolve 可用的剪辑决策表（CMX 3600），画面文字导出为带时间的字幕，再加一份给拍摄团队的镜头表。见[导出](docs/export.md)。
 - **为智能体而建**：Claude Code 规划镜头，独立的审查者检查每一帧。Codex 可以读取 Canvas 看板并做可撤销的修改。每一笔花费都等你确认。
@@ -59,7 +66,7 @@ Shotkit 插件负责规划镜头、检查画面并生成粗剪。Canvas 支持�
 
 可以先看[一次真实运行](https://whystrohm.com/blog/shotkit-canvas-one-real-run)和[它的看板](https://whystrohm.com/shotkit/examples/whystrohm-how-we-work/board.html)。
 
-在已发布的 Canvas 预览版 **Assets** 中下载 `shotkit-canvas-*.zip` 和对应的校验文件。
+在最新发布的 **Assets** 中下载 `shotkit-canvas-*.zip` 和对应的校验文件。
 GitHub 的 **Source code** 压缩包包含插件与 CLI。 [GitHub Releases](https://github.com/whystrohm/shotkit/releases)
 
 把这两个文件放在单独的文件夹，在该目录校验、解压并启动。macOS 需要 Python 3.10 或更高版本。
@@ -218,15 +225,15 @@ Claude 会查看每一张照片和每一段视频，把它们放到合适的镜�
 
 ## 交给我们
 
-Shotkit 免费。它是 WhyStrohm 在一台 Mac Studio 上运行的整套系统中的一部分。如果你想把整套系统用在你的品牌上，我们可以帮你搭建并运行：品牌、素材库和模板，
+Shotkit 免费，它是 WhyStrohm 制作视频的基础。我们自己的系统在它之上还接入了更多：更多插件、特效、音效和语音模型。如果你想为你的品牌搭建这一套，我们可以帮你搭建并运行：品牌、素材库和模板，
 每种尺寸的成片，以及每月发布。[联系我们](https://whystrohm.com/apply)。
 
 ## 反馈
 
-告诉我们哪里出了问题，或者你接下来想要什么。
-[提交 issue](https://github.com/whystrohm/shotkit/issues)、
-[发起讨论](https://github.com/whystrohm/shotkit/discussions)，或写信到
-[hello@whystrohm.com](mailto:hello@whystrohm.com)。
+给我们看看你做了什么，告诉我们哪里出了问题，或者你接下来想要什么。
+[发起讨论](https://github.com/whystrohm/shotkit/discussions)、
+[提交 issue](https://github.com/whystrohm/shotkit/issues)，或写信到
+[hello@whystrohm.com](mailto:hello@whystrohm.com)。接下来做什么，由你们的反馈决定。
 
 ## 许可
 
