@@ -20,7 +20,7 @@ Shotkit 3.7: Canvas, final. Everything in the release candidates below, plus pla
   clip exists.
 - **Board:** pick reasons, flags, missing pictures and quoted transitions; a swipe cue on
   the phone timeline; "Choose another take" when the check sends back the user's own media.
-- **Canvas rc.4:** type styles from a frame or a sentence, the reel edit on the beat of your
+- **Canvas:** type styles from a frame or a sentence, the reel edit on the beat of your
   track, an end card from your photos, the logo from your website, 1080p cuts.
 
 ### Fixed
