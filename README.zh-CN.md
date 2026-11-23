@@ -10,8 +10,8 @@
 
 <p align="center"><a href="https://whystrohm.com/shotkit"><strong>完整介绍</strong></a> · <a href="https://github.com/whystrohm/shotkit/releases">下载 Canvas</a></p>
 
-<p align="center"><strong>3.7 新增：Shotkit Canvas。</strong>每个片段都在看板上播放，镜头可以移动和修剪，<br>
-一个剪辑输出所有尺寸。免费开源。<a href="https://github.com/whystrohm/shotkit/releases">下载</a></p>
+<p align="center"><strong>3.7 新增：Shotkit Canvas。</strong>用你自己的照片和视频来规划，每个片段都在看板上播放，<br>
+设置你的字体，一个剪辑输出所有尺寸。免费开源。<a href="https://github.com/whystrohm/shotkit/releases">下载</a></p>
 
 ## 两种用法
 
@@ -52,7 +52,8 @@ Shotkit 负责规划、检查和剪辑：
 - **为每个镜头写提示词**：支持十个图像和视频生成模型，各用各的格式。
 - **检查每一帧**：对照镜头和品牌，指出要改什么，只重做那一个镜头。
 - **记住你的喜好**：对片段、字幕或渲染点喜欢或不喜欢并写明原因，Canvas 会把它存成这个品牌的偏好，你可以查看和修改，下次聊天会照着做。不会用你的文件训练模型。
-- **优先用你自己的素材**：指向一个照片和视频的文件夹，它逐个查看、放到合适的镜头上，只把缺的部分留给生成模型。
+- **优先用你自己的素材**：指向一个照片和视频的文件夹，它为每个镜头挑一个文件并说明原因，标出效果弱的素材，列出还缺什么，只把缺的部分留给生成模型。
+- **设置你的字体**：从你发过的一条帖子里匹配字体，或用一句话描述。加入你的音乐，短视频剪辑会卡在节拍上。
 - **全部放在一块看板上**：在浏览器里打开，每段内容都能一键复制给任何模型。
 - **交给剪辑师**：把剪辑导出为 Premiere 或 Resolve 可用的剪辑决策表（CMX 3600），画面文字导出为带时间的字幕，再加一份给拍摄团队的镜头表。见[导出](docs/export.md)。
 - **为智能体而建**：Claude Code 规划镜头，独立的审查者检查每一帧。Codex 可以读取 Canvas 看板并做可撤销的修改。每一笔花费都等你确认。
@@ -63,7 +64,7 @@ Shotkit 插件负责规划镜头、检查画面并生成粗剪。Canvas 支持�
 
 可以先看[一次真实运行](https://whystrohm.com/blog/shotkit-canvas-one-real-run)和[它的看板](https://whystrohm.com/shotkit/examples/whystrohm-how-we-work/board.html)。
 
-在已发布的 Canvas 预览版 **Assets** 中下载 `shotkit-canvas-*.zip` 和对应的校验文件。
+在最新发布的 **Assets** 中下载 `shotkit-canvas-*.zip` 和对应的校验文件。
 GitHub 的 **Source code** 压缩包包含插件与 CLI。 [GitHub Releases](https://github.com/whystrohm/shotkit/releases)
 
 把这两个文件放在单独的文件夹，在该目录校验、解压并启动。macOS 需要 Python 3.10 或更高版本。
@@ -222,15 +223,15 @@ Claude 会查看每一张照片和每一段视频，把它们放到合适的镜�
 
 ## 交给我们
 
-Shotkit 免费。它是 WhyStrohm 在一台 Mac Studio 上运行的整套系统中的一部分。如果你想把整套系统用在你的品牌上，我们可以帮你搭建并运行：品牌、素材库和模板，
+Shotkit 免费，它是 WhyStrohm 制作视频的基础。我们自己的系统在它之上还接入了更多：更多插件、特效、音效和语音模型。如果你想为你的品牌搭建这一套，我们可以帮你搭建并运行：品牌、素材库和模板，
 每种尺寸的成片，以及每月发布。[联系我们](https://whystrohm.com/apply)。
 
 ## 反馈
 
-告诉我们哪里出了问题，或者你接下来想要什么。
-[提交 issue](https://github.com/whystrohm/shotkit/issues)、
-[发起讨论](https://github.com/whystrohm/shotkit/discussions)，或写信到
-[hello@whystrohm.com](mailto:hello@whystrohm.com)。
+给我们看看你做了什么，告诉我们哪里出了问题，或者你接下来想要什么。
+[发起讨论](https://github.com/whystrohm/shotkit/discussions)、
+[提交 issue](https://github.com/whystrohm/shotkit/issues)，或写信到
+[hello@whystrohm.com](mailto:hello@whystrohm.com)。接下来做什么，由你们的反馈决定。
 
 ## 许可
 

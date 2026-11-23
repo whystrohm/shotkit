@@ -24,8 +24,8 @@ It runs on your Mac, with Claude Code or Codex, and your own keys.</p>
   <a href="#use-canvas-from-codex">Codex</a>
 </p>
 
-<p align="center"><strong>New in 3.7: Shotkit Canvas.</strong> Every clip plays on the board, shots move and trim,<br>
-and one cut comes out in every size. Free and open source. <a href="https://github.com/whystrohm/shotkit/releases">Get it</a></p>
+<p align="center"><strong>New in 3.7: Shotkit Canvas.</strong> Plan from your own photos and clips, play every clip on the board,<br>
+set your type and cut one edit in every size. Free and open source. <a href="https://github.com/whystrohm/shotkit/releases">Get it</a></p>
 
 ## What it does
 
@@ -38,13 +38,16 @@ approve. It still takes your taste.
 - **Remembers what you like.** Like or dislike a clip, caption or render and say why. Canvas
   keeps it as a preference for that brand that you can read and edit, and its chat follows
   it next time. Nothing is trained on your files.
-- **Starts from your own footage.** Drop in photos and clips, or a long recording with its
-  transcript. Shotkit places them on shots and chapters and shows what is missing.
+- **Starts from your own footage.** Point it at a folder of photos and clips, or a long
+  recording with its transcript. Shotkit picks a file for each shot and says why, flags the
+  weak ones and names what is missing.
 - **Uses AI for concepts and gaps.** Generate frames and clips to test an idea or fill a
   shot you cannot film. Not every generation is good, so a critic checks each one, only the
   misses are redone, and nothing runs until you approve the price.
 - **Lets you see and cut.** Every clip plays on the board. Move shots, trim clips, change
   the lines and render the cut in 16:9, 9:16, 4:5 and 1:1 with Remotion.
+- **Sets your type.** Match the type from a post you already ran, or describe it in a
+  sentence. Add your track and the reel edit cuts on the beat.
 - **Shares the plan.** A storyboard page, a client page you can print to PDF, a PowerPoint
   deck and stills, so the people you work with can review it anywhere.
 - **Hands off to your editor.** Export the cut as an edit decision list (CMX 3600) for
@@ -78,10 +81,10 @@ price, let the critic check the frames, move shots and pin notes, then cut every
 
 ## Done for you
 
-Shotkit is free. It is one part of the system WhyStrohm runs on a Mac Studio. If you want the
-whole system on your brand, we set it up and run it: your brand, footage library and templates,
-finished videos rendered in every size, and posting every month.
-[Talk to us](https://whystrohm.com/apply).
+Shotkit is free, and it is the base of how WhyStrohm makes video. Our own setup runs more on
+top of it: more plugins, effects, sound and voice models. If you want that built for your
+brand, we set it up and run it: your brand, footage library and templates, finished videos in
+every size, and posting every month. [Talk to us](https://whystrohm.com/apply).
 
 ## Long recordings
 
@@ -91,7 +94,7 @@ chapter straight from the recording. You can also start from a script, one shot 
 
 ## Try Canvas
 
-Canvas is a preview for macOS. It needs Python 3.10 or later.
+Canvas runs on macOS. It needs Python 3.10 or later.
 
 1. From [Releases](https://github.com/whystrohm/shotkit/releases), download
    `shotkit-canvas-*.zip` and the matching `.zip.sha256` into their own folder.
@@ -260,10 +263,10 @@ board, a fictional software launch.
 
 ## Feedback
 
-Tell us what broke or what you want next.
-[Open an issue](https://github.com/whystrohm/shotkit/issues),
-[start a discussion](https://github.com/whystrohm/shotkit/discussions), or write to
-[hello@whystrohm.com](mailto:hello@whystrohm.com).
+Show us what you make, tell us what broke or what you want next.
+[Start a discussion](https://github.com/whystrohm/shotkit/discussions),
+[open an issue](https://github.com/whystrohm/shotkit/issues), or write to
+[hello@whystrohm.com](mailto:hello@whystrohm.com). Your comments decide what comes next.
 
 ## Contributing, license and who built this
 
