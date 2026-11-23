@@ -25,6 +25,10 @@
 
 ![在 Canvas 中录制的八个步骤：打开 Canvas 并选择从哪里开始；从网站添加品牌；用一句话要一支视频；计划出现在看板上；先看报价并确认；审查检查每一帧；移动镜头并添加备注；剪出每种尺寸。](docs/images/canvas-tour.webp)
 
+**NVUS Hearts：用品牌自己的照片和视频做成的短视频。** 一个装着产品照片和手机视频的文件夹，变成了一支有计划、经过检查、使用品牌字体、各种尺寸都有的短视频，其中只有一个生成的转场，并且先报价后生成。[查看每一步](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts) · [打开看板](https://whystrohm.com/shotkit/examples/nvus-living-proof/board.html)
+
+[![NVUS Hearts 在 Canvas 中：文件夹导入，看板填满他们自己的镜头，字体匹配他们发过的一条短视频，成片播放，然后是每种尺寸。](docs/images/example-nvus-hearts.webp)](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts)
+
 两个真实的 WhyStrohm 案例，点击图片打开在线看板。
 
 | How we work · 在 Canvas 中完成 · 16:9 | Media Tsunami · 16:9 |

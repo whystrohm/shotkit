@@ -193,6 +193,12 @@ board is online, and anything you choose to send to GoHighLevel. [Security and d
 
 ## Examples
 
+**NVUS Hearts: a reel from the brand's own photos and clips.** A folder of product photos and
+phone clips became a planned, checked reel in the brand's type, in every size, with one
+generated transition priced first. [Every step](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts) · [Open its board](https://whystrohm.com/shotkit/examples/nvus-living-proof/board.html)
+
+[![NVUS Hearts in Canvas: the folder comes in, the board fills with their shots, the type is matched to a reel they posted, the reel plays, then every size.](docs/images/example-nvus-hearts.webp)](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts)
+
 Two real WhyStrohm runs. Each picture opens the live board.
 
 | How we work · made in Canvas · 16:9 | Media Tsunami · 16:9 |
