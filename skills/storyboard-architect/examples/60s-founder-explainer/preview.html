@@ -283,6 +283,18 @@ h1, h2, h3 {
   letter-spacing: 0.08em;
 }
 
+/* A sketch frame: the shot drawn as a storyboard panel from its plan, in the brand's
+   ground and ink, until a frame replaces it. */
+.sb-placeholder.sk { display: block; background: var(--sb-color-bg); --sk-g: var(--sb-color-bg); --sk-a: var(--sb-color-accent); --sk-mono: var(--sb-font-mono); }
+.sk__svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.sk__top { position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: center; gap: 9px; padding: 10px 11px; font: 500 11px/1 var(--sb-font-mono); letter-spacing: .1em; text-transform: uppercase; }
+.sk__top b { font-weight: 600; opacity: .72; }
+.sk__top span { flex: 1; min-width: 0; opacity: .36; white-space: nowrap; overflow: hidden; }
+.sk__top em { flex: none; margin-left: auto; font-style: normal; opacity: .5; }
+.sk[data-label="To shoot"] .sk__top em, .sk[data-label="Transition"] .sk__top em { color: var(--sb-color-accent); opacity: .95; }
+.sk[data-up] .sk__top { top: auto; bottom: 0; }
+@container (max-width: 340px) { .sk__top span { display: none; } }
+
 /* On-screen text over the frame. Overlays on the same side share one group, so they
    stack with a set gap. The board draws the same treatment; both follow
    text-overlays.schema.json. Sizes are in cqw, the frame's own width. */
@@ -768,7 +780,7 @@ h1, h2, h3 {
     <div class="sb-shot-frame aspect-9-16">
       
       
-      <div class="sb-placeholder">
+      <div class="sb-placeholder" data-sketch="{&quot;n&quot;:&quot;01&quot;,&quot;seed&quot;:&quot;shot_01&quot;,&quot;label&quot;:&quot;Sketch&quot;,&quot;bridge&quot;:false,&quot;from&quot;:null,&quot;to&quot;:null,&quot;aspect&quot;:&quot;9:16&quot;,&quot;framing&quot;:&quot;MCU&quot;,&quot;angle&quot;:&quot;eye-level&quot;,&quot;motion&quot;:&quot;static&quot;,&quot;dof&quot;:&quot;shallow&quot;,&quot;subject&quot;:&quot;founder, looking directly into camera, slight knowing smile, mid-statement&quot;,&quot;card&quot;:null,&quot;text&quot;:[&quot;lower-third&quot;]}">
         <div class="sb-placeholder-id">01</div>
         <div class="sb-placeholder-meta">MCU · eye-level · static</div>
       </div>
@@ -833,7 +845,7 @@ h1, h2, h3 {
     <div class="sb-shot-frame aspect-9-16">
       
       
-      <div class="sb-placeholder">
+      <div class="sb-placeholder" data-sketch="{&quot;n&quot;:&quot;02&quot;,&quot;seed&quot;:&quot;shot_02&quot;,&quot;label&quot;:&quot;Sketch&quot;,&quot;bridge&quot;:false,&quot;from&quot;:null,&quot;to&quot;:null,&quot;aspect&quot;:&quot;9:16&quot;,&quot;framing&quot;:&quot;MS&quot;,&quot;angle&quot;:&quot;eye-level&quot;,&quot;motion&quot;:&quot;static&quot;,&quot;dof&quot;:&quot;shallow&quot;,&quot;subject&quot;:&quot;founder, gesturing slightly with one hand, explaining, eye contact maintained&quot;,&quot;card&quot;:null,&quot;text&quot;:[]}">
         <div class="sb-placeholder-id">02</div>
         <div class="sb-placeholder-meta">MS · eye-level · static</div>
       </div>
@@ -884,7 +896,7 @@ h1, h2, h3 {
     <div class="sb-shot-frame aspect-9-16">
       
       
-      <div class="sb-placeholder">
+      <div class="sb-placeholder" data-sketch="{&quot;n&quot;:&quot;03&quot;,&quot;seed&quot;:&quot;shot_03&quot;,&quot;label&quot;:&quot;Sketch&quot;,&quot;bridge&quot;:false,&quot;from&quot;:null,&quot;to&quot;:null,&quot;aspect&quot;:&quot;9:16&quot;,&quot;framing&quot;:&quot;ECU&quot;,&quot;angle&quot;:&quot;eye-level&quot;,&quot;motion&quot;:&quot;static&quot;,&quot;dof&quot;:&quot;shallow&quot;,&quot;subject&quot;:&quot;close on founder&#x27;s eyes, considered expression, slight head tilt&quot;,&quot;card&quot;:null,&quot;text&quot;:[&quot;lower-third&quot;]}">
         <div class="sb-placeholder-id">03</div>
         <div class="sb-placeholder-meta">ECU · eye-level · static</div>
       </div>
@@ -949,7 +961,7 @@ h1, h2, h3 {
     <div class="sb-shot-frame aspect-9-16">
       
       
-      <div class="sb-placeholder">
+      <div class="sb-placeholder" data-sketch="{&quot;n&quot;:&quot;04&quot;,&quot;seed&quot;:&quot;shot_04&quot;,&quot;label&quot;:&quot;Sketch&quot;,&quot;bridge&quot;:false,&quot;from&quot;:null,&quot;to&quot;:null,&quot;aspect&quot;:&quot;9:16&quot;,&quot;framing&quot;:&quot;MCU&quot;,&quot;angle&quot;:&quot;eye-level&quot;,&quot;motion&quot;:&quot;push&quot;,&quot;dof&quot;:&quot;shallow&quot;,&quot;subject&quot;:&quot;founder, leaning slightly forward, more energy in delivery, hands resting on desk&quot;,&quot;card&quot;:null,&quot;text&quot;:[]}">
         <div class="sb-placeholder-id">04</div>
         <div class="sb-placeholder-meta">MCU · eye-level · push</div>
       </div>
@@ -1000,7 +1012,7 @@ h1, h2, h3 {
     <div class="sb-shot-frame aspect-9-16">
       
       
-      <div class="sb-placeholder">
+      <div class="sb-placeholder" data-sketch="{&quot;n&quot;:&quot;05&quot;,&quot;seed&quot;:&quot;shot_05&quot;,&quot;label&quot;:&quot;Sketch&quot;,&quot;bridge&quot;:false,&quot;from&quot;:null,&quot;to&quot;:null,&quot;aspect&quot;:&quot;9:16&quot;,&quot;framing&quot;:&quot;MS&quot;,&quot;angle&quot;:&quot;eye-level&quot;,&quot;motion&quot;:&quot;static&quot;,&quot;dof&quot;:&quot;deep&quot;,&quot;subject&quot;:&quot;founder gestures toward laptop screen, kanban-style content pipeline visible, voice extraction interface, brand-lock file open in editor&quot;,&quot;card&quot;:null,&quot;text&quot;:[&quot;upper-third&quot;]}">
         <div class="sb-placeholder-id">05</div>
         <div class="sb-placeholder-meta">MS · eye-level · static</div>
       </div>
@@ -1065,7 +1077,7 @@ h1, h2, h3 {
     <div class="sb-shot-frame aspect-9-16">
       
       
-      <div class="sb-placeholder">
+      <div class="sb-placeholder" data-sketch="{&quot;n&quot;:&quot;06&quot;,&quot;seed&quot;:&quot;shot_06&quot;,&quot;label&quot;:&quot;Sketch&quot;,&quot;bridge&quot;:false,&quot;from&quot;:null,&quot;to&quot;:null,&quot;aspect&quot;:&quot;9:16&quot;,&quot;framing&quot;:&quot;MCU&quot;,&quot;angle&quot;:&quot;eye-level&quot;,&quot;motion&quot;:&quot;static&quot;,&quot;dof&quot;:&quot;shallow&quot;,&quot;subject&quot;:&quot;founder, calm steady delivery, eye contact, hands folded&quot;,&quot;card&quot;:null,&quot;text&quot;:[&quot;upper-third&quot;]}">
         <div class="sb-placeholder-id">06</div>
         <div class="sb-placeholder-meta">MCU · eye-level · static</div>
       </div>
@@ -1130,7 +1142,7 @@ h1, h2, h3 {
     <div class="sb-shot-frame aspect-9-16">
       
       
-      <div class="sb-placeholder">
+      <div class="sb-placeholder" data-sketch="{&quot;n&quot;:&quot;07&quot;,&quot;seed&quot;:&quot;shot_07&quot;,&quot;label&quot;:&quot;Sketch&quot;,&quot;bridge&quot;:false,&quot;from&quot;:null,&quot;to&quot;:null,&quot;aspect&quot;:&quot;9:16&quot;,&quot;framing&quot;:&quot;MS&quot;,&quot;angle&quot;:&quot;eye-level&quot;,&quot;motion&quot;:&quot;pull&quot;,&quot;dof&quot;:&quot;shallow&quot;,&quot;subject&quot;:&quot;founder, slight smile, settled into the explanation, room visible around him&quot;,&quot;card&quot;:null,&quot;text&quot;:[]}">
         <div class="sb-placeholder-id">07</div>
         <div class="sb-placeholder-meta">MS · eye-level · pull</div>
       </div>
@@ -1181,7 +1193,7 @@ h1, h2, h3 {
     <div class="sb-shot-frame aspect-9-16">
       
       
-      <div class="sb-placeholder">
+      <div class="sb-placeholder" data-sketch="{&quot;n&quot;:&quot;08&quot;,&quot;seed&quot;:&quot;shot_08&quot;,&quot;label&quot;:&quot;Sketch&quot;,&quot;bridge&quot;:false,&quot;from&quot;:null,&quot;to&quot;:null,&quot;aspect&quot;:&quot;9:16&quot;,&quot;framing&quot;:&quot;MCU&quot;,&quot;angle&quot;:&quot;eye-level&quot;,&quot;motion&quot;:&quot;static&quot;,&quot;dof&quot;:&quot;shallow&quot;,&quot;subject&quot;:&quot;founder, calm, looks directly into camera one more time, almost-smile, settled&quot;,&quot;card&quot;:null,&quot;text&quot;:[&quot;lower-third&quot;]}">
         <div class="sb-placeholder-id">08</div>
         <div class="sb-placeholder-meta">MCU · eye-level · static</div>
       </div>
@@ -1258,6 +1270,452 @@ h1, h2, h3 {
   </div>
 </footer>
 
+<script>
+/* Sketch frames. A shot with no picture yet is drawn as a storyboard panel from its own
+   plan, so a new board reads as a storyboard before anything is made. The framing sets
+   the subject's size, the angle sets the horizon and the perspective, the motion is a
+   camera mark in the accent, and a few words in the subject pick what is drawn. The same
+   plan always draws the same panel. Nothing here loads a file or reaches the network.
+
+   Colour comes from the page: currentColor is the ink, --sk-g the ground, --sk-a the
+   accent. The markup is built from numbers and fixed words only; the only text from the
+   run that reaches it is a shot number, and that is cut to digits first. */
+var ShotSketch = (function () {
+  "use strict";
+  var W = 1000, H = 1000, TALL = false;
+  var LV = { ECU: 0, CU: 1, MCU: 2, MS: 3, MLS: 4, WS: 5, EWS: 6 };
+  // Ink strengths: the subject, its details, the setting, the faint guides.
+  var S = .62, D = .3, E = .17, G = .06;
+
+  function f(v) { return String(Math.round(v * 10) / 10); }
+  function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619); return h >>> 0; }
+  function rng(seed) { return function () { seed = (seed + 0x6D2B79F5) | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t ^= t + Math.imul(t ^ t >>> 7, 61 | t); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+  // One shape. o is the ink's strength. fill true hides what is drawn behind the shape.
+  function sh(tag, at, o, opt) {
+    opt = opt || {};
+    var s = "<" + tag, st = "stroke-opacity:" + o + ";";
+    for (var k in at) s += " " + k + '="' + (typeof at[k] === "number" ? f(at[k]) : at[k]) + '"';
+    if (opt.acc) st += "stroke:var(--sk-a,currentColor);";
+    if (opt.fill === true) st += "fill:color-mix(in srgb,currentColor 5%,var(--sk-g,#0F1114));";
+    else if (opt.fill) st += "fill:" + (opt.acc ? "var(--sk-a,currentColor)" : "currentColor") + ";fill-opacity:" + opt.fill + ";";
+    if (opt.dash) st += "stroke-dasharray:" + opt.dash + ";";
+    return s + ' style="' + st + '" vector-effect="non-scaling-stroke"/>';
+  }
+  function P(d, o, opt) { return sh("path", { d: d }, o, opt); }
+  function L(x1, y1, x2, y2, o, opt) { return P("M" + f(x1) + " " + f(y1) + "L" + f(x2) + " " + f(y2), o, opt); }
+  function O(x, y, r, o, opt) { return sh("circle", { cx: x, cy: y, r: r }, o, opt); }
+  function R(x, y, w, h, rx, o, opt) { return sh("rect", { x: x, y: y, width: Math.max(w, 1), height: Math.max(h, 1), rx: rx }, o, opt); }
+  function head(x, y, a, size, o, opt) {
+    var s = size || W * .022, b = .5;
+    return P("M" + f(x - s * Math.cos(a - b)) + " " + f(y - s * Math.sin(a - b)) + "L" + f(x) + " " + f(y) + "L" + f(x - s * Math.cos(a + b)) + " " + f(y - s * Math.sin(a + b)), o, opt);
+  }
+  function arrow(x1, y1, x2, y2, o, opt) { return L(x1, y1, x2, y2, o, opt) + head(x2, y2, Math.atan2(y2 - y1, x2 - x1), 0, o, opt); }
+
+  // A pen in local units, x across and y down, scaled by u from an origin. taper widens
+  // the drawing toward its foot (a low angle) or narrows it (a high one); rot turns it.
+  function pen(ox, oy, u, o) {
+    o = o || {}; var a = (o.rot || 0) * Math.PI / 180, ca = Math.cos(a), sa = Math.sin(a), m = o.flip ? -1 : 1, tp = o.taper || 0;
+    return function (d) {
+      return d.replace(/(-?\d*\.?\d+),(-?\d*\.?\d+)/g, function (_, x, y) {
+        x = +x * m * (1 + tp * +y); y = +y;
+        return f(ox + (x * ca - y * sa) * u) + " " + f(oy + (x * sa + y * ca) * u);
+      });
+    };
+  }
+
+  // ---------- what the subject is ----------
+  var MAIN = [
+    ["hands", "hands?|fingers?|palms?|fists?"],
+    ["person", "person|people|man|men|woman|women|founders?|speakers?|host|guy|girl|boy|kids?|child|customers?|team|crowd|figure|silhouette|face|eyes|worker|owner|chef|barber|client|someone|athlete|he|she|portrait of"],
+    ["garment", "hoodies?|sweatshirts?|t-shirts?|shirts?|tees?|jackets?|garments?|crewnecks?|apparel|merch"],
+    ["phone", "phones?|iphone|smartphone"],
+    ["laptop", "laptops?|computer|macbook"],
+    ["screen", "screens?|monitors?|dashboard|interface|website|app"],
+    ["bottle", "bottles?|cans?|jars?|cups?|mugs?|drinks?|coffee"],
+    ["box", "box|boxes|package|packaging|parcel|shipment"],
+    ["mark", "logo|mark|badge|icon|emblem|seal|sign"],
+    ["card", "cards?|flyer|poster|prints?|labels?|sticker|letter|page|book"],
+    ["product", "products?|items?|tools?|device"]
+  ];
+  var ENV = [
+    ["room", "room|office|kitchen|studio|interior|workspace|workshop|desk|fireplace|mantel|mantle|window|living|bedroom|shop|store|cafe|barbershop|garage|hallway|indoors|wall"],
+    ["street", "street|city|overpass|underpass|road|alley|sidewalk|buildings?|skyline|downtown|urban|bridge|traffic|parking|mural|night"],
+    ["land", "landscape|field|beach|mountains?|sky|hills?|ocean|sea|lake|park|outdoors?|sunset|sunrise|horizon|desert|forest|pool|water|yard|garden"]
+  ];
+  // The word that comes first wins: a plan names its subject before what is around it.
+  function first(text, list) {
+    var best = null, at = Infinity;
+    list.forEach(function (e) { var m = new RegExp("\\b(" + e[1] + ")\\b", "i").exec(text); if (m && m.index < at) { at = m.index; best = e[0]; } });
+    return best;
+  }
+  function read(k) {
+    var t = String(k.subject || ""), has = function (re) { return re.test(t); };
+    var main = k.card ? "ui" : /\b\w+'s (hands?|fingers?)\b/i.test(t) || (LV[String(k.framing).toUpperCase()] <= 1 && /\bhands?\b/i.test(t)) ? "hands" : first(t, MAIN);
+    // "three hoodies" draws three. A number that does not count the subject is not read.
+    var pat = (MAIN.filter(function (e) { return e[0] === main; })[0] || [0, "\\b\\B"])[1];
+    var cm = new RegExp("\\b(two|three|four|pair of|2|3|4)\\s+(?:[\\w-]+,?\\s+){0,2}(" + pat + ")\\b", "i").exec(t);
+    var count = cm ? ({ two: 2, "pair of": 2, three: 3, four: 4 }[cm[1].toLowerCase()] || +cm[1]) : 1;
+    return {
+      // "close on the founder's hand" is a shot of the hand.
+      main: main,
+      env: first(t, ENV), count: count,
+      back: has(/\bback\b/i), print: has(/print|reads|reading|graphic|logo|text/i), hanger: has(/hang|hanger|hung|rail|rack/i),
+      window: has(/window/i), fire: has(/fireplace|mantel|mantle|hearth/i), portraits: has(/portrait|framed|pictures|photos/i),
+      mural: has(/mural|graffiti/i), overpass: has(/overpass|underpass|bridge/i), sun: has(/\bsun|golden|dusk|dawn/i),
+      water: has(/pool|water|ocean|\bsea\b|lake/i), cap: has(/\bcap\b|\bhat\b/i), hood: has(/hoodie|\bhood\b|sweatshirt/i),
+      prop: first(t.replace(/^.*?\b(toward|towards|at|on|with|holding|using|beside)\b/i, ""), MAIN.slice(3, 6))
+    };
+  }
+
+  // ---------- the setting ----------
+  function floor(vx, hy, o, wide) {
+    var s = "", n = wide ? 9 : 7;
+    for (var i = 0; i < n; i++) {
+      var bx = vx + (i - (n - 1) / 2) * W * (wide ? .55 : .42), y0 = Math.max(hy + H * .05, 0), t = (y0 - hy) / (H * 1.6 - hy);
+      s += L(vx + (bx - vx) * t, y0, bx, H * 1.6, o);
+    }
+    return s;
+  }
+  function room(c, lv, k) {
+    var sc = [2.3, 1.9, 1.55, 1.2, .9, .66, .5][lv], hw = sc * H * (TALL ? .5 : .66), bw = sc * Math.max(W, H * .62) * .5;
+    var hy = c.hy == null ? H * .5 : c.hy, vx = c.vx, bt = hy - .385 * hw, bb = hy + .615 * hw, l = vx - bw, r = vx + bw, s = "";
+    s += P("M" + f(l) + " " + f(bt) + "H" + f(r) + "V" + f(bb) + "H" + f(l) + "Z", E);
+    [[l, bt], [r, bt], [r, bb], [l, bb]].forEach(function (p) { s += L(p[0], p[1], p[0] + (p[0] - vx) * 6, p[1] + (p[1] - hy) * 6, E * .8); });
+    if (k.window) {
+      var wx = c.cx < W / 2 ? vx + bw * .38 : vx - bw * .38 - bw * .34, wy = bt + hw * .14, ww = bw * .34, wh = hw * .5;
+      s += R(wx, wy, ww, wh, 0, E) + R(wx + ww * .06, wy + wh * .04, ww * .88, wh * .92, 0, E * .7) + L(wx + ww / 2, wy + wh * .04, wx + ww / 2, wy + wh * .96, E * .7) + L(wx + ww * .06, wy + wh * .45, wx + ww * .94, wy + wh * .45, E * .7);
+    }
+    if (k.fire) {
+      var my = bb - hw * .4, mw = bw * .5;
+      s += L(vx - mw, my, vx + mw, my, E * 1.2) + L(vx - mw * .94, my + hw * .03, vx + mw * .94, my + hw * .03, E) + L(vx - mw * .82, my + hw * .03, vx - mw * .82, bb, E) + L(vx + mw * .82, my + hw * .03, vx + mw * .82, bb, E);
+      s += P("M" + f(vx - mw * .42) + " " + f(bb) + "V" + f(my + hw * .16) + "Q" + f(vx) + " " + f(my + hw * .07) + " " + f(vx + mw * .42) + " " + f(my + hw * .16) + "V" + f(bb), E);
+      if (k.portraits) [-1, 1].forEach(function (d) { var pw = bw * .17, ph = hw * .22; s += R(vx + d * bw * .22 - pw / 2, my - hw * .08 - ph, pw, ph, 0, E) + R(vx + d * bw * .22 - pw / 2 + pw * .12, my - hw * .08 - ph + ph * .1, pw * .76, ph * .8, 0, E * .6); });
+    } else if (k.mural) s += R(vx - bw * .7, bt + hw * .12, bw * 1.4, hw * .62, 0, E);
+    return s;
+  }
+  function street(c, lv, k, rnd) {
+    var hy = c.hy == null ? H * .55 : c.hy, vx = c.vx, s = L(-W, hy, 2 * W, hy, E), sc = [3, 2.6, 2.2, 1.7, 1.3, 1, .75][lv];
+    s += L(vx - W * .02, hy + H * .02, vx - W * 1.1, H * 1.4, E) + L(vx + W * .02, hy + H * .02, vx + W * 1.1, H * 1.4, E);
+    s += L(vx, hy + H * .06, vx, H * 1.4, E * .8, { dash: "6 9" });
+    var x = -40, d = "";
+    while (x < W + 40) {
+      var bw = W * (.05 + rnd() * .09), bh = H * (.04 + rnd() * .1) * sc * (TALL ? .6 : 1);
+      if (Math.abs(x + bw / 2 - vx) < W * .09) { x += bw; continue; }
+      d += "M" + f(x) + " " + f(hy) + "V" + f(hy - bh) + "H" + f(x + bw) + "V" + f(hy);
+      x += bw;
+    }
+    s += P(d, E * .9);
+    if (k.overpass) { var t = H * (TALL ? .1 : .06); s += L(-W, t, 2 * W, t, E * 1.2) + L(-W, t + H * .06, 2 * W, t + H * .06, E * 1.2) + L(W * .14, t + H * .06, W * .14, hy, E) + L(W * .86, t + H * .06, W * .86, hy, E); }
+    if (k.mural) s += R(W * .08, hy - H * .3 * Math.min(sc, 1.4), W * .84, H * .26 * Math.min(sc, 1.4), 0, E * .8);
+    return s;
+  }
+  function land(c, lv, k) {
+    var hy = c.hy == null ? H * .6 : c.hy, s = L(-W, hy, 2 * W, hy, E);
+    s += P("M" + f(-W * .1) + " " + f(hy - H * .03) + "C" + f(W * .3) + " " + f(hy - H * .1) + " " + f(W * .55) + " " + f(hy - H * .01) + " " + f(W * 1.1) + " " + f(hy - H * .07), E * .8);
+    if (k.sun) s += O(c.cx < W / 2 ? W * .76 : W * .24, hy - H * .2, W * .05, E);
+    if (k.water) for (var i = 1; i < 4; i++) s += L(W * (.2 + i * .12), hy + H * .04 * i, W * (.32 + i * .12), hy + H * .04 * i, E * .8);
+    return s;
+  }
+  // Out-of-focus lights, kept in the free part of the frame and off the subject.
+  function bokeh(c, b, rnd) {
+    var s = "";
+    for (var i = 0; i < 6; i++) {
+      var x = b.x0 + rnd() * (b.x1 - b.x0), y = b.y0 + rnd() * (b.y1 - b.y0) * .55, r = W * (.025 + rnd() * .045);
+      if (Math.abs(x - c.cx) > W * .16) s += O(x, y, r, G * 1.3, { fill: .025 });
+    }
+    return s;
+  }
+
+  // ---------- subjects ----------
+  var BODY = "M-.15,.9 L-.17,1.16 C-.42,1.2 -.8,1.26 -.98,1.4 C-1.1,1.5 -1.13,1.75 -1.1,2.05 L-1.02,3.72 C-1.01,3.9 -.9,3.98 -.82,3.9 L-.64,4.02 L-.52,7.28 C-.56,7.4 -.62,7.46 -.56,7.5 L-.1,7.5 L-.06,4.38 L.06,4.38 L.1,7.5 L.56,7.5 C.62,7.46 .56,7.4 .52,7.28 L.64,4.02 L.82,3.9 C.9,3.98 1.01,3.9 1.02,3.72 L1.1,2.05 C1.13,1.75 1.1,1.5 .98,1.4 C.8,1.26 .42,1.2 .17,1.16 L.15,.9 Z";
+  var HEAD = "M0,0 C.22,0 .37,.2 .37,.48 C.37,.78 .2,1.02 0,1.02 C-.2,1.02 -.37,.78 -.37,.48 C-.37,.2 -.22,0 0,0 Z";
+  function figure(c, u, k, angle) {
+    var p = pen(c.cx, c.top, u, { taper: angle === "low" ? .045 : angle === "high" ? -.05 : 0 });
+    var tt = clamp((W / 2 - c.cx) / W * 1.4, -.45, .45), bend = angle === "high" ? .12 : angle === "low" ? -.1 : .05;
+    var s = P(p(BODY), S, { fill: true });
+    s += P(p("M-.8,1.95 L-.77,3.62 M.8,1.95 L.77,3.62"), D) + P(p("M-.17,1.16 C-.08,1.3 .08,1.3 .17,1.16"), D);
+    if (k.hood) s += P(p("M-.4,1.2 C-.32,1.56 .32,1.56 .4,1.2 M-.07,1.44 L-.08,1.95 M.07,1.44 L.08,1.95"), D);
+    s += P(p(HEAD), S, { fill: true });
+    if (k.cap) s += P(p("M-.39,.42 C-.4,.02 .4,.02 .39,.42 M-.39,.42 C-.15,.5 .3,.5 .62,.38"), S * .9);
+    s += P(p("M" + f(tt * .2) + ",.03 Q" + f(tt * .8) + ",.52 " + f(tt * .2) + ",1.0"), D * .7) + P(p("M-.37,.5 Q" + f(tt * .3) + "," + f(.5 + bend) + " .37,.5"), D * .7);
+    var ex = tt * .37;
+    if (u > H * .16) s += P(p("M" + f(ex - .2) + ",.53 L" + f(ex - .09) + ",.53 M" + f(ex + .09) + ",.53 L" + f(ex + .2) + ",.53 M" + f(ex + .02) + ",.64 L" + f(ex + .02 + tt * .1) + ",.73 L" + f(ex - .04) + ",.74"), D);
+    return s;
+  }
+  function plan(c, u, k) {
+    var s = P("M" + f(c.cx - u * 1.05) + " " + f(c.cy) + "a" + f(u * 1.05) + " " + f(u * .42) + " 0 1 0 " + f(u * 2.1) + " 0a" + f(u * 1.05) + " " + f(u * .42) + " 0 1 0 " + f(-u * 2.1) + " 0Z", S, { fill: true });
+    s += O(c.cx, c.cy - u * .05, u * .36, S, { fill: true }) + P("M" + f(c.cx - u * .22) + " " + f(c.cy + u * .2) + "Q" + f(c.cx) + " " + f(c.cy + u * .42) + " " + f(c.cx + u * .22) + " " + f(c.cy + u * .2), D);
+    return s;
+  }
+  function eyes(c) {
+    var s = "", ew = W * (TALL ? .3 : .24), y = H * (TALL ? .44 : .46), gap = W * (TALL ? .22 : .2);
+    s += P("M" + f(W * -.05) + " " + f(H * .02) + "C" + f(W * .1) + " " + f(H * .6) + " " + f(W * .02) + " " + f(H * .95) + " " + f(W * .12) + " " + f(H * 1.1), E);
+    s += P("M" + f(W * 1.05) + " " + f(H * .02) + "C" + f(W * .9) + " " + f(H * .6) + " " + f(W * .98) + " " + f(H * .95) + " " + f(W * .88) + " " + f(H * 1.1), E);
+    [-1, 1].forEach(function (d) {
+      var x = W / 2 + d * gap, h = ew * .26;
+      s += P("M" + f(x - ew / 2) + " " + f(y) + "C" + f(x - ew / 4) + " " + f(y - h) + " " + f(x + ew / 4) + " " + f(y - h) + " " + f(x + ew / 2) + " " + f(y) + "C" + f(x + ew / 4) + " " + f(y + h * .8) + " " + f(x - ew / 4) + " " + f(y + h * .8) + " " + f(x - ew / 2) + " " + f(y) + "Z", S, { fill: true });
+      s += O(x + d * -ew * .04, y, ew * .17, S) + O(x + d * -ew * .04, y, ew * .07, S, { fill: .5 });
+      s += P("M" + f(x - ew * .44) + " " + f(y - h * 1.25) + "Q" + f(x) + " " + f(y - h * 2) + " " + f(x + ew * .44) + " " + f(y - h * 1.25), D);
+      s += P("M" + f(x - ew * .55) + " " + f(y - h * 2.3) + "Q" + f(x + d * ew * .1) + " " + f(y - h * 3.1) + " " + f(x + ew * .55) + " " + f(y - h * 2.2), S * .8);
+    });
+    s += P("M" + f(W / 2 - W * .04) + " " + f(y + ew * .2) + "Q" + f(W / 2 - W * .05) + " " + f(y + ew * .9) + " " + f(W / 2 - W * .08) + " " + f(H * 1.05), D * .8);
+    return s;
+  }
+  var HAND = "M-.27,1.5 L-.3,0 C-.36,-.3 -.42,-.62 -.34,-.86 C-.26,-1.04 .2,-1.06 .3,-.88 C.38,-.7 .36,-.32 .3,0 L.3,1.5 Z";
+  function hands(c, s, k) {
+    var out = "", ty = c.cy + s * .2, cw = s * 1.05;
+    out += L(-W, ty - s * .35, 2 * W, ty - s * .35, E);
+    out += R(c.cx - cw / 2, ty - s * 1.25, cw, cw * .72, 2, S * .8, { fill: true }) + L(c.cx - cw * .32, ty - s * 1.0, c.cx + cw * .2, ty - s * 1.0, D) + L(c.cx - cw * .32, ty - s * .9, c.cx + cw * .05, ty - s * .9, D);
+    [-1, 1].forEach(function (d) {
+      var p = pen(c.cx + d * s * .62, ty, s * .7, { rot: d * -38, flip: d < 0 });
+      out += P(p(HAND), S, { fill: true }) + P(p("M-.31,-.28 C-.5,-.42 -.56,-.62 -.48,-.72 C-.4,-.78 -.34,-.66 -.33,-.56 M-.12,-1.0 L-.1,-.62 M.08,-1.02 L.08,-.64 M.22,-.94 L.2,-.62"), D);
+    });
+    return out;
+  }
+  var HOODIE = "M-.17,.02 C-.27,.04 -.36,.07 -.43,.11 L-.63,.56 L-.54,.61 L-.36,.27 L-.36,.86 L.36,.86 L.36,.27 L.54,.61 L.63,.56 L.43,.11 C.36,.07 .27,.04 .17,.02 C.2,-.16 -.2,-.16 -.17,.02 Z";
+  var HOODIE_BACK = HOODIE.replace("C.2,-.16 -.2,-.16 -.17,.02", "C.1,-.02 -.1,-.02 -.17,.02");
+  function garment(cx, top, g, k, lead) {
+    var p = pen(cx, top, g), s = "";
+    if (k.hanger) s += P(p("M0,-.06 L0,-.15 C0,-.23 .08,-.23 .08,-.16"), D);
+    s += P(p(k.back ? HOODIE_BACK : HOODIE), lead ? S : S * .7, { fill: true }) + P(p("M-.36,.8 L.36,.8 M-.6,.54 L-.53,.58 M.6,.54 L.53,.58"), D);
+    if (k.back) s += P(p("M-.17,.02 C-.25,.17 -.14,.3 0,.3 C.14,.3 .25,.17 .17,.02"), D);
+    else s += P(p("M-.2,.6 L-.24,.78 L.24,.78 L.2,.6 Z M-.05,.06 L-.06,.24 M.05,.06 L.06,.24"), D);
+    if (k.print && lead) s += P(p(k.back ? "M-.2,.4 L.2,.4 M-.24,.47 L.24,.47 M-.16,.54 L.16,.54" : "M-.14,.3 L.14,.3 M-.1,.36 L.1,.36"), S * .8);
+    return s;
+  }
+  function object(kind, cx, cy, s, angle) {
+    var o = "", hi = angle === "high" || angle === "overhead";
+    if (kind === "phone") { var w = s * .5; o += R(cx - w / 2, cy - s / 2, w, s, w * .14, S, { fill: true }) + R(cx - w * .42, cy - s * .44, w * .84, s * .88, w * .08, D) + L(cx - w * .12, cy - s * .41, cx + w * .12, cy - s * .41, D) + L(cx - w * .3, cy - s * .2, cx + w * .2, cy - s * .2, D) + L(cx - w * .3, cy - s * .12, cx + w * .05, cy - s * .12, D); }
+    else if (kind === "laptop") { var lw = s * 1.3, lh = lw * .6; o += P("M" + f(cx - lw * .46) + " " + f(cy + lh * .5) + "L" + f(cx - lw * .42) + " " + f(cy - lh * .5) + "H" + f(cx + lw * .42) + "L" + f(cx + lw * .46) + " " + f(cy + lh * .5) + "Z", S, { fill: true }) + P("M" + f(cx - lw * .56) + " " + f(cy + lh * .5) + "H" + f(cx + lw * .56) + "L" + f(cx + lw * .5) + " " + f(cy + lh * .6) + "H" + f(cx - lw * .5) + "Z", S, { fill: true }) + L(cx - lw * .3, cy - lh * .25, cx + lw * .1, cy - lh * .25, D) + L(cx - lw * .3, cy - lh * .1, cx + lw * .28, cy - lh * .1, D); }
+    else if (kind === "screen") { var sw = s * 1.5, sh2 = sw * .58; o += R(cx - sw / 2, cy - sh2 / 2, sw, sh2, 4, S, { fill: true }) + L(cx, cy + sh2 / 2, cx, cy + sh2 * .7, S) + L(cx - sw * .14, cy + sh2 * .7, cx + sw * .14, cy + sh2 * .7, S) + R(cx - sw * .42, cy - sh2 * .36, sw * .22, sh2 * .72, 2, D) + L(cx - sw * .12, cy - sh2 * .28, cx + sw * .38, cy - sh2 * .28, D) + L(cx - sw * .12, cy - sh2 * .14, cx + sw * .26, cy - sh2 * .14, D); }
+    else if (kind === "bottle") { var bw = s * .34; o += P("M" + f(cx - bw * .2) + " " + f(cy - s * .5) + "H" + f(cx + bw * .2) + "V" + f(cy - s * .3) + "C" + f(cx + bw * .5) + " " + f(cy - s * .22) + " " + f(cx + bw * .5) + " " + f(cy - s * .16) + " " + f(cx + bw * .5) + " " + f(cy - s * .1) + "V" + f(cy + s * .46) + "Q" + f(cx + bw * .5) + " " + f(cy + s * .5) + " " + f(cx + bw * .42) + " " + f(cy + s * .5) + "H" + f(cx - bw * .42) + "Q" + f(cx - bw * .5) + " " + f(cy + s * .5) + " " + f(cx - bw * .5) + " " + f(cy + s * .46) + "V" + f(cy - s * .1) + "C" + f(cx - bw * .5) + " " + f(cy - s * .16) + " " + f(cx - bw * .5) + " " + f(cy - s * .22) + " " + f(cx - bw * .2) + " " + f(cy - s * .3) + "Z", S, { fill: true }) + R(cx - bw * .5, cy, bw, s * .22, 0, D); }
+    else if (kind === "mark") { var m = s * .7; o += R(cx - m / 2, cy - m / 2, m, m, m * .22, S, { fill: true }) + O(cx, cy, m * .22, D) + L(cx - m * .62, cy + m * .78, cx + m * .62, cy + m * .78, D); }
+    else if (kind === "card") { var cw = s * .78, chh = s; o += R(cx - cw / 2, cy - chh / 2, cw, chh, 2, S, { fill: true }) + R(cx - cw * .38, cy - chh * .4, cw * .76, chh * .44, 0, D) + L(cx - cw * .38, cy + chh * .14, cx + cw * .2, cy + chh * .14, D) + L(cx - cw * .38, cy + chh * .24, cx + cw * .05, cy + chh * .24, D); }
+    else {
+      // A box, or any product the words do not name: seen from above it shows its lid.
+      var bx = s * .5, dy = hi ? s * .22 : angle === "low" ? -s * .12 : s * .14, dx = s * .3;
+      o += P("M" + f(cx - bx) + " " + f(cy - bx * .7) + "L" + f(cx - bx + dx) + " " + f(cy - bx * .7 - dy) + "H" + f(cx + bx + dx) + "V" + f(cy + bx * .9 - dy) + "L" + f(cx + bx) + " " + f(cy + bx * .9) + "H" + f(cx - bx) + "Z", S, { fill: true });
+      o += P("M" + f(cx - bx) + " " + f(cy - bx * .7) + "H" + f(cx + bx) + "V" + f(cy + bx * .9) + "M" + f(cx + bx) + " " + f(cy - bx * .7) + "L" + f(cx + bx + dx) + " " + f(cy - bx * .7 - dy), S);
+      if (kind === "box") o += L(cx - bx + dx * .5, cy - bx * .7 - dy * .5, cx + bx + dx * .5, cy - bx * .7 - dy * .5, D);
+    }
+    return o + (angle === "overhead" ? "" : P("M" + f(cx - s * .62) + " " + f(cy + s * .56) + "Q" + f(cx) + " " + f(cy + s * .6) + " " + f(cx + s * .62) + " " + f(cy + s * .56), D * .7));
+  }
+  // A frame drawn in code: the kind of card it is decides the panel.
+  function ui(card, b, rnd) {
+    var x0 = b.x0, x1 = b.x1, y0 = b.y0, y1 = b.y1, w = x1 - x0, h = y1 - y0, s = "", i, y;
+    if (card === "lines") {
+      var rows = clamp(Math.round(h / (W * .045)), 6, 26), rh = h / rows, mark = Math.floor(rnd() * rows * .6 + rows * .2);
+      for (i = 0; i < rows; i++) { y = y0 + rh * (i + .5); s += L(x0, y, x0 + w * .1, y, i === mark ? S : D * .6) + L(x0 + w * .15, y, x0 + w * (.4 + rnd() * .58), y, i === mark ? S : D * .8); if (i === mark) s += O(x0 - W * .025, y, W * .008, .9, { acc: true, fill: .9 }); }
+      return s;
+    }
+    if (card === "mark") { var m = Math.min(w * .46, h * .6), cy = y0 + h * .44; s += R(W / 2 - m / 2, cy - m / 2, m, m, m * .24, S, { fill: true }); for (i = -1; i <= 1; i++) s += L(W / 2 - m * .22, cy + i * m * .2, W / 2 + m * (.22 - Math.abs(i) * .08), cy + i * m * .2, S); return s + L(W / 2 - m * .7, cy + m * .9, W / 2 + m * .7, cy + m * .9, D); }
+    if (card === "quote") { var qy = y0 + h * .3; s += P("M" + f(x0 + w * .08) + " " + f(qy) + "q" + f(-w * .03) + " " + f(h * .06) + " 0 " + f(h * .1) + "M" + f(x0 + w * .15) + " " + f(qy) + "q" + f(-w * .03) + " " + f(h * .06) + " 0 " + f(h * .1), S, { acc: true }); for (i = 0; i < 3; i++) s += L(x0 + w * .08, qy + h * (.2 + i * .09), x0 + w * (i === 2 ? .6 : .92), qy + h * (.2 + i * .09), S * .8); return s + L(x0 + w * .08, qy + h * .52, x0 + w * .3, qy + h * .52, D); }
+    if (card === "notices") {
+      var nh = Math.min(h * .2, w * .3);
+      for (i = 2; i >= 0; i--) { var iw = w * (1 - i * .08), ny = y0 + h * .55 - i * nh * .32 - nh / 2; s += R(W / 2 - iw / 2, ny, iw, nh, nh * .14, i ? D * (1 - i * .3) : S, { fill: true }); if (!i) s += O(W / 2 - iw / 2 + nh * .32, ny + nh / 2, nh * .15, S, { acc: true }) + L(W / 2 - iw / 2 + nh * .62, ny + nh * .4, W / 2 + iw * .25, ny + nh * .4, D) + L(W / 2 - iw / 2 + nh * .62, ny + nh * .62, W / 2, ny + nh * .62, D); }
+      return s;
+    }
+    var big = card === "detail" || card === "stat", pr = card === "action" ? 3 : big ? 3 : 6, top = y0;
+    if (big) { var dw = Math.min(w * .2, h * .2); for (i = 0; i < 3; i++) s += R(x0 + i * dw * 1.16, top, dw, dw * 1.45, dw * .2, S); s += R(x0 + dw * 3.7, top + dw * .2, dw * 1.1, dw * .36, dw * .18, S, { acc: true }); top += dw * 1.9; }
+    var hh = Math.min(h * .1, W * .07), rh2 = Math.min((y1 - top - hh - (card === "action" ? h * .2 : 0)) / pr, W * .09);
+    s += R(x0, top, w, hh + rh2 * pr, 6, D, { fill: true }) + L(x0 + w * .05, top + hh * .55, x0 + w * .3, top + hh * .55, S);
+    for (i = 0; i < pr; i++) { y = top + hh + rh2 * i; s += L(x0, y, x1, y, G * 1.4) + O(x0 + w * .07, y + rh2 / 2, rh2 * .12, D) + L(x0 + w * .14, y + rh2 / 2, x0 + w * (.42 + rnd() * .2), y + rh2 / 2, D) + L(x1 - w * .2, y + rh2 / 2, x1 - w * .06, y + rh2 / 2, D * .7); }
+    if (card === "action") { var by = top + hh + rh2 * pr + h * .06; s += R(x0, by, w, Math.min(h * .11, W * .09), Math.min(h * .055, W * .045), .9, { acc: true }) + L(W / 2 - w * .14, by + Math.min(h * .055, W * .045), W / 2 + w * .14, by + Math.min(h * .055, W * .045), .9, { acc: true }); }
+    return s;
+  }
+
+  // ---------- the camera ----------
+  function camera(m, c, b, rnd, z) {
+    var A = .85, o = { acc: true }, s = "";
+    if (m === "push" || m === "pull") {
+      var iw = W * .5, ih = H * .48, ix = clamp(c.fx - iw / 2, W * .1, W * .9 - iw), iy = clamp(c.fy - ih / 2, H * .2, H * .9 - ih), bl = W * .045;
+      [[ix, iy, 1, 1], [ix + iw, iy, -1, 1], [ix + iw, iy + ih, -1, -1], [ix, iy + ih, 1, -1]].forEach(function (p, i) {
+        s += P("M" + f(p[0] + p[2] * bl) + " " + f(p[1]) + "H" + f(p[0]) + "V" + f(p[1] + p[3] * bl), A, o);
+        if (i < 2) return;
+        var ox = i === 3 ? W * .04 : W * .96, oy = H * .96, ax = ox + (p[0] - ox) * .3, ay = oy + (p[1] - oy) * .3, bx = ox + (p[0] - ox) * .8, by = oy + (p[1] - oy) * .8;
+        s += m === "push" ? arrow(ax, ay, bx, by, A, o) : arrow(bx, by, ax, ay, A, o);
+      });
+    } else if (m === "pan-left" || m === "pan-right" || m === "whip") {
+      var dir = m === "pan-left" ? -1 : 1, y = z.py, a0 = W * (m === "whip" ? .18 : .26), a1 = W * (m === "whip" ? .82 : .74);
+      s += dir > 0 ? arrow(a0, y, a1, y, A, o) : arrow(a1, y, a0, y, A, o);
+      s += L(dir > 0 ? a0 : a1, y - W * .015, dir > 0 ? a0 : a1, y + W * .015, A, o);
+      if (m === "whip") for (var i = 0; i < 2; i++) s += L(a0 + W * .06 * (i + 1), y + (i ? 1 : -1) * W * .03, a1 - W * .2, y + (i ? 1 : -1) * W * .03, A * .6, o);
+    } else if (m === "tilt-up" || m === "tilt-down") {
+      var x = c.cx > W / 2 ? W * .1 : W * .9, t0 = H * .36, t1 = H * .64;
+      s += m === "tilt-up" ? arrow(x, t1, x, t0, A, o) : arrow(x, t0, x, t1, A, o);
+      s += L(x - W * .015, m === "tilt-up" ? t1 : t0, x + W * .015, m === "tilt-up" ? t1 : t0, A, o);
+    } else if (m === "orbit") {
+      var oy = c.base, rx = W * .34, ry = Math.min(H * .05, W * .06);
+      s += P("M" + f(c.cx - rx) + " " + f(oy) + "A" + f(rx) + " " + f(ry) + " 0 0 1 " + f(c.cx + rx) + " " + f(oy), A * .5, { acc: true, dash: "3 6" });
+      z.front = P("M" + f(c.cx + rx) + " " + f(oy) + "A" + f(rx) + " " + f(ry) + " 0 0 1 " + f(c.cx - rx * .7) + " " + f(oy + ry * .7), A, o) + head(c.cx - rx * .7, oy + ry * .7, Math.PI * .93, 0, A, o);
+    } else if (m === "handheld") {
+      var hx = c.cx > W / 2 ? W * .05 : W * .77, hy = z.cy, d = "M" + f(hx) + " " + f(hy);
+      for (var j = 1; j <= 9; j++) d += "L" + f(hx + j * W * .02) + " " + f(hy + (j % 2 ? -1 : 1) * W * (.008 + rnd() * .014));
+      s += P(d, A, o);
+    } else if (m === "rack") {
+      var rx2 = c.cx > W / 2 ? W * .1 : W * .88, ry2 = z.cy;
+      s += O(rx2 - W * .04, ry2, W * .03, A, o) + O(rx2 + W * .045, ry2, W * .02, A * .7, { acc: true, dash: "2 4" }) + arrow(rx2 - W * .004, ry2, rx2 + W * .016, ry2, A, o);
+    }
+    return s;
+  }
+
+  // ---------- the panel ----------
+  function svg(k) {
+    var ar = String(k.aspect || "16:9").split(":"), ratio = (+ar[0] || 16) / (+ar[1] || 9);
+    W = 1000; H = Math.round(W / ratio); TALL = ratio < .8;
+    var rnd = rng(hash(String(k.seed || k.n || "") + String(k.subject || ""))), lv = LV[String(k.framing || "MS").toUpperCase()];
+    if (lv == null) lv = 3;
+    var angle = String(k.angle || "eye-level").toLowerCase(), motion = String(k.motion || "static").toLowerCase(), q = read(k);
+    var text = k.text || [], up = text.indexOf("upper-third") >= 0, low = text.indexOf("lower-third") >= 0;
+    // The free part of the frame, away from the on-screen text.
+    var b = { x0: W * .1, x1: W * .9, y0: H * (TALL ? .12 : .12), y1: H * (TALL ? .84 : .88) };
+    if (up) b.y0 = H * (TALL ? .36 : .4);
+    if (low) b.y1 = H * (TALL ? .6 : .6);
+    if (text.indexOf("left-third") >= 0) b.x0 = W * .52;
+    if (text.indexOf("right-third") >= 0) b.x1 = W * .48;
+    if (text.indexOf("center") >= 0 && !up && !low) b.y0 = H * .64;
+    var side = rnd() < .5 ? -1 : 1, cx = TALL ? W / 2 : W / 2 + side * W * (ratio > 1.2 ? .16 : .09);
+    if (b.x0 > W * .3 || b.x1 < W * .7) cx = (b.x0 + b.x1) / 2;
+    var c = { cx: cx, vx: W / 2 + (W / 2 - cx) * .5, hy: H * .5, fx: cx, fy: H * .4, base: H * .8 };
+    // Small camera marks sit in a lower corner, or high on the side when text is low.
+    // On a short frame with text at the top, the labels sit at the foot, so marks rise.
+    var foot = up && !TALL;
+    var z = { cy: low ? H * (TALL ? .17 : .27) : H - W * (foot ? .14 : .06), py: low && !TALL ? Math.max(b.y1 - H * .03, H * .5) : H * (TALL ? .9 : foot ? .76 : .92) }, guides = "", scene = "", subj = "";
+
+    for (var i = 1; i < 3; i++) { guides += L(W * i / 3, 0, W * i / 3, H, G * .6) + L(0, H * i / 3, W, H * i / 3, G * .6); }
+    [[1, 1], [2, 1], [1, 2], [2, 2]].forEach(function (p) { var x = W * p[0] / 3, y = H * p[1] / 3, a = W * .016; guides += L(x - a, y, x + a, y, G * 2.4) + L(x, y - a, x, y + a, G * 2.4); });
+
+    if (k.bridge) {
+      var pw = W * (TALL ? .32 : ratio < 1.2 ? .3 : .27), ph = pw / ratio, mid = (b.y0 + b.y1) / 2;
+      if (ph > (b.y1 - b.y0) * .8) { ph = (b.y1 - b.y0) * .8; pw = ph * ratio; }
+      var gap = W * .16, x1 = (W - pw * 2 - gap) / 2, size = Math.min(pw * .2, W * .07);
+      [[x1, k.from], [x1 + pw + gap, k.to]].forEach(function (p, i) {
+        scene += R(p[0], mid - ph / 2, pw, ph, 4, i ? S : D * 1.4, { fill: true }) + L(p[0] + pw * .1, mid + ph * .12, p[0] + pw * .9, mid + ph * .12, E);
+        var num = String(p[1] == null ? "" : p[1]).replace(/\D/g, "").slice(0, 3);
+        if (num) scene += '<text x="' + f(p[0] + pw / 2) + '" y="' + f(mid - ph * .06) + '" text-anchor="middle" dominant-baseline="central" style="font:500 ' + f(size) + 'px var(--sk-mono,ui-monospace,Menlo,monospace);letter-spacing:.06em;fill:currentColor;fill-opacity:' + (i ? .7 : .45) + ';stroke:none">' + num + "</text>";
+      });
+      scene += arrow(x1 + pw + W * .035, mid, x1 + pw + gap - W * .035, mid, .85, { acc: true }) + L(x1 + pw + W * .035, mid - W * .012, x1 + pw + W * .035, mid + W * .012, .85, { acc: true });
+      return wrap(guides + scene);
+    }
+
+    var main = q.main || (q.env && lv >= 4 ? "env" : "product"), env = q.env, near = lv <= 1;
+    if (main === "ui") {
+      b = { x0: Math.max(b.x0, W * .14), x1: Math.min(b.x1, W * .86), y0: b.y0 + H * .03, y1: b.y1 - H * .03 };
+      subj = ui(k.card, b, rnd); c.fx = W / 2; c.fy = (b.y0 + b.y1) / 2; env = null;
+    } else if (main === "person" && lv === 0) {
+      subj = eyes(c); c.fx = W / 2; c.fy = H * .45; env = null;
+    } else if (main === "person" && angle === "overhead") {
+      var pu = [.5, .42, .3, .2, .14, .09, .04][lv] * Math.min(H, W * 1.2);
+      c.cy = (b.y0 + b.y1) / 2; subj = plan(c, pu, q); c.fx = cx; c.fy = c.cy; c.base = c.cy + pu * .5;
+    } else if (main === "person") {
+      var F = [[0, 0, 0], [.46, .78, .14], [.3, .5, .14], [.21, .36, .13], [.135, .26, .14], [.085, .1, 0], [.035, .045, 0]][lv];
+      var u = Math.min(H * F[0], W * F[1]), top = lv >= 5 ? H * (lv === 5 ? .84 : .8) - 7.5 * u : H * F[2];
+      if (up && lv < 5) top = Math.max(top, Math.min(b.y0 - H * .04, H * .36));
+      c.top = top; c.fx = cx; c.fy = top + u * .6; c.base = Math.min(top + u * 7.5, H * .86);
+      c.hy = angle === "high" ? Math.min(top + u * .5 - H * .3, H * .1) : angle === "low" ? H * .86 : top + u * .5;
+      subj = figure(c, u, q, angle);
+      var pc = cx < W / 2 ? cx + u * 2.4 : cx - u * 2.4;
+      if (q.prop && lv >= 3 && pc > W * .12 && pc < W * .88) subj += object(q.prop, pc, top + u * 3.2, u * 1.1, angle);
+    } else if (main === "hands") {
+      var hs = [.5, .4, .3, .22, .16, .1, .06][lv] * Math.min(H, W * 1.3);
+      c.cx = W / 2; c.cy = clamp((b.y0 + b.y1) / 2 + hs * .5, b.y0 + hs * 1.3, H - hs * .3); c.fx = W / 2; c.fy = c.cy - hs * .8; c.base = c.cy;
+      c.hy = angle === "low" ? H * .8 : c.cy - hs * 1.6; c.vx = W / 2;
+      subj = hands(c, hs, q);
+    } else if (main === "garment") {
+      var n = q.count, gs = [1.9, 1.25, .9, .7, .52, .36, .16][lv], fh = b.y1 - b.y0, g = gs * (lv >= 3 ? fh : H);
+      var span = function (gg) { return gg * (1.26 + (n - 1) * .9); };
+      if (lv >= 3 && span(g) > (b.x1 - b.x0) * 1.08) g = (b.x1 - b.x0) * 1.08 / (1.26 + (n - 1) * .9);
+      var gx = n > 1 ? W / 2 : cx, gt = lv >= 3 ? b.y0 + (fh - g * (q.hanger ? 1.12 : 1.02)) / 2 + g * (q.hanger ? .26 : .16) : (b.y0 + b.y1) / 2 - g * .42;
+      if (q.hanger && lv >= 3) scene += L(-W, gt - g * .15, 2 * W, gt - g * .15, D * .8);
+      for (var j = 0; j < n; j++) { var off = (j - (n - 1) / 2) * g * .9, lead = n === 1 || j === Math.floor(n / 2); if (!lead) subj += garment(gx + off, gt + g * .02, g, q, false); }
+      subj += garment(gx, gt, g, q, true);
+      c.cx = gx; c.fx = gx; c.fy = gt + g * .4; c.base = gt + g * .9;
+      c.hy = angle === "high" ? H * .1 : angle === "low" ? H * .86 : gt + g * .3;
+    } else if (main !== "env") {
+      var wf = { phone: .5, laptop: 1.5, screen: 1.5, bottle: .4, mark: 1, card: .8 }[main] || 1.4;
+      var os = Math.min([1.3, .9, .72, .56, .4, .26, .12][lv] * Math.min(b.y1 - b.y0, H), (b.x1 - b.x0) * .8 / wf);
+      os = Math.max(os, W * .14 / wf);
+      var oy = (b.y0 + b.y1) / 2;
+      subj = object(main, cx, oy, os, angle); c.fx = cx; c.fy = oy; c.base = oy + os * .56;
+      c.hy = angle === "high" ? H * .1 : angle === "low" ? H * .86 : oy - os * .1;
+    } else { c.hy = angle === "high" ? H * .3 : angle === "low" ? H * .8 : H * .56; }
+    if (angle === "overhead") c.hy = null;
+    c.vx = main === "hands" ? W / 2 : W / 2 + (W / 2 - c.cx) * .5;
+
+    // The setting behind the subject, quieter than the subject and gone in a close shot.
+    if (env && !near && angle !== "overhead") {
+      scene += env === "room" ? room(c, lv, q) : env === "street" ? street(c, lv, q, rnd) : land(c, lv, q);
+      if (main === "env") scene = scene.replace(/stroke-opacity:([\d.]+)/g, function (_, v) { return "stroke-opacity:" + Math.round(Math.min(+v * 2.2, .5) * 100) / 100; });
+    } else if (angle === "overhead") {
+      for (var t = -2; t < 9; t++) scene += L(W * t * .14, -H, W * t * .14 + W * .2, 2 * H, G);
+    } else if (!near && main !== "ui") {
+      scene += L(-W, c.hy, 2 * W, c.hy, E);
+      if (lv >= 4 || main !== "person") scene += floor(c.vx, c.hy, E * .7, ratio > 1.2);
+    }
+    if ((near || String(k.dof).toLowerCase() === "shallow" || motion === "rack") && main !== "ui" && angle !== "overhead") scene += bokeh(c, b, rnd);
+    scene += subj;
+    var marks = camera(motion, c, b, rnd, z);
+    scene += z.front || "";
+    if (angle === "dutch") scene = '<g transform="rotate(' + (side * 8) + " " + W / 2 + " " + f(H / 2) + ')">' + scene + "</g>";
+    return wrap(guides + scene + marks);
+  }
+  function wrap(body) {
+    return '<svg class="sk__svg" viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">' + body + "</g></svg>";
+  }
+  // The small line under the label: the camera, as the plan names it.
+  function spec(k) { return [k.framing, k.angle, k.motion].filter(Boolean).join(" · "); }
+  // The ink for a ground: the colour of the set with the most contrast against it.
+  function lum(hex) {
+    var m = /^#([0-9a-f]{6})$/i.exec(hex || ""); if (!m) return 1;
+    var n = parseInt(m[1], 16), c = [n >> 16 & 255, n >> 8 & 255, n & 255].map(function (v) { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); });
+    return .2126 * c[0] + .7152 * c[1] + .0722 * c[2];
+  }
+  function contrast(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); }
+  function ink(ground, colours, prefer) {
+    if (prefer && contrast(prefer, ground) >= 4.5) return prefer;
+    // Of the colours that read clearly, the softest: an ivory before a pure white.
+    var ok = colours.filter(function (c) { return /^#[0-9a-f]{6}$/i.test(c || "") && contrast(c, ground) >= 12; });
+    if (ok.length) return ok.sort(function (a, b) { return contrast(a, ground) - contrast(b, ground); })[0];
+    var best = lum(ground) > .4 ? "#141414" : "#F3F2EE";
+    colours.forEach(function (c) { if (/^#[0-9a-f]{6}$/i.test(c || "") && contrast(c, ground) > contrast(best, ground)) best = c; });
+    return best;
+  }
+  return { svg: svg, spec: spec, ink: ink, contrast: contrast };
+})();
+
+</script>
+<script>
+// A shot with no frame yet is drawn as a storyboard sketch from its plan. The ink is the
+// brand colour that reads best on the ground. Labels go in as text.
+(function () {
+  if (typeof ShotSketch === "undefined") return;
+  var css = getComputedStyle(document.documentElement), v = function (n) { return css.getPropertyValue(n).trim(); };
+  var ground = v("--sb-color-bg"), ink = ShotSketch.ink(ground, [v("--sb-color-ink"), v("--sb-color-muted")], v("--sb-color-ink"));
+  document.querySelectorAll(".sb-placeholder[data-sketch]").forEach(function (box) {
+    var k; try { k = JSON.parse(box.getAttribute("data-sketch")); } catch (e) { return; }
+    if (!k) return;
+    var ar = String(k.aspect || "16:9").split(":"), up = (+ar[0] / +ar[1]) >= 0.8 && (k.text || []).indexOf("upper-third") >= 0;
+    box.textContent = "";
+    box.classList.add("sk");
+    box.setAttribute("data-label", k.label);
+    if (up) box.setAttribute("data-up", "");
+    // Type that would vanish into the ground gets the ink as its ground, as on the board.
+    var flip = [].some.call(box.parentNode.querySelectorAll(".sb-overlay-text"), function (t) {
+      var m = getComputedStyle(t).color.match(/\d+/g); if (!m) return false;
+      return ShotSketch.contrast("#" + m.slice(0, 3).map(function (x) { return (+x).toString(16).padStart(2, "0"); }).join(""), ground) < 2.2;
+    });
+    box.style.color = flip ? ground : ink;
+    if (flip) { box.style.background = ink; box.style.setProperty("--sk-g", ink); }
+    box.innerHTML = ShotSketch.svg(k);
+    var top = document.createElement("div"), parts = [["b", k.n || ""], ["span", ShotSketch.spec(k)], ["em", k.label]];
+    top.className = "sk__top";
+    parts.forEach(function (p) { var n = document.createElement(p[0]); n.textContent = p[1]; top.appendChild(n); });
+    box.appendChild(top);
+  });
+})();
+</script>
 <script>
 // Keyboard navigation: arrow keys move between shots
 (function() {

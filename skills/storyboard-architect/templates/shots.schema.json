@@ -173,8 +173,8 @@
           },
           "end": {
             "type": "number",
-            "exclusiveMinimum": 0,
-            "description": "Must be greater than start. JSON Schema cannot compare two sibling properties, so tools/validate_shots.py enforces it."
+            "minimum": 0,
+            "description": "Must be greater than start, except on an optional shot, which may sit at one point (end equal to start) until it is filled. JSON Schema cannot compare two sibling properties, so tools/validate_shots.py enforces it."
           },
           "framing": {
             "type": "string",
@@ -285,7 +285,7 @@
             "minLength": 1
           },
           "source": {
-            "description": "Optional. Where this shot's picture comes from when it is not the usual route of a prompt, then a frame. 'own' is the user's photo or clip, 'generate' is a gap for a generator, 'design' is a frame drawn in code from the brand lock. Read by tools/media.py, tools/board.py, tools/generate.py and tools/design.py.",
+            "description": "Optional. Where this shot's picture comes from when it is not the usual route of a prompt, then a frame. 'own' is the user's photo or clip, 'generate' is a gap for a generator, 'design' is a frame drawn in code from the brand lock, 'missing' is a picture the user's media does not have, to shoot. Read by tools/media.py, tools/board.py, tools/generate.py and tools/design.py.",
             "oneOf": [
               {
                 "type": "object",
@@ -312,6 +312,19 @@
                     "type": "number",
                     "exclusiveMinimum": 0,
                     "description": "For a clip: the second the shot ends on."
+                  },
+                  "why": {
+                    "type": "string",
+                    "description": "Why this file was picked for the shot, in one sentence a person can check by looking at it."
+                  },
+                  "considered": {
+                    "type": "array",
+                    "maxItems": 6,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^m[0-9]{2,4}$"
+                    },
+                    "description": "Other files weighed for this shot."
                   }
                 }
               },
@@ -345,6 +358,40 @@
                     "type": "string",
                     "pattern": "^shot_[0-9]{2,3}$",
                     "description": "For a bridge: the shot whose first frame this clip ends on."
+                  },
+                  "quote": {
+                    "type": "object",
+                    "description": "A price asked for without sending anything. status is 'not run' until someone approves it.",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "usd": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "units": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "endpoint": {
+                        "type": "string"
+                      },
+                      "note": {
+                        "type": "string"
+                      },
+                      "at": {
+                        "type": "string"
+                      },
+                      "why": {
+                        "type": "string"
+                      }
+                    }
                   }
                 },
                 "dependentRequired": {
@@ -380,6 +427,30 @@
                       "quote"
                     ],
                     "description": "The kind of card. Its content is in design/cards.json, by shot id."
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "why"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "const": "missing"
+                  },
+                  "why": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "What the user's media does not have and why the story needs it."
+                  },
+                  "fill": {
+                    "enum": [
+                      "shoot"
+                    ],
+                    "description": "How it is filled. A missing picture is shot, never generated."
                   }
                 }
               }
@@ -486,6 +557,55 @@
                       "type": "boolean"
                     }
                   }
+                }
+              }
+            }
+          },
+          "title": {
+            "type": "string",
+            "description": "Optional. A short name for the shot."
+          },
+          "source_label": {
+            "type": "string",
+            "description": "Optional. Where the picture comes from, in a few words, for people reading the board."
+          },
+          "optional": {
+            "type": "boolean",
+            "description": "Optional. True for a shot the plan suggests but the cut does not need: a picture missing from the user's media, or a generated bridge. It is listed on the board and skipped by a cut until it is filled."
+          },
+          "flags": {
+            "type": "array",
+            "maxItems": 6,
+            "description": "Optional. What is weak or missing about this shot, measured from the file or said by the plan.",
+            "items": {
+              "type": "object",
+              "required": [
+                "level",
+                "note"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "level": {
+                  "enum": [
+                    "weak",
+                    "missing",
+                    "optional",
+                    "note"
+                  ]
+                },
+                "kind": {
+                  "type": "string"
+                },
+                "short": {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "note": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "measured": {
+                  "type": "number"
                 }
               }
             }

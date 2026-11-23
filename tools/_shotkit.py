@@ -423,3 +423,44 @@ def as_shot_ids(value) -> list[str]:
     if isinstance(value, list):
         return [v for v in value if isinstance(v, str)]
     return []
+
+
+SKETCH_TEMPLATE = SKILLS_ROOT / "storyboard-html-preview" / "templates" / "sketch.js.tpl"
+
+
+def sketch_spec(shot: dict, aspect: str, text_positions: list, prev_id=None, next_id=None) -> dict:
+    """
+    What a page needs to draw a sketch frame for a shot with no picture yet.
+
+    The board and the client page draw it in the browser from this, with the same code
+    (templates/sketch.js.tpl), so a run with nothing made still reads as a storyboard. A
+    shot the user's media does not have is labelled To shoot. An optional generated
+    bridge is labelled Transition and drawn as the two shots it joins.
+    """
+    src = shot.get("source") if isinstance(shot.get("source"), dict) else {}
+    kind = src.get("type")
+    bridge = kind == "generate" and (shot.get("optional") is True or isinstance(src.get("start"), str))
+
+    def num(sid):
+        return sid.replace("shot_", "") if isinstance(sid, str) and SHOT_ID_RE.match(sid) else None
+
+    def word(key, limit=40):
+        value = shot.get(key)
+        return value[:limit] if isinstance(value, str) else None
+
+    return {
+        "n": num(shot.get("id")),
+        "seed": shot.get("id") if isinstance(shot.get("id"), str) else "",
+        "label": "Transition" if bridge else "To shoot" if kind == "missing" else "Sketch",
+        "bridge": bridge,
+        "from": num(src.get("start") or prev_id) if bridge else None,
+        "to": num(src.get("end") or next_id) if bridge else None,
+        "aspect": aspect if isinstance(aspect, str) else "16:9",
+        "framing": word("framing"),
+        "angle": word("angle"),
+        "motion": word("motion"),
+        "dof": word("depth_of_field"),
+        "subject": word("subject", 400),
+        "card": src.get("card") if kind == "design" and isinstance(src.get("card"), str) else None,
+        "text": sorted({p for p in text_positions if isinstance(p, str)}),
+    }

@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import json
 import re
 import sys
 from pathlib import Path
@@ -54,6 +55,7 @@ from _shotkit import (
     parse_typography,
     round_dirs,
     sha256_file,
+    sketch_spec,
 )
 from _template import escape, render
 
@@ -397,7 +399,8 @@ def build_context(out_dir: Path, args) -> tuple[dict, list[str]]:
 
     shot_contexts = []
     overlay_fonts: list[tuple[str | None, int]] = []
-    for shot in shots:
+    order = [s.get("id") for s in shots]
+    for at, shot in enumerate(shots):
         frame_path, frame_note = frame_for_shot(out_dir, shot)
         if frame_note:
             provenance_notes.append(f"{shot['id']}: {frame_note}")
@@ -467,6 +470,10 @@ def build_context(out_dir: Path, args) -> tuple[dict, list[str]]:
                 "aspect_class": aspect_class(aspect),
                 "has_image": image_path is not None,
                 "has_no_image": image_path is None,
+                # No frame yet: the page draws a storyboard sketch from the plan.
+                "sketch_json": None if image_path is not None else json.dumps(sketch_spec(
+                    shot, aspect, [o.get("position") for o in (overlays_by_id.get(i) or {} for i in as_overlay_ids(shot.get("on_screen_text")))],
+                    order[at - 1] if at else None, order[at + 1] if at + 1 < len(order) else None), separators=(",", ":")),
                 "image_path": image_path,
                 "overlays": overlays,
                 "overlay_groups": overlay_groups(overlays),
@@ -523,6 +530,7 @@ def build_context(out_dir: Path, args) -> tuple[dict, list[str]]:
         "RENDERED_AT": args.rendered_at or iso_instant(),
         "PROVENANCE_NOTE": " ".join(provenance_notes) or None,
         "INLINE_CSS": css,
+        "SKETCH_JS": read_template("sketch.js.tpl"),
         "FONT_LINKS": font_links,
         "HAS_FONT_LINKS": bool(font_links),
         "shots": shot_contexts,
@@ -605,9 +613,19 @@ def selftest() -> int:
         ))
         hostile_css = build_context(hostile, Args())[0]["INLINE_CSS"]
 
+        bare = Path(tmp) / "bare"
+        shutil.copytree(worked, bare)
+        shutil.rmtree(bare / "frames")
+        bare_ctx, _ = build_context(bare, Args())
+        bare_html = render(read_template("preview.html.tpl"), bare_ctx)
+
     overlay_weights = [o["weight_css"] for o in shot_02["overlays"]]
 
     checks = [
+        ("a shot with a frame gets no sketch", all(s["sketch_json"] is None for s in first["shots"])),
+        ("a shot with no frame gets a sketch, drawn from its plan",
+         all(json.loads(s["sketch_json"])["framing"] == s["framing"] for s in bare_ctx["shots"])
+         and bare_html.count('data-sketch="{&quot;') == len(bare_ctx["shots"]) and "var ShotSketch" in bare_html),
         ("escapes angle brackets", "<script>alert(1)</script>" not in render(
             "{{subject}}", {"subject": "<script>alert(1)</script>"}
         )),
