@@ -1,4 +1,6 @@
-<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit 演示：在 Claude Code 里输入一句简报，规划每个镜头、检查每个画面，带台词的粗剪，然后是片段在看板上播放、一个镜头被移动，最后一个剪辑以 16:9、9:16、4:5 和 1:1 输出。" width="100%"></picture></a></p>
+<p align="center"><a href="https://whystrohm.com/shotkit#films"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="一个镀铬球滚过 WhyStrohm 的一次真实 Shotkit 流程（3D）：简报、五个镜头的规划、批准价格后生成的五个画面、检查退回其中三个、三个重做，以及五个完成的片段。" width="100%"></picture></a></p>
+
+<p align="center"><sub>真实流程。由 Shotkit 制作，后期由 WhyStrohm 完成。<a href="https://whystrohm.com/shotkit#films"><strong>观看完整影片（有声）</strong></a>（含闪烁画面）</sub></p>
 
 <h3 align="center">批量交付符合品牌的视频。</h3>
 
@@ -25,9 +27,9 @@ Canvas 里六种设计好的字体风格，以及用你自己的照片和视频�
 
 ![在 Canvas 中录制的八个步骤：打开 Canvas 并选择从哪里开始；从网站添加品牌；用一句话要一支视频；计划出现在看板上；先看报价并确认；审查检查每一帧；移动镜头并添加备注；剪出每种尺寸。](docs/images/canvas-tour.webp)
 
-**NVUS Hearts：用品牌自己的照片和视频做成的短视频。** 一个装着产品照片和手机视频的文件夹，变成了一支有计划、经过检查、使用品牌字体、各种尺寸都有的短视频，其中只有一个生成的转场，并且先报价后生成。[查看每一步](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts) · [打开看板](https://whystrohm.com/shotkit/examples/nvus-living-proof/board.html)
+**NVUS Hearts。** 这个循环展示 WhyStrohm 如何完成他们的卫衣镜头，在 Shotkit 之外制作：产品照片、抠图、线稿、文字放在后面。[和他们的黑五影片一起观看](https://whystrohm.com/films)（含闪烁画面）。Shotkit 也用他们自己的照片和视频规划并剪辑了一支短视频：[查看每一步](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts) · [打开看板](https://whystrohm.com/shotkit/examples/nvus-living-proof/board.html)
 
-[![NVUS Hearts 在 Canvas 中：文件夹导入，看板填满他们自己的镜头，字体匹配他们发过的一条短视频，成片播放，然后是每种尺寸。](docs/images/example-nvus-hearts.webp)](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts)
+[![NVUS Hearts 的 Living Proof 卫衣，由 WhyStrohm 完成：产品照片、抠图、线稿、文字放在后面、每种颜色、真实印花的光效。](docs/images/example-nvus-hearts.webp)](https://whystrohm.com/films)
 
 两个真实的 WhyStrohm 案例，点击图片打开在线看板。
 
