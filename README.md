@@ -24,8 +24,8 @@ It runs on your Mac, with Claude Code or Codex, and your own keys.</p>
   <a href="#use-canvas-from-codex">Codex</a>
 </p>
 
-<p align="center"><strong>New in 3.7: Shotkit Canvas.</strong> Plan from your own photos and clips, play every clip on the board,<br>
-set your type and cut one edit in every size. Free and open source. <a href="https://github.com/whystrohm/shotkit/releases">Get it</a></p>
+<p align="center"><strong>New in 3.8:</strong> a sketch on every card from the first run, a deck you can work from,<br>
+six designed looks in Canvas, and plans from your own photos and clips. Free and open source. <a href="https://github.com/whystrohm/shotkit/releases">Get it</a></p>
 
 ## What it does
 
@@ -46,10 +46,14 @@ approve. It still takes your taste.
   misses are redone, and nothing runs until you approve the price.
 - **Lets you see and cut.** Every clip plays on the board. Move shots, trim clips, change
   the lines and render the cut in 16:9, 9:16, 4:5 and 1:1 with Remotion.
-- **Sets your type.** Match the type from a post you already ran, or describe it in a
-  sentence. Add your track and the reel edit cuts on the beat.
-- **Shares the plan.** A storyboard page, a client page you can print to PDF, a PowerPoint
-  deck and stills, so the people you work with can review it anywhere.
+- **Sets your type.** Six designed looks with motion, in your colours and fonts, or match the
+  type from a post you already ran. Add your track and the reel edit cuts on the beat.
+- **Shows the storyboard right away.** Every shot is sketched from its plan on the first run:
+  the shot size, the angle, the camera move and your line, in your colours. Your photo or a
+  generated frame replaces the sketch when it arrives.
+- **Shares the plan.** A storyboard page, a client page you can print to PDF, stills, and a
+  deck you can work from in PowerPoint, Keynote or Google Slides: a cover, the scenes, one
+  slide per shot with the picture, the line, the voiceover and notes, and a script sheet.
 - **Hands off to your editor.** Export the cut as an edit decision list (CMX 3600) for
   Premiere or Resolve, the on-screen lines as timed captions, and a shot list for the crew.
   See [Export](docs/export.md).
