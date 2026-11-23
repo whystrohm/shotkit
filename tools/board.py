@@ -295,6 +295,20 @@ def read_source(raw) -> dict | None:
     return source
 
 
+def made_after_quote(shot: dict) -> None:
+    """A quoted shot that now has its clip was approved and made: the board says so, not "not run"."""
+    src = shot.get("source") or {}
+    q = src.get("quote")
+    if src.get("type") != "generate" or not shot.get("clips") or not isinstance(q, dict) or q.get("status") != "not run":
+        return
+    q["status"] = "approved and made"
+    for f in shot.get("flags") or []:
+        if f.get("level") == "optional" and "not run" in (f.get("short") or "") + (f.get("note") or ""):
+            f["level"] = "note"
+            f["short"] = "generated after approval"
+            f["note"] = "Optional generated transition. Approved at the quoted price and made."
+
+
 FLAG_LEVELS = ("weak", "missing", "optional", "note")
 
 
@@ -811,6 +825,7 @@ def build(out_dir: Path, inline_images: bool = False, rendered_at: str | None = 
             "flags": read_flags(raw.get("flags")),
             "optional": raw.get("optional") is True,
         }
+        made_after_quote(shot)
         shot["status"] = shot_status(shot)
         shots.append(shot)
 
@@ -1353,6 +1368,10 @@ def selftest() -> int:
         ("a flag keeps its level and note; an unknown level is dropped", [f["level"] for f in opt_by["shot_01"]["flags"]] == ["weak"]),
         ("a missing picture is its own status, not work for a generator", opt_by["shot_02"]["status"] == "missing"),
         ("an optional bridge that was not made reads optional", opt_by["shot_03"]["status"] == "optional"),
+        ("a quoted bridge with its clip reads made, not run",
+         (lambda sh: (made_after_quote(sh), sh["source"]["quote"]["status"] == "approved and made" and sh["flags"][0]["short"] == "generated after approval")[1])(
+             {"source": {"type": "generate", "quote": {"status": "not run", "usd": 0.42}}, "clips": [{"path": "clips/round-1/shot_03.mp4"}],
+              "flags": [{"level": "optional", "kind": "bridge", "short": "optional, not run", "note": "Optional generated transition. Not run."}]})),
         ("its quote is carried, and says nothing was run", opt_by["shot_03"]["source"]["quote"] == {"status": "not run", "endpoint": "fal-ai/kling", "usd": 0.42, "units": 5.0}),
         ("optional shots do not hold back an accepted plan", opt["next"]["title"] == "Every shot is accepted" and "1 missing picture to shoot" in opt["next"]["body"]),
         ("the Markdown copy carries the pick reason, the flag and the quote",
