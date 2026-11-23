@@ -818,7 +818,7 @@ def make_edit(page: Page, dest: Path) -> dict:
     rows.writerow(["Shot", "Beat", "In", "Out", "Seconds", "Size", "Angle", "Move", "Focus", "What we see", "On screen", "Voice", "Sound", "Picture", "File"])
     for s in shots:
         source = s.get("source") or {}
-        picture = {"own": "Your footage", "design": "Drawn in code", "generate": "To generate"}.get(source.get("type"), "To generate")
+        picture = {"own": "Your footage", "design": "Drawn in code", "generate": "To generate", "missing": "To shoot"}.get(source.get("type"), "To generate")
         file = (s["clips"][-1]["path"] if s["clips"] else s["frames"][-1]["path"] if s["frames"] else "")
         rows.writerow([
             s["n"], s.get("beat") or "", timecode(s["start"]), timecode(s["end"]), f"{s['end'] - s['start']:g}",
@@ -845,7 +845,8 @@ def make_edit(page: Page, dest: Path) -> dict:
 
     # 3. The cut as an edit decision list (CMX 3600). The record side starts at hour one.
     lines = [f"TITLE: {title[:60]}", "FCM: NON-DROP FRAME", ""]
-    for i, s in enumerate(shots, 1):
+    events = [s for s in shots if s["end"] > s["start"]]   # an optional shot with no length is listed, not cut
+    for i, s in enumerate(events, 1):
         length = s["end"] - s["start"]
         source = s.get("source") or {}
         src_in = float(source["in"]) if s["clips"] and isinstance(source.get("in"), float) else 0.0
