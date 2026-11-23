@@ -34,11 +34,34 @@ sk export output/ edit            # the shoot and edit files
 | File | What it is | What it needs |
 |---|---|---|
 | `export/stills-9x16/shot_01.png` and so on, plus `export/stills.zip` | One image per shot with its on-screen text on it. A tall plan also gets a 4:5 set, which is the size a feed carousel uses. | Chrome, Edge, Brave or Chromium |
-| `export/storyboard.pptx` | A deck: a title slide, the whole story on one slide, one slide per shot, and the brand lock. The words are real text you can edit. It opens in PowerPoint, Keynote and Google Slides. | Nothing. With a browser the pictures carry the on-screen text. |
+| `export/storyboard.pptx` | A deck to present and to work from: a cover, the scene breakdown, a picture-and-script slide per shot, the script sheet, and the brand lock. Every word is text you can edit, and every slide has speaker notes. It opens in PowerPoint, Keynote and Google Slides. | Nothing. |
 | `export/rough-cut.mp4` | The shots in order as one video. Each runs for its planned length, and the text comes in and out at its planned times. | `ffmpeg`, and a browser for the text |
 
-The deck works on a plan with no frames at all. Each slide then shows the planned text on
-the brand's ground, so you can present a concept before anything is generated.
+### The deck
+
+The deck is set in the brand lock's colours and typefaces, with a mono face for labels.
+The typefaces are named on every line of text, so they show wherever they are installed;
+Google Slides has most Google Fonts built in. Without them the app uses a near match.
+
+- **Cover.** The title, one line on what the film is, the running time, scenes, shots and
+  sizes, and a frame bleeding off the right.
+- **Scene breakdown.** Consecutive shots with the same beat are one scene. Each scene gets
+  its number, time range, name, a line on its purpose, and its frames.
+- **One slide per shot.** The frame at the plan's aspect, the shot number, the camera
+  (scene, size, angle, move), what we see, then ON SCREEN (the line, boxed), VOICEOVER,
+  PICTURE in plain words (your photo and its file name, generated and by what, or to
+  shoot), CUT (the move and how it joins the next shot) and NOTES (the check's verdict and
+  main note, why the picture was picked, what is weak). A bar along the bottom shows the
+  whole running time with this shot lit. The speaker notes carry everything in full.
+- **Script sheet.** On the brand's light colour, so it prints: one row per shot with its
+  time, a thumbnail, the line on screen, the voiceover and a note. A zero-length optional
+  shot is listed here, marked optional, and gets no slide of its own unless it has a frame.
+- **Brand lock.** The palette, the typefaces and the series lock.
+
+The deck works on a plan with no frames at all. A shot with no frame gets a drawn panel
+that says what is left to do (to shoot, to make), so you can present a concept before
+anything is generated. A frame is cropped to fit, not cut: reset the crop in the app to
+see the whole picture.
 
 Not sure what this computer can make? `sk doctor` says whether it found a browser and
 `ffmpeg`.
@@ -63,9 +86,10 @@ important sits at the edge.
 ## How the text is drawn
 
 The board's own page draws each still. The export tool opens that page in a browser
-with no window and photographs one shot at the exact pixel size. A still, a slide and
-the rough cut therefore carry the type you see on the board: the same font, size,
-emphasis and position. Move a line on a live board and the next export moves with it.
+with no window and photographs one shot at the exact pixel size. A still and the rough
+cut therefore carry the type you see on the board: the same font, size, emphasis and
+position. Move a line on a live board and the next export moves with it. The deck keeps
+its words as text instead, so you can edit them.
 
 The brand's typefaces load from Google Fonts, so the first export needs a connection.
 Offline, type falls back to your system fonts.
