@@ -115,7 +115,7 @@ ul, ol { list-style: none; }
 
 /* Sheet */
 .sheet { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--min, 240px), 1fr)); gap: 14px; padding: 18px var(--gut) 8px; }
-.card { text-align: left; display: block; border: 1px solid var(--line); border-radius: var(--r); background: var(--p1); overflow: hidden; transition: border-color .15s, transform .2s cubic-bezier(.2,.7,.2,1), box-shadow .2s; animation: rise .5s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i) * 35ms); }
+.card { text-align: left; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--r); background: var(--p1); overflow: hidden; transition: border-color .15s, transform .2s cubic-bezier(.2,.7,.2,1), box-shadow .2s; animation: rise .5s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i) * 35ms); }
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
 .card:hover { border-color: #414751; transform: translateY(-2px); box-shadow: 0 14px 34px -18px #000; }
 .card[aria-current] { border-color: var(--ink); }
@@ -142,8 +142,8 @@ body[data-quiet] .meter i { transition: none; }
     linear-gradient(color-mix(in srgb, currentColor 13%, transparent) 1px, transparent 1px) 0 33.33%/100% 33.33%,
     linear-gradient(90deg, color-mix(in srgb, currentColor 13%, transparent) 1px, transparent 1px) 33.33% 0/33.33% 100%,
     var(--ph-bg, #0F1114); }
-.ph b { display: none; }
-.ph span { position: absolute; left: 10px; right: 10px; top: 10px; font: 500 clamp(11px, 2.6cqw, 12px)/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; opacity: .55; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ph > b { display: none; }
+.ph > span { position: absolute; left: 10px; right: 10px; top: 10px; font: 500 clamp(11px, 2.6cqw, 12px)/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; opacity: .55; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Type over a frame. Overlays on the same side of the frame share one group, so they
    stack with a set gap and can never sit on top of each other. Sizes are in cqw, the
    frame's own width, and --s is the scale fit() settles on. */
@@ -227,6 +227,22 @@ body[data-text="off"] .ovg { opacity: 0; }
 .card__state { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 11px 0; }
 .card__meta time { color: var(--dim); font: 400 11px/1 var(--mono); white-space: nowrap; }
 .frame[data-flip] .ph { background-color: var(--ph-ink, #F3F2EE); color: var(--ph-bg, #0F1114); }
+/* A sketch frame: the shot drawn as a storyboard panel from its plan, in the brand's
+   ground and ink, until a frame or a clip replaces it. */
+.sk { background: var(--ph-bg, #0F1114); --sk-g: var(--ph-bg, #0F1114); --sk-a: var(--brand-acc, #FF5A2B); }
+.frame[data-flip] .sk { background: var(--ph-ink, #F3F2EE); --sk-g: var(--ph-ink, #F3F2EE); }
+.sk__svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.sk__top { position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: center; gap: 9px; padding: 10px 11px; font: 500 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; pointer-events: none; }
+.sk__top b { font-weight: 600; opacity: .72; }
+.sk__top span { flex: 1; min-width: 0; opacity: .36; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sk__top em { flex: none; margin-left: auto; font-style: normal; opacity: .5; }
+.sk[data-label="To shoot"] .sk__top em, .sk[data-label="Transition"] .sk__top em { color: var(--sk-a); opacity: .95; }
+/* A line of text at the top of a short frame takes the top; the labels go to the foot. */
+.sk[data-up] .sk__top { top: auto; bottom: 0; }
+/* The camera line only shows where it fits whole. */
+@container (max-width: 340px) { .sk__top span { display: none; } }
+@container (max-width: 200px) { .sk__top { padding: 8px 9px; } }
+.frame > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .drop { position: absolute; inset: 6px; z-index: 3; border: 1.5px dashed var(--acc); border-radius: 7px; background: rgba(255,90,43,.14); display: none; place-items: center; font: 600 12px/1.3 var(--sans); text-align: center; padding: 10px; }
 .frame[data-over] .drop { display: grid; }
 
@@ -403,7 +419,7 @@ html[data-still] { background: #050607; }
 html[data-still="text"], html[data-still="field"] { background: transparent; }
 html[data-still] body { overflow: hidden; }
 html[data-still] .frame { width: 100vw; height: 100vh; aspect-ratio: auto; }
-html[data-still] .safe, html[data-still] .drop, html[data-still] .panel, html[data-still] .scrim, html[data-still] .toast, html[data-still] .ph span { display: none !important; }
+html[data-still] .safe, html[data-still] .drop, html[data-still] .panel, html[data-still] .scrim, html[data-still] .toast, html[data-still] .ph > span, html[data-still] .sk__top { display: none !important; }
 html[data-still] .ovg, html[data-still] .field { transition: none; }
 html[data-still="text"] .frame, html[data-still="field"] .frame { background: transparent; }
 html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-still="field"] .frame img, html[data-still="field"] .ovg { display: none; }
@@ -418,6 +434,9 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <noscript><p style="padding:24px">This board needs JavaScript. The same storyboard is in storyboard.md and preview.html.</p></noscript>
 <script id="data" type="application/json">/*__DATA__*/null</script>
+<script>
+/*__SKETCH__*/
+</script>
 <script>
 (function () {
   "use strict";
@@ -524,20 +543,29 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
 
   var ar = (D.project.aspect || "16:9").split(":"), ratio = (+ar[0] || 16) / (+ar[1] || 9);
   document.documentElement.style.setProperty("--ar", (+ar[0] || 16) + " / " + (+ar[1] || 9));
-  var phBg = 0.006, brandAccent = "";
+  var phBg = 0.006, brandAccent = "", ground = "#0F1114", inkHex = "";
   (D.brand.palette || []).forEach(function (p) {
     var role = String(p.role).toLowerCase();
-    if (role.indexOf("background") === 0) { document.documentElement.style.setProperty("--ph-bg", safeColor(p.hex)); phBg = luminance(p.hex); }
-    if (role === "ink") document.documentElement.style.setProperty("--ph-ink", safeColor(p.hex));
+    if (role.indexOf("background") === 0) { ground = safeColor(p.hex); document.documentElement.style.setProperty("--ph-bg", ground); phBg = luminance(p.hex); }
+    if (role === "ink") inkHex = safeColor(p.hex);
     if (role.indexOf("accent") === 0 && !brandAccent) brandAccent = safeColor(p.hex);
   });
+  // A palette's "ink" can be meant for light panels on a dark brand. The empty frame
+  // takes whichever brand colour reads best on the ground.
+  if (typeof ShotSketch !== "undefined") inkHex = ShotSketch.ink(ground, (D.brand.palette || []).map(function (p) { return p.hex; }), inkHex);
+  if (inkHex) document.documentElement.style.setProperty("--ph-ink", inkHex);
   if (!brandAccent) brandAccent = "#FF5A2B";
+  document.documentElement.style.setProperty("--brand-acc", brandAccent);
 
   function frameNode(s, f, opts) {
     opts = opts || {};
     var box = el("div", { class: "frame", "data-tall": ratio < 0.8 ? true : null });
+    var clip = !f && s.clips && s.clips.length ? s.clips[s.clips.length - 1] : null;
     if (f) box.appendChild(el("img", { src: f.src, alt: s.id + ", " + s.beat + ", round " + f.round, loading: opts.eager ? "eager" : "lazy", decoding: "async" }));
+    else if (s.sketch && typeof ShotSketch !== "undefined") { box.setAttribute("data-empty", ""); box.appendChild(sketchNode(s.sketch)); }
     else { box.setAttribute("data-empty", ""); box.appendChild(el("div", { class: "ph" }, el("b", { text: s.n }), el("span", { text: [s.framing, s.angle, s.motion].filter(Boolean).join(" · ") }))); }
+    // A clip with no still of its own shows its first picture.
+    if (clip) { box.removeAttribute("data-empty"); f = clip; box.appendChild(el("video", { src: clip.src + "#t=" + (s.source && s.source.in != null ? s.source.in : 0.1), muted: true, playsinline: true, preload: "metadata", "aria-label": s.id + ", clip, round " + clip.round })); }
     var seen = {};
     s.overlays.forEach(function (o) {
       if (o.treatment === "plate" || o.treatment === "lockup") return;
@@ -567,6 +595,14 @@ html[data-still="text"] .frame img, html[data-still="text"] .field, html[data-st
       wireDrop(box, s);
     }
     return box;
+  }
+  // The sketch is drawn from the plan's fixed words and numbers, so its markup carries no
+  // string from the run. The labels over it go in as text.
+  function sketchNode(k) {
+    var ph = el("div", { class: "ph sk", "data-label": k.label, "data-up": ratio >= 0.8 && (k.text || []).indexOf("upper-third") >= 0 ? true : null });
+    ph.innerHTML = ShotSketch.svg(k);
+    ph.appendChild(el("div", { class: "sk__top" }, el("b", { text: k.n || "" }), el("span", { text: ShotSketch.spec(k) }), el("em", { text: k.label })));
+    return ph;
   }
   // One overlay: an optional label, then the line, broken where its sentences end.
   function overlayNode(o) {

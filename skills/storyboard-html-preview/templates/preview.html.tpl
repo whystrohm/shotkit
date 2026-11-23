@@ -77,7 +77,7 @@
       <img src="{{image_path}}" alt="{{id}}: {{beat}}" loading="lazy">
       {{/if}}
       {{#if has_no_image}}
-      <div class="sb-placeholder">
+      <div class="sb-placeholder" data-sketch="{{sketch_json}}">
         <div class="sb-placeholder-id">{{id_short}}</div>
         <div class="sb-placeholder-meta">{{framing}} · {{angle}} · {{motion}}</div>
       </div>
@@ -156,6 +156,39 @@
   </div>
 </footer>
 
+<script>
+{{{SKETCH_JS}}}
+</script>
+<script>
+// A shot with no frame yet is drawn as a storyboard sketch from its plan. The ink is the
+// brand colour that reads best on the ground. Labels go in as text.
+(function () {
+  if (typeof ShotSketch === "undefined") return;
+  var css = getComputedStyle(document.documentElement), v = function (n) { return css.getPropertyValue(n).trim(); };
+  var ground = v("--sb-color-bg"), ink = ShotSketch.ink(ground, [v("--sb-color-ink"), v("--sb-color-muted")], v("--sb-color-ink"));
+  document.querySelectorAll(".sb-placeholder[data-sketch]").forEach(function (box) {
+    var k; try { k = JSON.parse(box.getAttribute("data-sketch")); } catch (e) { return; }
+    if (!k) return;
+    var ar = String(k.aspect || "16:9").split(":"), up = (+ar[0] / +ar[1]) >= 0.8 && (k.text || []).indexOf("upper-third") >= 0;
+    box.textContent = "";
+    box.classList.add("sk");
+    box.setAttribute("data-label", k.label);
+    if (up) box.setAttribute("data-up", "");
+    // Type that would vanish into the ground gets the ink as its ground, as on the board.
+    var flip = [].some.call(box.parentNode.querySelectorAll(".sb-overlay-text"), function (t) {
+      var m = getComputedStyle(t).color.match(/\d+/g); if (!m) return false;
+      return ShotSketch.contrast("#" + m.slice(0, 3).map(function (x) { return (+x).toString(16).padStart(2, "0"); }).join(""), ground) < 2.2;
+    });
+    box.style.color = flip ? ground : ink;
+    if (flip) { box.style.background = ink; box.style.setProperty("--sk-g", ink); }
+    box.innerHTML = ShotSketch.svg(k);
+    var top = document.createElement("div"), parts = [["b", k.n || ""], ["span", ShotSketch.spec(k)], ["em", k.label]];
+    top.className = "sk__top";
+    parts.forEach(function (p) { var n = document.createElement(p[0]); n.textContent = p[1]; top.appendChild(n); });
+    box.appendChild(top);
+  });
+})();
+</script>
 <script>
 // Keyboard navigation: arrow keys move between shots
 (function() {

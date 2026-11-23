@@ -4,6 +4,23 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Added
+
+- **Sketch frames.** A shot with no frame and no clip is drawn as a storyboard panel from
+  its own plan, on the board and on the client page, so a first run reads as a storyboard
+  with no keys and no cost. Framing sets the subject's size, angle sets the horizon and
+  perspective, motion is a camera mark in the brand accent, and a few words in the subject
+  pick a figure, hands, a garment, a device, a mark or a setting. A designed frame draws
+  its card kind. Missing shots say To shoot; optional bridges say Transition and show the
+  two shots they join. Same plan, same drawing. Inline SVG, nothing loaded.
+
+### Fixed
+
+- An empty frame takes the brand colour that reads best on the ground, so a palette whose
+  ink is meant for light panels no longer leaves dark lines and text on a dark frame.
+- A clip with no still shows its first picture on the card.
+- A card's frame starts at the top of the card when its row has a taller card.
+
 ## [3.7.0] - 2026-11-23
 
 Shotkit 3.7: Canvas, final. Everything in the release candidates below, plus planning on your own photos and clips.
