@@ -4,6 +4,16 @@ All notable changes to shotkit are documented here. Format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Changed
+
+- **The deck, redesigned as a working document.** A cover in the brand's display face, a
+  scene breakdown, a picture-and-script slide per shot (on screen, voiceover, picture in
+  plain words, cut, notes, and a running-time bar), a script sheet on paper that prints,
+  and the brand lock. Set in the brand lock's colours and typefaces with a mono face for
+  labels. Every word is editable text, every slide has speaker notes with the full plan,
+  and a shot with no frame gets a drawn panel. No internal ids reach a slide. The deck no
+  longer needs a browser.
+
 ## [3.7.0] - 2026-11-23
 
 Shotkit 3.7: Canvas, final. Everything in the release candidates below, plus planning on your own photos and clips.
