@@ -347,7 +347,8 @@ def read_media(out_dir: Path, inline: bool) -> dict:
             "note": raw.get("note"), "shots": [s for s in raw.get("shots") or [] if isinstance(s, str)],
             "thumbs": thumbs,
         })
-    return {"items": items, "sources": [s for s in doc.get("sources") or [] if isinstance(s, str)]}
+    # a board is made to be shared: a source folder shows by its name, never the path on this computer
+    return {"items": items, "sources": [Path(s).name or s for s in doc.get("sources") or [] if isinstance(s, str)]}
 
 
 def frame_entry(out_dir: Path, path: Path, round_no: int, inline: bool) -> dict:
