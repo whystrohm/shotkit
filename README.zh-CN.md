@@ -1,4 +1,4 @@
-<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit 演示：在 Claude Code 里输入一句简报，规划每个镜头、检查每个画面，带台词的粗剪，然后是片段在看板上播放、一个镜头被移动，最后一个剪辑以 16:9、9:16、4:5 和 1:1 输出。" width="100%"></picture></a></p>
+<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit 演示：五个镜头经过检查，三个被打回并附上审稿意见，每个都被重做的画面替换，最后一个剪辑以 16:9、9:16、4:5 和 1:1 输出。" width="100%"></picture></a></p>
 
 <h3 align="center">批量交付符合品牌的视频。</h3>
 
@@ -27,11 +27,11 @@ Canvas 里六种设计好的字体风格，以及用你自己的照片和视频�
 
 **WhyStrohm：一次真实流程，做成影片。** 简报、规划、批准价格、检查退回三个镜头、重做、剪辑。由 Shotkit 制作，后期由 WhyStrohm 完成。[观看有声版和每种尺寸](https://whystrohm.com/films)（含闪烁画面） · [打开看板](https://whystrohm.com/shotkit/examples/whystrohm-how-we-work/board.html)
 
-[![一个球在 3D 中滚过一次真实的 Shotkit 流程：简报、规划、批准、检查、重做、剪辑。](docs/images/example-run-roll.webp)](https://whystrohm.com/films)
+[![一个球在 3D 中滚过一次真实的 Shotkit 流程：简报、规划、批准、检查、重做、剪辑。](docs/images/example-run-roll.jpg)](https://whystrohm.com/films)
 
-**NVUS Hearts。** 这个循环展示 WhyStrohm 如何完成他们的卫衣镜头，在 Shotkit 之外制作：产品照片、抠图、线稿、文字放在后面。[和他们的黑五影片一起观看](https://whystrohm.com/films)（含闪烁画面）。Shotkit 也用他们自己的照片和视频规划并剪辑了一支短视频：[查看每一步](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts) · [打开看板](https://whystrohm.com/shotkit/examples/nvus-living-proof/board.html)
+**NVUS Hearts。** 这支影片展示 WhyStrohm 如何完成他们的卫衣镜头，在 Shotkit 之外制作：产品照片、抠图、线稿、文字放在后面。[和他们的黑五影片一起观看](https://whystrohm.com/films)（含闪烁画面）。Shotkit 也用他们自己的照片和视频规划并剪辑了一支短视频：[查看每一步](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts) · [打开看板](https://whystrohm.com/shotkit/examples/nvus-living-proof/board.html)
 
-[![NVUS Hearts 的 Living Proof 卫衣，由 WhyStrohm 完成：产品照片、抠图、线稿、文字放在后面、每种颜色、真实印花的光效。](docs/images/example-nvus-hearts.webp)](https://whystrohm.com/films)
+[![NVUS Hearts 的 Living Proof 卫衣，由 WhyStrohm 完成：产品照片、抠图、线稿、文字放在后面、每种颜色、真实印花的光效。](docs/images/example-nvus-hearts.jpg)](https://whystrohm.com/films)
 
 两个真实的 WhyStrohm 案例，点击图片打开在线看板。
 
