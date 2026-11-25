@@ -1,4 +1,4 @@
-<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit demo: a brief typed in Claude Code, every shot planned and every frame checked, the rough cut with its lines, then a board where the clips play and a shot is moved, and one cut in 16:9, 9:16, 4:5 and 1:1." width="100%"></picture></a></p>
+<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit demo: five shots checked, three sent back with the critic's note, each one replaced by its remake, then one cut in 16:9, 9:16, 4:5 and 1:1." width="100%"></picture></a></p>
 
 <h3 align="center">Ship on-brand video at scale.</h3>
 
@@ -202,15 +202,15 @@ board is online, and anything you choose to send to GoHighLevel. [Security and d
 
 **WhyStrohm: one real run, as a film.** The brief, the plan, the approved price, the check that sent three shots back, the remake and the cut. Made with Shotkit, plus WhyStrohm post work. [Watch it with sound in every size](https://whystrohm.com/films) (contains flashing images) · [Open its board](https://whystrohm.com/shotkit/examples/whystrohm-how-we-work/board.html)
 
-[![A ball rolls through one real Shotkit run in 3D: brief, plan, approve, check, remake, cut.](docs/images/example-run-roll.webp)](https://whystrohm.com/films)
+[![A ball rolls through one real Shotkit run in 3D: brief, plan, approve, check, remake, cut.](docs/images/example-run-roll.jpg)](https://whystrohm.com/films)
 
-**NVUS Hearts.** The loop is how WhyStrohm finishes their hoodie shots, made outside Shotkit:
+**NVUS Hearts.** The film shows how WhyStrohm finishes their hoodie shots, made outside Shotkit:
 the product photo, cut out, drawn and set over type.
 [Watch it with their Black Friday film](https://whystrohm.com/films) (contains flashing images).
 Shotkit also planned and cut a reel from their own photos and clips:
 [every step](https://whystrohm.com/blog/shotkit-own-footage-nvus-hearts) · [its board](https://whystrohm.com/shotkit/examples/nvus-living-proof/board.html)
 
-[![NVUS Hearts Living Proof hoodie, finished by WhyStrohm: the product photo, cut out, drawn, type behind it, every color, the real print in light.](docs/images/example-nvus-hearts.webp)](https://whystrohm.com/films)
+[![NVUS Hearts Living Proof hoodie, finished by WhyStrohm: the product photo, cut out, drawn, type behind it, every color, the real print in light.](docs/images/example-nvus-hearts.jpg)](https://whystrohm.com/films)
 
 Two real WhyStrohm runs. Each picture opens the live board.
 
