@@ -1,4 +1,4 @@
-<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit 演示：五个镜头经过检查，三个被打回并附上审稿意见，每个都被重做的画面替换，最后一个剪辑以 16:9、9:16、4:5 和 1:1 输出。" width="100%"></picture></a></p>
+<p align="center"><a href="https://whystrohm.com/shotkit"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit：先规划整支视频，再生成画面。一个品牌，18 个镜头，一块看板；Canvas 看板后面循环播放这次运行生成的片段。" width="100%"></picture></a></p>
 
 <h3 align="center">批量交付符合品牌的视频。</h3>
 

@@ -1,4 +1,4 @@
-<p align="center"><a href="https://whystrohm.com/blog/shotkit-canvas-one-real-run"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit demo: five shots checked, three sent back with the critic's note, each one replaced by its remake, then one cut in 16:9, 9:16, 4:5 and 1:1." width="100%"></picture></a></p>
+<p align="center"><a href="https://whystrohm.com/shotkit"><picture><source media="(max-width: 700px)" srcset="docs/images/demo-phone.webp"><img src="docs/images/demo.webp" alt="Shotkit: plan the whole video before you generate a frame. One brand, 18 shots, one board, with clips from that run playing behind the Canvas board." width="100%"></picture></a></p>
 
 <h3 align="center">Ship on-brand video at scale.</h3>
 
